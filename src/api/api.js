@@ -1,0 +1,12 @@
+export const PROMO_CODE = "promo-code";
+export const ORDER = "order";
+export const MEMBER = "member";
+export const ITEM = "item";
+export const CUSTOMER = "customer";
+export const CUSTOMER_TABLE = "customer-table";
+export const BRANCH = "batch";
+export const BOOK = "book";
+export const USER = "user";
+export const SETTING = "setting";
+export const BATCH = "batch";
+export const AUTH = "";
