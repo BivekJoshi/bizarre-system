@@ -1,18 +1,23 @@
 import { useFormik } from "formik";
 
-import { useAddBranch } from "../useBranch";
+import { useAddWaiterMember } from "../../useMember";
 
-export const useBranchForm = ({ onClose, data }) => {
+export const useWaiterMemberForm = ({ onClose, data }) => {
 
-    const { mutate: addMutate } = useAddBranch({});
-    const { mutate: editMutate } = useAddBranch({});
+    const { mutate: addMutate } = useAddWaiterMember({});
+    const { mutate: editMutate } = useAddWaiterMember({});
 
     const formik = useFormik({
         initialValues: {
             id: data?.id || "",
+            fullName: data?.fullName || "",
+            mobileNumber: data?.mobileNumber || "",
+            gender: data?.gender || "",
+            birthDate: data?.birthDate || "",
             address: data?.address || "",
-            phoneNumber: data?.phoneNumber || "",
-            housingCapacity: data?.housingCapacity || "",
+            email: data?.email || "",
+            branchId: data?.branchId || "",
+            salary: data?.salary || "",
         },
         //   validationSchema: sendMoneyRecipientBankSchema,
         enableReinitialize: true,

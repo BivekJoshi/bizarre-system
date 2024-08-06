@@ -1,15 +1,15 @@
 import { useMutation } from "react-query";
+import { addWaiterMember } from "../../api/controller/memeber-api";
 import { toast } from "react-toastify";
-import { addBranch } from "../../api/controller/branch-api";
 
 /*_____________________________POST WAITER MEMBER_______________________________________________ */
-export const useAddBranch = ({ onSuccess }) => {
+export const useAddWaiterMember = ({ onSuccess }) => {
     return useMutation(
-        ["addBranch"],
-        (formData) => addBranch(formData),
+        ["addWaiter"],
+        (formData) => addWaiterMember(formData),
         {
             onSuccess: (data, variables, context) => {
-                toast.success("Successfully added branch");
+                toast.success("Successfully added waiter");
                 onSuccess && onSuccess(data, variables, context);
             },
             onError: (err, _variables, _context) => {

@@ -10,6 +10,11 @@ export const axiosInstance = Axios.create({
   timeout: 20000,
 });
 
+axiosInstance.defaults.headers["Access-Control-Allow-Origin"] = "*";
+axiosInstance.defaults.headers["Accept"] = "*";
+axiosInstance.defaults.headers["Access-Control-Allow-Headers"] = "Origin";
+axiosInstance.defaults.headers["Access-Control-Allow-Method"] = "PUT,POST,GET,DELETE";
+
 const checkIfExpired = (token) => {
   if (token) {
     const decode = jwtDecode(token);
