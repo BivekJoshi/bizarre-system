@@ -1,8 +1,14 @@
-import React from 'react'
+import React, { useMemo } from 'react'
+import AppRoute from './route/AppRoute'
+import { createTheme, ThemeProvider } from '@mui/material';
+import { themeSettings } from './theme/theme';
 
 const App = () => {
+  const theme = useMemo(() => createTheme(themeSettings()));
   return (
-    <div>App</div>
+    <ThemeProvider theme={theme}>
+      <AppRoute />
+    </ThemeProvider>
   )
 }
 
