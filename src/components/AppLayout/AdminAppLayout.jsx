@@ -1,10 +1,11 @@
-import { Box, Drawer, Grid, Typography, useMediaQuery } from "@mui/material";
+import { Box, Drawer, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import React from "react";
 import { Outlet } from "react-router-dom";
 import LoggedNavbar from "../Navbar/LoggedNavbar";
 import SideBar from "../SideBar/SideBar";
 
 const AdminAppLayout = () => {
+  const theme=useTheme();
   const isXsScreen = useMediaQuery((theme) =>
     theme.breakpoints.down("md", "sm")
   );
@@ -31,7 +32,7 @@ const AdminAppLayout = () => {
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                backgroundColor: "#fff",
+                backgroundColor: theme.palette.background.default,
                 maxHeight: "92vh",
                 width: "298px",
                 // overflowY:"scroll"

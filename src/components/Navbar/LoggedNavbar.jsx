@@ -7,6 +7,7 @@ import {
   Tooltip,
   Typography,
   useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -16,9 +17,11 @@ import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 import NepaliDate from "nepali-date";
 import SettingsIcon from "@mui/icons-material/Settings";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import Setting from "./Setting";
 
 const LoggedNavbar = ({ handleOpenDrawer }) => {
   const navigate = useNavigate();
+  const theme=useTheme();
   const isXsScreen = useMediaQuery((theme) =>
     theme.breakpoints.down("md", "sm")
   );
@@ -38,7 +41,7 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
   const handleSetting = () => setOpenSettingDrawer(true);
 
   return (
-    <Box sx={{ background: "#ffff" }}>
+    <Box sx={{ background: theme.palette.background.default }}>
       <Box
         sx={{
           display: "flex",
@@ -123,7 +126,9 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
           PaperProps={{
             sx: { width: "320px", borderRadius: "16px 0 0 16px" },
           }}
-        ></Drawer>
+        >
+          <Setting close={() => setOpenSettingDrawer(false)} />
+        </Drawer>
       </Box>
     </Box>
   );

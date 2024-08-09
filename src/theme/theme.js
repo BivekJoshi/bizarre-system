@@ -1,94 +1,143 @@
-export const themeSettings = () => {
-    return {
-      typography: {
+import palette, { tokensDark } from "./palette";
+
+// Function to reverse the color palette
+function reverseTokens(tokens) {
+  const reversedTokens = {};
+  Object.entries(tokens).forEach(([key, val]) => {
+    const keys = Object.keys(val);
+    const values = Object.values(val);
+    const length = keys.length;
+    const reversedObj = {};
+    for (let i = 0; i < length; i++) {
+      reversedObj[keys[i]] = values[length - i - 1];
+    }
+    reversedTokens[key] = reversedObj;
+  });
+  return reversedTokens;
+}
+
+// MUI theme settings
+export const themeSettings = (mode) => {
+  const tokensLight = reverseTokens(tokensDark);
+
+  return {
+    palette: {
+      mode: mode,
+      ...(mode === "dark"
+        ? {
+            // Palette values for dark mode
+            primary: {
+              ...palette.primary,
+              main: palette.primary["light"],
+              light: palette.primary["dark"],
+            },
+            secondary: {
+              ...palette.secondary,
+              main: palette.secondary[300],
+              nav: palette.secondary[400],
+            },
+            tertiary: {
+              ...palette.tertiary,
+              main: palette.tertiary[700],
+            },
+            neutral: {
+              ...palette.surface,
+              main: palette.surface[500],
+              alt: palette.surface["light"],
+            },
+            background: {
+              default: palette.surface[700],
+              alt: palette.surface["dark"],
+              main: palette.surface[100],
+              btn: palette.surface[10],
+              hover: palette.primary[600],
+              opt: palette.surface[700],
+            },
+            text: {
+              main: palette.surface["light"],
+              alt: palette.surface["dark"],
+              default: palette.surface["light"],
+            },
+          }
+        : {
+            // Palette values for light mode
+            primary: {
+              ...tokensLight.primary,
+              main: palette.primary["light"],
+              light: palette.surface[100],
+            },
+            secondary: {
+              ...tokensLight.secondary,
+              main: palette.secondary[600],
+              light: palette.secondary[700],
+              header: palette.secondary[400],
+              nav: palette.secondary[400],
+            },
+            tertiary: {
+              ...palette.tertiary,
+              main: palette.tertiary[700],
+            },
+            neutral: {
+              ...tokensLight.surface,
+              main: palette.surface[100],
+              alt: palette.primary["light"],
+            },
+            background: {
+              default: palette.surface["light"],
+              alt: palette.surface[100],
+              main: palette.surface[100],
+              btn: palette.secondary[800],
+              hover: palette.surface[100],
+              opt: palette.surface["light"],
+            },
+            text: {
+              main: palette.surface["dark"],
+              alt: palette.surface["light"],
+              default: palette.primary["light"],
+            },
+          }),
+    },
+    typography: {
+      fontFamily: ["DM Sans", "sans-serif"].join(","),
+      fontSize: 12,
+      h1: {
         fontFamily: ["DM Sans", "sans-serif"].join(","),
-        h1: {
-          fontSize: "2.225rem",
-          lineHeight: "1",
-          letterSpacing: "-0.0625rem",
-        },
-        h2: {
-          fontSize: "1.875rem",
-          lineHeight: "1.067",
-          letterSpacing: "-0.05rem",
-        },
-        h3: {
-          fontSize: "1.5rem",
-          lineHeight: "1.083",
-          letterSpacing: "-0.0375rem",
-        },
-        h4: {
-          fontSize: "1.25rem",
-          lineHeight: "1.1",
-          letterSpacing: "-0.025rem",
-        },
-        h5: {
-          fontSize: "1.125rem",
-          lineHeight: "1.111",
-          letterSpacing: "-0.0125rem",
-        },
-        h6: {
-          fontSize: "1rem",
-          letterSpacing: "-0.00625rem",
-        },
-        h7: {
-          fontSize: "0.8rem",
-          letterSpacing: "-0.00525rem",
-        },
-        "@media (max-width:600px)": {
-          h1: {
-            fontSize: "1.5rem",
-            fontWeight: "2.125rem",
-          },
-          h2: {
-            fontSize: "1rem",
-            fontWeight: "1.875rem  ",
-          },
-          h3: {
-            fontSize: ".8rem",
-            fontWeight: "1.5rem  ",
-          },
-          h4: {
-            fontSize: ".8rem",
-            fontWeight: "1.25rem  ",
-          },
-          h5: {
-            fontSize: "1rem",
-            fontWeight: "1.125rem  ",
-          },
-          h6: {
-            fontSize: "1.125rem",
-            fontWeight: "1rem",
-          },
-          h7: {
-            fontSize: "1.025rem",
-            fontWeight: "0.8rem",
-          },
-        },
-        "@media (max-width:400px)": {
-          h1: {
-            fontSize: "1rem",
-          },
-          h2: {
-            fontSize: ".8rem",
-          },
-          h3: {
-            fontSize: ".6rem",
-          },
-          h4: {
-            fontSize: ".8rem",
-          },
-          h5: {
-            fontSize: ".8rem",
-          },
-          h6: {
-            fontSize: ".6rem",
-          },
-          h7: {
-            fontSize: ".5rem",
+        fontSize: 40,
+      },
+      h2: {
+        fontFamily: ["DM Sans", "sans-serif"].join(","),
+        fontSize: 32,
+      },
+      h3: {
+        fontFamily: ["DM Sans", "sans-serif"].join(","),
+        fontSize: 24,
+      },
+      h4: {
+        fontFamily: ["DM Sans", "sans-serif"].join(","),
+        fontSize: 20,
+      },
+      h5: {
+        fontFamily: ["DM Sans", "sans-serif"].join(","),
+        fontSize: 16,
+      },
+      h6: {
+        fontFamily: ["DM Sans", "sans-serif"].join(","),
+        fontSize: 14,
+      },
+      h7: {
+        fontFamily: ["DM Sans", "sans-serif"].join(","),
+        fontSize: 12,
+      },
+    },
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            textTransform: "none",
+            fontWeight:700
           },
         },
       },
-    };
+    },
   };
-  
+};
