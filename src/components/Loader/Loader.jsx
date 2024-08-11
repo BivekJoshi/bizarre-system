@@ -1,4 +1,4 @@
-import { styled } from "@mui/material";
+import { styled, useTheme } from "@mui/material";
 import React from "react";
 import "./Loader.css";
 const LoaderWrapper = styled("div")(({ theme }) => ({
@@ -7,32 +7,24 @@ const LoaderWrapper = styled("div")(({ theme }) => ({
   left: "50%",
   zIndex: 2000,
   width: "100%",
-//   "& > * + *": {
-//     marginTop: theme.spacing(2),
-//   },
+  "& > * + *": {
+    marginTop: theme.spacing(2),
+  },
 }));
 
-const mode = "dark";
+const Loader = () => {
+  const theme = useTheme();
 
-const Loader = () => (
-  <div         style={{
-    width: "100%",
-    height: "100vh",
-    backgroundColor:"red"
-  }}>
+  return (
     <LoaderWrapper>
-      <div
-
-      >
+      <div>
         <div className="ring"></div>
         <div className="ring"></div>
         <div className="ring"></div>
-        <span style={{ color: mode === "dark" ? "white" : "black" }}>
-          Loading...
-        </span>
+        {/* <span style={{ color: theme.palette.text.default }}>Loading...</span> */}
       </div>
     </LoaderWrapper>
-  </div>
-);
+  );
+};
 
 export default Loader;

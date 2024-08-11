@@ -17,7 +17,7 @@ import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useChangePasswordForm } from "../../../hooks/user/User/useChangePasswordForm";
 
-const ChangePassword = () => {
+const ChangePasswordInitial = () => {
   const theme = useTheme();
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -49,7 +49,15 @@ const ChangePassword = () => {
   };
 
   return (
-    <>
+    <Box
+      sx={{
+        padding: {
+          xs: "1rem", 
+          sm: "0",
+          md: "4rem", 
+        },
+      }}
+    >
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Typography
@@ -158,6 +166,36 @@ const ChangePassword = () => {
           sm={12}
           sx={{ display: "flex", gap: ".5rem", flexDirection: "column" }}
         >
+          <Typography
+            variant="p"
+            sx={{
+              color: theme.palette.text.default,
+              fontWeight: 700,
+              marginBottom: "0.1rem",
+            }}
+          >
+            Mobile Number
+          </Typography>
+          <TextField
+            id="mobileNumber"
+            name="mobileNumber"
+            placeholder="Enter your mobile password"
+            fullWidth
+            required
+            value={formik.values.mobileNumber}
+            onChange={(e) => {
+              formik.handleChange(e);
+            }}
+            error={
+              formik.touched.mobileNumber && Boolean(formik.errors.mobileNumber)
+            }
+            helperText={
+              formik.touched.mobileNumber && formik.errors.mobileNumber
+            }
+            variant="outlined"
+            type={"text"}
+            size="small"
+          />
           <Typography
             variant="p"
             sx={{
@@ -313,8 +351,8 @@ const ChangePassword = () => {
           </Box>
         </Grid>
       </Grid>
-    </>
+    </Box>
   );
 };
 
-export default ChangePassword;
+export default ChangePasswordInitial;

@@ -1,8 +1,9 @@
 import React from 'react'
+import NoRecord from '../../PageNotFound/NoRecord'
 
 const Customer = () => {
   return (
-    <div>Customer</div>
+    <NoRecord/>
   )
 }
 

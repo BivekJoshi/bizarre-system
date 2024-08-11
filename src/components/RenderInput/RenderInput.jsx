@@ -100,6 +100,7 @@ const RenderInput = ({
             <TextField
               name={element?.name}
               // label={element?.label}
+              placeholder={element?.placeholder}
               value={formValues}
               onBlur={formik.handleBlur}
               size="small"
@@ -182,13 +183,25 @@ const RenderInput = ({
                 {element?.extraLabel}
               </Typography>
             )}
+            <Typography
+              variant="h5"
+              sx={{
+                color: theme.palette.text.default,
+                fontWeight: 700,
+                marginBottom: "0.1rem",
+              }}
+            >
+              {element?.label}
+            </Typography>
             <TextField
               name={element?.name}
-              label={element?.label}
+              // label={element?.label}
+              placeholder={element?.placeholder}
               value={formValues}
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               fullWidth
+              size="small"
               className="textfield-icon-input"
               variant="outlined"
               disabled={element.isDisabled}
@@ -590,34 +603,46 @@ const RenderInput = ({
         );
       case "date":
         return (
-          <TextField
-            name={element?.name}
-            label={element?.label}
-            key={element?.value}
-            type="date"
-            variant="outlined"
-            className="textfield-icon-input"
-            fullWidth
-            inputProps={{
-              min: element.disablePast
-                ? new Date().toISOString().split("T")[0]
-                : "",
-              max: element.maxDate ? element?.max : "",
-            }}
-            error={
-              formik.touched[element?.name] &&
-              Boolean(formik.errors[element?.name])
-            }
-            helperText={
-              formik.touched[element?.name] && formik.errors[element?.name]
-            }
-            disabled={
-              element.minDate ? !formik?.values[element?.minDate] : false
-            }
-            InputLabelProps={{ shrink: true }}
-            value={formValues}
-            onChange={formik.handleChange}
-          />
+          <>
+            <Typography
+              variant="h5"
+              sx={{
+                color: theme.palette.text.default,
+                fontWeight: 700,
+                marginBottom: "0.1rem",
+              }}
+            >
+              {element?.label}
+            </Typography>
+            <TextField
+              name={element?.name}
+              // label={element?.label}
+              key={element?.value}
+              type="date"
+              variant="outlined"
+              className="textfield-icon-input"
+              fullWidth
+              inputProps={{
+                min: element.disablePast
+                  ? new Date().toISOString().split("T")[0]
+                  : "",
+                max: element.maxDate ? element?.max : "",
+              }}
+              error={
+                formik.touched[element?.name] &&
+                Boolean(formik.errors[element?.name])
+              }
+              helperText={
+                formik.touched[element?.name] && formik.errors[element?.name]
+              }
+              disabled={
+                element.minDate ? !formik?.values[element?.minDate] : false
+              }
+              InputLabelProps={{ shrink: true }}
+              value={formValues}
+              onChange={formik.handleChange}
+            />
+          </>
         );
       default:
         return <TextField name={element?.name} label={element?.label} />;

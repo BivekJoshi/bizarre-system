@@ -46,8 +46,8 @@ export const themeSettings = (mode) => {
               alt: palette.surface["light"],
             },
             background: {
-              default: palette.surface[700],
-              alt: palette.surface["dark"],
+              default: palette.surface["dark"],
+              alt: palette.surface[900],
               main: palette.surface[100],
               btn: palette.surface[10],
               hover: palette.primary[600],

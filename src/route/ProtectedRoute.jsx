@@ -11,7 +11,7 @@ const ProtectedRoute = ({ redirectTo, allowedRoles }) => {
     if (!user) {
       removeUser();
       navigate("/login");
-      toast.error("Login First To Proceed Forward");
+      toast.error("Unauthorized user");
     }
   }, []);
 

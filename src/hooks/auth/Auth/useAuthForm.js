@@ -1,19 +1,17 @@
-import { useState } from 'react';
-import { useFormik } from 'formik';
-import { authSchema } from './authSchema';
-import { useAuth } from '../useAuth';
+import { useState } from "react";
+import { useFormik } from "formik";
+import { authSchema } from "./authSchema";
+import { useAuth } from "../useAuth";
 
 export const useAuthForm = () => {
   const [loading, setLoading] = useState(false);
-  const [showValues, setShowValues] = useState({
-    password: '',
-    showPassword: false,
-  });
+  const [showPassword, setShowPassword] = useState(false);
+
   const { mutate } = useAuth({});
   const formik = useFormik({
     initialValues: {
-      mobileNumber: '',
-      password: '',
+      mobileNumber: "",
+      password: "",
     },
     validationSchema: authSchema,
     onSubmit: (values) => {
@@ -23,7 +21,6 @@ export const useAuthForm = () => {
   });
 
   const handleLogin = (values) => {
-
     const { mobileNumber, password } = values;
 
     const trimmedPassword = password.trim();
@@ -33,23 +30,18 @@ export const useAuthForm = () => {
     );
   };
 
-  const handleClickShowPassword = () => {
-    setShowValues({
-      ...showValues,
-      showPassword: !showValues.showPassword,
-    });
-  };
-
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+  const handleClickShowPassword = () => {
+    setShowPassword((prev) => !prev);
+  };
 
   return {
-    handleLogin,
-    formik,
-    showValues,
     loading,
-    handleMouseDownPassword,
+    formik,
+    showPassword,
     handleClickShowPassword,
+    handleMouseDownPassword,
   };
 };

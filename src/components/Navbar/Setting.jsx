@@ -7,7 +7,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from "react-redux";
 import { toogleDarkMode } from "../../redux/Slice/darkModeSlice";
@@ -16,32 +16,67 @@ import WbSunnyRoundedIcon from "@mui/icons-material/WbSunnyRounded";
 import ViewModuleRoundedIcon from "@mui/icons-material/ViewModuleRounded";
 import TocRoundedIcon from "@mui/icons-material/TocRounded";
 import { toogleViewMode } from "../../redux/Slice/gridModeSlice";
+import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
+import LockResetRoundedIcon from "@mui/icons-material/LockResetRounded";
+import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
+import ConfirmationModal from "../Modal/ConfirmationModal";
+import { useNavigate } from "react-router-dom";
 
 const Setting = ({ close }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const theme = useTheme();
+  const [settings, setSettings] = useState({ mode: "light", view: "grid" });
+  const [openLogoutModal, setOpenLogoutModal] = useState(false);
+
+  useEffect(() => {
+    const mode = localStorage.getItem("themeMode") || "light";
+    const view = localStorage.getItem("view") || "grid";
+    setSettings({ mode, view });
+  }, []);
 
   const handleModeChange = (selectedMode) => {
     dispatch(toogleDarkMode(selectedMode));
+    setSettings((prev) => ({ ...prev, mode: selectedMode }));
   };
 
   const handleViewChange = (selectedView) => {
     dispatch(toogleViewMode(selectedView));
+    setSettings((prev) => ({ ...prev, view: selectedView }));
   };
 
-  const mode = localStorage.getItem("themeMode");
-  const mode2 = localStorage.getItem("view");
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/");
+  };
 
   return (
-    <Box sx={{ padding: "1rem" }}>
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
+    <>
+      <Box sx={{ padding: "1rem" }}>
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              variant="h5"
+              sx={{
+                color: theme.palette.text.default,
+                fontWeight: 700,
+                marginBottom: "0.1rem",
+              }}
+            >
+              Setting
+            </Typography>
+            <IconButton onClick={close}>
+              <CloseIcon />
+            </IconButton>
+          </div>
+          <Divider />
+          <br />
           <Typography
             variant="h5"
             sx={{
@@ -50,82 +85,104 @@ const Setting = ({ close }) => {
               marginBottom: "0.1rem",
             }}
           >
-            Setting
+            Mode
           </Typography>
-          <IconButton onClick={close}>
-            <CloseIcon />
-          </IconButton>
-        </div>
-        <Divider />
-        <br />
-        <Typography
-          variant="h5"
-          sx={{
-            color: theme.palette.text.default,
-            fontWeight: 700,
-            marginBottom: "0.1rem",
-          }}
-        >
-          Mode
-        </Typography>
-        <ButtonGroup aria-label="Basic button group" fullWidth>
-          <Button
-            variant={mode === "light" ? "contained" : "outlined"}
-            onClick={() => handleModeChange("light")}
-            startIcon={<DarkModeRoundedIcon />}
-          >
-            Light
-          </Button>
-          <Button
-            variant={mode === "dark" ? "contained" : "outlined"}
-            onClick={() => handleModeChange("dark")}
-            startIcon={<WbSunnyRoundedIcon />}
-          >
-            Dark
-          </Button>
-        </ButtonGroup>
-        <br />
+          <ButtonGroup aria-label="Basic button group" fullWidth>
+            <Button
+              variant={settings.mode === "light" ? "contained" : "outlined"}
+              onClick={() => handleModeChange("light")}
+              startIcon={<WbSunnyRoundedIcon />}
+            >
+              Light
+            </Button>
+            <Button
+              variant={settings.mode === "dark" ? "contained" : "outlined"}
+              onClick={() => handleModeChange("dark")}
+              startIcon={<DarkModeRoundedIcon />}
+            >
+              Dark
+            </Button>
+          </ButtonGroup>
+          <br />
 
-        <Typography
-          variant="h5"
-          sx={{
-            color: theme.palette.text.default,
-            fontWeight: 700,
-            marginBottom: "0.1rem",
-          }}
-        >
-          View
-        </Typography>
-        <ButtonGroup
-          variant="outlined"
-          fullWidth
-        >
-          <Button
-            variant={mode2 === "grid" ? "contained" : "outlined"}
-            onClick={() => handleViewChange("grid")}
-            startIcon={<ViewModuleRoundedIcon />}
+          <Typography
+            variant="h5"
+            sx={{
+              color: theme.palette.text.default,
+              fontWeight: 700,
+              marginBottom: "0.1rem",
+            }}
           >
-            Grid
-          </Button>
+            View
+          </Typography>
+          <ButtonGroup variant="outlined" fullWidth>
+            <Button
+              variant={settings.view === "grid" ? "contained" : "outlined"}
+              onClick={() => handleViewChange("grid")}
+              startIcon={<ViewModuleRoundedIcon />}
+            >
+              Grid
+            </Button>
+            <Button
+              variant={settings.view === "table" ? "contained" : "outlined"}
+              onClick={() => handleViewChange("table")}
+              startIcon={<TocRoundedIcon />}
+            >
+              Table
+            </Button>
+          </ButtonGroup>
+          <br />
+          <Divider />
+          <br />
+          <br />
           <Button
-            variant={mode2 === "table" ? "contained" : "outlined"}
-            onClick={() => handleViewChange("table")}
-            startIcon={<TocRoundedIcon />}
+            variant="outlined"
+            startIcon={<AccountCircleRoundedIcon />}
+            onClick={() => navigate(`profile`)}
           >
-            Table
+            Profile
           </Button>
-        </ButtonGroup>
-        <br />
-        <Divider />
-        <br />
-        <br />
-        <Button variant="outlined">Profile</Button>
-        <br />
-        <Button variant="outlined">Change Password</Button>
-        <br />
-        <Button variant="outlined">Logout</Button>
+          <br />
+          <Button
+            variant="outlined"
+            startIcon={<LockResetRoundedIcon />}
+            onClick={() => navigate(`change-password`)}
+          >
+            Change Password
+          </Button>
+          <br />
+          <Button
+            variant="outlined"
+            startIcon={<LoginRoundedIcon />}
+            color="error"
+            onClick={() => setOpenLogoutModal(true)}
+          >
+            Logout
+          </Button>
+        </Box>
       </Box>
-    </Box>
+
+      <ConfirmationModal
+        disagreeLabel={"Yes, Confirm"}
+        agreeLabel={"No, Stay Logged in."}
+        alertTitle={"Alert !!!"}
+        header={"Will you be logging out?"}
+        confirmhead={"Are you sure ?"}
+        handleModalClose={() => setOpenLogoutModal(false)}
+        isModalOpen={openLogoutModal}
+        icon={
+          <LoginRoundedIcon
+            sx={{
+              backgroundColor: "#FFDDDC",
+              borderRadius: "50%",
+              fontSize: 36,
+              padding: "1rem",
+            }}
+          />
+        }
+        handleSave={handleLogout}
+      />
+    </>
   );
 };
 

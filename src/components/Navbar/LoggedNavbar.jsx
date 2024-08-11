@@ -18,10 +18,13 @@ import NepaliDate from "nepali-date";
 import SettingsIcon from "@mui/icons-material/Settings";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import Setting from "./Setting";
+import maleProfile from "../../assets/MaleProfile.png";
+
+
 
 const LoggedNavbar = ({ handleOpenDrawer }) => {
   const navigate = useNavigate();
-  const theme=useTheme();
+  const theme = useTheme();
   const isXsScreen = useMediaQuery((theme) =>
     theme.breakpoints.down("md", "sm")
   );
@@ -33,9 +36,8 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
   const currentNepaliDate = new NepaliDate();
   const formattedNepaliDate = currentNepaliDate.format("YYYY-MM-DD");
 
-  const handleLogout = () => {
-    navigate("/");
-    // logout();
+  const handleNotiClick = () => {
+    
   };
 
   const handleSetting = () => setOpenSettingDrawer(true);
@@ -95,28 +97,28 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
 
         {!isXsScreen && (
           <Box sx={{ display: "flex", gap: "1rem" }}>
-            <Box sx={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-              <Typography variant="body1">Admin</Typography>
-            </Box>
-            <Tooltip title="Logout">
-              <IconButton onClick={handleLogout}>
+            <Tooltip title="Notification">
+              <IconButton onClick={handleNotiClick}>
                 <Badge badgeContent={4} color="primary">
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
             </Tooltip>
-            <Tooltip title="Change Mode">
+            <Tooltip title="Setting">
               <IconButton onClick={handleSetting}>
                 <SettingsIcon />
               </IconButton>
             </Tooltip>
+            <Box sx={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+              <Typography variant="body1">Hello, Admin</Typography>
+              <Avatar alt="Remy Sharp" src={maleProfile} />
+            </Box>
           </Box>
         )}
 
         {isXsScreen && (
           <IconButton onClick={handleSetting}>
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+            <Avatar alt="Remy Sharp" src={maleProfile} />
           </IconButton>
         )}
         <Drawer

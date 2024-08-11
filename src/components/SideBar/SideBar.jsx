@@ -5,7 +5,7 @@ import CottageRoundedIcon from "@mui/icons-material/CottageRounded";
 import WalletRoundedIcon from "@mui/icons-material/WalletRounded";
 import { useNavigate } from "react-router-dom";
 
-const SideBar = ({handleCloseDrawer}) => {
+const SideBar = ({ handleCloseDrawer }) => {
   const theme = useTheme();
   const [values, setValues] = React.useState("dashboard");
   const navigate = useNavigate();
@@ -19,9 +19,10 @@ const SideBar = ({handleCloseDrawer}) => {
 
   const labelStyle = {
     textTransform: "none",
-    color: "black",
     justifyContent: "flex-start",
     minHeight: "50px",
+    fontSize: "15px",
+    fontWeight: 700,
     "&:hover": {
       color: theme.palette.primary.main,
       borderLeft: `6px solid ${theme.palette.primary.main}`,
@@ -32,7 +33,6 @@ const SideBar = ({handleCloseDrawer}) => {
     ...labelStyle,
     backgroundColor: theme.palette.background.light,
     color: theme.palette.primary.main,
-    fontWeight: 400,
     borderLeft: `6px solid ${theme.palette.primary.main}`,
   };
 
@@ -53,10 +53,38 @@ const SideBar = ({handleCloseDrawer}) => {
               iconPosition="start"
             />
             <Tab
-              label="Transaction"
-              icon={<WalletRoundedIcon />}
-              value="change-password"
-              sx={values === "change-password" ? activeLabelStyle : labelStyle}
+              label="Customer"
+              icon={<CottageRoundedIcon />}
+              value="customer"
+              sx={values === "customer" ? activeLabelStyle : labelStyle}
+              iconPosition="start"
+            />
+            <Tab
+              label="Waiter"
+              icon={<CottageRoundedIcon />}
+              value="waiter"
+              sx={values === "waiter" ? activeLabelStyle : labelStyle}
+              iconPosition="start"
+            />
+            <Tab
+              label="Branch"
+              icon={<CottageRoundedIcon />}
+              value="branch"
+              sx={values === "branch" ? activeLabelStyle : labelStyle}
+              iconPosition="start"
+            />
+            <Tab
+              label="Cashier"
+              icon={<CottageRoundedIcon />}
+              value="cashier"
+              sx={values === "cashier" ? activeLabelStyle : labelStyle}
+              iconPosition="start"
+            />
+            <Tab
+              label="Batch"
+              icon={<CottageRoundedIcon />}
+              value="batch"
+              sx={values === "batch" ? activeLabelStyle : labelStyle}
               iconPosition="start"
             />
           </TabList>

@@ -3,7 +3,7 @@ import React from 'react';
 const Error404 = () => {
   return (
     <div>
-      sadsd
+      No Acess to this page
     </div>
   );
 }

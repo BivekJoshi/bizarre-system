@@ -5,24 +5,11 @@ import { LoadingButton } from "@mui/lab";
 import RenderInput from "../../../components/RenderInput/RenderInput";
 import RandomLogin from "../../../assets/RandomLogin.png";
 import { Link } from "react-router-dom";
+import { useForgotPasswordForm } from "../../../hooks/user/User/useForgotPasswordForm";
 
-const LoginPage = () => {
+const ForgotPassword = () => {
   const theme = useTheme();
-  const {
-    loading,
-    formik,
-    showPassword,
-    handleClickShowPassword,
-    handleMouseDownPassword,
-  } = useAuthForm();
-
-  const props = {
-    loading,
-    formik,
-    showPassword,
-    handleClickShowPassword,
-    handleMouseDownPassword,
-  };
+  const { loading, formik } = useForgotPasswordForm();
 
   const inputField = [
     {
@@ -39,13 +26,11 @@ const LoginPage = () => {
     },
     {
       id: 2,
-      name: "password",
-      label: "Password",
-      placeholder: "Enter password",
+      name: "birthDate",
+      label: "Date of Birth",
+      placeholder: "Enter your date of birth",
       required: true,
-      type: "password",
-      iconEnd1: <Visibility />,
-      iconEnd2: <VisibilityOff />,
+      type: "date",
       xs: 12,
       md: 12,
       lg: 12,
@@ -90,32 +75,10 @@ const LoginPage = () => {
               marginBottom: "0.1rem",
             }}
           >
-            Welcome Back !
+            Recover your password now !
           </Typography>
           <br />
-          <RenderInput
-            inputField={inputField}
-            formik={formik}
-            passwordProps={props}
-          />
-          <Typography
-            variant="body1"
-            sx={{
-              color: theme.palette.text.default,
-              margin: "0.4rem 0",
-              textAlign: "end",
-            }}
-          >
-            <Link
-              to="/forgot-password"
-              style={{
-                textDecoration: "none",
-                color: theme.palette.primary.main,
-              }}
-            >
-              Forgot your password?
-            </Link>
-          </Typography>
+          <RenderInput inputField={inputField} formik={formik} />
           <LoadingButton
             loading={loading}
             onClick={() => formik.handleSubmit()}
@@ -128,12 +91,30 @@ const LoginPage = () => {
               },
             }}
           >
-            Login
+            Email Now
           </LoadingButton>
+          <Typography
+            variant="body1"
+            sx={{
+              color: theme.palette.text.default,
+              margin: "0.4rem 0",
+              textAlign: "end",
+            }}
+          >
+            <Link
+              to="/login"
+              style={{
+                textDecoration: "none",
+                color: theme.palette.primary.main,
+              }}
+            >
+              Back to login page
+            </Link>
+          </Typography>
         </Grid>
       </Grid>
     </Box>
   );
 };
 
-export default LoginPage;
+export default ForgotPassword;
