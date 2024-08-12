@@ -48,6 +48,7 @@ const Setting = ({ close }) => {
   const handleLogout = () => {
     localStorage.clear();
     navigate("/");
+    close();
   };
 
   return (
@@ -138,7 +139,10 @@ const Setting = ({ close }) => {
           <Button
             variant="outlined"
             startIcon={<AccountCircleRoundedIcon />}
-            onClick={() => navigate(`profile`)}
+            onClick={() => {
+              navigate("profile");
+              close();
+            }}
           >
             Profile
           </Button>
@@ -146,7 +150,10 @@ const Setting = ({ close }) => {
           <Button
             variant="outlined"
             startIcon={<LockResetRoundedIcon />}
-            onClick={() => navigate(`change-password`)}
+            onClick={() => {
+              navigate(`change-password`);
+              close();
+            }}
           >
             Change Password
           </Button>
@@ -155,7 +162,9 @@ const Setting = ({ close }) => {
             variant="outlined"
             startIcon={<LoginRoundedIcon />}
             color="error"
-            onClick={() => setOpenLogoutModal(true)}
+            onClick={() => {
+              setOpenLogoutModal(true);
+            }}
           >
             Logout
           </Button>
@@ -168,7 +177,10 @@ const Setting = ({ close }) => {
         alertTitle={"Alert !!!"}
         header={"Will you be logging out?"}
         confirmhead={"Are you sure ?"}
-        handleModalClose={() => setOpenLogoutModal(false)}
+        handleModalClose={() => {
+          setOpenLogoutModal(false);
+          close();
+        }}
         isModalOpen={openLogoutModal}
         icon={
           <LoginRoundedIcon

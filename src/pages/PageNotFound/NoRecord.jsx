@@ -1,5 +1,6 @@
 import { Typography, useTheme } from "@mui/material";
 import React from "react";
+import NoDataImg from "../../assets/NoData.png";
 
 const NoRecord = () => {
   const theme = useTheme();
@@ -16,10 +17,9 @@ const NoRecord = () => {
           padding: "3rem 0",
         }}
       >
-        <div style={{ width: "300px", height: "300px" }}>
+        <div style={{ width: "400px", height: "400px" }}>
           <img
-            src="https://img.freepik.com/free-vector/no-data-concept-illustration_114360-536.jpg?t=st=1688710340~exp=1688710940~hmac=2cc8632e2b4b000169351f7bd3b74e3307aa59e0081e4c3c9a22b7f0fce46cde"
-            alt="No Record Has Been Added Yet"
+            src={NoDataImg}
             style={{ width: "100%", height: "100%" }}
           />
         </div>
