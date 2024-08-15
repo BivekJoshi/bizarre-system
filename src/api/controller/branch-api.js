@@ -10,7 +10,7 @@ export const addBranch = async (formData) => {
 /*________________________GET_____________________________________*/
 export const getBranch = async () => {
   const { data } = await axiosInstance.get(`${BRANCH}/find`);
-  return data;
+  return data?.data;
 };
 
 /*________________________GET_BY_ID_____________________________________*/

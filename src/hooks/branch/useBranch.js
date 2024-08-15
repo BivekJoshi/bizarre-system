@@ -42,7 +42,7 @@ export const useAddBranch = ({ onSuccess }) => {
 };
 
 /*________________________PATCH_____________________________________*/
-export const useEditReward = ({ onSuccess }) => {
+export const useEditBranch = ({ onSuccess }) => {
   const queryClient = useQueryClient();
   return useMutation(["editReward"], (formData) => editBranch(formData), {
     onSuccess: (data, variables, context) => {
@@ -57,7 +57,7 @@ export const useEditReward = ({ onSuccess }) => {
 };
 
 /*________________________DELETE_____________________________________*/
-export const useDeleteReward = ({ onSuccess }) => {
+export const useDeleteBranch = ({ onSuccess }) => {
   const queryClient = useQueryClient();
   return useMutation(["deleteReward"], (id) => deleteBranch(id), {
     onSuccess: (data, variables, context) => {

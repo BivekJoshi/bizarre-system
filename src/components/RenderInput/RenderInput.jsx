@@ -373,33 +373,46 @@ const RenderInput = ({
         );
       case "number":
         return (
-          <TextField
-            name={element?.name}
-            label={element?.label}
-            value={formValues}
-            onChange={formik.handleChange}
-            InputLabelProps={{ shrink: Boolean(formValues) }}
-            onKeyPress={(ev) => {
-              if (
-                ev.key === "E" ||
-                ev.key === "e" ||
-                ev.key === "." ||
-                ev.key === "+"
-              ) {
-                ev.preventDefault();
-              }
-            }}
-            fullWidth
-            type={element?.type}
-            required={element.required}
-            inputProps={{
-              min: element?.min,
-              max: element?.max,
-            }}
-            variant="outlined"
-            error={formTouched && Boolean(formError)}
-            helperText={formTouched && formError}
-          />
+          <>
+            <Typography
+              variant="h5"
+              sx={{
+                color: theme.palette.text.default,
+                fontWeight: 700,
+                marginBottom: "0.1rem",
+              }}
+            >
+              {element?.label}
+            </Typography>
+            <TextField
+              name={element?.name}
+              // label={element?.label}
+              value={formValues}
+              onChange={formik.handleChange}
+              InputLabelProps={{ shrink: Boolean(formValues) }}
+              onKeyPress={(ev) => {
+                if (
+                  ev.key === "E" ||
+                  ev.key === "e" ||
+                  ev.key === "." ||
+                  ev.key === "+"
+                ) {
+                  ev.preventDefault();
+                }
+              }}
+              fullWidth
+              type={element?.type}
+              required={element.required}
+              inputProps={{
+                min: element?.min,
+                max: element?.max,
+              }}
+              variant="outlined"
+              error={formTouched && Boolean(formError)}
+              helperText={formTouched && formError}
+              size="small"
+            />
+          </>
         );
       case "switch":
         return (
