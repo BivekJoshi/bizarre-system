@@ -3,8 +3,9 @@ import ScrollToTop from "../utils/ScrollToTop";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import Loadable from "../components/Loader/Loadable";
 import ProtectedRoute from "./ProtectedRoute";
+import User from "../pages/Controller/User/User";
+import FinalSelectionUI from "../components/Camera/FinalSelectionUI";
 
-// Loadable imports for pages
 const Error404 = Loadable(lazy(() => import("../pages/PageNotFound/Error404")));
 const LoginPage = Loadable(
   lazy(() => import("../pages/Controller/Auth/LoginPage"))
@@ -60,6 +61,7 @@ const AppRoute = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/change-password" element={<ChangePasswordInitial />} />
+          <Route path="/camera" element={<FinalSelectionUI />} />
 
           <Route
             element={
@@ -75,6 +77,7 @@ const AppRoute = () => {
               <Route path="cashier" element={<Cashier />} />
               <Route path="customer" element={<Customer />} />
               <Route path="batch" element={<Batch />} />
+              <Route path="user" element={<User />} />
             </Route>
           </Route>
         </Routes>

@@ -87,6 +87,13 @@ const SideBar = ({ handleCloseDrawer }) => {
               sx={values === "batch" ? activeLabelStyle : labelStyle}
               iconPosition="start"
             />
+            <Tab
+              label="user"
+              icon={<CottageRoundedIcon />}
+              value="user"
+              sx={values === "user" ? activeLabelStyle : labelStyle}
+              iconPosition="start"
+            />
           </TabList>
         </TabPanel>
       </TabContext>

@@ -3,6 +3,34 @@ import { axiosInstance } from "../axiosInterceptor";
 
 /*_____________________________POST BRANCH_______________________________________________ */
 export const addBranch = async (formData) => {
-    const data = await axiosInstance.post(`${BRANCH}/save`, formData);
+  const data = await axiosInstance.post(`${BRANCH}/save`, formData);
+  return data;
+};
+
+/*________________________GET_____________________________________*/
+export const getBranch = async () => {
+  const { data } = await axiosInstance.get(`${BRANCH}/find`);
+  return data;
+};
+
+/*________________________GET_BY_ID_____________________________________*/
+export const getBranchById = async (id) => {
+  if (id) {
+    const { data } = await axiosInstance.get(`${BRANCH}/${id}`);
     return data;
+  }
+};
+
+/*________________________PATCH_____________________________________*/
+export const editBranch = async (formData) => {
+  const data = await axiosInstance.put(`${BRANCH}/save`, formData);
+  return data;
+};
+
+/*________________________DELETE_____________________________________*/
+export const deleteBranch = async (id) => {
+  if (id) {
+    const data = await axiosInstance.delete(`${BRANCH}/${id}`);
+    return data;
+  }
 };
