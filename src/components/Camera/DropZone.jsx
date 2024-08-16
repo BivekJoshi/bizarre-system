@@ -96,9 +96,9 @@ const DropZone = () => {
         <Box sx={{ mt: 2 }}>
           <ImageSelection selectedImage={image} isUploaded={true} />
           <Button
-            variant="contained"
+            variant="outlined"
             color="primary"
-            sx={{ mt: 2 }}
+            // sx={{ mt: 2 }}
             onClick={handleReupload}
             fullWidth
           >

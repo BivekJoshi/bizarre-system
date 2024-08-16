@@ -105,7 +105,7 @@ const ImageSelection = ({ selectedImage, isUploaded }) => {
               style={{ marginTop: "20px" }}
             />
           </Box>
-          <Button variant="contained" onClick={showCroppedImage} fullWidth>
+          <Button variant="contained" onClick={showCroppedImage} fullWidth sx={{marginBottom:"1rem"}}>
             Save Crop
           </Button>
         </>
@@ -135,12 +135,13 @@ const ImageSelection = ({ selectedImage, isUploaded }) => {
               variant="contained"
               fullWidth
               onClick={() => setShowCrop(true)}
+              sx={{marginBottom:"1rem"}}
             >
               Next Step
             </Button>
           )}
           {finalImage && (
-            <Button variant="contained" fullWidth onClick={handleSubmit}>
+            <Button variant="contained" fullWidth onClick={handleSubmit} sx={{marginBottom:"1rem"}}>
               Submit
             </Button>
           )}

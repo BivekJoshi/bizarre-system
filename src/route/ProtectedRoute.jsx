@@ -13,7 +13,7 @@ const ProtectedRoute = ({ redirectTo, allowedRoles }) => {
       navigate("/login");
       toast.error("Unauthorized user");
     }
-  }, []);
+  }, [user]);
 
   if(!allowedRoles?.includes(user)) return <Navigate exact to={redirectTo}/>;
   return <Outlet/>;
