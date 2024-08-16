@@ -64,9 +64,8 @@ const ClickImage = () => {
             ref={videoRef}
             style={{
               width: "100%",
-              maxWidth: "600px",
-              maxHeight: "400px",
               backgroundColor: "black",
+              height: "300px",
             }}
             autoPlay
           />

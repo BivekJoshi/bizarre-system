@@ -1,10 +1,12 @@
 import { Box, Chip, Grid, Typography, useTheme } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import maleProfile from "../../../assets/MaleProfile.png";
 import { useGetUserData } from "../../../hooks/user/useUser";
 import EmailIcon from "@mui/icons-material/Email";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
+import FormModal from "../../../components/Modal/FormModal";
+import FinalSelectionUI from "../../../components/Camera/FinalSelectionUI";
 
 const InfoRow = ({ label, value }) => (
   <Box
@@ -24,6 +26,7 @@ const InfoRow = ({ label, value }) => (
 const Profile = () => {
   const theme = useTheme();
   const { data: userData, isLoading } = useGetUserData();
+  const [openModal, setOpenModal] = useState(false);
 
   return (
     <div style={{ width: "100%" }}>
@@ -68,6 +71,7 @@ const Profile = () => {
               src={maleProfile}
               alt="Profile"
               style={{ width: "200px", height: "200px", borderRadius: "50%" }}
+              onClick={() => setOpenModal(true)}
             />
             <Chip
               label={isLoading ? "..." : userData?.data?.fullName}
@@ -90,7 +94,8 @@ const Profile = () => {
                 marginBottom: "1rem",
               }}
             >
-              <LocalPhoneIcon /> {isLoading ? "..." : userData?.data?.mobileNumber}
+              <LocalPhoneIcon />{" "}
+              {isLoading ? "..." : userData?.data?.mobileNumber}
             </Typography>
           </Box>
         </Grid>
@@ -103,14 +108,44 @@ const Profile = () => {
               padding: "1rem",
             }}
           >
-            <InfoRow label="User Type :" value={isLoading ? "..." : userData?.data?.userType} />
-            <InfoRow label="Address :" value={isLoading ? "..." : userData?.data?.address} />
-            <InfoRow label="Date of Birth :" value={isLoading ? "..." : userData?.data?.birthDate} />
-            <InfoRow label="Joined Date :" value={isLoading ? "..." : userData?.data?.joinedDate} />
-            <InfoRow label="Status :" value={isLoading ? "..." : userData?.data?.status} />
+            <InfoRow
+              label="User Type :"
+              value={isLoading ? "..." : userData?.data?.userType}
+            />
+            <InfoRow
+              label="Address :"
+              value={isLoading ? "..." : userData?.data?.address}
+            />
+            <InfoRow
+              label="Date of Birth :"
+              value={isLoading ? "..." : userData?.data?.birthDate}
+            />
+            <InfoRow
+              label="Joined Date :"
+              value={isLoading ? "..." : userData?.data?.joinedDate}
+            />
+            <InfoRow
+              label="Status :"
+              value={isLoading ? "..." : userData?.data?.status}
+            />
           </Box>
         </Grid>
       </Grid>
+      <FormModal
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        width={"30%"}
+        height={"auto"}
+        maxHeight={"80vh"}
+        header={"Add Branch"}
+        // formik={formik}
+        // loading={loading}
+        formComponent={
+          <>
+            <FinalSelectionUI />
+          </>
+        }
+      />
     </div>
   );
 };

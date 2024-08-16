@@ -9,8 +9,7 @@ const FinalSelectionUI = () => {
   return (
     <Box
       sx={{
-        width: "500px",
-        height: "500px",
+        width: "100%",
         display: "flex",
         flexDirection: "column",
         gap: 2,

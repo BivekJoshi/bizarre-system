@@ -61,7 +61,6 @@ const AppRoute = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/change-password" element={<ChangePasswordInitial />} />
-          <Route path="/camera" element={<FinalSelectionUI />} />
 
           <Route
             element={
