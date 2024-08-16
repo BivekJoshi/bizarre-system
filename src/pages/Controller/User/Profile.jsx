@@ -134,10 +134,10 @@ const Profile = () => {
       <FormModal
         open={openModal}
         onClose={() => setOpenModal(false)}
-        width={"30%"}
+        width={"25%"}
         height={"auto"}
         maxHeight={"80vh"}
-        header={"Add Branch"}
+        header={"Add Your Profile Image"}
         // formik={formik}
         // loading={loading}
         formComponent={

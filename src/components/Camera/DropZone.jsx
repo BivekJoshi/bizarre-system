@@ -49,12 +49,13 @@ const DropZone = () => {
           sx={{
             border: "2px dashed #ccc",
             borderRadius: "8px",
-            p: 2,
+            // p: 2,
             textAlign: "center",
             cursor: "pointer",
-            backgroundColor: isDragActive ? "#f0f0f0" : "#fafafa",
+            height:"300px",
+            // backgroundColor: isDragActive ? "#f0f0f0" : "#fafafa",
             "&:hover": {
-              backgroundColor: "#f0f0f0",
+              // backgroundColor: "#f0f0f0",
             },
           }}
         >
@@ -62,11 +63,11 @@ const DropZone = () => {
           <Paper
             elevation={0}
             sx={{
-              p: 2,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
+              height:"100%"
             }}
           >
             {isDragActive ? (
