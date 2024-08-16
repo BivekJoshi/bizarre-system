@@ -1,24 +1,152 @@
-import { Box } from "@mui/material";
-import React from "react";
+import { Box, Button, Slider } from "@mui/material";
+import Cropper from "react-easy-crop";
+import React, { useState } from "react";
 
 const ImageSelection = ({ selectedImage, isUploaded }) => {
-  console.log("🚀 ~ ImageSelection ~ selectedImage:", selectedImage);
+  const [showCrop, setShowCrop] = useState(false);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [finalImage, setFinalImage] = useState(null);
+  const [finalImageFile, setFinalImageFile] = useState(null);
+  // console.log("🚀 ~ ImageSelection ~ finalImageFile:", finalImageFile)
 
   const PreviewImage = isUploaded ? selectedImage.preview : selectedImage;
 
+  const handleCropComplete = (_, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  };
+
+  const showCroppedImage = async () => {
+    const { imageSrc, file } = await getCroppedImg(PreviewImage, croppedAreaPixels);
+    setFinalImage(imageSrc);
+    setFinalImageFile(file);
+    setShowCrop(false);
+  };
+
+  const getCroppedImg = async (imageSrc, crop) => {
+    const image = new Image();
+    image.src = imageSrc;
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    const scaleX = image.naturalWidth / image.width;
+    const scaleY = image.naturalHeight / image.height;
+    canvas.width = crop.width;
+    canvas.height = crop.height;
+
+    ctx.drawImage(
+      image,
+      crop.x * scaleX,
+      crop.y * scaleY,
+      crop.width * scaleX,
+      crop.height * scaleY,
+      0,
+      0,
+      crop.width,
+      crop.height
+    );
+
+    return new Promise((resolve) => {
+      canvas.toBlob((blob) => {
+        const file = new File([blob], "croppedImage.jpeg", { type: "image/jpeg" });
+        const imageSrc = URL.createObjectURL(blob);
+        resolve({ imageSrc, file });
+      }, "image/jpeg");
+    });
+  };
+
+  const handleSubmit = () => {
+    // const formData = new FormData();
+    // formData.append("image", finalImageFile);
+
+    // fetch("YOUR_API_ENDPOINT", {
+    //   method: "POST",
+    //   body: formData,
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     console.log("Success:", data);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error:", error);
+    //   });
+  };
+
   return (
-    <Box>
-      <div style={{ marginTop: "1rem", backgroundColor: "black" ,display:"flex",justifyContent:"center"}}>
-        <img
-          src={PreviewImage}
-          alt="Captured"
-          style={{
-            width: "auto",
-            height: "300px",
-          }}
-        />
-      </div>
-    </Box>
+    <>
+      {showCrop ? (
+        <>
+          <Box>
+            <div
+              style={{
+                width: "auto",
+                height: "300px",
+                position: "relative",
+              }}
+            >
+              <Cropper
+                image={PreviewImage}
+                crop={crop}
+                zoom={zoom}
+                aspect={4 / 3}
+                onCropChange={setCrop}
+                onZoomChange={setZoom}
+                onCropComplete={handleCropComplete}
+              />
+            </div>
+            <Slider
+              value={zoom}
+              min={1}
+              max={3}
+              step={0.1}
+              aria-labelledby="Zoom"
+              onChange={(e, zoom) => setZoom(zoom)}
+              style={{ marginTop: "20px" }}
+            />
+          </Box>
+          <Button variant="contained" onClick={showCroppedImage} fullWidth>
+            Save Crop
+          </Button>
+        </>
+      ) : (
+        <>
+          <Box>
+            <div
+              style={{
+                backgroundColor: "black",
+                display: "flex",
+                justifyContent: "center",
+                marginBottom: "1rem",
+              }}
+            >
+              <img
+                src={finalImage || PreviewImage}
+                alt="Captured"
+                style={{
+                  width: "auto",
+                  height: "300px",
+                }}
+              />
+            </div>
+          </Box>
+          {!finalImage && (
+            <Button
+              variant="contained"
+              fullWidth
+              onClick={() => setShowCrop(true)}
+            >
+              Next Step
+            </Button>
+          )}
+          {finalImage && (
+            <Button variant="contained" fullWidth onClick={handleSubmit}>
+              Submit
+            </Button>
+          )}
+        </>
+      )}
+    </>
   );
 };
 

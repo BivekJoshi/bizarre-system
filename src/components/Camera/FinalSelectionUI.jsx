@@ -28,9 +28,9 @@ const FinalSelectionUI = () => {
         <>
           {selection === "upload" && <DropZone />}
           {selection === "click" && <ClickImage />}
-          <Button variant="outlined" onClick={() => setSelection(null)}>
+          {/* <Button variant="outlined" onClick={() => setSelection(null)}>
             Back
-          </Button>
+          </Button> */}
         </>
       )}
     </Box>
