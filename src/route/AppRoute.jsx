@@ -3,15 +3,13 @@ import ScrollToTop from "../utils/ScrollToTop";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import Loadable from "../components/Loader/Loadable";
 import ProtectedRoute from "./ProtectedRoute";
-import {
-  adminRoutes,
-  branchOwnerRoute,
-  cashierRoute,
-  waiterRoute,
-  baristaRoutes,
-  supplierRoute,
-  customerRoute,
-} from "./Routes/adminRoutes";
+import { branchOwnerRoute } from "./Routes/branchOwnerRoute";
+import { adminRoutes } from "./Routes/adminRoutes";
+import { cashierRoute } from "./Routes/cashierRoute";
+import { waiterRoute } from "./Routes/waiterRoute";
+import { baristaRoutes } from "./Routes/baristaRoute";
+import { supplierRoute } from "./Routes/supplierRoute";
+import { customerRoute } from "./Routes/customerRoute";
 
 const Error404 = Loadable(lazy(() => import("../pages/PageNotFound/Error404")));
 const LoginPage = Loadable(lazy(() => import("../pages/Controller/Auth/LoginPage")));
