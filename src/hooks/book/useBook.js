@@ -36,7 +36,7 @@ export const useAddBook = ({ onSuccess }) => {
       queryClient.invalidateQueries("getBook");
     },
     onError: (err, _variables, _context) => {
-      //   toast.error(getErrorMessage(err));
+      toast.error(`${err.message}`);
     },
   });
 };
@@ -51,7 +51,7 @@ export const useEditBook = ({ onSuccess }) => {
       queryClient.invalidateQueries("getBook");
     },
     onError: (err, _variables, _context) => {
-      //   toast.error(getErrorMessage(err));
+      toast.error(`${err.message}`);
     },
   });
 };

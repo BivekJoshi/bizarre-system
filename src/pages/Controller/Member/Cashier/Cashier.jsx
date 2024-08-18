@@ -6,9 +6,9 @@ import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import FormModal from "../../../../components/Modal/FormModal";
 import CustomTable from "../../../../components/CustomTable/CustomTable";
 import { useGetMember } from "../../../../hooks/member/useMember";
-import { useWaiterMemberForm } from "../../../../hooks/member/Member/WaiterMember/useWaiterMemberForm";
 import ConfirmationModal from "../../../../components/Modal/ConfirmationModal";
 import CashierForm from "./CashierForm";
+import { useCashierMemberForm } from "../../../../hooks/member/Member/CashierMemeber/useCashierMemberForm";
 
 const Cashier = () => {
   const theme = useTheme();
@@ -22,7 +22,7 @@ const Cashier = () => {
   // const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useWaiterMemberForm(onClose);
+  const { formik, loading } = useCashierMemberForm(onClose);
 
   const deleteRow = (row) => {
     setRowData(row?.original?.id);
@@ -34,56 +34,56 @@ const Cashier = () => {
       {
         id: nanoid(),
         accessorKey: "user.fullName",
-        header: "fullName",
+        header: "Name",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
         accessorKey: "user.gender",
-        header: "gender",
+        header: "Gender",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
         accessorKey: "user.birthDate",
-        header: "birthDate",
+        header: "DOB",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
         accessorKey: "user.address",
-        header: "address",
+        header: "Address",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
         accessorKey: "user.email",
-        header: "email",
+        header: "Email",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
         accessorKey: "user.mobileNumber",
-        header: "mobileNumber",
+        header: "Mobile Number",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
         accessorKey: "user.userType",
-        header: "userType",
+        header: "User Type",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
         accessorKey: "user.status",
-        header: "status",
+        header: "Status",
         maxWidth: 80,
         sortable: false,
       },
@@ -156,6 +156,7 @@ const Cashier = () => {
             <CashierForm formik={formik} />
           </>
         }
+        showButton={true}
       />
       <FormModal
         open={isEditModalOpen}
@@ -171,6 +172,7 @@ const Cashier = () => {
             <CashierForm formik={formik} />
           </>
         }
+        showButton={true}
       />
       <ConfirmationModal
         disagreeLabel={"Yes, Delete !"}

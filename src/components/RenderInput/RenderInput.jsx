@@ -16,6 +16,8 @@ import {
 } from "@mui/material";
 import { getIn } from "formik";
 import React, { useEffect } from "react";
+import AsyncDropDownOption from "./AsyncDropDownOption";
+import AsyncDropDown from "./AsyncDropDown";
 
 const RenderInput = ({
   inputField,
@@ -63,30 +65,7 @@ const RenderInput = ({
     switch (element.type) {
       case "text":
         return (
-          <div
-            style={{
-              ...(element?.extraInfo && element?.extraLabel
-                ? {
-                    textAlign: element?.textAlign,
-                    alignItems: element?.alignItems,
-                    fontSize: element?.fontSize,
-                    fontWeight: element?.fontWeight,
-                    margin: element?.margin,
-                    display: element?.display,
-                    flexDirection: element?.flexDirection,
-                    gap: element?.gap,
-                  }
-                : {}),
-            }}
-          >
-            {element?.extraInfo && (
-              <Typography
-                variant="p"
-                sx={{ textAlign: "center", margin: element?.textMargin || "" }}
-              >
-                {element?.extraLabel}
-              </Typography>
-            )}
+          <div>
             <Typography
               variant="h5"
               sx={{
@@ -95,7 +74,8 @@ const RenderInput = ({
                 marginBottom: "0.1rem",
               }}
             >
-              {element?.label}
+              {element?.label}{" "}
+              {element.required && <span style={{ color: "#EC4034" }}>*</span>}
             </Typography>
             <TextField
               name={element?.name}
@@ -159,30 +139,7 @@ const RenderInput = ({
       case "password":
         const isConfirmPassword = element.name === "confirmPassword";
         return (
-          <div
-            style={{
-              ...(element?.extraInfo && element?.extraLabel
-                ? {
-                    textAlign: element?.textAlign,
-                    alignItems: element?.alignItems,
-                    fontSize: element?.fontSize,
-                    fontWeight: element?.fontWeight,
-                    margin: element?.margin,
-                    display: element?.display,
-                    flexDirection: element?.flexDirection,
-                    gap: element?.gap,
-                  }
-                : {}),
-            }}
-          >
-            {element?.extraInfo && (
-              <Typography
-                variant="p"
-                sx={{ textAlign: "center", margin: element?.textMargin || "" }}
-              >
-                {element?.extraLabel}
-              </Typography>
-            )}
+          <div>
             <Typography
               variant="h5"
               sx={{
@@ -191,7 +148,8 @@ const RenderInput = ({
                 marginBottom: "0.1rem",
               }}
             >
-              {element?.label}
+              {element?.label}{" "}
+              {element?.required && <span style={{ color: "#EC4034" }}>*</span>}
             </Typography>
             <TextField
               name={element?.name}
@@ -305,71 +263,86 @@ const RenderInput = ({
 
       case "dropDown":
         return (
-          <Autocomplete
-            id={element.name}
-            key={formValues}
-            fullWidth
-            sx={{
-              marginBottom: element?.marginBottom,
-            }}
-            name={element.name}
-            disabled={
-              firstDropdownDisable && index === 0
-                ? firstDropdownDisable
-                : element?.isDisabled
-            }
-            options={element?.options || []}
-            getOptionLabel={(option) => option?.label || ""}
-            value={
-              element?.options?.find(
-                (option) => option?.value === formValues
-              ) || ""
-            }
-            onChange={(event, newValue) => {
-              if (element?.customOnChange) {
-                element.customOnChange(event, newValue);
-              } else {
-                formik.setFieldValue(
-                  element.name,
-                  newValue?.value || newValue?.code || ""
-                ); // Set value to newValue's value property or empty string if undefined
-                if (element.clearField) {
-                  for (let i = 0; i < element.clearField?.length; i++) {
-                    formik.setFieldValue(element.clearField[i], "");
+          <div>
+            <Typography
+              variant="h5"
+              sx={{
+                color: theme.palette.text.default,
+                fontWeight: 700,
+                marginBottom: "0.1rem",
+              }}
+            >
+              {element?.label}{" "}
+              {element.required && <span style={{ color: "#EC4034" }}>*</span>}
+            </Typography>
+            <Autocomplete
+              id={element.name}
+              key={formValues}
+              fullWidth
+              sx={{
+                marginBottom: element?.marginBottom,
+              }}
+              name={element.name}
+              disabled={
+                firstDropdownDisable && index === 0
+                  ? firstDropdownDisable
+                  : element?.isDisabled
+              }
+              options={element?.options || []}
+              getOptionLabel={(option) => option?.label || ""}
+              value={
+                element?.options?.find(
+                  (option) => option?.value === formValues
+                ) || ""
+              }
+              onChange={(event, newValue) => {
+                if (element?.customOnChange) {
+                  element.customOnChange(event, newValue);
+                } else {
+                  formik.setFieldValue(
+                    element.name,
+                    newValue?.value || newValue?.code || ""
+                  ); // Set value to newValue's value property or empty string if undefined
+                  if (element.clearField) {
+                    for (let i = 0; i < element.clearField?.length; i++) {
+                      formik.setFieldValue(element.clearField[i], "");
+                    }
                   }
                 }
-              }
-            }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label={element.label}
-                variant="outlined"
-                className="textfield-icon-input"
-                disabled={element?.isDisabled}
-                error={formTouched && Boolean(formError)}
-                required={element.required}
-                helperText={formTouched && formError}
-                InputProps={{
-                  ...params.InputProps,
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <div>
-                        {element?.isImage ? (
-                          <img
-                            width={element?.iconWidth ? element?.iconWidth : 20}
-                            src={element?.iconStart}
-                          />
-                        ) : (
-                          <Tooltip>{element?.iconStart}</Tooltip>
-                        )}
-                      </div>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            )}
-          />
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="outlined"
+                  className="textfield-icon-input"
+                  disabled={element?.isDisabled}
+                  error={formTouched && Boolean(formError)}
+                  required={element.required}
+                  helperText={formTouched && formError}
+                  InputProps={{
+                    ...params.InputProps,
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <div>
+                          {element?.isImage ? (
+                            <img
+                              width={
+                                element?.iconWidth ? element?.iconWidth : 20
+                              }
+                              src={element?.iconStart}
+                            />
+                          ) : (
+                            <Tooltip>{element?.iconStart}</Tooltip>
+                          )}
+                        </div>
+                      </InputAdornment>
+                    ),
+                  }}
+                  size="small"
+                />
+              )}
+            />
+          </div>
         );
       case "number":
         return (
@@ -654,8 +627,57 @@ const RenderInput = ({
               InputLabelProps={{ shrink: true }}
               value={formValues}
               onChange={formik.handleChange}
+              size="small"
             />
           </>
+        );
+      case "asyncDropDownOption":
+        return (
+          <AsyncDropDownOption
+            element={element}
+            formik={formik}
+            isFieldArray={isFieldArray}
+          />
+        );
+      case "asyncDropDown":
+        return (
+          <div>
+            <Typography
+              variant="h5"
+              sx={{
+                color: theme.palette.text.default,
+                fontWeight: 700,
+                marginBottom: "0.1rem",
+              }}
+            >
+              {element?.label}{" "}
+              {element.required && <span style={{ color: "#EC4034" }}>*</span>}
+            </Typography>
+            <AsyncDropDown
+              element={element}
+              formik={formik}
+              formVaues={formValues}
+            />
+            {/* <div>
+              {element.isDependent &&
+              formik.values[element?.name] &&
+              !element?.isNeutral ? (
+                <RenderInput
+                  inputField={element.trueNewFields}
+                  formik={formik}
+                />
+              ) : !element.isDependent &&
+                formik.values[element?.name] &&
+                !element?.isNeutral ? (
+                <RenderInput
+                  inputField={element?.falseNewFields}
+                  formik={formik}
+                />
+              ) : (
+                ""
+              )}
+            </div> */}
+          </div>
         );
       default:
         return <TextField name={element?.name} label={element?.label} />;

@@ -8,7 +8,8 @@ import CustomTable from "../../../components/CustomTable/CustomTable";
 import { nanoid } from "nanoid";
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import CustomPagination from "../../../components/Pagination/CustomPagination";
 
 const Branch = () => {
   const theme = useTheme();
@@ -115,6 +116,8 @@ const Branch = () => {
         />
       </Box>
 
+      <CustomPagination />
+      
       <FormModal
         open={isAddModalOpen}
         onClose={() => setIsAddModal(false)}
@@ -129,6 +132,7 @@ const Branch = () => {
             <AddBranch formik={formik} />
           </>
         }
+        showButton={true}
       />
       <FormModal
         open={isEditModalOpen}
@@ -144,6 +148,7 @@ const Branch = () => {
             <AddBranch formik={formik} />
           </>
         }
+        showButton={true}
       />
       <ConfirmationModal
         disagreeLabel={"Yes, Delete !"}

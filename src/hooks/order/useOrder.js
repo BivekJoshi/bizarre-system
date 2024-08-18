@@ -65,7 +65,7 @@ export const useAddOrder = ({ onSuccess }) => {
       queryClient.invalidateQueries("getOrder");
     },
     onError: (err, _variables, _context) => {
-      //   toast.error(getErrorMessage(err));
+      toast.error(`${err.message}`);
     },
   });
 };
@@ -80,7 +80,7 @@ export const useEditOrder = ({ onSuccess }) => {
       queryClient.invalidateQueries("getOrder");
     },
     onError: (err, _variables, _context) => {
-      //   toast.error(getErrorMessage(err));
+      toast.error(`${err.message}`);
     },
   });
 };

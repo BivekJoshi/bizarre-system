@@ -1,8 +1,8 @@
 import React from "react";
 import { nanoid } from "nanoid";
-import RenderInput from "../../../../components/RenderInput/RenderInput";
+import RenderInput from "../../../components/RenderInput/RenderInput";
 
-const CashierForm = ({ formik }) => {
+const CustomerForm = ({ formik }) => {
   const inputField = [
     {
       id: nanoid(),
@@ -78,23 +78,8 @@ const CashierForm = ({ formik }) => {
     },
     {
       id: nanoid(),
-      responseId: "id",
-      name: "branchId",
-      label: "Branch",
-      path: "/branch/find",
-      type: "asyncDropDown",
-      required: true,
-      responseLabel: "address",
-      xs: 12,
-      md: 6,
-      lg: 6,
-      sm: 12,
-    },
-
-    {
-      id: nanoid(),
-      name: "salary",
-      label: "Salary",
+      name: "password",
+      label: "password",
       type: "text",
       required: true,
       xs: 12,
@@ -106,4 +91,4 @@ const CashierForm = ({ formik }) => {
   return <RenderInput inputField={inputField} formik={formik} />;
 };
 
-export default CashierForm;
+export default CustomerForm;

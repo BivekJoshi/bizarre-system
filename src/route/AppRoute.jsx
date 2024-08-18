@@ -3,51 +3,31 @@ import ScrollToTop from "../utils/ScrollToTop";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import Loadable from "../components/Loader/Loadable";
 import ProtectedRoute from "./ProtectedRoute";
-import User from "../pages/Controller/User/User";
-import FinalSelectionUI from "../components/Camera/FinalSelectionUI";
+import { adminRoutes } from "./Routes/adminRoutes";
+import { branchOwnerRoute } from "./Routes/branchOwnerRoute";
+import { cashierRoute } from "./Routes/cashierRoute";
+import { waiterRoute } from "./Routes/waiterRoute";
+import { baristaRoutes } from "./Routes/baristaRoute";
+import { supplierRoute } from "./Routes/supplierRoute";
+import { customerRoute } from "./Routes/customerRoute";
 
 const Error404 = Loadable(lazy(() => import("../pages/PageNotFound/Error404")));
 const LoginPage = Loadable(
   lazy(() => import("../pages/Controller/Auth/LoginPage"))
 );
-const ChangePassword = Loadable(
-  lazy(() => import("../pages/Controller/User/ChangePassword"))
-);
-const AdminAppLayout = Loadable(
-  lazy(() => import("../components/AppLayout/AdminAppLayout"))
+const AppLayout = Loadable(
+  lazy(() => import("../components/AppLayout/AppLayout"))
 );
 const PageNotFound = Loadable(
   lazy(() => import("../pages/PageNotFound/PageNotFound"))
 );
-const AdminDashboard = Loadable(
-  lazy(() => import("../pages/AdminPage/Dashboard/AdminDashboard"))
-);
-const Branch = Loadable(
-  lazy(() => import("../pages/Controller/Branch/Branch"))
-);
-const Customer = Loadable(
-  lazy(() => import("../pages/Controller/Customer/Customer"))
-);
-const Batch = Loadable(lazy(() => import("../pages/Controller/Batch/Batch")));
-const Cashier = Loadable(
-  lazy(() => import("../pages/Controller/Member/Cashier/Cashier"))
-);
-const Waiter = Loadable(
-  lazy(() => import("../pages/Controller/Member/Waiter/Waiter"))
-);
+
 const ChangePasswordInitial = Loadable(
   lazy(() => import("../pages/Controller/Auth/ChangePasswordInitial"))
 );
-const Profile = Loadable(
-  lazy(() => import("../pages/Controller/User/Profile"))
-);
+
 const ForgotPassword = Loadable(
   lazy(() => import("../pages/Controller/Auth/ForgotPassword"))
-);
-
-// Example of another lazy-loaded page
-const AddBranch = Loadable(
-  lazy(() => import("../pages/Controller/Branch/AddBranch"))
 );
 
 const AppRoute = () => {
@@ -67,16 +47,114 @@ const AppRoute = () => {
               <ProtectedRoute redirectTo="/404" allowedRoles={["ADMIN"]} />
             }
           >
-            <Route path="/admin" element={<AdminAppLayout />}>
-              <Route path="change-password" element={<ChangePassword />} />
-              <Route path="profile" element={<Profile />} />
-              <Route path="dashboard" element={<AdminDashboard />} />
-              <Route path="branch" element={<Branch />} />
-              <Route path="waiter" element={<Waiter />} />
-              <Route path="cashier" element={<Cashier />} />
-              <Route path="customer" element={<Customer />} />
-              <Route path="batch" element={<Batch />} />
-              <Route path="user" element={<User />} />
+            <Route path="/admin" element={<AppLayout />}>
+              {adminRoutes.map((route) => (
+                <Route
+                  key={route.id}
+                  path={route.path}
+                  exact
+                  element={<route.component />}
+                />
+              ))}
+            </Route>
+          </Route>
+          <Route
+            element={
+              <ProtectedRoute
+                redirectTo="/404"
+                allowedRoles={["BRANCH_OWNER"]}
+              />
+            }
+          >
+            <Route path="/branch-owner" element={<AppLayout />}>
+              {branchOwnerRoute.map((route) => (
+                <Route
+                  key={route.id}
+                  path={route.path}
+                  exact
+                  element={<route.component />}
+                />
+              ))}
+            </Route>
+          </Route>
+          <Route
+            element={
+              <ProtectedRoute redirectTo="/404" allowedRoles={["CASHIER"]} />
+            }
+          >
+            <Route path="/cashier" element={<AppLayout />}>
+              {cashierRoute.map((route) => (
+                <Route
+                  key={route.id}
+                  path={route.path}
+                  exact
+                  element={<route.component />}
+                />
+              ))}
+            </Route>
+          </Route>
+          <Route
+            element={
+              <ProtectedRoute redirectTo="/404" allowedRoles={["WAITER"]} />
+            }
+          >
+            <Route path="/waiter" element={<AppLayout />}>
+              {waiterRoute.map((route) => (
+                <Route
+                  key={route.id}
+                  path={route.path}
+                  exact
+                  element={<route.component />}
+                />
+              ))}
+            </Route>
+          </Route>
+          <Route
+            element={
+              <ProtectedRoute redirectTo="/404" allowedRoles={["BARISTA"]} />
+            }
+          >
+            <Route path="/barista" element={<AppLayout />}>
+              {baristaRoutes.map((route) => (
+                <Route
+                  key={route.id}
+                  path={route.path}
+                  exact
+                  element={<route.component />}
+                />
+              ))}
+            </Route>
+          </Route>
+          <Route
+            element={
+              <ProtectedRoute redirectTo="/404" allowedRoles={["SUPPLIER"]} />
+            }
+          >
+            <Route path="/supplier" element={<AppLayout />}>
+              {supplierRoute.map((route) => (
+                <Route
+                  key={route.id}
+                  path={route.path}
+                  exact
+                  element={<route.component />}
+                />
+              ))}
+            </Route>
+          </Route>
+          <Route
+            element={
+              <ProtectedRoute redirectTo="/404" allowedRoles={["SUPPLIER"]} />
+            }
+          >
+            <Route path="/customer" element={<AppLayout />}>
+              {customerRoute.map((route) => (
+                <Route
+                  key={route.id}
+                  path={route.path}
+                  exact
+                  element={<route.component />}
+                />
+              ))}
             </Route>
           </Route>
         </Routes>

@@ -69,7 +69,7 @@ export const useChangeStatus = ({ onSuccess }) => {
         queryClient.invalidateQueries("getItem");
       },
       onError: (err, _variables, _context) => {
-        //   toast.error(getErrorMessage(err));
+        toast.error(`${err.message}`);
       },
     }
   );

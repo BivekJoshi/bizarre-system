@@ -1,11 +1,18 @@
-import { Box, Drawer, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  Drawer,
+  Grid,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import React from "react";
 import { Outlet } from "react-router-dom";
 import LoggedNavbar from "../Navbar/LoggedNavbar";
 import SideBar from "../SideBar/SideBar";
 
-const AdminAppLayout = () => {
-  const theme=useTheme();
+const AppLayout = () => {
+  const theme = useTheme();
   const isXsScreen = useMediaQuery((theme) =>
     theme.breakpoints.down("md", "sm")
   );
@@ -52,7 +59,7 @@ const AdminAppLayout = () => {
                 </Typography>
               </Grid>
               <Grid>
-                <SideBar handleCloseDrawer={handleCloseDrawer}/>
+                <SideBar handleCloseDrawer={handleCloseDrawer} />
               </Grid>
             </Box>
           )}
@@ -74,7 +81,7 @@ const AdminAppLayout = () => {
           anchor={"left"}
           onClose={() => setOpenDrawer(false)}
           PaperProps={{
-            sx: { width: "320px"},
+            sx: { width: "320px" },
           }}
         >
           <Grid
@@ -88,11 +95,11 @@ const AdminAppLayout = () => {
             {/* <img width={40} src={userProfile} alt="admin-logo" /> */}
             <Typography variant="h6">Welcome</Typography>
           </Grid>
-          <SideBar handleCloseDrawer={handleCloseDrawer}/>
+          <SideBar handleCloseDrawer={handleCloseDrawer} />
         </Drawer>
       )}
     </div>
   );
 };
 
-export default AdminAppLayout;
+export default AppLayout;

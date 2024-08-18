@@ -1,6 +1,7 @@
 import { Button } from "@mui/material";
 import React, { useState, useRef, useEffect } from "react";
 import ImageSelection from "./ImageSelection";
+import LinkedCameraRoundedIcon from "@mui/icons-material/LinkedCameraRounded";
 
 const ClickImage = () => {
   const [stream, setStream] = useState(null);
@@ -79,6 +80,7 @@ const ClickImage = () => {
           color="primary"
           onClick={captureImage}
           sx={{ display: "flex", gap: "1rem", marginTop: "1rem" }}
+          startIcon={<LinkedCameraRoundedIcon />}
         >
           Capture Image
         </Button>
@@ -94,7 +96,7 @@ const ClickImage = () => {
         <Button
           fullWidth
           variant="outlined"
-          color="secondary"
+          color="error"
           onClick={openCamera}
           sx={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}
         >

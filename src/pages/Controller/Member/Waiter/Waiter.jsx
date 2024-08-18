@@ -18,7 +18,6 @@ import ConfirmationModal from "../../../../components/Modal/ConfirmationModal";
 const Waiter = () => {
   const theme = useTheme();
   const { data } = useGetMember();
-  console.log("🚀 ~ Waiter ~ data:", data)
 
   const [rowData, setRowData] = useState(null);
   const [isAddModalOpen, setIsAddModal] = useState(false);
@@ -40,56 +39,56 @@ const Waiter = () => {
       {
         id: nanoid(),
         accessorKey: "user.fullName",
-        header: "fullName",
+        header: "Name",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
         accessorKey: "user.gender",
-        header: "gender",
+        header: "Gender",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
         accessorKey: "user.birthDate",
-        header: "birthDate",
+        header: "DOB",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
         accessorKey: "user.address",
-        header: "address",
+        header: "Address",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
         accessorKey: "user.email",
-        header: "email",
+        header: "Email",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
         accessorKey: "user.mobileNumber",
-        header: "mobileNumber",
+        header: "Mobile Number",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
         accessorKey: "user.userType",
-        header: "userType",
+        header: "User Type",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
         accessorKey: "user.status",
-        header: "status",
+        header: "Status",
         maxWidth: 80,
         sortable: false,
       },
@@ -162,6 +161,7 @@ const Waiter = () => {
             <WaiterForm formik={formik} />
           </>
         }
+        showButton={true}
       />
       <FormModal
         open={isEditModalOpen}
@@ -177,6 +177,7 @@ const Waiter = () => {
             <WaiterForm formik={formik} />
           </>
         }
+        showButton={true}
       />
       <ConfirmationModal
         disagreeLabel={"Yes, Delete !"}

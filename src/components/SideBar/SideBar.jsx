@@ -88,6 +88,13 @@ const SideBar = ({ handleCloseDrawer }) => {
               iconPosition="start"
             />
             <Tab
+              label="branch-owner"
+              icon={<CottageRoundedIcon />}
+              value="branch-owner"
+              sx={values === "branch-owner" ? activeLabelStyle : labelStyle}
+              iconPosition="start"
+            />
+            <Tab
               label="user"
               icon={<CottageRoundedIcon />}
               value="user"

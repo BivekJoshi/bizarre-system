@@ -25,6 +25,7 @@ const FormModal = ({
   maxHeight,
   formik,
   loading,
+  showButton,
 }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -75,8 +76,8 @@ const FormModal = ({
               <Grid>
                 <IconButton
                   onClick={() => {
-                    formik.handleReset();
                     onClose();
+                    formik.handleReset();
                   }}
                 >
                   <CloseIcon />
@@ -88,45 +89,47 @@ const FormModal = ({
           </>
         )}
         {formComponent}
-        <>
-          <Grid
-            container
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "end",
-              alignItems: "center",
-              gap: "1rem",
-              marginTop: "1rem",
-            }}
-          >
-            <Grid item>
-              <Button
-                variant="outlined"
-                color="error"
-                onClick={() => {
-                  formik.handleReset();
-                  onClose();
-                }}
-                startIcon={<HighlightOffRoundedIcon />}
-              >
-                Close
-              </Button>
+        {showButton ? (
+          <>
+            <Grid
+              container
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "end",
+                alignItems: "center",
+                gap: "1rem",
+                marginTop: "1rem",
+              }}
+            >
+              <Grid item>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={() => {
+                    formik.handleReset();
+                    onClose();
+                  }}
+                  startIcon={<HighlightOffRoundedIcon />}
+                >
+                  Close
+                </Button>
+              </Grid>
+              <Grid>
+                <LoadingButton
+                  loading={loading}
+                  onClick={() => formik.handleSubmit()}
+                  variant={"outlined"}
+                  Width={"-webkit-fill-available"}
+                  startIcon={<ControlPointRoundedIcon />}
+                >
+                  {/* {data ? "Update" : "Add"} */}
+                  Add
+                </LoadingButton>
+              </Grid>
             </Grid>
-            <Grid>
-              <LoadingButton
-                loading={loading}
-                onClick={() => formik.handleSubmit()}
-                variant={"outlined"}
-                Width={"-webkit-fill-available"}
-                startIcon={<ControlPointRoundedIcon />}
-              >
-                {/* {data ? "Update" : "Add"} */}
-                Add
-              </LoadingButton>
-            </Grid>
-          </Grid>
-        </>
+          </>
+        ) : null}
       </Box>
     </Modal>
   );

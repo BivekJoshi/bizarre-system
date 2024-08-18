@@ -97,7 +97,7 @@ const DropZone = () => {
           <ImageSelection selectedImage={image} isUploaded={true} />
           <Button
             variant="outlined"
-            color="primary"
+            color="error"
             // sx={{ mt: 2 }}
             onClick={handleReupload}
             fullWidth

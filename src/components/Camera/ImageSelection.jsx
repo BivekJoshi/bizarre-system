@@ -1,6 +1,8 @@
 import { Box, Button, Slider } from "@mui/material";
 import Cropper from "react-easy-crop";
 import React, { useState } from "react";
+import CropTwoToneIcon from "@mui/icons-material/CropTwoTone";
+import PublishRoundedIcon from '@mui/icons-material/PublishRounded';
 
 const ImageSelection = ({ selectedImage, isUploaded }) => {
   const [showCrop, setShowCrop] = useState(false);
@@ -18,7 +20,10 @@ const ImageSelection = ({ selectedImage, isUploaded }) => {
   };
 
   const showCroppedImage = async () => {
-    const { imageSrc, file } = await getCroppedImg(PreviewImage, croppedAreaPixels);
+    const { imageSrc, file } = await getCroppedImg(
+      PreviewImage,
+      croppedAreaPixels
+    );
     setFinalImage(imageSrc);
     setFinalImageFile(file);
     setShowCrop(false);
@@ -49,7 +54,9 @@ const ImageSelection = ({ selectedImage, isUploaded }) => {
 
     return new Promise((resolve) => {
       canvas.toBlob((blob) => {
-        const file = new File([blob], "croppedImage.jpeg", { type: "image/jpeg" });
+        const file = new File([blob], "croppedImage.jpeg", {
+          type: "image/jpeg",
+        });
         const imageSrc = URL.createObjectURL(blob);
         resolve({ imageSrc, file });
       }, "image/jpeg");
@@ -59,7 +66,6 @@ const ImageSelection = ({ selectedImage, isUploaded }) => {
   const handleSubmit = () => {
     // const formData = new FormData();
     // formData.append("image", finalImageFile);
-
     // fetch("YOUR_API_ENDPOINT", {
     //   method: "POST",
     //   body: formData,
@@ -105,7 +111,13 @@ const ImageSelection = ({ selectedImage, isUploaded }) => {
               style={{ marginTop: "20px" }}
             />
           </Box>
-          <Button variant="contained" onClick={showCroppedImage} fullWidth sx={{marginBottom:"1rem"}}>
+          <Button
+            variant="contained"
+            onClick={showCroppedImage}
+            fullWidth
+            sx={{ marginBottom: "1rem" }}
+            startIcon={<CropTwoToneIcon />}
+          >
             Save Crop
           </Button>
         </>
@@ -135,13 +147,19 @@ const ImageSelection = ({ selectedImage, isUploaded }) => {
               variant="contained"
               fullWidth
               onClick={() => setShowCrop(true)}
-              sx={{marginBottom:"1rem"}}
+              sx={{ marginBottom: "1rem" }}
             >
               Next Step
             </Button>
           )}
           {finalImage && (
-            <Button variant="contained" fullWidth onClick={handleSubmit} sx={{marginBottom:"1rem"}}>
+            <Button
+              variant="contained"
+              fullWidth
+              onClick={handleSubmit}
+              sx={{ marginBottom: "1rem" }}
+              startIcon={<PublishRoundedIcon/>}
+            >
               Submit
             </Button>
           )}

@@ -36,7 +36,7 @@ export const useAddBranch = ({ onSuccess }) => {
       queryClient.invalidateQueries("getBranch");
     },
     onError: (err, _variables, _context) => {
-      //   toast.error(getErrorMessage(err));
+      toast.error(`${err.message}`);
     },
   });
 };
@@ -51,7 +51,7 @@ export const useEditBranch = ({ onSuccess }) => {
       queryClient.invalidateQueries("getBranch");
     },
     onError: (err, _variables, _context) => {
-      //   toast.error(getErrorMessage(err));
+      toast.error(`${err.message}`);
     },
   });
 };

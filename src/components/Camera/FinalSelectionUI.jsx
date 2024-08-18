@@ -1,7 +1,9 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Divider } from "@mui/material";
 import React, { useState } from "react";
 import ClickImage from "./ClickImage";
 import DropZone from "./DropZone";
+import LinkedCameraRoundedIcon from "@mui/icons-material/LinkedCameraRounded";
+import CloudUploadRoundedIcon from "@mui/icons-material/CloudUploadRounded";
 
 const FinalSelectionUI = () => {
   const [selection, setSelection] = useState(null);
@@ -17,11 +19,20 @@ const FinalSelectionUI = () => {
     >
       {!selection ? (
         <>
-          <Button variant="contained" onClick={() => setSelection("upload")}>
-            Upload Image
-          </Button>
-          <Button variant="contained" onClick={() => setSelection("click")}>
+          <Button
+            variant="contained"
+            onClick={() => setSelection("click")}
+            startIcon={<LinkedCameraRoundedIcon />}
+          >
             Click Image
+          </Button>
+          <Divider>OR</Divider>
+          <Button
+            variant="contained"
+            onClick={() => setSelection("upload")}
+            startIcon={<CloudUploadRoundedIcon />}
+          >
+            Upload Image
           </Button>
         </>
       ) : (

@@ -145,6 +145,7 @@ const Profile = () => {
             <FinalSelectionUI />
           </>
         }
+        showButton={false}
       />
     </div>
   );

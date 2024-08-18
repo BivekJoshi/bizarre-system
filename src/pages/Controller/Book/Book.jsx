@@ -129,6 +129,7 @@ const Book = () => {
             <AddBook formik={formik} />
           </>
         }
+        showButton={true}
       />
       <FormModal
         open={isEditModalOpen}
@@ -144,6 +145,7 @@ const Book = () => {
             <AddBook formik={formik} />
           </>
         }
+        showButton={true}
       />
       <ConfirmationModal
         disagreeLabel={"Yes, Delete !"}
