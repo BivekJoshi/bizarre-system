@@ -67,7 +67,7 @@ const AppLayout = () => {
             sx={{
               flexGrow: 1,
               width: isXsScreen ? "100%" : "calc(100% - 298px)",
-              padding: "2rem",
+              // padding: "2rem",
             }}
           >
             <Outlet />
