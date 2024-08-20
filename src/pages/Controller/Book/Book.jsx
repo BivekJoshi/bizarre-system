@@ -9,6 +9,7 @@ import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import AddBook from "./AddBook";
 import { useGetBook } from "../../../hooks/book/useBook";
+import { useBookForm } from "../../../hooks/book/Book/useBookForm";
 
 const Book = () => {
   const theme = useTheme();
@@ -22,7 +23,7 @@ const Book = () => {
   // const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useBranchForm(onClose);
+  const { formik, loading } = useBookForm({onClose});
 
   const deleteRow = (row) => {
     console.log("🚀 ~ deleteRow ~ row:", row);
@@ -34,29 +35,36 @@ const Book = () => {
     () => [
       {
         id: nanoid(),
-        accessorKey: "address",
-        header: "Address",
+        accessorKey: "author",
+        header: "author",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
-        accessorKey: "phoneNumber",
-        header: "Phone Number",
+        accessorKey: "genre",
+        header: "genre",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
-        accessorKey: "housingCapacity",
-        header: "Housing Capacity",
+        accessorKey: "isbn",
+        header: "isbn",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
-        accessorKey: "status",
-        header: "Status",
+        accessorKey: "publicationDate",
+        header: "publicationDate",
+        maxWidth: 80,
+        sortable: false,
+      },
+      {
+        id: nanoid(),
+        accessorKey: "title",
+        header: "title",
         maxWidth: 80,
         sortable: false,
       },

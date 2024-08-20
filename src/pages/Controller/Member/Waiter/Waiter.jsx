@@ -27,7 +27,7 @@ const Waiter = () => {
   // const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useWaiterMemberForm(onClose);
+  const { formik, loading } = useWaiterMemberForm({onClose});
 
   const deleteRow = (row) => {
     setRowData(row?.original?.id);

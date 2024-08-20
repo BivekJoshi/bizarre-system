@@ -1,12 +1,32 @@
+import CottageRoundedIcon from "@mui/icons-material/CottageRounded";
+import CurrencyExchangeRoundedIcon from "@mui/icons-material/CurrencyExchangeRounded";
+import BatchPredictionRoundedIcon from "@mui/icons-material/BatchPredictionRounded";
+import SupervisedUserCircleRoundedIcon from "@mui/icons-material/SupervisedUserCircleRounded";
+import FaceRetouchingNaturalRoundedIcon from "@mui/icons-material/FaceRetouchingNaturalRounded";
+import CopyrightRoundedIcon from '@mui/icons-material/CopyrightRounded';
+import DynamicFeedRoundedIcon from '@mui/icons-material/DynamicFeedRounded';
+import WcRoundedIcon from '@mui/icons-material/WcRounded';
+
 export const adminTab = [
-  { label: "Dashboard", value: "dashboard" },
-  { label: "Customer", value: "customer" },
-  { label: "Waiter", value: "waiter" },
-  { label: "Branch", value: "branch" },
-  { label: "Cashier", value: "cashier" },
-  { label: "Batch", value: "batch" },
-  { label: "Branch Owner", value: "branch-owner" },
-  { label: "User", value: "user" },
+  { label: "Dashboard", value: "dashboard", icon: <CottageRoundedIcon /> },
+  {
+    label: "Customer",
+    value: "customer",
+    icon: <FaceRetouchingNaturalRoundedIcon />,
+  },
+  { label: "Waiter", value: "waiter", icon: <WcRoundedIcon /> },
+  { label: "Branch", value: "branch", icon: <DynamicFeedRoundedIcon /> },
+  { label: "Cashier", value: "cashier", icon: <CurrencyExchangeRoundedIcon /> },
+  { label: "Batch", value: "batch", icon: <BatchPredictionRoundedIcon /> },
+  {
+    label: "Branch Owner",
+    value: "branch-owner",
+    icon: <CopyrightRoundedIcon />,
+  },
+  { label: "User", value: "user", icon: <SupervisedUserCircleRoundedIcon /> },
+  { label: "Item", value: "item", icon: <SupervisedUserCircleRoundedIcon /> },
+  { label: "Book", value: "book", icon: <SupervisedUserCircleRoundedIcon /> },
+
 ];
 
 export const branchOwnerTab = [
@@ -29,7 +49,7 @@ export const baristaTab = [
   { label: "Customer", value: "customer" },
 ];
 
-export const supplierTab = [
+export const supplierTab = [ 
   { label: "Dashboard", value: "dashboard" },
   { label: "Customer", value: "customer" },
 ];

@@ -23,7 +23,7 @@ const Branch = () => {
   const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useBranchForm(onClose);
+  const { formik, loading } = useBranchForm({onClose});
 
   const deleteRow = (row) => {
     console.log("🚀 ~ deleteRow ~ row:", row);

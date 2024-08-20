@@ -9,6 +9,7 @@ import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import AddItem from "./AddItem";
 import { useGetItem } from "../../../hooks/item/useItem";
+import { useItemForm } from "../../../hooks/item/Item/useItemForm";
 
 const Item = () => {
   const theme = useTheme();
@@ -22,7 +23,7 @@ const Item = () => {
   // const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useBranchForm(onClose);
+  const { formik, loading } = useItemForm({onClose});
 
   const deleteRow = (row) => {
     console.log("🚀 ~ deleteRow ~ row:", row);
@@ -34,22 +35,64 @@ const Item = () => {
     () => [
       {
         id: nanoid(),
-        accessorKey: "address",
-        header: "Address",
+        accessorKey: "name",
+        header: "Name",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
-        accessorKey: "phoneNumber",
-        header: "Phone Number",
+        accessorKey: "costPrice",
+        header: "Cost Price",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
-        accessorKey: "housingCapacity",
-        header: "Housing Capacity",
+        accessorKey: "markedPrice",
+        header: "Marked Price",
+        maxWidth: 80,
+        sortable: false,
+      },
+      {
+        id: nanoid(),
+        accessorKey: "sellingPrice",
+        header: "Selling Price",
+        maxWidth: 80,
+        sortable: false,
+      },
+      {
+        id: nanoid(),
+        accessorKey: "description",
+        header: "Description",
+        maxWidth: 80,
+        sortable: false,
+      },
+      {
+        id: nanoid(),
+        accessorKey: "stockCount",
+        header: "Stock Count",
+        maxWidth: 80,
+        sortable: false,
+      },
+      {
+        id: nanoid(),
+        accessorKey: "type",
+        header: "type",
+        maxWidth: 80,
+        sortable: false,
+      },
+      {
+        id: nanoid(),
+        accessorKey: "tags",
+        header: "Tags",
+        maxWidth: 80,
+        sortable: false,
+      },
+      {
+        id: nanoid(),
+        accessorKey: "color",
+        header: "Color",
         maxWidth: 80,
         sortable: false,
       },
@@ -80,14 +123,14 @@ const Item = () => {
             fontWeight: 700,
           }}
         >
-          Branch
+          Item
         </Typography>
         <Button
           variant="outlined"
           onClick={() => setIsAddModal(true)}
           startIcon={<ControlPointRoundedIcon />}
         >
-          Add Branch
+          Add Item
         </Button>
       </Box>
 

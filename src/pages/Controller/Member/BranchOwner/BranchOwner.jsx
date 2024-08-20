@@ -22,7 +22,7 @@ const BranchOwner = () => {
   // const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useBranchOwnerMemberForm(onClose);
+  const { formik, loading } = useBranchOwnerMemberForm({onClose});
 
   const deleteRow = (row) => {
     setRowData(row?.original?.id);

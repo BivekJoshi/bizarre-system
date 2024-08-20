@@ -12,11 +12,27 @@ import { supplierRoute } from "./Routes/supplierRoute";
 import { customerRoute } from "./Routes/customerRoute";
 
 const Error404 = Loadable(lazy(() => import("../pages/PageNotFound/Error404")));
-const LoginPage = Loadable(lazy(() => import("../pages/Controller/Auth/LoginPage")));
-const AppLayout = Loadable(lazy(() => import("../components/AppLayout/AppLayout")));
-const PageNotFound = Loadable(lazy(() => import("../pages/PageNotFound/PageNotFound")));
-const ChangePasswordInitial = Loadable(lazy(() => import("../pages/Controller/Auth/ChangePasswordInitial")));
-const ForgotPassword = Loadable(lazy(() => import("../pages/Controller/Auth/ForgotPassword")));
+const LoginPage = Loadable(
+  lazy(() => import("../pages/Controller/Auth/LoginPage"))
+);
+const AppLayout = Loadable(
+  lazy(() => import("../components/AppLayout/AppLayout"))
+);
+const PageNotFound = Loadable(
+  lazy(() => import("../pages/PageNotFound/PageNotFound"))
+);
+const ChangePasswordInitial = Loadable(
+  lazy(() => import("../pages/Controller/Auth/ChangePasswordInitial"))
+);
+const ForgotPassword = Loadable(
+  lazy(() => import("../pages/Controller/Auth/ForgotPassword"))
+);
+const Profile = Loadable(
+  lazy(() => import("../pages/Controller/User/Profile"))
+);
+const ChangePassword = Loadable(
+  lazy(() => import("../pages/Controller/User/ChangePassword"))
+);
 
 const roleRoutesMap = {
   ADMIN: adminRoutes,
@@ -43,9 +59,13 @@ const AppRoute = () => {
           {Object.entries(roleRoutesMap).map(([role, routes]) => (
             <Route
               key={role}
-              element={<ProtectedRoute redirectTo="/404" allowedRoles={[role]} />}
+              element={
+                <ProtectedRoute redirectTo="/404" allowedRoles={[role]} />
+              }
             >
               <Route path={`/${role.toLowerCase()}`} element={<AppLayout />}>
+                <Route path="change-password" element={<ChangePassword />} />
+                <Route path="profile" element={<Profile />} />
                 {routes.map((route) => (
                   <Route
                     key={route.id}
