@@ -1,6 +1,12 @@
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
-import { changePassword, forgotPassword, getUserData } from "../../api/controller/user-api";
+import {
+  addProfilePic,
+  changePassword,
+  forgotPassword,
+  getUserData,
+} from "../../api/controller/user-api";
+import { useFormik } from "formik";
 
 /*________________________GET USER DATA_____________________________________*/
 export const useGetUserData = () => {
@@ -27,7 +33,6 @@ export const useChangePassword = ({ onSuccess }) => {
   );
 };
 
-
 /*_____________________________CHANGE PASSWORD_______________________________________________ */
 export const useForgotPassword = ({ onSuccess }) => {
   return useMutation(
@@ -44,3 +49,46 @@ export const useForgotPassword = ({ onSuccess }) => {
     }
   );
 };
+
+/*________________________POST PP DETAIL_____________________________________*/
+export const useAddProfilePicture = ({ onSuccess }) => {
+  const queryClient = useQueryClient();
+
+  return useMutation(["addProfile"], (image) => addProfilePic(image), {
+    onSuccess: (data, variables, context) => {
+      onSuccess && onSuccess(data, variables, context);
+      // queryClient.invalidateQueries("getUserInfo");
+      toast.success("Profile Picture Successfully Changed");
+    },
+    onError: (err, _variables, _context) => {
+      toast.error(`${err.message}`);
+    },
+  });
+};
+
+export const useProfilePic = ({ finalImageFile, handleCloseModal }) => {
+  const { mutate } = useAddProfilePicture({});
+
+  const handleAddProfileImage = (value) => {
+    mutate(value, {
+      onSuccess: () => {
+        handleCloseModal();
+      },
+    });
+  };
+  const formik = useFormik({
+    initialValues: {
+      id:"a053ca12-5cea-11ef-b231-cecd0207e311",
+      multipartFile: finalImageFile,
+    },
+    onSubmit: () => {
+      handleAddProfileImage(finalImageFile);
+    },
+  });
+
+  return {
+    formik,
+  };
+};
+
+export default useProfilePic

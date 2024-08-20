@@ -22,7 +22,7 @@ const Cashier = () => {
   // const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useCashierMemberForm(onClose);
+  const { formik, loading } = useCashierMemberForm({onClose});
 
   const deleteRow = (row) => {
     setRowData(row?.original?.id);

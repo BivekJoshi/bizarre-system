@@ -3,6 +3,7 @@ import Cropper from "react-easy-crop";
 import React, { useState } from "react";
 import CropTwoToneIcon from "@mui/icons-material/CropTwoTone";
 import PublishRoundedIcon from '@mui/icons-material/PublishRounded';
+import { useProfilePic } from "../../hooks/user/useUser";
 
 const ImageSelection = ({ selectedImage, isUploaded }) => {
   const [showCrop, setShowCrop] = useState(false);
@@ -12,6 +13,12 @@ const ImageSelection = ({ selectedImage, isUploaded }) => {
   const [finalImage, setFinalImage] = useState(null);
   const [finalImageFile, setFinalImageFile] = useState(null);
   // console.log("🚀 ~ ImageSelection ~ finalImageFile:", finalImageFile)
+
+  const { formik } = useProfilePic({
+    // selectedProfile,
+    // handleCloseModal,
+    finalImageFile
+  });
 
   const PreviewImage = isUploaded ? selectedImage.preview : selectedImage;
 
@@ -77,6 +84,13 @@ const ImageSelection = ({ selectedImage, isUploaded }) => {
     //   .catch((error) => {
     //     console.error("Error:", error);
     //   });
+    // if (selectedProfile) {
+    //   formik.submitForm();
+    // } else {
+    //   toast.error("Please select image first");
+    // }
+    formik.submitForm();
+
   };
 
   return (

@@ -71,7 +71,7 @@ const SideBar = ({ handleCloseDrawer }) => {
               <Tab
                 key={tab.value}
                 label={tab.label}
-                icon={<CottageRoundedIcon />}
+                icon={tab.icon}
                 value={tab.value}
                 sx={values === tab.value ? activeLabelStyle : labelStyle}
                 iconPosition="start"

@@ -17,8 +17,27 @@ export const changePassword = async (formData) => {
   return data;
 };
 
-/*_____________________________CHANGE PASSWORD_______________________________________________ */
+/*_____________________________FORGET PASSWORD_______________________________________________ */
 export const forgotPassword = async (formData) => {
   const data = await axiosInstance.post(`${USER}/forgot-password`, formData);
+  return data;
+};
+
+/*_____________________________FORGET PASSWORD_______________________________________________ */
+export const addProfilePic = async (image,id) => {
+  const imgData = new FormData();
+
+  imgData.append("file", image);
+  imgData.append("id", `a053ca12-5cea-11ef-b231-cecd0207e311`);
+
+  const { data } = await axiosInstance.post(
+    `${USER}/upload-profile-picture`,
+    imgData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
   return data;
 };

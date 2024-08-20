@@ -22,7 +22,7 @@ const Customer = () => {
   // const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useCustomerForm(onClose);
+  const { formik, loading } = useCustomerForm({onClose});
 
   const deleteRow = (row) => {
     setRowData(row?.original?.id);

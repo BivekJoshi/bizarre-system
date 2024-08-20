@@ -1,8 +1,6 @@
 import { nanoid } from "nanoid";
 
 import AdminDashboard from "../../pages/AdminPage/Dashboard/AdminDashboard";
-import ChangePassword from "../../pages/Controller/User/ChangePassword";
-import Profile from "../../pages/Controller/User/Profile";
 import Branch from "../../pages/Controller/Branch/Branch";
 import Waiter from "../../pages/Controller/Member/Waiter/Waiter";
 import Cashier from "../../pages/Controller/Member/Cashier/Cashier";
@@ -10,20 +8,10 @@ import Customer from "../../pages/Controller/Customer/Customer";
 import Batch from "../../pages/Controller/Batch/Batch";
 import User from "../../pages/Controller/User/User";
 import BranchOwner from "../../pages/Controller/Member/BranchOwner/BranchOwner";
+import Item from "../../pages/Controller/Item/Item";
+import Book from "../../pages/Controller/Book/Book";
 
 const adminRoutes = [
-  {
-    path: "change-password",
-    name: "change-password",
-    id: nanoid(),
-    component: ChangePassword,
-  },
-  {
-    path: "profile",
-    name: "profile",
-    id: nanoid(),
-    component: Profile,
-  },
   {
     path: "dashboard",
     name: "Dashboard",
@@ -71,6 +59,18 @@ const adminRoutes = [
     name: "branch-owner",
     id: nanoid(),
     component: BranchOwner,
+  },
+  {
+    path: "item",
+    name: "item",
+    id: nanoid(),
+    component: Item,
+  },
+  {
+    path: "book",
+    name: "book",
+    id: nanoid(),
+    component: Book,
   },
 ];
 
