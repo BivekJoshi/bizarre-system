@@ -14,17 +14,17 @@
 
 .ring:nth-child(1) {
   border-bottom-width: 12px;
-  border-color: #9965b2;
+  border-color: #06c5c0; 
   animation: rotate1 2s linear infinite;
 }
 .ring:nth-child(2) {
   border-right-width: 12px;
-  border-color: #9965b2;
+  border-color: #06c5c0;
   animation: rotate2 2s linear infinite;
 }
 .ring:nth-child(3) {
   border-top-width: 12px;
-  border-color: #9965b2;
+  border-color: #06c5c0;
   animation: rotate3 2s linear infinite;
 }
 

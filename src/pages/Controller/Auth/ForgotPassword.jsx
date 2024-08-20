@@ -75,7 +75,7 @@ const ForgotPassword = () => {
               marginBottom: "0.1rem",
             }}
           >
-            Recover your password now !
+            Recover Password !
           </Typography>
           <br />
           <RenderInput inputField={inputField} formik={formik} />
@@ -87,7 +87,7 @@ const ForgotPassword = () => {
             sx={{
               marginTop: 2,
               "&:hover": {
-                backgroundColor: "#115293",
+                backgroundColor: "#04a19a",
               },
             }}
           >

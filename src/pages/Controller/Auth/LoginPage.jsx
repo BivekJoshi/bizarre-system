@@ -124,7 +124,7 @@ const LoginPage = () => {
             sx={{
               marginTop: 2,
               "&:hover": {
-                backgroundColor: "#115293",
+                backgroundColor: "#04a19a",
               },
             }}
           >
