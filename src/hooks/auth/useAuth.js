@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation } from "react-query";
 import { authenticate } from "../../api/controller/auth-api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,7 @@ import { setTokenType, setUser, setUserType } from "../../utils/cookieHelper";
 /*________________________AUTHENTICATE_____________________________________*/
 export const useAuth = () => {
   const navigate = useNavigate();
+
   return useMutation(
     ["login"],
     async ({ mobileNumber, password }) => {
@@ -25,22 +26,31 @@ export const useAuth = () => {
         setUserType(data?.userType);
         setTokenType(data?.tokenType);
         toast.success("Login Successful");
-        if (data?.userType === "ADMIN") {
-          navigate("/admin/dashboard");
-        } else if (data?.userType === "BRANCH_OWNER") {
-          navigate("/branch-owner/dashboard");
-        } else if (data?.userType === "CASHIER") {
-          navigate("/cashier/dashboard");
-        } else if (data?.userType === "WAITER") {
-          navigate("/waiter/dashboard");
-        } else if (data?.userType === "BARISTA") {
-          navigate("/barista/dashboard");
-        } else if (data?.userType === "SUPPLIER") {
-          navigate("/supplier/dashboard");
-        } else if (data?.userType === "CUSTOMER") {
-          navigate("/customer/dashboard");
-        } else {
-          navigate("/404");
+
+        switch (data?.userType) {
+          case "ADMIN":
+            navigate("/admin/dashboard");
+            break;
+          case "BRANCH_OWNER":
+            navigate("/branch-owner/dashboard");
+            break;
+          case "CASHIER":
+            navigate("/cashier/dashboard");
+            break;
+          case "WAITER":
+            navigate("/waiter/dashboard");
+            break;
+          case "BARISTA":
+            navigate("/barista/dashboard");
+            break;
+          case "SUPPLIER":
+            navigate("/supplier/dashboard");
+            break;
+          case "CUSTOMER":
+            navigate("/customer/dashboard");
+            break;
+          default:
+            navigate("/404");
         }
       },
       onError: (err, _variables, _context) => {

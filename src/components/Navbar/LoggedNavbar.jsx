@@ -9,18 +9,15 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
-import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
-import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 import NepaliDate from "nepali-date";
 import SettingsIcon from "@mui/icons-material/Settings";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import Setting from "./Setting";
 import maleProfile from "../../assets/MaleProfile.png";
-
-
+import { useGetUserData } from "../../hooks/user/useUser";
 
 const LoggedNavbar = ({ handleOpenDrawer }) => {
   const navigate = useNavigate();
@@ -36,11 +33,35 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
   const currentNepaliDate = new NepaliDate();
   const formattedNepaliDate = currentNepaliDate.format("YYYY-MM-DD");
 
-  const handleNotiClick = () => {
-    
-  };
+  const handleNotiClick = () => {};
 
   const handleSetting = () => setOpenSettingDrawer(true);
+
+  const { data: loggedInUSerData } = useGetUserData();
+
+  const fullName = loggedInUSerData?.data?.fullName;
+  const gender = loggedInUSerData?.data?.gender;
+
+  const getLastName = (fullName) => {
+    if (!fullName) return "";
+    const nameParts = fullName.trim().split(" ");
+    return nameParts[nameParts.length - 1];
+  };
+
+  const lastName = getLastName(fullName);
+
+  const greetUser = (gender, lastName) => {
+    if (!lastName) return "Hello!";
+    if (gender === "MALE") {
+      return `Hello, Mr. ${lastName}`;
+    } else if (gender === "FEMALE") {
+      return `Hello, Miss ${lastName}`;
+    } else {
+      return `Hello, ${fullName}`;
+    }
+  };
+
+  const greeting = greetUser(gender, lastName);
 
   return (
     <Box sx={{ background: theme.palette.background.default }}>
@@ -110,7 +131,7 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
               </IconButton>
             </Tooltip>
             <Box sx={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-              <Typography variant="body1">Hello, Admin</Typography>
+              <Typography variant="body1">{greeting}</Typography>
               <Avatar alt="Remy Sharp" src={maleProfile} />
             </Box>
           </Box>

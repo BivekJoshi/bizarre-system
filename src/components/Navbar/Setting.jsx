@@ -21,6 +21,7 @@ import LockResetRoundedIcon from "@mui/icons-material/LockResetRounded";
 import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
 import ConfirmationModal from "../Modal/ConfirmationModal";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Setting = ({ close }) => {
   const dispatch = useDispatch();
@@ -49,6 +50,7 @@ const Setting = ({ close }) => {
     localStorage.clear();
     navigate("/");
     close();
+    toast.success("Logged out successful !");
   };
 
   return (
