@@ -6,7 +6,8 @@ import LocalPhoneRoundedIcon from "@mui/icons-material/LocalPhoneRounded";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import CalendarMonthRoundedIcon from "@mui/icons-material/CalendarMonthRounded";
 
-const UserCard = () => {
+const UserCard = ({data}) => {
+  console.log("🚀 ~ UserCard ~ data:", data)
   const theme = useTheme();
 
   return (
@@ -29,7 +30,7 @@ const UserCard = () => {
               fontWeight: 700,
             }}
           >
-            Bivek Prasad Joshi
+            {data?.user?.fullName}
           </Typography>
           <Typography
             variant="h5"
@@ -38,7 +39,7 @@ const UserCard = () => {
             <LocalPostOfficeRoundedIcon
               sx={{ mr: 1, color: theme.palette.text.default }}
             />
-            <div style={{textDecoration:"underline",cursor:"pointer"}}> bvkjosi03@gmail.com</div>
+            <div style={{textDecoration:"underline",cursor:"pointer"}}>{data?.user?.email}</div>
           </Typography>
           <Typography
             variant="h5"
@@ -47,7 +48,7 @@ const UserCard = () => {
             <LocalPhoneRoundedIcon
               sx={{ mr: 1, color: theme.palette.text.default }}
             />
-            9865466989
+            {data?.user?.mobileNumber}
           </Typography>
           <Typography
             variant="h5"
@@ -56,7 +57,7 @@ const UserCard = () => {
             <HomeRoundedIcon
               sx={{ mr: 1, color: theme.palette.text.default }}
             />
-            Tangal, Lalitpur
+            {data?.user?.address}
           </Typography>
           <Typography
             variant="h5"
@@ -65,7 +66,7 @@ const UserCard = () => {
             <CalendarMonthRoundedIcon
               sx={{ mr: 1, color: theme.palette.text.default }}
             />
-            2027-09-09
+            {data?.user?.birthDate}
           </Typography>
         </Grid>
       </Grid>

@@ -6,10 +6,10 @@ import Waiter from "../../pages/Controller/Member/Waiter/Waiter";
 import Cashier from "../../pages/Controller/Member/Cashier/Cashier";
 import Customer from "../../pages/Controller/Customer/Customer";
 import Batch from "../../pages/Controller/Batch/Batch";
-import User from "../../pages/Controller/User/User";
 import BranchOwner from "../../pages/Controller/Member/BranchOwner/BranchOwner";
 import Item from "../../pages/Controller/Item/Item";
 import Book from "../../pages/Controller/Book/Book";
+import CustomerTable from "../../pages/Controller/CustomerTable/CustomerTable";
 
 const adminRoutes = [
   {
@@ -49,12 +49,6 @@ const adminRoutes = [
     component: Batch,
   },
   {
-    path: "user",
-    name: "user",
-    id: nanoid(),
-    component: User,
-  },
-  {
     path: "branch-owner",
     name: "branch-owner",
     id: nanoid(),
@@ -71,6 +65,12 @@ const adminRoutes = [
     name: "book",
     id: nanoid(),
     component: Book,
+  },
+  {
+    path: "customer-table",
+    name: "customer-table",
+    id: nanoid(),
+    component: CustomerTable,
   },
 ];
 

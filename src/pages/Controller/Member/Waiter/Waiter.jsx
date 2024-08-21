@@ -1,12 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { Box, Button, Grid, Typography, useTheme } from "@mui/material";
-// import FormModal from "../../../components/Modal/FormModal";
-// import AddBranch from "./AddBranch";
-// import { useBranchForm } from "../../../hooks/branch/Branch/useBranchForm";
-// import CustomTable from "../../../components/CustomTable/CustomTable";
 import { nanoid } from "nanoid";
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
-// import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import FormModal from "../../../../components/Modal/FormModal";
 import CustomTable from "../../../../components/CustomTable/CustomTable";
@@ -14,9 +9,14 @@ import { useGetMember } from "../../../../hooks/member/useMember";
 import WaiterForm from "./WaiterForm";
 import { useWaiterMemberForm } from "../../../../hooks/member/Member/WaiterMember/useWaiterMemberForm";
 import ConfirmationModal from "../../../../components/Modal/ConfirmationModal";
+import { useSelector } from "react-redux";
+import WaiterCardView from "./WaiterCardView";
 
 const Waiter = () => {
   const theme = useTheme();
+  const view = useSelector((state) => state?.view?.mode);
+
+  console.log("🚀 ~ Waiter ~ view:", view);
   const { data } = useGetMember();
 
   const [rowData, setRowData] = useState(null);
@@ -27,7 +27,7 @@ const Waiter = () => {
   // const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useWaiterMemberForm({onClose});
+  const { formik, loading } = useWaiterMemberForm({ onClose });
 
   const deleteRow = (row) => {
     setRowData(row?.original?.id);
@@ -131,20 +131,32 @@ const Waiter = () => {
           marginTop: ".1rem",
         }}
       >
-        <CustomTable
-          columns={columns}
-          data={data?.content}
-          overFlow={"scroll"}
-          width={"100%"}
-          enableRowNumbers
-          enableColumnActions
-          // enableDelete
-          enableEditing={true}
-          // handleDeleteRow={deleteRow}
-          // handleEdit={editRow}
-          // delete
-          edit
-        />
+        {view === "table" ? (
+          <CustomTable
+            columns={columns}
+            data={data?.content}
+            overFlow={"scroll"}
+            width={"100%"}
+            enableRowNumbers
+            enableColumnActions
+            // enableDelete
+            enableEditing={true}
+            // handleDeleteRow={deleteRow}
+            // handleEdit={editRow}
+            // delete
+            edit
+          />
+        ) : (
+          <Grid container spacing={2}>
+            {data?.content?.map((data, index) => {
+              return (
+                <Grid item xs={12} md={4} lg={4} sm={12} key={index}>
+                  <WaiterCardView data={data} />
+                </Grid>
+              );
+            })}
+          </Grid>
+        )}
       </Box>
 
       <FormModal

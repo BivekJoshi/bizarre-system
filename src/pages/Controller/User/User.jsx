@@ -6,7 +6,13 @@ const User = () => {
   const theme = useTheme();
   return (
     <>
-      <Box sx={{ display: "flex", justifyContent: "space-between" ,alignItems:"center"}}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <Typography
           variant="h3"
           sx={{
@@ -17,9 +23,7 @@ const User = () => {
         >
           User
         </Typography>
-        <Button variant="outlined">
-          Add User
-        </Button>
+        <Button variant="outlined">Add User</Button>
       </Box>
 
       <br />
@@ -31,7 +35,18 @@ const User = () => {
           padding: "1rem",
         }}
       >
-        <UserCard/>
+        <Grid item xs={4}>
+          <UserCard />
+        </Grid>
+        <Grid item xs={4}>
+          <UserCard />
+        </Grid>
+        <Grid item xs={4}>
+          <UserCard />
+        </Grid>
+        <Grid item xs={4}>
+          <UserCard />
+        </Grid>
       </Grid>
     </>
   );
