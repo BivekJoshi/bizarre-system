@@ -3,6 +3,7 @@ import {
   addBranchOwnerMember,
   addCashierMember,
   addWaiterMember,
+  editMember,
   getMember,
   getMemberById,
 } from "../../api/controller/memeber-api";
@@ -69,6 +70,25 @@ export const useAddBranchOwnerMember = ({ onSuccess }) => {
     {
       onSuccess: (data, variables, context) => {
         toast.success("Successfully added branch owner");
+        onSuccess && onSuccess(data, variables, context);
+        queryClient.invalidateQueries("getMember");
+      },
+      onError: (err, _variables, _context) => {
+        toast.error(`${err.message}`);
+      },
+    }
+  );
+};
+
+/*_____________________________POST BRANCH OWNER MEMBER_______________________________________________ */
+export const useEditMember = ({ onSuccess }) => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    ["editMember"],
+    (formData) => editMember(formData),
+    {
+      onSuccess: (data, variables, context) => {
+        toast.success("Successfully edited memeber detail");
         onSuccess && onSuccess(data, variables, context);
         queryClient.invalidateQueries("getMember");
       },

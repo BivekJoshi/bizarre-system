@@ -19,10 +19,14 @@ import Setting from "./Setting";
 import maleProfile from "../../assets/MaleProfile.png";
 import { useGetUserData } from "../../hooks/user/useUser";
 import BizarreBrosLogo from "../../assets/BizarreBrosLogo.png";
+import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
+import { useSelector } from "react-redux";
 
 const LoggedNavbar = ({ handleOpenDrawer }) => {
   const navigate = useNavigate();
   const theme = useTheme();
+  const cart = useSelector((state) => state.cart.cart);
+
   const isXsScreen = useMediaQuery((theme) =>
     theme.breakpoints.down("md", "sm")
   );
@@ -37,6 +41,10 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
   const handleNotiClick = () => {};
 
   const handleSetting = () => setOpenSettingDrawer(true);
+
+  const handleCartClick = () => {
+    navigate(`cart`);
+  };
 
   const { data: loggedInUSerData } = useGetUserData();
 
@@ -88,7 +96,7 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
           </IconButton>
         )}
 
-        <div style={{ width: "120px" }}>
+        <div style={{ width: "100px", height: "60px" }}>
           <img
             src={BizarreBrosLogo}
             alt="Bizaree Logo"
@@ -119,6 +127,13 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
 
         {!isXsScreen && (
           <Box sx={{ display: "flex", gap: "1rem" }}>
+            <Tooltip title="Cart">
+              <IconButton onClick={handleCartClick}>
+                <Badge badgeContent={cart.length} color="primary">
+                  <ShoppingCartRoundedIcon />
+                </Badge>
+              </IconButton>
+            </Tooltip>
             <Tooltip title="Notification">
               <IconButton onClick={handleNotiClick}>
                 <Badge badgeContent={4} color="primary">

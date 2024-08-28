@@ -1,9 +1,10 @@
 import Axios from "axios";
-import { getBaseUrl } from "../utils/getBaseUrl";
+import { getBaseUrl, getDocUrl } from "../utils/getBaseUrl";
 import { jwtDecode } from "jwt-decode";
 import { getUser, removeUser } from "../utils/cookieHelper";
 
 const BASEURL = getBaseUrl();
+export const DOC_URL = getDocUrl();
 
 export const axiosInstance = Axios.create({
   baseURL: BASEURL,

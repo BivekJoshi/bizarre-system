@@ -9,9 +9,12 @@ import { useGetMember } from "../../../../hooks/member/useMember";
 import ConfirmationModal from "../../../../components/Modal/ConfirmationModal";
 import CashierForm from "./CashierForm";
 import { useCashierMemberForm } from "../../../../hooks/member/Member/CashierMemeber/useCashierMemberForm";
+import { useSelector } from "react-redux";
+import CashierCardView from "./CashierCardView";
 
 const Cashier = () => {
   const theme = useTheme();
+  const view = useSelector((state) => state?.view?.mode);
   const { data } = useGetMember();
 
   const [rowData, setRowData] = useState(null);
@@ -22,7 +25,7 @@ const Cashier = () => {
   // const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useCashierMemberForm({onClose});
+  const { formik, loading } = useCashierMemberForm({ onClose });
 
   const deleteRow = (row) => {
     setRowData(row?.original?.id);
@@ -126,20 +129,32 @@ const Cashier = () => {
           marginTop: ".1rem",
         }}
       >
-        <CustomTable
-          columns={columns}
-          data={data?.content}
-          overFlow={"scroll"}
-          width={"100%"}
-          enableRowNumbers
-          enableColumnActions
-          // enableDelete
-          enableEditing={true}
-          // handleDeleteRow={deleteRow}
-          // handleEdit={editRow}
-          // delete
-          edit
-        />
+        {view === "table" ? (
+          <CustomTable
+            columns={columns}
+            data={data?.content}
+            overFlow={"scroll"}
+            width={"100%"}
+            enableRowNumbers
+            enableColumnActions
+            // enableDelete
+            enableEditing={true}
+            // handleDeleteRow={deleteRow}
+            // handleEdit={editRow}
+            // delete
+            edit
+          />
+        ) : (
+          <Grid container spacing={2}>
+            {data?.content?.map((data, index) => {
+              return (
+                <Grid item xs={12} md={4} lg={4} sm={12} key={index}>
+                  <CashierCardView data={data} />
+                </Grid>
+              );
+            })}
+          </Grid>
+        )}
       </Box>
 
       <FormModal

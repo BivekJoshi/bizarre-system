@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import CottageRoundedIcon from "@mui/icons-material/CottageRounded";
 import CurrencyExchangeRoundedIcon from "@mui/icons-material/CurrencyExchangeRounded";
 import BatchPredictionRoundedIcon from "@mui/icons-material/BatchPredictionRounded";
@@ -77,7 +78,8 @@ export const branchOwnerTab = [
 
 export const cashierTab = [
   { label: "Dashboard", value: "dashboard" },
-  { label: "Customer", value: "customer" },
+  { label: "Item", value: "item" },
+  { label: "Order", value: "order" },
 ];
 
 export const waiterTab = [

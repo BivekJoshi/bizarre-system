@@ -1,22 +1,22 @@
 import { useFormik } from "formik";
 
-import { useAddWaiterMember } from "../../useMember";
+import { useAddWaiterMember, useEditMember } from "../../useMember";
 
-export const useWaiterMemberForm = ({ onClose, data }) => {
+export const useWaiterMemberForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddWaiterMember({});
-  const { mutate: editMutate } = useAddWaiterMember({});
+  const { mutate: editMutate } = useEditMember({});
 
   const formik = useFormik({
     initialValues: {
-      id: data?.id || "",
-      fullName: data?.fullName || "",
-      mobileNumber: data?.mobileNumber || "",
-      gender: data?.gender || "",
-      birthDate: data?.birthDate || "",
-      address: data?.address || "",
-      email: data?.email || "",
-      branchId: data?.branchId || "",
-      salary: data?.salary || "",
+      id: rowData?.id || "",
+      fullName: rowData?.user?.fullName || "",
+      mobileNumber: rowData?.user?.mobileNumber || "",
+      gender: rowData?.user?.gender || "",
+      birthDate: rowData?.user?.birthDate || "",
+      address: rowData?.user?.address || "",
+      email: rowData?.user?.email || "",
+      branchId: rowData?.branch?.id || "",
+      salary: rowData?.salary || "",
     },
     //   validationSchema: sendMoneyRecipientBankSchema,
     enableReinitialize: true,

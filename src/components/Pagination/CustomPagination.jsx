@@ -1,6 +1,7 @@
 import * as React from "react";
 import TablePagination from "@mui/material/TablePagination";
 import Box from "@mui/material/Box";
+import { Pagination } from "@mui/material";
 
 const CustomPagination = ({
   totalRows = 100,
@@ -29,18 +30,7 @@ const CustomPagination = ({
   };
 
   return (
-    <TablePagination
-      component="div"
-      count={totalRows}
-      page={page}
-      onPageChange={handleChangePage}
-      rowsPerPage={rowsPerPage}
-      onRowsPerPageChange={handleChangeRowsPerPage}
-      rowsPerPageOptions={rowsPerPageOptions}
-      showFirstButton={showFirstButton}
-      showLastButton={showLastButton}
-      {...props}
-    />
+    <Pagination count={10} color="primary" />
   );
 };
 

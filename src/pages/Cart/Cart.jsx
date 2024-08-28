@@ -1,22 +1,37 @@
+// import React from "react";
+// import { useSelector } from "react-redux";
+
+// const Cart = () => {
+//   const cart = useSelector((state) => state.cart.cart);
+//   console.log("🚀 ~ Cart ~ cart:", cart);
+//   return <div>Cart</div>;
+// };
+
+// export default Cart;
+
 import React, { useMemo, useState } from "react";
 import { Box, Button, Grid, Typography, useTheme } from "@mui/material";
-import FormModal from "../../../components/Modal/FormModal";
-import { useBranchForm } from "../../../hooks/branch/Branch/useBranchForm";
-import CustomTable from "../../../components/CustomTable/CustomTable";
+// import FormModal from "../../../components/Modal/FormModal";
+// import { useBranchForm } from "../../../hooks/branch/Branch/useBranchForm";
+// import CustomTable from "../../../components/CustomTable/CustomTable";
 import { nanoid } from "nanoid";
-import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
-import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import AddItem from "./AddItem";
-import { useGetItem } from "../../../hooks/item/useItem";
-import { useItemForm } from "../../../hooks/item/Item/useItemForm";
+import CustomTable from "../../components/CustomTable/CustomTable";
+import ItemCardView from "../Controller/Item/ItemCardView";
 import { useSelector } from "react-redux";
-import ItemCardView from "./ItemCardView";
+// import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
+// import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
+// import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+// import AddItem from "./AddItem";
+// import { useGetItem } from "../../../hooks/item/useItem";
+// import { useItemForm } from "../../../hooks/item/Item/useItemForm";
+// import { useSelector } from "react-redux";
+// import ItemCardView from "./ItemCardView";
 
 const Item = () => {
   const theme = useTheme();
   const view = useSelector((state) => state?.view?.mode);
-  const { data } = useGetItem();
+  const data = useSelector((state) => state.cart.cart);
+  console.log("🚀 ~ Item ~ data:", data)
 
   const [rowData, setRowData] = useState(null);
   const [isAddModalOpen, setIsAddModal] = useState(false);
@@ -26,7 +41,6 @@ const Item = () => {
   // const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useItemForm({ onClose });
 
   const deleteRow = (row) => {
     console.log("🚀 ~ deleteRow ~ row:", row);
@@ -126,15 +140,8 @@ const Item = () => {
             fontWeight: 700,
           }}
         >
-          Item
+          Cart
         </Typography>
-        <Button
-          variant="outlined"
-          onClick={() => setIsAddModal(true)}
-          startIcon={<ControlPointRoundedIcon />}
-        >
-          Add Item
-        </Button>
       </Box>
 
       <br />
@@ -148,7 +155,7 @@ const Item = () => {
         {view === "table" ? (
           <CustomTable
             columns={columns}
-            data={data?.content}
+            data={data}
             overFlow={"scroll"}
             width={"100%"}
             enableRowNumbers
@@ -162,7 +169,7 @@ const Item = () => {
           />
         ) : (
           <Grid container spacing={2}>
-            {data?.content?.map((data, index) => {
+            {data?.map((data, index) => {
               return (
                 <Grid item xs={12} md={2} lg={2} sm={12} key={index}>
                   <ItemCardView data={data} />
@@ -172,59 +179,6 @@ const Item = () => {
           </Grid>
         )}
       </Box>
-
-      <FormModal
-        open={isAddModalOpen}
-        onClose={() => setIsAddModal(false)}
-        width={"30%"}
-        height={"auto"}
-        maxHeight={"80vh"}
-        header={"Add Item"}
-        formik={formik}
-        loading={loading}
-        formComponent={
-          <>
-            <AddItem formik={formik} />
-          </>
-        }
-        showButton={true}
-      />
-      <FormModal
-        open={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
-        width={"30%"}
-        height={"auto"}
-        maxHeight={"80vh"}
-        header={"Edit Item"}
-        formik={formik}
-        loading={loading}
-        formComponent={
-          <>
-            <AddItem formik={formik} />
-          </>
-        }
-        showButton={true}
-      />
-      <ConfirmationModal
-        disagreeLabel={"Yes, Delete !"}
-        agreeLabel={"No, Keep It."}
-        alertTitle={"Delete Alert"}
-        header={"You're going to delete this Id?"}
-        confirmhead={"Are you sure ?"}
-        handleModalClose={() => setIsDeleteModalOpen(false)}
-        isModalOpen={isDeleteModalOpen}
-        // handleSave={() => mutate(rowData)}
-        icon={
-          <DeleteRoundedIcon
-            sx={{
-              backgroundColor: "#FFDDDC",
-              borderRadius: "50%",
-              fontSize: 36,
-              padding: "1rem",
-            }}
-          />
-        }
-      />
     </>
   );
 };

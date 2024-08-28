@@ -16,7 +16,6 @@ const Waiter = () => {
   const theme = useTheme();
   const view = useSelector((state) => state?.view?.mode);
 
-  console.log("🚀 ~ Waiter ~ view:", view);
   const { data } = useGetMember();
 
   const [rowData, setRowData] = useState(null);
@@ -27,11 +26,15 @@ const Waiter = () => {
   // const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useWaiterMemberForm({ onClose });
+  const { formik, loading } = useWaiterMemberForm({ onClose, rowData });
 
   const deleteRow = (row) => {
     setRowData(row?.original?.id);
     setIsDeleteModalOpen(true);
+  };
+  const editRow = (row) => {
+    setIsEditModalOpen(true);
+    setRowData(row?.original);
   };
 
   const columns = useMemo(
@@ -87,6 +90,20 @@ const Waiter = () => {
       },
       {
         id: nanoid(),
+        accessorKey: "salary",
+        header: "Salary",
+        maxWidth: 80,
+        sortable: false,
+      },
+      {
+        id: nanoid(),
+        accessorKey: "branch.address",
+        header: "Branch",
+        maxWidth: 80,
+        sortable: false,
+      },
+      {
+        id: nanoid(),
         accessorKey: "user.status",
         header: "Status",
         maxWidth: 80,
@@ -116,7 +133,10 @@ const Waiter = () => {
         </Typography>
         <Button
           variant="outlined"
-          onClick={() => setIsAddModal(true)}
+          onClick={() => {
+            formik.resetForm();
+            setIsAddModal(true); 
+          }}
           startIcon={<ControlPointRoundedIcon />}
         >
           Add Waiter
@@ -140,10 +160,14 @@ const Waiter = () => {
             enableRowNumbers
             enableColumnActions
             // enableDelete
-            enableEditing={true}
             // handleDeleteRow={deleteRow}
-            // handleEdit={editRow}
             // delete
+
+            enableDelete
+            enableEditing={true}
+            handleDeleteRow={deleteRow}
+            handleEdit={editRow}
+            delete
             edit
           />
         ) : (
@@ -186,7 +210,7 @@ const Waiter = () => {
         loading={loading}
         formComponent={
           <>
-            <WaiterForm formik={formik} />
+            <WaiterForm formik={formik} data={rowData} />
           </>
         }
         showButton={true}

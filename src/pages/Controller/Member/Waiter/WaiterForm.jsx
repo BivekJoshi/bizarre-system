@@ -2,7 +2,8 @@ import React from "react";
 import { nanoid } from "nanoid";
 import RenderInput from "../../../../components/RenderInput/RenderInput";
 
-const WaiterForm = ({ formik }) => {
+const WaiterForm = ({ formik, data }) => {
+
   const inputField = [
     {
       id: nanoid(),
@@ -42,7 +43,6 @@ const WaiterForm = ({ formik }) => {
       lg: 6,
       sm: 12,
     },
-
     {
       id: nanoid(),
       name: "birthDate",
@@ -76,21 +76,24 @@ const WaiterForm = ({ formik }) => {
       lg: 6,
       sm: 12,
     },
-    {
-      id: nanoid(),
-      responseId: "id",
-      name: "branchId",
-      label: "Branch",
-      path: "/branch/find",
-      type: "asyncDropDown",
-      required: true,
-      responseLabel: "address",
-      xs: 12,
-      md: 6,
-      lg: 6,
-      sm: 12,
-    },
-
+    ...(!data
+      ? [
+          {
+            id: nanoid(),
+            responseId: "id",
+            name: "branchId",
+            label: "Branch",
+            path: "/branch/find",
+            type: "asyncDropDown",
+            required: true,
+            responseLabel: "address",
+            xs: 12,
+            md: 6,
+            lg: 6,
+            sm: 12,
+          },
+        ]
+      : []),
     {
       id: nanoid(),
       name: "salary",
@@ -103,6 +106,7 @@ const WaiterForm = ({ formik }) => {
       sm: 12,
     },
   ];
+
   return <RenderInput inputField={inputField} formik={formik} />;
 };
 

@@ -2,11 +2,13 @@ import { Box, Chip, Grid, Typography, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import maleProfile from "../../../assets/MaleProfile.png";
+import femaleProfile from "../../../assets/FemaleProfile.png"; // Import the female profile image
 import { useGetUserData } from "../../../hooks/user/useUser";
 import EmailIcon from "@mui/icons-material/Email";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import FormModal from "../../../components/Modal/FormModal";
 import FinalSelectionUI from "../../../components/Camera/FinalSelectionUI";
+import { DOC_URL } from "../../../api/axiosInterceptor";
 
 const InfoRow = ({ label, value }) => (
   <Box
@@ -26,7 +28,17 @@ const InfoRow = ({ label, value }) => (
 const Profile = () => {
   const theme = useTheme();
   const { data: userData, isLoading } = useGetUserData();
+  const imageUrl = userData?.data?.profilePictureUrl;
   const [openModal, setOpenModal] = useState(false);
+
+  const gender = userData?.data?.gender;
+  const imageFinal = imageUrl 
+    ? DOC_URL + imageUrl 
+    : gender === "MALE"
+    ? maleProfile 
+    : gender === "FEMALE"
+    ? femaleProfile 
+    : null;
 
   return (
     <div style={{ width: "100%" }}>
@@ -67,12 +79,14 @@ const Profile = () => {
               justifyContent: "center",
             }}
           >
-            <img
-              src={maleProfile}
-              alt="Profile"
-              style={{ width: "200px", height: "200px", borderRadius: "50%" }}
-              onClick={() => setOpenModal(true)}
-            />
+            {imageFinal && (
+              <img
+                src={imageFinal}
+                alt="Profile"
+                style={{ width: "200px", height: "200px", borderRadius: "50%" }}
+                onClick={() => setOpenModal(true)}
+              />
+            )}
             <Chip
               label={isLoading ? "..." : userData?.data?.fullName}
               color="primary"
@@ -138,8 +152,6 @@ const Profile = () => {
         height={"auto"}
         maxHeight={"80vh"}
         header={"Add Your Profile Image"}
-        // formik={formik}
-        // loading={loading}
         formComponent={
           <>
             <FinalSelectionUI />

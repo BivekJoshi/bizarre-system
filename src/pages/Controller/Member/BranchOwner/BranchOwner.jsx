@@ -9,9 +9,12 @@ import { useGetMember } from "../../../../hooks/member/useMember";
 import ConfirmationModal from "../../../../components/Modal/ConfirmationModal";
 import BranchOwnerForm from "./BranchOwnerForm";
 import { useBranchOwnerMemberForm } from "../../../../hooks/member/Member/BranchOwnerMember/useBranchOwnerMemberForm";
+import BranchOwnerCardView from "./BranchOwnerCardView";
+import { useSelector } from "react-redux";
 
 const BranchOwner = () => {
   const theme = useTheme();
+  const view = useSelector((state) => state?.view?.mode);
   const { data } = useGetMember();
 
   const [rowData, setRowData] = useState(null);
@@ -126,6 +129,7 @@ const BranchOwner = () => {
           marginTop: ".1rem",
         }}
       >
+        {view === "table" ? (
         <CustomTable
           columns={columns}
           data={data?.content}
@@ -140,6 +144,17 @@ const BranchOwner = () => {
           // delete
           edit
         />
+      ) : (
+        <Grid container spacing={2}>
+          {data?.content?.map((data, index) => {
+            return (
+              <Grid item xs={12} md={4} lg={4} sm={12} key={index}>
+                <BranchOwnerCardView data={data} />
+              </Grid>
+            );
+          })}
+        </Grid>
+      )}
       </Box>
 
       <FormModal
