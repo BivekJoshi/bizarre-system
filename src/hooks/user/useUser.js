@@ -57,7 +57,7 @@ export const useAddProfilePicture = ({ onSuccess }) => {
   return useMutation(["addProfile"], (image) => addProfilePic(image), {
     onSuccess: (data, variables, context) => {
       onSuccess && onSuccess(data, variables, context);
-      // queryClient.invalidateQueries("getUserInfo");
+      queryClient.invalidateQueries("getUserData");
       toast.success("Profile Picture Successfully Changed");
     },
     onError: (err, _variables, _context) => {
@@ -66,13 +66,13 @@ export const useAddProfilePicture = ({ onSuccess }) => {
   });
 };
 
-export const useProfilePic = ({ finalImageFile, handleCloseModal }) => {
+export const useProfilePic = ({ finalImageFile, onClose }) => {
   const { mutate } = useAddProfilePicture({});
 
   const handleAddProfileImage = (value) => {
     mutate(value, {
       onSuccess: () => {
-        handleCloseModal();
+        onClose();
       },
     });
   };

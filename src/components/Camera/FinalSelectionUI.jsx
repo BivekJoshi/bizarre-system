@@ -5,7 +5,7 @@ import DropZone from "./DropZone";
 import LinkedCameraRoundedIcon from "@mui/icons-material/LinkedCameraRounded";
 import CloudUploadRoundedIcon from "@mui/icons-material/CloudUploadRounded";
 
-const FinalSelectionUI = () => {
+const FinalSelectionUI = ({onClose}) => {
   const [selection, setSelection] = useState(null);
 
   return (
@@ -37,11 +37,8 @@ const FinalSelectionUI = () => {
         </>
       ) : (
         <>
-          {selection === "upload" && <DropZone />}
-          {selection === "click" && <ClickImage />}
-          {/* <Button variant="outlined" onClick={() => setSelection(null)}>
-            Back
-          </Button> */}
+          {selection === "upload" && <DropZone onClose={onClose} />}
+          {selection === "click" && <ClickImage onClose={onClose} />}
         </>
       )}
     </Box>

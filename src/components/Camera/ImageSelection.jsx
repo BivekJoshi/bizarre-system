@@ -2,22 +2,20 @@ import { Box, Button, Slider } from "@mui/material";
 import Cropper from "react-easy-crop";
 import React, { useState } from "react";
 import CropTwoToneIcon from "@mui/icons-material/CropTwoTone";
-import PublishRoundedIcon from '@mui/icons-material/PublishRounded';
+import PublishRoundedIcon from "@mui/icons-material/PublishRounded";
 import { useProfilePic } from "../../hooks/user/useUser";
 
-const ImageSelection = ({ selectedImage, isUploaded }) => {
+const ImageSelection = ({ selectedImage, isUploaded, onClose }) => {
   const [showCrop, setShowCrop] = useState(false);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [finalImage, setFinalImage] = useState(null);
   const [finalImageFile, setFinalImageFile] = useState(null);
-  // console.log("🚀 ~ ImageSelection ~ finalImageFile:", finalImageFile)
 
   const { formik } = useProfilePic({
-    // selectedProfile,
-    // handleCloseModal,
-    finalImageFile
+    finalImageFile,
+    onClose,
   });
 
   const PreviewImage = isUploaded ? selectedImage.preview : selectedImage;
@@ -71,26 +69,7 @@ const ImageSelection = ({ selectedImage, isUploaded }) => {
   };
 
   const handleSubmit = () => {
-    // const formData = new FormData();
-    // formData.append("image", finalImageFile);
-    // fetch("YOUR_API_ENDPOINT", {
-    //   method: "POST",
-    //   body: formData,
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log("Success:", data);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error:", error);
-    //   });
-    // if (selectedProfile) {
-    //   formik.submitForm();
-    // } else {
-    //   toast.error("Please select image first");
-    // }
     formik.submitForm();
-
   };
 
   return (
@@ -172,7 +151,7 @@ const ImageSelection = ({ selectedImage, isUploaded }) => {
               fullWidth
               onClick={handleSubmit}
               sx={{ marginBottom: "1rem" }}
-              startIcon={<PublishRoundedIcon/>}
+              startIcon={<PublishRoundedIcon />}
             >
               Submit
             </Button>

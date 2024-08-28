@@ -3,7 +3,7 @@ import { useDropzone } from "react-dropzone";
 import { Box, Typography, Paper, Grid, Button, Alert } from "@mui/material";
 import ImageSelection from "./ImageSelection";
 
-const DropZone = () => {
+const DropZone = ({onClose}) => {
   const [image, setImage] = useState(null);
   const [error, setError] = useState("");
 
@@ -52,7 +52,7 @@ const DropZone = () => {
             // p: 2,
             textAlign: "center",
             cursor: "pointer",
-            height:"300px",
+            height: "300px",
             // backgroundColor: isDragActive ? "#f0f0f0" : "#fafafa",
             "&:hover": {
               // backgroundColor: "#f0f0f0",
@@ -67,7 +67,7 @@ const DropZone = () => {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              height:"100%"
+              height: "100%",
             }}
           >
             {isDragActive ? (
@@ -94,7 +94,11 @@ const DropZone = () => {
 
       {image && (
         <Box sx={{ mt: 2 }}>
-          <ImageSelection selectedImage={image} isUploaded={true} />
+          <ImageSelection
+            selectedImage={image}
+            isUploaded={true}
+            onClose={onClose}
+          />
           <Button
             variant="outlined"
             color="error"

@@ -29,15 +29,16 @@ const Profile = () => {
   const theme = useTheme();
   const { data: userData, isLoading } = useGetUserData();
   const imageUrl = userData?.data?.profilePictureUrl;
+  console.log("🚀 ~ Profile ~ imageUrl:", imageUrl);
   const [openModal, setOpenModal] = useState(false);
 
   const gender = userData?.data?.gender;
-  const imageFinal = imageUrl 
-    ? DOC_URL + imageUrl 
+  const imageFinal = imageUrl
+    ? DOC_URL + imageUrl
     : gender === "MALE"
-    ? maleProfile 
+    ? maleProfile
     : gender === "FEMALE"
-    ? femaleProfile 
+    ? femaleProfile
     : null;
 
   return (
@@ -154,7 +155,7 @@ const Profile = () => {
         header={"Add Your Profile Image"}
         formComponent={
           <>
-            <FinalSelectionUI />
+            <FinalSelectionUI onClose={() => setOpenModal(false)} />
           </>
         }
         showButton={false}

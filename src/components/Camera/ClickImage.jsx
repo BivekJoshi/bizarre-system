@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import ImageSelection from "./ImageSelection";
 import LinkedCameraRoundedIcon from "@mui/icons-material/LinkedCameraRounded";
 
-const ClickImage = () => {
+const ClickImage = ({onClose}) => {
   const [stream, setStream] = useState(null);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -36,7 +36,6 @@ const ClickImage = () => {
       const imageDataUrl = canvas.toDataURL("image/png");
       setCapturedImage(imageDataUrl);
 
-      
       setStream(null);
 
       // Stop the camera stream
@@ -55,7 +54,7 @@ const ClickImage = () => {
         stream.getTracks().forEach((track) => track.stop());
       }
     };
-  }, []); 
+  }, []);
 
   return (
     <div style={{ textAlign: "center" }}>
@@ -89,7 +88,11 @@ const ClickImage = () => {
       <canvas ref={canvasRef} style={{ display: "none" }} />
 
       {capturedImage && (
-        <ImageSelection selectedImage={capturedImage} isUploaded={false} />
+        <ImageSelection
+          selectedImage={capturedImage}
+          isUploaded={false}
+          onClose={onClose}
+        />
       )}
 
       {capturedImage && !stream && (
