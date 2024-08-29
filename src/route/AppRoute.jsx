@@ -63,6 +63,7 @@ const AppRoute = () => {
                 <ProtectedRoute redirectTo="/404" allowedRoles={[role]} />
               }
             >
+              {console.log(role.toLowerCase())}
               <Route path={`/${role.toLowerCase()}`} element={<AppLayout />}>
                 <Route path="change-password" element={<ChangePassword />} />
                 <Route path="profile" element={<Profile />} />

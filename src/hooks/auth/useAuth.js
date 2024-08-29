@@ -22,6 +22,7 @@ export const useAuth = () => {
     },
     {
       onSuccess: (data) => {
+        console.log("🚀 ~ useAuth ~ data:", data?.userType)
         setUser(data?.tokenId);
         setUserType(data?.userType);
         setTokenType(data?.tokenType);
@@ -32,7 +33,7 @@ export const useAuth = () => {
             navigate("/admin/dashboard");
             break;
           case "BRANCH_OWNER":
-            navigate("/branch-owner/dashboard");
+            navigate("/branch_owner/dashboard");
             break;
           case "CASHIER":
             navigate("/cashier/dashboard");

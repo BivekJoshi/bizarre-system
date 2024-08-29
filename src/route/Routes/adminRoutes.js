@@ -10,6 +10,8 @@ import BranchOwner from "../../pages/Controller/Member/BranchOwner/BranchOwner";
 import Item from "../../pages/Controller/Item/Item";
 import Book from "../../pages/Controller/Book/Book";
 import CustomerTable from "../../pages/Controller/CustomerTable/CustomerTable";
+import Cart from "../../pages/Cart/Cart";
+import Setting from "../../pages/Controller/Setting/Setting";
 
 const adminRoutes = [
   {
@@ -71,6 +73,18 @@ const adminRoutes = [
     name: "customer-table",
     id: nanoid(),
     component: CustomerTable,
+  },
+  {
+    path: "setting",
+    name: "Setting",
+    id: nanoid(),
+    component: Setting,
+  },
+  {
+    path: "cart",
+    name: "Cart",
+    id: nanoid(),
+    component: Cart,
   },
 ];
 

@@ -2,7 +2,7 @@ import { Box, Chip, Grid, Typography, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import maleProfile from "../../../assets/MaleProfile.png";
-import femaleProfile from "../../../assets/FemaleProfile.png"; // Import the female profile image
+import femaleProfile from "../../../assets/FemaleProfile.png";
 import { useGetUserData } from "../../../hooks/user/useUser";
 import EmailIcon from "@mui/icons-material/Email";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
@@ -27,11 +27,15 @@ const InfoRow = ({ label, value }) => (
 
 const Profile = () => {
   const theme = useTheme();
-  const { data: userData, isLoading } = useGetUserData();
+  const { data: userData, isLoading, refetch } = useGetUserData();
   const imageUrl = userData?.data?.profilePictureUrl;
   console.log("🚀 ~ Profile ~ imageUrl:", imageUrl);
   const [openModal, setOpenModal] = useState(false);
 
+  const handleModalClose = () => {
+    setOpenModal(false);
+    refetch();
+  };
   const gender = userData?.data?.gender;
   const imageFinal = imageUrl
     ? DOC_URL + imageUrl
@@ -155,7 +159,7 @@ const Profile = () => {
         header={"Add Your Profile Image"}
         formComponent={
           <>
-            <FinalSelectionUI onClose={() => setOpenModal(false)} />
+            <FinalSelectionUI onClose={handleModalClose} />
           </>
         }
         showButton={false}

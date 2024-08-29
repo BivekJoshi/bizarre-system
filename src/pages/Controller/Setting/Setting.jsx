@@ -1,9 +1,118 @@
-import React from 'react'
+import React, { useMemo, useState } from "react";
+import { Box, Button, Grid, Typography, useTheme } from "@mui/material";
+import FormModal from "../../../components/Modal/FormModal";
+import CustomTable from "../../../components/CustomTable/CustomTable";
+import { nanoid } from "nanoid";
+import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
+import { useSelector } from "react-redux";
+import AddSetting from "./AddSetting";
+import { useGetSetting } from "../../../hooks/setting/useSetting";
+import { useSettingForm } from "../../../hooks/setting/Setting/useSettingForm";
 
 const Setting = () => {
-  return (
-    <div>Setting</div>
-  )
-}
+  const theme = useTheme();
+  const view = useSelector((state) => state?.view?.mode);
+  const { data } = useGetSetting();
 
-export default Setting
+  const [isAddModalOpen, setIsAddModal] = useState(false);
+
+  const onClose = () => setIsAddModal(false);
+  const { formik, loading } = useSettingForm({ onClose });
+
+  const columns = useMemo(
+    () => [
+      {
+        id: nanoid(),
+        accessorKey: "value",
+        header: "Value",
+        maxWidth: 80,
+        sortable: false,
+      },
+      {
+        id: nanoid(),
+        accessorKey: "setting",
+        header: "Setting",
+        maxWidth: 180,
+        sortable: false,
+      },
+    ],
+    []
+  );
+
+  return (
+    <>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Typography
+          variant="h3"
+          sx={{
+            color: theme.palette.text.default,
+            fontWeight: 700,
+          }}
+        >
+          Setting
+        </Typography>
+        <Button
+          variant="outlined"
+          onClick={() => setIsAddModal(true)}
+          startIcon={<ControlPointRoundedIcon />}
+        >
+          Add Setting
+        </Button>
+      </Box>
+
+      <br />
+      <Box
+        sx={{
+          backgroundColor: theme.palette.background.default,
+          padding: "1rem",
+          marginTop: ".1rem",
+        }}
+      >
+        {view === "table" ? (
+          <CustomTable
+            columns={columns}
+            data={data?.content}
+            overFlow={"scroll"}
+            width={"100%"}
+            enableRowNumbers
+          />
+        ) : (
+          <Grid container spacing={2}>
+            {/* {data?.content?.map((data, index) => {
+              return (
+                <Grid item xs={12} md={2} lg={2} sm={12} key={index}>
+                  <ItemCardView data={data} />
+                </Grid>
+              );
+            })} */}
+          </Grid>
+        )}
+      </Box>
+
+      <FormModal
+        open={isAddModalOpen}
+        onClose={() => setIsAddModal(false)}
+        width={"30%"}
+        height={"auto"}
+        maxHeight={"80vh"}
+        header={"Add Item"}
+        formik={formik}
+        loading={loading}
+        formComponent={
+          <>
+            <AddSetting formik={formik} />
+          </>
+        }
+        showButton={true}
+      />
+    </>
+  );
+};
+
+export default Setting;

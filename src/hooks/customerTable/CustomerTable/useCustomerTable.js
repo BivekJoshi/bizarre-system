@@ -1,15 +1,15 @@
 import { useFormik } from "formik";
 import { useAddCustomerTable, useEditCustomerTable } from "../useCustomerTable";
 
-export const useCustomerTableForm = ({ onClose, data }) => {
+export const useCustomerTableForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddCustomerTable({});
   const { mutate: editMutate } = useEditCustomerTable({});
 
   const formik = useFormik({
     initialValues: {
-      id: data?.id || "",
-      tableNumber: data?.tableNumber || "",
-      status: data?.status || "",
+      id: rowData?.id || "",
+      tableNumber: rowData?.tableNumber || "",
+      status: rowData?.status || "",
     },
     // validationSchema: branchSchema,
     enableReinitialize: true,

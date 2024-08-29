@@ -6,9 +6,9 @@ import CustomTable from "../../../components/CustomTable/CustomTable";
 import { nanoid } from "nanoid";
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import AddBook from "./AddBook";
-import { useGetBook } from "../../../hooks/book/useBook";
+import { useDeleteBook, useGetBook } from "../../../hooks/book/useBook";
 import { useBookForm } from "../../../hooks/book/Book/useBookForm";
 
 const Book = () => {
@@ -20,15 +20,22 @@ const Book = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  // const { mutate } = useDeleteBranch({ rowData });
+  const { mutate } = useDeleteBook({ rowData });
 
-  const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useBookForm({onClose});
+  const onClose = () => {
+    setIsAddModal(false);
+    setIsEditModalOpen(false);
+  };
+  const { formik, loading } = useBookForm({ onClose, rowData });
 
   const deleteRow = (row) => {
-    console.log("🚀 ~ deleteRow ~ row:", row);
     setRowData(row?.original?.id);
     setIsDeleteModalOpen(true);
+  };
+
+  const editRow = (row) => {
+    setIsEditModalOpen(true);
+    setRowData(row?.original);
   };
 
   const columns = useMemo(
@@ -36,14 +43,14 @@ const Book = () => {
       {
         id: nanoid(),
         accessorKey: "author",
-        header: "author",
+        header: "Author",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
         accessorKey: "genre",
-        header: "genre",
+        header: "Genre",
         maxWidth: 80,
         sortable: false,
       },
@@ -57,14 +64,14 @@ const Book = () => {
       {
         id: nanoid(),
         accessorKey: "publicationDate",
-        header: "publicationDate",
+        header: "Publication Date",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
         accessorKey: "title",
-        header: "title",
+        header: "Title",
         maxWidth: 80,
         sortable: false,
       },
@@ -88,14 +95,14 @@ const Book = () => {
             fontWeight: 700,
           }}
         >
-          Branch
+          Book
         </Typography>
         <Button
           variant="outlined"
           onClick={() => setIsAddModal(true)}
           startIcon={<ControlPointRoundedIcon />}
         >
-          Add Branch
+          Add Book
         </Button>
       </Box>
 
@@ -117,7 +124,7 @@ const Book = () => {
           enableDelete
           enableEditing={true}
           handleDeleteRow={deleteRow}
-          // handleEdit={editRow}
+          handleEdit={editRow}
           delete
           edit
         />
@@ -129,7 +136,7 @@ const Book = () => {
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}
-        header={"Add Branch"}
+        header={"Add Book"}
         formik={formik}
         loading={loading}
         formComponent={
@@ -145,7 +152,7 @@ const Book = () => {
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}
-        header={"Add Branch"}
+        header={"Add Book"}
         formik={formik}
         loading={loading}
         formComponent={
@@ -163,7 +170,7 @@ const Book = () => {
         confirmhead={"Are you sure ?"}
         handleModalClose={() => setIsDeleteModalOpen(false)}
         isModalOpen={isDeleteModalOpen}
-        // handleSave={() => mutate(rowData)}
+        handleSave={() => mutate(rowData)}
         icon={
           <DeleteRoundedIcon
             sx={{

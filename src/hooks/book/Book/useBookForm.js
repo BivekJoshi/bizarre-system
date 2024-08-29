@@ -2,18 +2,18 @@ import { useFormik } from "formik";
 
 import { useAddBook, useEditBook } from "../useBook";
 
-export const useBookForm = ({ onClose, data }) => {
+export const useBookForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddBook({});
   const { mutate: editMutate } = useEditBook({});
 
   const formik = useFormik({
     initialValues: {
-      id: data?.id || "",
-      title: data?.title || "",
-      author: data?.author || "",
-      publicationDate: data?.publicationDate || "",
-      isbn: data?.isbn || "",
-      genre: data?.genre || "",
+      id: rowData?.id || "",
+      title: rowData?.title || "",
+      author: rowData?.author || "",
+      publicationDate: rowData?.publicationDate || "",
+      isbn: rowData?.isbn || "",
+      genre: rowData?.genre || "",
     },
     // validationSchema: branchSchema,
     enableReinitialize: true,

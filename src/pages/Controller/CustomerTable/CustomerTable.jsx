@@ -21,14 +21,22 @@ const CustomerTable = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  // const { mutate } = useDeleteBranch({ rowData });
+  // const { mutate } = useDeleteCustomerTable({ rowData });
 
-  const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useCustomerTableForm({ onClose });
+  const onClose = () => {
+    setIsAddModal(false);
+    setIsEditModalOpen(false);
+  };
+  const { formik, loading } = useCustomerTableForm({ onClose, rowData });
 
   const deleteRow = (row) => {
     setRowData(row?.original?.id);
     setIsDeleteModalOpen(true);
+  };
+
+  const editRow = (row) => {
+    setIsEditModalOpen(true);
+    setRowData(row?.original);
   };
 
   const columns = useMemo(
@@ -36,7 +44,7 @@ const CustomerTable = () => {
       {
         id: nanoid(),
         accessorKey: "tableNumber",
-        header: "tableNumber",
+        header: "Table Number",
         maxWidth: 80,
         sortable: false,
       },
@@ -96,7 +104,7 @@ const CustomerTable = () => {
           // enableDelete
           enableEditing={true}
           // handleDeleteRow={deleteRow}
-          // handleEdit={editRow}
+          handleEdit={editRow}
           // delete
           edit
         />
@@ -108,7 +116,7 @@ const CustomerTable = () => {
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}
-        header={"Add Cashier"}
+        header={"Add Customer Table"}
         formik={formik}
         loading={loading}
         formComponent={
@@ -124,7 +132,7 @@ const CustomerTable = () => {
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}
-        header={"Edit Cashier Detial"}
+        header={"Edit Customer Table"}
         formik={formik}
         loading={loading}
         formComponent={

@@ -65,8 +65,8 @@ export const adminTab = [
   },
   {
     id: nanoid(),
-    label: "Customer Table",
-    value: "customer-table",
+    label: "Setting",
+    value: "setting",
     icon: <SupervisedUserCircleRoundedIcon />,
   },
 ];
@@ -74,6 +74,12 @@ export const adminTab = [
 export const branchOwnerTab = [
   { label: "Dashboard", value: "dashboard" },
   { label: "Customer", value: "customer" },
+  {
+    id: nanoid(),
+    label: "Customer Table",
+    value: "customer-table",
+    icon: <SupervisedUserCircleRoundedIcon />,
+  },
 ];
 
 export const cashierTab = [
