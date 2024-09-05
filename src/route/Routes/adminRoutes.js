@@ -12,6 +12,7 @@ import Book from "../../pages/Controller/Book/Book";
 import CustomerTable from "../../pages/Controller/CustomerTable/CustomerTable";
 import Cart from "../../pages/Cart/Cart";
 import Setting from "../../pages/Controller/Setting/Setting";
+import Barista from "../../pages/Controller/Member/Barista/Barista";
 
 const adminRoutes = [
   {
@@ -55,6 +56,12 @@ const adminRoutes = [
     name: "branch-owner",
     id: nanoid(),
     component: BranchOwner,
+  },
+  {
+    path: "barista",
+    name: "barista",
+    id: nanoid(),
+    component: Barista,
   },
   {
     path: "item",

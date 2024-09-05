@@ -41,6 +41,12 @@ export const adminTab = [
   },
   {
     id: nanoid(),
+    label: "Barista",
+    value: "barista",
+    icon: <CurrencyExchangeRoundedIcon />,
+  },
+  {
+    id: nanoid(),
     label: "Batch",
     value: "batch",
     icon: <BatchPredictionRoundedIcon />,
@@ -105,5 +111,9 @@ export const supplierTab = [
 
 export const customerTab = [
   { label: "Dashboard", value: "dashboard" },
-  { label: "Customer", value: "customer" },
+  // { label: "Customer", value: "customer" },
+  { label: "Order", value: "order" },
+  { label: "Item", value: "item" },
+
+
 ];

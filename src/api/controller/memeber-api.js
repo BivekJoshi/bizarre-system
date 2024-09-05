@@ -13,7 +13,19 @@ export const addCashierMember = async (formData) => {
 };
 /*_____________________________POST MEMBER BRANCH OWNER_______________________________________________ */
 export const addBranchOwnerMember = async (formData) => {
-  const data = await axiosInstance.post(`${MEMBER}/branch-owner/save`, formData);
+  const data = await axiosInstance.post(
+    `${MEMBER}/branch-owner/save`,
+    formData
+  );
+  return data;
+};
+
+/*_____________________________POST MEMBER BARISTA_______________________________________________ */
+export const addBaristaMember = async (formData) => {
+  const data = await axiosInstance.post(
+    `${MEMBER}/barista/save`,
+    formData
+  );
   return data;
 };
 

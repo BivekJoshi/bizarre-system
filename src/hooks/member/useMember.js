@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import {
+  addBaristaMember,
   addBranchOwnerMember,
   addCashierMember,
   addWaiterMember,
@@ -61,6 +62,25 @@ export const useAddCashierMember = ({ onSuccess }) => {
   );
 };
 
+/*_____________________________POST BARISTA MEMBER_______________________________________________ */
+export const useAddBaristaMember = ({ onSuccess }) => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    ["addBaristaMember"],
+    (formData) => addBaristaMember(formData),
+    {
+      onSuccess: (data, variables, context) => {
+        toast.success("Successfully added barista");
+        onSuccess && onSuccess(data, variables, context);
+        queryClient.invalidateQueries("getMember");
+      },
+      onError: (err, _variables, _context) => {
+        toast.error(`${err.message}`);
+      },
+    }
+  );
+};
+
 /*_____________________________POST BRANCH OWNER MEMBER_______________________________________________ */
 export const useAddBranchOwnerMember = ({ onSuccess }) => {
   const queryClient = useQueryClient();
@@ -83,18 +103,14 @@ export const useAddBranchOwnerMember = ({ onSuccess }) => {
 /*_____________________________POST BRANCH OWNER MEMBER_______________________________________________ */
 export const useEditMember = ({ onSuccess }) => {
   const queryClient = useQueryClient();
-  return useMutation(
-    ["editMember"],
-    (formData) => editMember(formData),
-    {
-      onSuccess: (data, variables, context) => {
-        toast.success("Successfully edited memeber detail");
-        onSuccess && onSuccess(data, variables, context);
-        queryClient.invalidateQueries("getMember");
-      },
-      onError: (err, _variables, _context) => {
-        toast.error(`${err.message}`);
-      },
-    }
-  );
+  return useMutation(["editMember"], (formData) => editMember(formData), {
+    onSuccess: (data, variables, context) => {
+      toast.success("Successfully edited memeber detail");
+      onSuccess && onSuccess(data, variables, context);
+      queryClient.invalidateQueries("getMember");
+    },
+    onError: (err, _variables, _context) => {
+      toast.error(`${err.message}`);
+    },
+  });
 };

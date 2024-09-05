@@ -22,7 +22,6 @@ export const useChangePasswordForm = () => {
     enableReinitialize: true,
     onSubmit: (values) => {
       handledAddRequest(values);
-      onSucc;
     },
   });
 
