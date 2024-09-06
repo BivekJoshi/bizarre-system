@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { nanoid } from "nanoid";
 import RenderInput from "../../../components/RenderInput/RenderInput";
 import DropZoneUploadFile from "../../../components/DropZoneUploadFIle/DropZoneUploadFile";
+import { DOC_URL } from "../../../api/axiosInterceptor";
+import { Button } from "@mui/material";
 
 const EditItem = ({ formik, rowData }) => {
+  console.log("🚀 ~ EditItem ~ rowData:", rowData);
+
+  // State to toggle between image display and dropzone
+  const [showDropzone, setShowDropzone] = useState(false);
+
+  // Toggle the dropzone on button click
+  const handleReuploadClick = () => {
+    setShowDropzone(true);
+  };
+
   const inputField = [
     {
       id: nanoid(),
@@ -110,9 +122,31 @@ const EditItem = ({ formik, rowData }) => {
       sm: 12,
     },
   ];
+
   return (
     <>
-      <DropZoneUploadFile rowData={rowData}/>
+      {rowData?.itemImageUrl && !showDropzone ? (
+        <>
+          <div style={{ width: "100%", height: "200px" }}>
+            <img
+              src={DOC_URL + rowData?.itemImageUrl}
+              alt="Uploaded Item"
+              style={{ width: "100%", height: "100%" }}
+            />
+          </div>
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={handleReuploadClick}
+            sx={{ margin: "1rem 0" }}
+          >
+            Re-upload Image
+          </Button>
+        </>
+      ) : (
+        <DropZoneUploadFile rowData={rowData} />
+      )}
+
       <br />
       <RenderInput inputField={inputField} formik={formik} />
     </>

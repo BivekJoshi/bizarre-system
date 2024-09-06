@@ -81,7 +81,7 @@ const ImageSelectionUpload = ({ selectedImage, isUploaded, rowDataId }) => {
             <div
               style={{
                 width: "auto",
-                height: "300px",
+                height: "200px",
                 position: "relative",
               }}
             >
@@ -131,7 +131,7 @@ const ImageSelectionUpload = ({ selectedImage, isUploaded, rowDataId }) => {
                 alt="Captured"
                 style={{
                   width: "auto",
-                  height: "300px",
+                  height: "200px",
                 }}
               />
             </div>

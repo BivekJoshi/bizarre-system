@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import darkModeSlice from "./Slice/darkModeSlice";
 import gridModeSlice from "./Slice/gridModeSlice";
 import cartSlice from "./Slice/cartSlice";
+import selectedItemsSlice from "./Slice/selectedItemsSlice";
 // import { cardSlice } from "./Slice/cartSlice";
 
 export const store = configureStore({
@@ -9,5 +10,6 @@ export const store = configureStore({
     themeMode: darkModeSlice,
     view: gridModeSlice,
     cart: cartSlice,
+    selectedItems: selectedItemsSlice,
   },
 });

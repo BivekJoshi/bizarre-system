@@ -52,7 +52,7 @@ const DropZoneUploadFile = ({ rowData }) => {
             // p: 2,
             textAlign: "center",
             cursor: "pointer",
-            height: "300px",
+            height: "200px",
             // backgroundColor: isDragActive ? "#f0f0f0" : "#fafafa",
             "&:hover": {
               // backgroundColor: "#f0f0f0",

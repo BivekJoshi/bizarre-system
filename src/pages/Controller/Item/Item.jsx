@@ -52,7 +52,7 @@ const Item = () => {
         Cell: ({ cell }) => {
           const imageUrl = cell.getValue();
           return (
-            <div style={{ width: "100px", height: "100px" }}>
+            <div style={{ width: "100px", height: "100pxnpm " }}>
               <img
                 src={DOC_URL + imageUrl}
                 alt="Image"

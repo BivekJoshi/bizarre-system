@@ -14,10 +14,11 @@ import CustomTable from "../../../components/CustomTable/CustomTable";
 const Order = () => {
   const theme = useTheme();
   const view = useSelector((state) => state?.view?.mode);
-  const { data } = useGetOrder();
+  const { data: orderData } = useGetOrder();
+  console.log("🚀 ~ Order ~ orderData:", orderData?.content)
 
   const [rowData, setRowData] = useState(null);
-  const [isAddModalOpen, setIsAddModal] = useState(false);
+  const [isAddModalOpen, setIsAddModal] = useState(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -26,24 +27,31 @@ const Order = () => {
   const onClose = () => setIsAddModal(false);
   const { formik, loading } = useOrderForm({ onClose });
 
-  const deleteRow = (row) => {
-    setRowData(row?.original?.id);
-    setIsDeleteModalOpen(true);
-  };
+  // const deleteRow = (row) => {
+  //   setRowData(row?.original?.id);
+  //   setIsDeleteModalOpen(true);
+  // };
 
   const columns = useMemo(
     () => [
       {
         id: nanoid(),
-        accessorKey: "user.fullName",
+        accessorKey: "item.name",
         header: "Name",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
-        accessorKey: "user.gender",
+        accessorKey: "batch.status",
         header: "Gender",
+        maxWidth: 80,
+        sortable: false,
+      },
+      {
+        id: nanoid(),
+        accessorKey: "remark",
+        header: "Remark",
         maxWidth: 80,
         sortable: false,
       },
@@ -89,7 +97,7 @@ const Order = () => {
         {/* {view === "table" ? ( */}
         <CustomTable
           columns={columns}
-          data={data?.content}
+          data={orderData?.content}
           overFlow={"scroll"}
           width={"100%"}
           enableRowNumbers
@@ -117,26 +125,26 @@ const Order = () => {
       <FormModal
         open={isAddModalOpen}
         onClose={() => setIsAddModal(false)}
-        width={"30%"}
+        width={"70%"}
         height={"auto"}
         maxHeight={"80vh"}
-        header={"Add Cashier"}
-        formik={formik}
-        loading={loading}
+        header={"Place Order"}
+        // formik={formik}
+        // loading={loading}
         formComponent={
           <>
-            <OrderForm formik={formik} />
+            <OrderForm />
           </>
         }
-        showButton={true}
+        showButton={false}
       />
-      <FormModal
+      {/* <FormModal
         open={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
-        width={"30%"}
+        width={"70%"}
         height={"auto"}
         maxHeight={"80vh"}
-        header={"Edit Cashier Detial"}
+        header={"Edit Order"}
         formik={formik}
         loading={loading}
         formComponent={
@@ -145,8 +153,8 @@ const Order = () => {
           </>
         }
         showButton={true}
-      />
-      <ConfirmationModal
+      /> */}
+      {/* <ConfirmationModal
         disagreeLabel={"Yes, Delete !"}
         agreeLabel={"No, Keep It."}
         alertTitle={"Delete Alert"}
@@ -165,7 +173,7 @@ const Order = () => {
             }}
           />
         }
-      />
+      /> */}
     </>
   );
 };
