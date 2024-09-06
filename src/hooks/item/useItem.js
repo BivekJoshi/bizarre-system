@@ -7,6 +7,7 @@ import {
   getItem,
   getItemById,
 } from "../../api/controller/item-api";
+import { getErrorMessage } from "../../utils/getErrorMessage";
 
 /*________________________GET_____________________________________*/
 export const useGetItem = () => {
@@ -36,7 +37,7 @@ export const useAddItem = ({ onSuccess }) => {
       queryClient.invalidateQueries("getItem");
     },
     onError: (err, _variables, _context) => {
-      //   toast.error(getErrorMessage(err));
+        toast.error(getErrorMessage(err));
     },
   });
 };
@@ -51,7 +52,7 @@ export const useEditItem = ({ onSuccess }) => {
       queryClient.invalidateQueries("getItem");
     },
     onError: (err, _variables, _context) => {
-      //   toast.error(getErrorMessage(err));
+        toast.error(getErrorMessage(err));
     },
   });
 };
@@ -69,7 +70,7 @@ export const useChangeStatus = ({ onSuccess }) => {
         queryClient.invalidateQueries("getItem");
       },
       onError: (err, _variables, _context) => {
-        toast.error(`${err.message}`);
+        toast.error(getErrorMessage(err));
       },
     }
   );

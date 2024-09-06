@@ -9,6 +9,7 @@ import {
   getOrderServed,
   getPreparing,
 } from "../../api/controller/order-api";
+import { getErrorMessage } from "../../utils/getErrorMessage";
 
 /*________________________GET ALL_____________________________________*/
 export const useGetOrder = () => {
@@ -65,7 +66,7 @@ export const useAddOrder = ({ onSuccess }) => {
       queryClient.invalidateQueries("getOrder");
     },
     onError: (err, _variables, _context) => {
-      toast.error(`${err.message}`);
+      toast.error(getErrorMessage(err));      
     },
   });
 };
@@ -80,7 +81,7 @@ export const useEditOrder = ({ onSuccess }) => {
       queryClient.invalidateQueries("getOrder");
     },
     onError: (err, _variables, _context) => {
-      toast.error(`${err.message}`);
+      toast.error(getErrorMessage(err));
     },
   });
 };

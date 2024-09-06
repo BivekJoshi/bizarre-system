@@ -7,6 +7,7 @@ import {
   getBook,
   getBookById,
 } from "../../api/controller/book-api";
+import { getErrorMessage } from "../../utils/getErrorMessage";
 
 /*________________________GET_____________________________________*/
 export const useGetBook = () => {
@@ -36,7 +37,7 @@ export const useAddBook = ({ onSuccess }) => {
       queryClient.invalidateQueries("getBook");
     },
     onError: (err, _variables, _context) => {
-      toast.error(`${err.message}`);
+      toast.error(getErrorMessage(err));
     },
   });
 };
@@ -51,7 +52,7 @@ export const useEditBook = ({ onSuccess }) => {
       queryClient.invalidateQueries("getBook");
     },
     onError: (err, _variables, _context) => {
-      toast.error(`${err.message}`);
+      toast.error(getErrorMessage(err));
     },
   });
 };

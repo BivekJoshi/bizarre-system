@@ -6,6 +6,7 @@ import {
   getCustomer,
   getCustomerById,
 } from "../../api/controller/customer-api";
+import { getErrorMessage } from "../../utils/getErrorMessage";
 
 /*________________________GET_____________________________________*/
 export const useGetCustomer = () => {
@@ -35,7 +36,7 @@ export const useAddCustomer = ({ onSuccess }) => {
       queryClient.invalidateQueries("getCustomer");
     },
     onError: (err, _variables, _context) => {
-      toast.error(`${err.message}`);
+      toast.error(getErrorMessage(err));
     },
   });
 };
@@ -50,7 +51,7 @@ export const useEditCustomer = ({ onSuccess }) => {
       queryClient.invalidateQueries("getCustomer");
     },
     onError: (err, _variables, _context) => {
-      toast.error(`${err.message}`);
+      toast.error(getErrorMessage(err));
     },
   });
 };

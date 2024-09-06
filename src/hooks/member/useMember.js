@@ -9,6 +9,7 @@ import {
   getMemberById,
 } from "../../api/controller/memeber-api";
 import { toast } from "react-toastify";
+import { getErrorMessage } from "../../utils/getErrorMessage";
 
 /*________________________GET_____________________________________*/
 export const useGetMember = () => {
@@ -38,7 +39,7 @@ export const useAddWaiterMember = ({ onSuccess }) => {
       queryClient.invalidateQueries("getMember");
     },
     onError: (err, _variables, _context) => {
-      toast.error(`${err.message}`);
+      toast.error(getErrorMessage(err));
     },
   });
 };
@@ -56,7 +57,7 @@ export const useAddCashierMember = ({ onSuccess }) => {
         queryClient.invalidateQueries("getMember");
       },
       onError: (err, _variables, _context) => {
-        toast.error(`${err.message}`);
+        toast.error(getErrorMessage(err));
       },
     }
   );
@@ -75,7 +76,7 @@ export const useAddBaristaMember = ({ onSuccess }) => {
         queryClient.invalidateQueries("getMember");
       },
       onError: (err, _variables, _context) => {
-        toast.error(`${err.message}`);
+        toast.error(getErrorMessage(err));
       },
     }
   );
@@ -94,7 +95,7 @@ export const useAddBranchOwnerMember = ({ onSuccess }) => {
         queryClient.invalidateQueries("getMember");
       },
       onError: (err, _variables, _context) => {
-        toast.error(`${err.message}`);
+        toast.error(getErrorMessage(err));
       },
     }
   );
@@ -110,7 +111,7 @@ export const useEditMember = ({ onSuccess }) => {
       queryClient.invalidateQueries("getMember");
     },
     onError: (err, _variables, _context) => {
-      toast.error(`${err.message}`);
+      toast.error(getErrorMessage(err));
     },
   });
 };

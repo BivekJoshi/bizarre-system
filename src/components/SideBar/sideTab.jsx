@@ -86,6 +86,24 @@ export const branchOwnerTab = [
     value: "customer-table",
     icon: <SupervisedUserCircleRoundedIcon />,
   },
+  {
+    id: nanoid(),
+    label: "Waiter",
+    value: "waiter",
+    icon: <WcRoundedIcon />,
+  },
+  {
+    id: nanoid(),
+    label: "Cashier",
+    value: "cashier",
+    icon: <CurrencyExchangeRoundedIcon />,
+  },
+  {
+    id: nanoid(),
+    label: "Barista",
+    value: "barista",
+    icon: <CurrencyExchangeRoundedIcon />,
+  },
 ];
 
 export const cashierTab = [

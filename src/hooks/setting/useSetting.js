@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { addSetting, getSetting } from "../../api/controller/setting-api";
 import { toast } from "react-toastify";
+import { getErrorMessage } from "../../utils/getErrorMessage";
 
 /*________________________GET_____________________________________*/
 export const useGetSetting = () => {
@@ -21,7 +22,7 @@ export const useAddSetting = ({ onSuccess }) => {
       queryClient.invalidateQueries("getSetting");
     },
     onError: (err, _variables, _context) => {
-      toast.error(`${err.message}`);
+      toast.error(getErrorMessage(err));
     },
   });
 };

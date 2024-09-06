@@ -11,9 +11,12 @@ import { useGetCustomer } from "../../../hooks/customer/useCustomer";
 import CustomerTableForm from "./CustomerTableForm";
 import { useCustomerTableForm } from "../../../hooks/customerTable/CustomerTable/useCustomerTable";
 import { useGetCustomerTable } from "../../../hooks/customerTable/useCustomerTable";
+import { useSelector } from "react-redux";
+import CustomerTableCardView from "./CustomerTableCardView";
 
 const CustomerTable = () => {
   const theme = useTheme();
+  const view = useSelector((state) => state?.view?.mode);
   const { data } = useGetCustomerTable();
 
   const [rowData, setRowData] = useState(null);
@@ -94,20 +97,32 @@ const CustomerTable = () => {
           marginTop: ".1rem",
         }}
       >
-        <CustomTable
-          columns={columns}
-          data={data?.content}
-          overFlow={"scroll"}
-          width={"100%"}
-          enableRowNumbers
-          enableColumnActions
-          // enableDelete
-          enableEditing={true}
-          // handleDeleteRow={deleteRow}
-          handleEdit={editRow}
-          // delete
-          edit
-        />
+        {view === "table" ? (
+          <CustomTable
+            columns={columns}
+            data={data?.content}
+            overFlow={"scroll"}
+            width={"100%"}
+            enableRowNumbers
+            enableColumnActions
+            // enableDelete
+            enableEditing={true}
+            // handleDeleteRow={deleteRow}
+            handleEdit={editRow}
+            // delete
+            edit
+          />
+        ) : (
+          <Grid container spacing={2}>
+            {data?.content?.map((data, index) => {
+              return (
+                <Grid item xs={12} md={4} lg={3} sm={12} key={index}>
+                  <CustomerTableCardView data={data} />
+                </Grid>
+              );
+            })}
+          </Grid>
+        )}
       </Box>
 
       <FormModal

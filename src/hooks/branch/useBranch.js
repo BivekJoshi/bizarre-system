@@ -7,6 +7,7 @@ import {
   getBranch,
   getBranchById,
 } from "../../api/controller/branch-api";
+import { getErrorMessage } from "../../utils/getErrorMessage";
 
 /*________________________GET_____________________________________*/
 export const useGetBranch = () => {
@@ -36,7 +37,7 @@ export const useAddBranch = ({ onSuccess }) => {
       queryClient.invalidateQueries("getBranch");
     },
     onError: (err, _variables, _context) => {
-      toast.error(`${err.message}`);
+      toast.error(getErrorMessage(err));
     },
   });
 };
@@ -51,7 +52,7 @@ export const useEditBranch = ({ onSuccess }) => {
       queryClient.invalidateQueries("getBranch");
     },
     onError: (err, _variables, _context) => {
-      toast.error(`${err.message}`);
+      toast.error(getErrorMessage(err));
     },
   });
 };

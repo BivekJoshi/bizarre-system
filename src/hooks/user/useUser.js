@@ -7,6 +7,7 @@ import {
   getUserData,
 } from "../../api/controller/user-api";
 import { useFormik } from "formik";
+import { getErrorMessage } from "../../utils/getErrorMessage";
 
 /*________________________GET USER DATA_____________________________________*/
 export const useGetUserData = () => {
@@ -27,7 +28,7 @@ export const useChangePassword = ({ onSuccess }) => {
         onSuccess && onSuccess(data, variables, context);
       },
       onError: (err, _variables, _context) => {
-        toast.error(`${err.message}`);
+        toast.error(getErrorMessage(err));
       },
     }
   );
@@ -44,7 +45,7 @@ export const useForgotPassword = ({ onSuccess }) => {
         onSuccess && onSuccess(data, variables, context);
       },
       onError: (err, _variables, _context) => {
-        toast.error(`${err.message}`);
+        toast.error(getErrorMessage(err));
       },
     }
   );
@@ -61,7 +62,7 @@ export const useAddProfilePicture = ({ onSuccess }) => {
       toast.success("Profile Picture Successfully Changed");
     },
     onError: (err, _variables, _context) => {
-      toast.error(`${err.message}`);
+      toast.error(getErrorMessage(err));
     },
   });
 };

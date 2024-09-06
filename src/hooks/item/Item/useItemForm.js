@@ -1,22 +1,22 @@
 import { useFormik } from "formik";
 import { useAddItem, useEditItem } from "../useItem";
 
-export const useItemForm = ({ onClose, data }) => {
+export const useItemForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddItem({});
   const { mutate: editMutate } = useEditItem({});
 
   const formik = useFormik({
     initialValues: {
-      id: data?.id || "",
-      name: data?.name || "",
-      costPrice: data?.costPrice || "",
-      markedPrice: data?.markedPrice || "",
-      sellingPrice: data?.sellingPrice || "",
-      description: data?.description || "",
-      type: data?.type || "",
-      stockCount: data?.stockCount || "",
-      tags: data?.tags || "",
-      color: data?.color || "",
+      id: rowData?.id || "",
+      name: rowData?.name || "",
+      costPrice: rowData?.costPrice || "",
+      markedPrice: rowData?.markedPrice || "",
+      sellingPrice: rowData?.sellingPrice || "",
+      description: rowData?.description || "",
+      type: rowData?.type || "",
+      stockCount: rowData?.stockCount || "",
+      tags: rowData?.tags || "",
+      color: rowData?.color || "",
     },
     // validationSchema: branchSchema,
     enableReinitialize: true,

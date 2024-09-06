@@ -25,13 +25,17 @@ const Item = () => {
 
   // const { mutate } = useDeleteBranch({ rowData });
 
-  const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useItemForm({ onClose });
+  const onClose = () => { setIsAddModal(false); setIsEditModalOpen(false) };
+  const { formik, loading } = useItemForm({ onClose, rowData });
 
   const deleteRow = (row) => {
-    console.log("🚀 ~ deleteRow ~ row:", row);
     setRowData(row?.original?.id);
     setIsDeleteModalOpen(true);
+  };
+
+  const editRow = (row) => {
+    setIsEditModalOpen(true);
+    setRowData(row?.original);
   };
 
   const columns = useMemo(
@@ -156,8 +160,8 @@ const Item = () => {
             enableDelete
             enableEditing={true}
             handleDeleteRow={deleteRow}
-            // handleEdit={editRow}
-            delete
+            handleEdit={editRow}
+            // delete
             edit
           />
         ) : (
@@ -173,38 +177,44 @@ const Item = () => {
         )}
       </Box>
 
-      <FormModal
-        open={isAddModalOpen}
-        onClose={() => setIsAddModal(false)}
-        width={"30%"}
-        height={"auto"}
-        maxHeight={"80vh"}
-        header={"Add Item"}
-        formik={formik}
-        loading={loading}
-        formComponent={
-          <>
-            <AddItem formik={formik} />
-          </>
-        }
-        showButton={true}
-      />
-      <FormModal
-        open={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
-        width={"30%"}
-        height={"auto"}
-        maxHeight={"80vh"}
-        header={"Edit Item"}
-        formik={formik}
-        loading={loading}
-        formComponent={
-          <>
-            <AddItem formik={formik} />
-          </>
-        }
-        showButton={true}
-      />
+      {isAddModalOpen && (
+        <FormModal
+          open={isAddModalOpen}
+          onClose={() => setIsAddModal(false)}
+          width={"30%"}
+          height={"auto"}
+          maxHeight={"80vh"}
+          header={"Add Item"}
+          formik={formik}
+          loading={loading}
+          formComponent={
+            <>
+              <AddItem formik={formik} />
+            </>
+          }
+          showButton={true}
+        />
+      )}
+
+      {isEditModalOpen && (
+        <FormModal
+          open={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          width={"30%"}
+          height={"auto"}
+          maxHeight={"80vh"}
+          header={"Edit Item"}
+          formik={formik}
+          loading={loading}
+          enableAddPhoto={true}
+          formComponent={
+            <>
+              <AddItem formik={formik} />
+            </>
+          }
+          showButton={true}
+        />
+      )}
       <ConfirmationModal
         disagreeLabel={"Yes, Delete !"}
         agreeLabel={"No, Keep It."}

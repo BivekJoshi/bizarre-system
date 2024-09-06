@@ -6,6 +6,7 @@ import {
   getCustomerTable,
   getCustomerTableById,
 } from "../../api/controller/customer-table-api";
+import { getErrorMessage } from "../../utils/getErrorMessage";
 
 /*________________________GET_____________________________________*/
 export const useGetCustomerTable = () => {
@@ -38,7 +39,7 @@ export const useAddCustomerTable = ({ onSuccess }) => {
         queryClient.invalidateQueries("getCustomerTable");
       },
       onError: (err, _variables, _context) => {
-        toast.error(`${err.message}`);
+        toast.error(getErrorMessage(err));
       },
     }
   );
@@ -57,7 +58,7 @@ export const useEditCustomerTable = ({ onSuccess }) => {
         queryClient.invalidateQueries("getCustomerTable");
       },
       onError: (err, _variables, _context) => {
-        toast.error(`${err.message}`);
+        toast.error(getErrorMessage(err));
       },
     }
   );
