@@ -3,11 +3,13 @@ import { toast } from "react-toastify";
 import {
   addItem,
   addItemChangeStatus,
+  addUploadItemImage,
   editItem,
   getItem,
   getItemById,
 } from "../../api/controller/item-api";
 import { getErrorMessage } from "../../utils/getErrorMessage";
+import { useFormik } from "formik";
 
 /*________________________GET_____________________________________*/
 export const useGetItem = () => {
@@ -37,7 +39,7 @@ export const useAddItem = ({ onSuccess }) => {
       queryClient.invalidateQueries("getItem");
     },
     onError: (err, _variables, _context) => {
-        toast.error(getErrorMessage(err));
+      toast.error(getErrorMessage(err));
     },
   });
 };
@@ -52,7 +54,7 @@ export const useEditItem = ({ onSuccess }) => {
       queryClient.invalidateQueries("getItem");
     },
     onError: (err, _variables, _context) => {
-        toast.error(getErrorMessage(err));
+      toast.error(getErrorMessage(err));
     },
   });
 };
@@ -75,3 +77,47 @@ export const useChangeStatus = ({ onSuccess }) => {
     }
   );
 };
+
+/*________________________UPLOAD ITEM IMAGAGE_____________________________________*/
+export const useUploadItemImage = ({ onSuccess }) => {
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    ["addUploadItemImage"],
+    (image, formData) => addUploadItemImage(image, formData),
+    {
+      onSuccess: (data, variables, context) => {
+        onSuccess && onSuccess(data, variables, context);
+        queryClient.invalidateQueries("getItem");
+        toast.success("Item Image Uplaoded Successfully");
+      },
+      onError: (err, _variables, _context) => {
+        toast.error(getErrorMessage(err));
+      },
+    }
+  );
+};
+
+export const useUploadItemImageForm = ({ finalImageFile, rowDataId }) => {
+  const { mutate } = useUploadItemImage({});
+
+  const handleAddProfileImage = (value) => {
+    const formData = { ...value, multipartFile: finalImageFile };
+    mutate(formData);
+  };
+  const formik = useFormik({
+    initialValues: {
+      id: rowDataId,
+      multipartFile: finalImageFile,
+    },
+    onSubmit: (values) => {
+      handleAddProfileImage(values);
+    },
+  });
+
+  return {
+    formik,
+  };
+};
+
+export default useUploadItemImageForm;

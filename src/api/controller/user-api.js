@@ -24,7 +24,7 @@ export const forgotPassword = async (formData) => {
 };
 
 /*_____________________________FORGET PASSWORD_______________________________________________ */
-export const addProfilePic = async (image,id) => {
+export const addProfilePic = async (image, id) => {
   const imgData = new FormData();
 
   imgData.append("file", image);

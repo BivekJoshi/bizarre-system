@@ -32,7 +32,7 @@ const CustomerTableCardView = ({ data }) => {
         >
             <Box display="flex" justifyContent="space-between" alignItems="center">
                 <Typography variant="h6" color="primary">
-                    Table {data?.tableNumber}
+                  <b>Table {data?.tableNumber}</b> 
                 </Typography>
                 <Chip
                     label={data?.status}

@@ -12,6 +12,8 @@ import { useGetItem } from "../../../hooks/item/useItem";
 import { useItemForm } from "../../../hooks/item/Item/useItemForm";
 import { useSelector } from "react-redux";
 import ItemCardView from "./ItemCardView";
+import EditItem from "./EditItem";
+import { DOC_URL } from "../../../api/axiosInterceptor";
 
 const Item = () => {
   const theme = useTheme();
@@ -25,7 +27,10 @@ const Item = () => {
 
   // const { mutate } = useDeleteBranch({ rowData });
 
-  const onClose = () => { setIsAddModal(false); setIsEditModalOpen(false) };
+  const onClose = () => {
+    setIsAddModal(false);
+    setIsEditModalOpen(false);
+  };
   const { formik, loading } = useItemForm({ onClose, rowData });
 
   const deleteRow = (row) => {
@@ -40,6 +45,23 @@ const Item = () => {
 
   const columns = useMemo(
     () => [
+      {
+        id: nanoid(),
+        accessorKey: "itemImageUrl",
+        header: "Image",
+        Cell: ({ cell }) => {
+          const imageUrl = cell.getValue();
+          return (
+            <div style={{ width: "100px", height: "100px" }}>
+              <img
+                src={DOC_URL + imageUrl}
+                alt="Image"
+                style={{ width: "100%", height: "100%" }}
+              />
+            </div>
+          );
+        },
+      },
       {
         id: nanoid(),
         accessorKey: "name",
@@ -209,7 +231,7 @@ const Item = () => {
           enableAddPhoto={true}
           formComponent={
             <>
-              <AddItem formik={formik} />
+              <EditItem formik={formik} rowData={rowData} />
             </>
           }
           showButton={true}

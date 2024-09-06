@@ -173,8 +173,8 @@ const RenderInput = ({
                     ? "text"
                     : "password"
                   : passwordProps?.showPassword
-                    ? "text"
-                    : "password"
+                  ? "text"
+                  : "password"
               }
               sx={
                 element?.extraInfo && element?.extraLabel
@@ -185,14 +185,15 @@ const RenderInput = ({
                 endAdornment: (
                   <InputAdornment position="end">
                     <Tooltip
-                      title={`${isConfirmPassword
+                      title={`${
+                        isConfirmPassword
                           ? passwordProps?.showConfirmPassword
                             ? "Hide"
                             : "Show"
                           : passwordProps?.showPassword
-                            ? "Hide"
-                            : "Show"
-                        } Password`}
+                          ? "Hide"
+                          : "Show"
+                      } Password`}
                     >
                       <IconButton
                         aria-label="toggle password visibility"
@@ -209,8 +210,8 @@ const RenderInput = ({
                             ? element?.iconEnd1
                             : element?.iconEnd2
                           : passwordProps?.showPassword
-                            ? element?.iconEnd1
-                            : element?.iconEnd2}
+                          ? element?.iconEnd1
+                          : element?.iconEnd2}
                       </IconButton>
                     </Tooltip>
                   </InputAdornment>
@@ -564,7 +565,7 @@ const RenderInput = ({
                     disabled={
                       element.name === "accountStatementPeriod" &&
                       formik.values.isStandingInstructionForAutomaticTxn ===
-                      "false"
+                        "false"
                     }
                   />
                 ))}
@@ -679,8 +680,6 @@ const RenderInput = ({
             </div> */}
           </div>
         );
-      case "documentUpload":
-        return <DropZoneUploadFile title={element?.title} element={element} />;
       default:
         return <TextField name={element?.name} label={element?.label} />;
     }

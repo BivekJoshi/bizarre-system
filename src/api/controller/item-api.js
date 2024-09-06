@@ -32,3 +32,18 @@ export const addItemChangeStatus = async (formData) => {
   const data = await axiosInstance.post(`${ITEM}/change-status`, formData);
   return data;
 };
+
+/*_____________________________UPLOAD ITEM IMAGAGE______________________________________________ */
+export const addUploadItemImage = async (formData) => {
+  const imgData = new FormData();
+
+  imgData.append("file", formData.multipartFile);
+  imgData.append("id", formData?.id);
+
+  const { data } = await axiosInstance.post(`${ITEM}/upload-image`, imgData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return data;
+};

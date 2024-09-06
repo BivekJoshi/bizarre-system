@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Box, Typography, Paper, Grid, Button, Alert } from "@mui/material";
-import ImageSelection from "../Camera/ImageSelection";
+import ImageSelectionUpload from "./ImageSelectionUpload";
 
-const DropZoneUploadFile = ({onClose}) => {
+const DropZoneUploadFile = ({ rowData }) => {
   const [image, setImage] = useState(null);
   const [error, setError] = useState("");
 
@@ -94,10 +94,10 @@ const DropZoneUploadFile = ({onClose}) => {
 
       {image && (
         <Box sx={{ mt: 2 }}>
-          <ImageSelection
+          <ImageSelectionUpload
             selectedImage={image}
             isUploaded={true}
-            onClose={onClose}
+            rowDataId={rowData?.id}
           />
           <Button
             variant="outlined"

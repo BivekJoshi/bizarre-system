@@ -1,9 +1,16 @@
 import React from "react";
-import { Paper, Typography, Grid, Button, IconButton, Box } from "@mui/material";
+import {
+  Paper,
+  Typography,
+  Grid,
+  Button,
+  IconButton,
+  Box,
+} from "@mui/material";
 import { AddShoppingCart, FavoriteBorder } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../../redux/Slice/cartSlice";
-// import { addToCart } from "../../../redux/Slice/cartSlice";
+import { DOC_URL } from "../../../api/axiosInterceptor";
 
 const ItemCardView = ({ data }) => {
   const dispatch = useDispatch();
@@ -18,7 +25,11 @@ const ItemCardView = ({ data }) => {
         <Grid item xs={12}>
           <div style={{ width: "100%", height: "150px" }}>
             <img
-              src="https://via.placeholder.com/150"
+              src={
+                data?.itemImageUrl
+                  ? DOC_URL + data?.itemImageUrl
+                  : "https://via.placeholder.com/150"
+              }
               alt="Product"
               style={{
                 width: "100%",
@@ -76,4 +87,4 @@ const ItemCardView = ({ data }) => {
   );
 };
 
-export default ItemCardView
+export default ItemCardView;
