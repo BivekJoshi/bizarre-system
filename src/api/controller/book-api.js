@@ -8,9 +8,13 @@ export const addBook = async (formData) => {
 };
 
 /*________________________GET_____________________________________*/
-export const getBook = async () => {
-  const { data } = await axiosInstance.get(`${BOOK}/find`);
-  return data?.data;
+export const getBook = async (pageNumber, pageSize) => {
+  if (pageNumber && pageSize) {
+    const { data } = await axiosInstance.get(
+      `${BOOK}/find?pageNumber=${pageNumber}&pageSize=${pageSize}`
+    );
+    return data?.data;
+  }
 };
 
 /*________________________GET_BY_ID_____________________________________*/

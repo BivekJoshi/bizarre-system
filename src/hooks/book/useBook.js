@@ -10,12 +10,16 @@ import {
 import { getErrorMessage } from "../../utils/getErrorMessage";
 
 /*________________________GET_____________________________________*/
-export const useGetBook = () => {
-  return useQuery(["getBook"], () => getBook(), {
-    cacheTime: 10000,
-    refetchInterval: false,
-    refetchOnWindowFocus: false,
-  });
+export const useGetBook = (pageNumber, pageSize) => {
+  return useQuery(
+    ["getBook", pageNumber, pageSize],
+    () => getBook(pageNumber, pageSize),
+    {
+      cacheTime: 10000,
+      refetchInterval: false,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
 /*________________________GET_BY_ID_____________________________________*/

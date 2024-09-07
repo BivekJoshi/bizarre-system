@@ -10,15 +10,21 @@ import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import AddBook from "./AddBook";
 import { useDeleteBook, useGetBook } from "../../../hooks/book/useBook";
 import { useBookForm } from "../../../hooks/book/Book/useBookForm";
+import { useSelector } from "react-redux";
+import { CustomPagination } from "../../../components/Pagination/CustomPagination";
 
 const Book = () => {
   const theme = useTheme();
-  const { data } = useGetBook();
+  const view = useSelector((state) => state?.view?.mode);
 
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [rowData, setRowData] = useState(null);
   const [isAddModalOpen, setIsAddModal] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const { data } = useGetBook(pageNumber, pageSize);
 
   const { mutate } = useDeleteBook({ rowData });
 
@@ -79,6 +85,38 @@ const Book = () => {
     []
   );
 
+  const renderView = () => {
+    if (view === "table") {
+      return (
+        <CustomTable
+          columns={columns}
+          data={data?.content}
+          overFlow={"scroll"}
+          width={"100%"}
+          enablePagination={true}
+          enableRowNumbers
+          enableColumnActions
+          enableDelete
+          enableEditing={true}
+          handleDeleteRow={deleteRow}
+          handleEdit={editRow}
+          delete
+          edit
+        />
+      );
+    } else {
+      return (
+        <Grid container spacing={2}>
+          {data?.content?.map((item, index) => (
+            <Grid item xs={12} md={4} lg={3} sm={12} key={index}>
+              {/* <CustomerTableCardView data={item} /> */}
+            </Grid>
+          ))}
+        </Grid>
+      );
+    }
+  };
+
   return (
     <>
       <Box
@@ -114,22 +152,16 @@ const Book = () => {
           marginTop: ".1rem",
         }}
       >
-        <CustomTable
-          columns={columns}
-          data={data?.content}
-          overFlow={"scroll"}
-          width={"100%"}
-          enablePagination={true}
-          enableRowNumbers
-          enableColumnActions
-          enableDelete
-          enableEditing={true}
-          handleDeleteRow={deleteRow}
-          handleEdit={editRow}
-          delete
-          edit
-        />
+        {renderView()}
       </Box>
+
+      <CustomPagination
+        totalPages={data?.totalPages || 1}
+        currentPage={pageNumber}
+        onPageChange={setPageNumber}
+        rowsPerPage={pageSize}
+        onRowsPerPageChange={setPageSize}
+      />
 
       <FormModal
         open={isAddModalOpen}
