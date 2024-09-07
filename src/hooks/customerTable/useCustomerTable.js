@@ -9,12 +9,17 @@ import {
 import { getErrorMessage } from "../../utils/getErrorMessage";
 
 /*________________________GET_____________________________________*/
-export const useGetCustomerTable = () => {
-  return useQuery(["getCustomerTable"], () => getCustomerTable(), {
-    cacheTime: 10000,
-    refetchInterval: false,
-    refetchOnWindowFocus: false,
-  });
+export const useGetCustomerTable = (pageNumber, pageSize) => {
+  return useQuery(
+    ["getCustomerTable", pageNumber, pageSize],
+    () => getCustomerTable(pageNumber, pageSize),
+    {
+      cacheTime: 10000,
+      refetchInterval: false,
+      refetchOnWindowFocus: false,
+      keepPreviousData: true,
+    }
+  );
 };
 
 /*________________________GET_BY_ID_____________________________________*/

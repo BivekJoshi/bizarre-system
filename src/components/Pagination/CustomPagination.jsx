@@ -1,37 +1,85 @@
-import * as React from "react";
-import TablePagination from "@mui/material/TablePagination";
-import Box from "@mui/material/Box";
-import { Pagination } from "@mui/material";
+import React from "react";
+import PropTypes from "prop-types";
+import {
+  Pagination,
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  useTheme,
+} from "@mui/material";
 
-const CustomPagination = ({
-  totalRows = 100,
-  rowsPerPageOptions = [10, 25, 50],
-  initialPage = 0,
-  initialRowsPerPage = 10,
+export const CustomPagination = ({
+  totalPages,
+  currentPage,
   onPageChange,
+  rowsPerPageOptions = [10, 25, 50, 100, 200],
+  rowsPerPage,
   onRowsPerPageChange,
-  showFirstButton = true,
-  showLastButton = true,
-  ...props
 }) => {
-  const [page, setPage] = React.useState(initialPage);
-  const [rowsPerPage, setRowsPerPage] = React.useState(initialRowsPerPage);
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-    if (onPageChange) onPageChange(newPage);
+  const theme = useTheme();
+  const handlePageChange = (event, newPage) => {
+    onPageChange(newPage);
+    window.scrollTo(0, 0);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    const newRowsPerPage = parseInt(event.target.value, 10);
-    setRowsPerPage(newRowsPerPage);
-    setPage(0);
-    if (onRowsPerPageChange) onRowsPerPageChange(newRowsPerPage);
+  const handleRowsPerPageChange = (event) => {
+    onRowsPerPageChange(event.target.value);
   };
+
+  const normalizedCurrentPage = Math.min(
+    Math.max(currentPage, 1),
+    totalPages || 1
+  );
 
   return (
-    <Pagination count={10} color="primary" />
+    <Box
+      display="flex"
+      flexWrap="wrap"
+      justifyContent="space-between"
+      alignItems="center"
+      mt={3}
+      sx={{
+        backgroundColor: theme.palette.background.default,
+        padding: "1rem",
+      }}
+    >
+      <div></div>
+      <Pagination
+        count={totalPages || 1}
+        page={normalizedCurrentPage}
+        onChange={handlePageChange}
+        color="primary"
+        showFirstButton
+        showLastButton
+        aria-label="Pagination"
+      />
+      <FormControl variant="outlined" size="small">
+        <InputLabel>Rows per page</InputLabel>
+        <Select
+          value={rowsPerPage}
+          onChange={handleRowsPerPageChange}
+          label="Rows per page"
+          aria-label="Rows per page"
+          sx={{ width: "200px" }}
+        >
+          {rowsPerPageOptions.map((option) => (
+            <MenuItem key={option} value={option}>
+              {option}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </Box>
   );
 };
 
-export default CustomPagination;
+CustomPagination.propTypes = {
+  totalPages: PropTypes.number.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+  rowsPerPageOptions: PropTypes.arrayOf(PropTypes.number),
+  rowsPerPage: PropTypes.number.isRequired,
+  onRowsPerPageChange: PropTypes.func.isRequired,
+};

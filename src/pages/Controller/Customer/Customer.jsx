@@ -9,20 +9,26 @@ import FormModal from "../../../components/Modal/FormModal";
 import CustomTable from "../../../components/CustomTable/CustomTable";
 import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
 import { useGetCustomer } from "../../../hooks/customer/useCustomer";
+import { useSelector } from "react-redux";
+import { CustomPagination } from "../../../components/Pagination/CustomPagination";
 
 const Customer = () => {
   const theme = useTheme();
-  const { data } = useGetCustomer();
+  const view = useSelector((state) => state?.view?.mode);
 
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [rowData, setRowData] = useState(null);
   const [isAddModalOpen, setIsAddModal] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
+  const { data } = useGetCustomer(pageNumber, pageSize);
+
   // const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useCustomerForm({onClose});
+  const { formik, loading } = useCustomerForm({ onClose });
 
   const deleteRow = (row) => {
     setRowData(row?.original?.id);
@@ -91,6 +97,38 @@ const Customer = () => {
     []
   );
 
+  const renderView = () => {
+    if (view === "table") {
+      return (
+        <CustomTable
+          columns={columns}
+          data={data?.content}
+          overFlow={"scroll"}
+          width={"100%"}
+          enablePagination={false}
+          enableRowNumbers
+          enableColumnActions
+          // enableDelete
+          enableEditing={true}
+          // handleDeleteRow={deleteRow}
+          // handleEdit={editRow}
+          // delete
+          edit
+        />
+      );
+    } else {
+      return (
+        <Grid container spacing={2}>
+          {data?.content?.map((item, index) => (
+            <Grid item xs={12} md={4} lg={3} sm={12} key={index}>
+              {/* <CustomerTableCardView data={item} /> */}
+            </Grid>
+          ))}
+        </Grid>
+      );
+    }
+  };
+
   return (
     <>
       <Box
@@ -126,21 +164,16 @@ const Customer = () => {
           marginTop: ".1rem",
         }}
       >
-        <CustomTable
-          columns={columns}
-          data={data?.content}
-          overFlow={"scroll"}
-          width={"100%"}
-          enableRowNumbers
-          enableColumnActions
-          // enableDelete
-          enableEditing={true}
-          // handleDeleteRow={deleteRow}
-          // handleEdit={editRow}
-          // delete
-          edit
-        />
+        {renderView()}
       </Box>
+
+      <CustomPagination
+        totalPages={data?.totalPages || 1}
+        currentPage={pageNumber}
+        onPageChange={setPageNumber}
+        rowsPerPage={pageSize}
+        onRowsPerPageChange={setPageSize}
+      />
 
       <FormModal
         open={isAddModalOpen}

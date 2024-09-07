@@ -8,9 +8,13 @@ export const addOrder = async (formData) => {
 };
 
 /*________________________GET ALL_____________________________________*/
-export const getOrder = async () => {
-  const { data } = await axiosInstance.get(`${ORDER}/find`);
-  return data?.data;
+export const getOrder = async (pageNumber, pageSize) => {
+  if (pageNumber && pageSize) {
+    const { data } = await axiosInstance.get(
+      `${ORDER}/find?pageNumber=${pageNumber}&pageSize=${pageSize}`
+    );
+    return data?.data;
+  }
 };
 
 /*________________________GET SERVED_____________________________________*/

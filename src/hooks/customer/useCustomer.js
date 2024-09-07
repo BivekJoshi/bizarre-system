@@ -9,12 +9,16 @@ import {
 import { getErrorMessage } from "../../utils/getErrorMessage";
 
 /*________________________GET_____________________________________*/
-export const useGetCustomer = () => {
-  return useQuery(["getCustomer"], () => getCustomer(), {
-    cacheTime: 10000,
-    refetchInterval: false,
-    refetchOnWindowFocus: false,
-  });
+export const useGetCustomer = (pageNumber, pageSize) => {
+  return useQuery(
+    ["getCustomer", pageNumber, pageSize],
+    () => getCustomer(pageNumber, pageSize),
+    {
+      cacheTime: 10000,
+      refetchInterval: false,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
 /*________________________GET_BY_ID_____________________________________*/

@@ -2,9 +2,13 @@ import { ITEM } from "../api";
 import { axiosInstance } from "../axiosInterceptor";
 
 /*________________________GET_____________________________________*/
-export const getItem = async () => {
-  const { data } = await axiosInstance.get(`${ITEM}/find`);
-  return data?.data;
+export const getItem = async (pageNumber, pageSize) => {
+  if (pageNumber && pageSize) {
+    const { data } = await axiosInstance.get(
+      `${ITEM}/find?pageNumber=${pageNumber}&pageSize=${pageSize}`
+    );
+    return data?.data;
+  }
 };
 
 /*________________________GET_BY_ID_____________________________________*/

@@ -12,12 +12,16 @@ import {
 import { getErrorMessage } from "../../utils/getErrorMessage";
 
 /*________________________GET ALL_____________________________________*/
-export const useGetOrder = () => {
-  return useQuery(["getOrder"], () => getOrder(), {
-    cacheTime: 10000,
-    refetchInterval: false,
-    refetchOnWindowFocus: false,
-  });
+export const useGetOrder = (pageNumber, pageSize) => {
+  return useQuery(
+    ["getOrder", pageNumber, pageSize],
+    () => getOrder(pageNumber, pageSize),
+    {
+      cacheTime: 10000,
+      refetchInterval: false,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
 /*________________________GET_BY_ID_____________________________________*/
@@ -66,7 +70,7 @@ export const useAddOrder = ({ onSuccess }) => {
       queryClient.invalidateQueries("getOrder");
     },
     onError: (err, _variables, _context) => {
-      toast.error(getErrorMessage(err));      
+      toast.error(getErrorMessage(err));
     },
   });
 };

@@ -158,6 +158,7 @@ const Item = () => {
             data={data}
             overFlow={"scroll"}
             width={"100%"}
+            enablePagination={true}
             enableRowNumbers
             enableColumnActions
             enableDelete

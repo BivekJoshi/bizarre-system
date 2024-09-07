@@ -12,12 +12,16 @@ import { getErrorMessage } from "../../utils/getErrorMessage";
 import { useFormik } from "formik";
 
 /*________________________GET_____________________________________*/
-export const useGetItem = () => {
-  return useQuery(["getItem"], () => getItem(), {
-    cacheTime: 10000,
-    refetchInterval: false,
-    refetchOnWindowFocus: false,
-  });
+export const useGetItem = (pageNumber, pageSize) => {
+  return useQuery(
+    ["getItem", pageNumber, pageSize],
+    () => getItem(pageNumber, pageSize),
+    {
+      cacheTime: 10000,
+      refetchInterval: false,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
 /*________________________GET_BY_ID_____________________________________*/

@@ -1,45 +1,52 @@
 import { BATCH } from "../api";
 import { axiosInstance } from "../axiosInterceptor";
 
-/*___________________________GET_____________________________________*/
-export const getReward = async () => {
-  const { data } = await axiosInstance.get(`${BATCH}/getall`);
+/*___________________________GET_By_ID_____________________________________*/
+export const getBatchByTableId = async (tableId) => {
+  if (tableId) {
+    const { data } = await axiosInstance.get(`${BATCH}/find/${tableId}`);
+    return data;
+  }
+};
+
+/*___________________________SWITCH TABLE_____________________________________*/
+export const switchTableBatch = async (formData) => {
+  const data = await axiosInstance.post(`${BATCH}/switch-table`, formData);
   return data;
 };
 
-// /*___________________________GET_By_ID_____________________________________*/
-// export const getRewardId = async (id) => {
-//   if (id) {
-//     const { data } = await axiosInstance.get(
-//       /reward/getbyid/${id}
-//     );
-//     return data;
-//   }
-// };
+/*___________________________SPLIT PAY_____________________________________*/
+export const splitPayBatch = async (formData) => {
+  const data = await axiosInstance.post(`${BATCH}/switch-table`, formData);
+  return data;
+};
 
-// /*___________________________POST_____________________________________*/
-// export const addReward = async (formData) => {
-//   const data = await axiosInstance.post(
-//     /reward/create,
-//     formData
-//   );
-//   return data;
-// };
+/*___________________________NORMAL PAY_____________________________________*/
+export const normalPayBatch = async (formData) => {
+  const data = await axiosInstance.post(`${BATCH}/switch-table`, formData);
+  return data;
+};
 
-// /*___________________________PATCH_____________________________________*/
-// export const editReward = async (formData) => {
-//   const data = await axiosInstance.patch(
-//     /reward/update,
-//     formData
-//   );
-//   return data;
-// };
-// /*___________________________DELETE_____________________________________*/
-// export const deleteReward = async (id) => {
-//   if (id) {
-//     const data = await axiosInstance.delete(
-//       /reward/delete/${id}
-//     );
-//     return data;
-//   }
-// };
+/*___________________________GENERATE SPLIT BILL_____________________________________*/
+export const generateSplitBillBatch = async (formData) => {
+  const data = await axiosInstance.post(`${BATCH}/switch-table`, formData);
+  return data;
+};
+
+/*___________________________GENERATE ROULETTE BILL_____________________________________*/
+export const generateRouletteBillBatch = async (formData) => {
+  const data = await axiosInstance.post(`${BATCH}/switch-table`, formData);
+  return data;
+};
+
+/*___________________________GENERATE NORMAL BILL_____________________________________*/
+export const generateNormalBillBatch = async (formData) => {
+  const data = await axiosInstance.post(`${BATCH}/switch-table`, formData);
+  return data;
+};
+
+/*___________________________BYPASS PAYMEN_____________________________________*/
+export const bypassPaymentBatch = async (formData) => {
+  const data = await axiosInstance.post(`${BATCH}/switch-table`, formData);
+  return data;
+};

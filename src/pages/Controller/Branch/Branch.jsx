@@ -9,7 +9,7 @@ import { nanoid } from "nanoid";
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import CustomPagination from "../../../components/Pagination/CustomPagination";
+// import CustomPagination from "../../../components/Pagination/CustomPagination";
 
 const Branch = () => {
   const theme = useTheme();
@@ -105,6 +105,7 @@ const Branch = () => {
           data={data?.content}
           overFlow={"scroll"}
           width={"100%"}
+          enablePagination={true}
           enableRowNumbers
           enableColumnActions
           enableDelete
@@ -116,7 +117,7 @@ const Branch = () => {
         />
       </Box>
 
-      <CustomPagination />
+      {/* <CustomPagination /> */}
       
       <FormModal
         open={isAddModalOpen}

@@ -22,17 +22,18 @@ export const addBranchOwnerMember = async (formData) => {
 
 /*_____________________________POST MEMBER BARISTA_______________________________________________ */
 export const addBaristaMember = async (formData) => {
-  const data = await axiosInstance.post(
-    `${MEMBER}/barista/save`,
-    formData
-  );
+  const data = await axiosInstance.post(`${MEMBER}/barista/save`, formData);
   return data;
 };
 
 /*________________________GET_____________________________________*/
-export const getMember = async () => {
-  const { data } = await axiosInstance.get(`${MEMBER}/find`);
-  return data?.data;
+export const getMember = async (pageNumber, pageSize) => {
+  if (pageNumber && pageSize) {
+    const { data } = await axiosInstance.get(
+      `${MEMBER}/find?pageNumber=${pageNumber}&pageSize=${pageSize}`
+    );
+    return data?.data;
+  }
 };
 
 /*________________________GET_BY_ID_____________________________________*/

@@ -80,6 +80,7 @@ const Setting = () => {
             data={data?.content}
             overFlow={"scroll"}
             width={"100%"}
+            enablePagination={true}
             enableRowNumbers
           />
         ) : (

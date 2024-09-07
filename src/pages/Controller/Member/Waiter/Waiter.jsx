@@ -11,17 +11,20 @@ import { useWaiterMemberForm } from "../../../../hooks/member/Member/WaiterMembe
 import ConfirmationModal from "../../../../components/Modal/ConfirmationModal";
 import { useSelector } from "react-redux";
 import WaiterCardView from "./WaiterCardView";
+import { CustomPagination } from "../../../../components/Pagination/CustomPagination";
 
 const Waiter = () => {
   const theme = useTheme();
   const view = useSelector((state) => state?.view?.mode);
 
-  const { data } = useGetMember();
-
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [rowData, setRowData] = useState(null);
   const [isAddModalOpen, setIsAddModal] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const { data } = useGetMember(pageNumber, pageSize);
 
   // const { mutate } = useDeleteBranch({ rowData });
 
@@ -113,6 +116,43 @@ const Waiter = () => {
     []
   );
 
+  const renderView = () => {
+    if (view === "table") {
+      return (
+        <CustomTable
+          columns={columns}
+          data={data?.content}
+          overFlow={"scroll"}
+          width={"100%"}
+          enablePagination={false}
+          enableRowNumbers
+          enableColumnActions
+          // enableDelete
+          // handleDeleteRow={deleteRow}
+          // delete
+          enableDelete
+          enableEditing={true}
+          handleDeleteRow={deleteRow}
+          handleEdit={editRow}
+          delete
+          edit
+        />
+      );
+    } else {
+      return (
+        <Grid container spacing={2}>
+          {data?.content?.map((data, index) => {
+            return (
+              <Grid item xs={12} md={4} lg={4} sm={12} key={index}>
+                <WaiterCardView data={data} />
+              </Grid>
+            );
+          })}
+        </Grid>
+      );
+    }
+  };
+
   return (
     <>
       <Box
@@ -135,7 +175,7 @@ const Waiter = () => {
           variant="outlined"
           onClick={() => {
             formik.resetForm();
-            setIsAddModal(true); 
+            setIsAddModal(true);
           }}
           startIcon={<ControlPointRoundedIcon />}
         >
@@ -151,37 +191,16 @@ const Waiter = () => {
           marginTop: ".1rem",
         }}
       >
-        {view === "table" ? (
-          <CustomTable
-            columns={columns}
-            data={data?.content}
-            overFlow={"scroll"}
-            width={"100%"}
-            enableRowNumbers
-            enableColumnActions
-            // enableDelete
-            // handleDeleteRow={deleteRow}
-            // delete
-
-            enableDelete
-            enableEditing={true}
-            handleDeleteRow={deleteRow}
-            handleEdit={editRow}
-            delete
-            edit
-          />
-        ) : (
-          <Grid container spacing={2}>
-            {data?.content?.map((data, index) => {
-              return (
-                <Grid item xs={12} md={4} lg={4} sm={12} key={index}>
-                  <WaiterCardView data={data} />
-                </Grid>
-              );
-            })}
-          </Grid>
-        )}
+        {renderView()}
       </Box>
+
+      <CustomPagination
+        totalPages={data?.totalPages || 1}
+        currentPage={pageNumber}
+        onPageChange={setPageNumber}
+        rowsPerPage={pageSize}
+        onRowsPerPageChange={setPageSize}
+      />
 
       <FormModal
         open={isAddModalOpen}

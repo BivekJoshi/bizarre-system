@@ -1,46 +1,47 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useCallback } from "react";
 import { Box, Button, Grid, Typography, useTheme } from "@mui/material";
 import { nanoid } from "nanoid";
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import { useCustomerForm } from "../../../hooks/customer/Customer/useCustomerForm";
+import { useCustomerTableForm } from "../../../hooks/customerTable/CustomerTable/useCustomerTable";
 import FormModal from "../../../components/Modal/FormModal";
 import CustomTable from "../../../components/CustomTable/CustomTable";
 import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
-import { useGetCustomer } from "../../../hooks/customer/useCustomer";
-import CustomerTableForm from "./CustomerTableForm";
-import { useCustomerTableForm } from "../../../hooks/customerTable/CustomerTable/useCustomerTable";
 import { useGetCustomerTable } from "../../../hooks/customerTable/useCustomerTable";
 import { useSelector } from "react-redux";
 import CustomerTableCardView from "./CustomerTableCardView";
+import { CustomPagination } from "../../../components/Pagination/CustomPagination";
+import CustomerTableForm from "./CustomerTableForm";
 
 const CustomerTable = () => {
   const theme = useTheme();
   const view = useSelector((state) => state?.view?.mode);
-  const { data } = useGetCustomerTable();
 
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [rowData, setRowData] = useState(null);
-  const [isAddModalOpen, setIsAddModal] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  // const { mutate } = useDeleteCustomerTable({ rowData });
+  const { data } = useGetCustomerTable(pageNumber, pageSize);
 
   const onClose = () => {
-    setIsAddModal(false);
+    setIsAddModalOpen(false);
     setIsEditModalOpen(false);
   };
+
   const { formik, loading } = useCustomerTableForm({ onClose, rowData });
 
-  const deleteRow = (row) => {
+  const deleteRow = useCallback((row) => {
     setRowData(row?.original?.id);
     setIsDeleteModalOpen(true);
-  };
+  }, []);
 
-  const editRow = (row) => {
+  const editRow = useCallback((row) => {
     setIsEditModalOpen(true);
     setRowData(row?.original);
-  };
+  }, []);
 
   const columns = useMemo(
     () => [
@@ -62,6 +63,35 @@ const CustomerTable = () => {
     []
   );
 
+  const renderView = () => {
+    if (view === "table") {
+      return (
+        <CustomTable
+          columns={columns}
+          data={data?.content || []}
+          overFlow={"scroll"}
+          width={"100%"}
+          enablePagination={false}
+          enableRowNumbers
+          enableColumnActions
+          enableEditing={true}
+          handleEdit={editRow}
+          edit
+        />
+      );
+    } else {
+      return (
+        <Grid container spacing={2}>
+          {data?.content?.map((item, index) => (
+            <Grid item xs={12} md={4} lg={3} sm={12} key={index}>
+              <CustomerTableCardView data={item} />
+            </Grid>
+          ))}
+        </Grid>
+      );
+    }
+  };
+
   return (
     <>
       <Box
@@ -82,14 +112,13 @@ const CustomerTable = () => {
         </Typography>
         <Button
           variant="outlined"
-          onClick={() => setIsAddModal(true)}
+          onClick={() => setIsAddModalOpen(true)}
           startIcon={<ControlPointRoundedIcon />}
         >
           Add Customer Table
         </Button>
       </Box>
 
-      <br />
       <Box
         sx={{
           backgroundColor: theme.palette.background.default,
@@ -97,48 +126,25 @@ const CustomerTable = () => {
           marginTop: ".1rem",
         }}
       >
-        {view === "table" ? (
-          <CustomTable
-            columns={columns}
-            data={data?.content}
-            overFlow={"scroll"}
-            width={"100%"}
-            enableRowNumbers
-            enableColumnActions
-            // enableDelete
-            enableEditing={true}
-            // handleDeleteRow={deleteRow}
-            handleEdit={editRow}
-            // delete
-            edit
-          />
-        ) : (
-          <Grid container spacing={2}>
-            {data?.content?.map((data, index) => {
-              return (
-                <Grid item xs={12} md={4} lg={3} sm={12} key={index}>
-                  <CustomerTableCardView data={data} />
-                </Grid>
-              );
-            })}
-          </Grid>
-        )}
+        {renderView()}
       </Box>
-
+      <CustomPagination
+        totalPages={data?.totalPages || 1}
+        currentPage={pageNumber}
+        onPageChange={setPageNumber}
+        rowsPerPage={pageSize}
+        onRowsPerPageChange={setPageSize}
+      />
       <FormModal
         open={isAddModalOpen}
-        onClose={() => setIsAddModal(false)}
+        onClose={() => setIsAddModalOpen(false)}
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}
         header={"Add Customer Table"}
         formik={formik}
         loading={loading}
-        formComponent={
-          <>
-            <CustomerTableForm formik={formik} />
-          </>
-        }
+        formComponent={<CustomerTableForm formik={formik} />}
         showButton={true}
       />
       <FormModal
@@ -150,22 +156,17 @@ const CustomerTable = () => {
         header={"Edit Customer Table"}
         formik={formik}
         loading={loading}
-        formComponent={
-          <>
-            <CustomerTableForm formik={formik} />
-          </>
-        }
+        formComponent={<CustomerTableForm formik={formik} />}
         showButton={true}
       />
       <ConfirmationModal
-        disagreeLabel={"Yes, Delete !"}
+        disagreeLabel={"Yes, Delete!"}
         agreeLabel={"No, Keep It."}
         alertTitle={"Delete Alert"}
         header={"You're going to delete this Id?"}
-        confirmhead={"Are you sure ?"}
+        confirmhead={"Are you sure?"}
         handleModalClose={() => setIsDeleteModalOpen(false)}
         isModalOpen={isDeleteModalOpen}
-        // handleSave={() => mutate(rowData)}
         icon={
           <DeleteRoundedIcon
             sx={{

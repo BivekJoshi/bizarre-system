@@ -12,12 +12,16 @@ import { toast } from "react-toastify";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 
 /*________________________GET_____________________________________*/
-export const useGetMember = () => {
-  return useQuery(["getMember"], () => getMember(), {
-    cacheTime: 10000,
-    refetchInterval: false,
-    refetchOnWindowFocus: false,
-  });
+export const useGetMember = (pageNumber, pageSize) => {
+  return useQuery(
+    ["getMember", pageNumber, pageSize],
+    () => getMember(pageNumber, pageSize),
+    {
+      cacheTime: 10000,
+      refetchInterval: false,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
 /*________________________GET_BY_ID_____________________________________*/

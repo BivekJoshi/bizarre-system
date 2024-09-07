@@ -8,9 +8,13 @@ export const addCustomerTable = async (formData) => {
 };
 
 /*________________________GET_____________________________________*/
-export const getCustomerTable = async () => {
-  const { data } = await axiosInstance.get(`${CUSTOMER_TABLE}/find`);
-  return data?.data;
+export const getCustomerTable = async (pageNumber, pageSize) => {
+  if (pageNumber && pageSize) {
+    const { data } = await axiosInstance.get(
+      `${CUSTOMER_TABLE}/find?pageNumber=${pageNumber}&pageSize=${pageSize}`
+    );
+    return data?.data;
+  }
 };
 
 /*________________________GET_BY_ID_____________________________________*/

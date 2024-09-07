@@ -41,7 +41,7 @@ const CustomTable = (props) => {
         enableRowVirtualization
         headerTitle={props?.title || "My Table Title"}
         enableStickyHeader
-        enablePagination={props?.manualPagination}
+        enablePagination={props?.enablePagination || false}
         paginationPageSize={props?.pageSize || 10}
         enableEditing={props.enableEditing || false}
         editingMode={props.editingMode}

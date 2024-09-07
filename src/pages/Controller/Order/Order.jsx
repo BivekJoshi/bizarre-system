@@ -10,27 +10,22 @@ import { useGetOrder } from "../../../hooks/order/useOrder";
 import FormModal from "../../../components/Modal/FormModal";
 import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
 import CustomTable from "../../../components/CustomTable/CustomTable";
+import SwitchTableForm from "../Batch/SwitchTableForm";
+import { CustomPagination } from "../../../components/Pagination/CustomPagination";
 
 const Order = () => {
   const theme = useTheme();
   const view = useSelector((state) => state?.view?.mode);
-  const { data: orderData } = useGetOrder();
-  console.log("🚀 ~ Order ~ orderData:", orderData?.content)
 
-  const [rowData, setRowData] = useState(null);
-  const [isAddModalOpen, setIsAddModal] = useState(true);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [isAddModalOpen, setIsAddModal] = useState(false);
+  const [isSwitchTableModalOpen, setIsSwitchTableModalOpen] = useState(false);
 
-  // const { mutate } = useDeleteBranch({ rowData });
+  const { data: orderData } = useGetOrder(pageNumber, pageSize);
 
   const onClose = () => setIsAddModal(false);
   const { formik, loading } = useOrderForm({ onClose });
-
-  // const deleteRow = (row) => {
-  //   setRowData(row?.original?.id);
-  //   setIsDeleteModalOpen(true);
-  // };
 
   const columns = useMemo(
     () => [
@@ -44,7 +39,7 @@ const Order = () => {
       {
         id: nanoid(),
         accessorKey: "batch.status",
-        header: "Gender",
+        header: "Status",
         maxWidth: 80,
         sortable: false,
       },
@@ -58,6 +53,35 @@ const Order = () => {
     ],
     []
   );
+
+  const renderView = () => {
+    if (view === "table") {
+      return (
+        <CustomTable
+          columns={columns}
+          data={orderData?.content}
+          overFlow={"scroll"}
+          width={"100%"}
+          enablePagination={false}
+          enableRowNumbers
+          enableColumnActions
+          enableEditing={true}
+          edit
+        />
+      );
+    } else {
+      return (
+        <Grid container spacing={2}>
+          {orderData?.content?.map((item, index) => (
+            <Grid item xs={12} md={4} lg={3} sm={12} key={index}>
+              {/* Replace with actual card view component */}
+              {/* <OrderCardView data={item} /> */}
+            </Grid>
+          ))}
+        </Grid>
+      );
+    }
+  };
 
   return (
     <>
@@ -77,13 +101,22 @@ const Order = () => {
         >
           Order
         </Typography>
-        <Button
-          variant="outlined"
-          onClick={() => setIsAddModal(true)}
-          startIcon={<ControlPointRoundedIcon />}
-        >
-          Place Order
-        </Button>
+        <div style={{ display: "flex", gap: "1rem" }}>
+          <Button
+            variant="contained"
+            onClick={() => setIsSwitchTableModalOpen(true)}
+            startIcon={<ControlPointRoundedIcon />}
+          >
+            Switch Table
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={() => setIsAddModal(true)}
+            startIcon={<ControlPointRoundedIcon />}
+          >
+            Place Order
+          </Button>
+        </div>
       </Box>
 
       <br />
@@ -94,34 +127,15 @@ const Order = () => {
           marginTop: ".1rem",
         }}
       >
-        {/* {view === "table" ? ( */}
-        <CustomTable
-          columns={columns}
-          data={orderData?.content}
-          overFlow={"scroll"}
-          width={"100%"}
-          enableRowNumbers
-          enableColumnActions
-          // enableDelete
-          enableEditing={true}
-          // handleDeleteRow={deleteRow}
-          // handleEdit={editRow}
-          // delete
-          edit
-        />
-        {/* ) : (
-        <Grid container spacing={2}>
-          {data?.content?.map((data, index) => {
-            return (
-              <Grid item xs={12} md={4} lg={4} sm={12} key={index}>
-                <BranchOwnerCardView data={data} />
-              </Grid>
-            );
-          })}
-        </Grid>
-      )} */}
+        {renderView()}
       </Box>
-
+      <CustomPagination
+        totalPages={orderData?.totalPages || 1}
+        currentPage={pageNumber}
+        onPageChange={setPageNumber}
+        rowsPerPage={pageSize}
+        onRowsPerPageChange={setPageSize}
+      />
       <FormModal
         open={isAddModalOpen}
         onClose={() => setIsAddModal(false)}
@@ -129,51 +143,21 @@ const Order = () => {
         height={"auto"}
         maxHeight={"80vh"}
         header={"Place Order"}
-        // formik={formik}
-        // loading={loading}
-        formComponent={
-          <>
-            <OrderForm />
-          </>
-        }
-        showButton={false}
-      />
-      {/* <FormModal
-        open={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
-        width={"70%"}
-        height={"auto"}
-        maxHeight={"80vh"}
-        header={"Edit Order"}
         formik={formik}
         loading={loading}
-        formComponent={
-          <>
-            <OrderForm formik={formik} />
-          </>
-        }
+        formComponent={<OrderForm formik={formik} />}
         showButton={true}
-      /> */}
-      {/* <ConfirmationModal
-        disagreeLabel={"Yes, Delete !"}
-        agreeLabel={"No, Keep It."}
-        alertTitle={"Delete Alert"}
-        header={"You're going to delete this Id?"}
-        confirmhead={"Are you sure ?"}
-        handleModalClose={() => setIsDeleteModalOpen(false)}
-        isModalOpen={isDeleteModalOpen}
-        // handleSave={() => mutate(rowData)}
-        icon={
-          <DeleteRoundedIcon
-            sx={{
-              backgroundColor: "#FFDDDC",
-              borderRadius: "50%",
-              fontSize: 36,
-              padding: "1rem",
-            }}
-          />
-        }
-      /> */}
+      />
+      <FormModal
+        open={isSwitchTableModalOpen}
+        onClose={() => setIsSwitchTableModalOpen(false)}
+        width={"30%"}
+        height={"auto"}
+        maxHeight={"80vh"}
+        header={"Switch Table"}
+        formComponent={<SwitchTableForm />}
+        showButton={false}
+      />
     </>
   );
 };
