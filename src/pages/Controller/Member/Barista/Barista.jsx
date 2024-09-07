@@ -126,7 +126,7 @@ const Barista = () => {
           {data?.content?.map((data, index) => {
             return (
               <Grid item xs={12} md={4} lg={4} sm={12} key={index}>
-                <CashierCardView data={data} />
+                <BaristaCardView data={data} />
               </Grid>
             );
           })}

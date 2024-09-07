@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import AddSetting from "./AddSetting";
 import { useGetSetting } from "../../../hooks/setting/useSetting";
 import { useSettingForm } from "../../../hooks/setting/Setting/useSettingForm";
+import SettingCardView from "./SettingCardView";
 
 const Setting = () => {
   const theme = useTheme();
@@ -39,6 +40,32 @@ const Setting = () => {
     []
   );
 
+  const renderView = () => {
+    if (view === "table") {
+      return (
+        <CustomTable
+          columns={columns}
+          data={data?.content}
+          overFlow={"scroll"}
+          width={"100%"}
+          enablePagination={true}
+          enableRowNumbers
+        />
+      );
+    } else {
+      return (
+        <Grid container spacing={2}>
+          {data?.content?.map((data, index) => {
+            return (
+              <Grid item xs={12} md={4} lg={4} sm={12} key={index}>
+                <SettingCardView data={data} />
+              </Grid>
+            );
+          })}
+        </Grid>
+      );
+    }
+  };
   return (
     <>
       <Box
@@ -74,26 +101,7 @@ const Setting = () => {
           marginTop: ".1rem",
         }}
       >
-        {view === "table" ? (
-          <CustomTable
-            columns={columns}
-            data={data?.content}
-            overFlow={"scroll"}
-            width={"100%"}
-            enablePagination={true}
-            enableRowNumbers
-          />
-        ) : (
-          <Grid container spacing={2}>
-            {/* {data?.content?.map((data, index) => {
-              return (
-                <Grid item xs={12} md={2} lg={2} sm={12} key={index}>
-                  <ItemCardView data={data} />
-                </Grid>
-              );
-            })} */}
-          </Grid>
-        )}
+        {renderView()}
       </Box>
 
       <FormModal

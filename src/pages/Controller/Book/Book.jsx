@@ -12,6 +12,7 @@ import { useDeleteBook, useGetBook } from "../../../hooks/book/useBook";
 import { useBookForm } from "../../../hooks/book/Book/useBookForm";
 import { useSelector } from "react-redux";
 import { CustomPagination } from "../../../components/Pagination/CustomPagination";
+import BookCardView from "./BookCardView";
 
 const Book = () => {
   const theme = useTheme();
@@ -109,7 +110,7 @@ const Book = () => {
         <Grid container spacing={2}>
           {data?.content?.map((item, index) => (
             <Grid item xs={12} md={4} lg={3} sm={12} key={index}>
-              {/* <CustomerTableCardView data={item} /> */}
+              <BookCardView data={item} />
             </Grid>
           ))}
         </Grid>

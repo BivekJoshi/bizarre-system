@@ -9,6 +9,7 @@ import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import FormModal from "../../../components/Modal/FormModal";
 import FinalSelectionUI from "../../../components/Camera/FinalSelectionUI";
 import { DOC_URL } from "../../../api/axiosInterceptor";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
 
 const InfoRow = ({ label, value }) => (
   <Box
@@ -29,7 +30,6 @@ const Profile = () => {
   const theme = useTheme();
   const { data: userData, isLoading, refetch } = useGetUserData();
   const imageUrl = userData?.data?.profilePictureUrl;
-  console.log("🚀 ~ Profile ~ imageUrl:", imageUrl);
   const [openModal, setOpenModal] = useState(false);
 
   const handleModalClose = () => {
@@ -85,12 +85,43 @@ const Profile = () => {
             }}
           >
             {imageFinal && (
-              <img
-                src={imageFinal}
-                alt="Profile"
-                style={{ width: "200px", height: "200px", borderRadius: "50%" }}
+              <Box
+                sx={{
+                  position: "relative",
+                  width: "200px",
+                  height: "200px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  "&:hover .camera-icon": {
+                    opacity: 1,
+                    transform: "scale(1.1)",
+                  },
+                }}
                 onClick={() => setOpenModal(true)}
-              />
+              >
+                <img
+                  src={imageFinal}
+                  alt="Profile"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    borderRadius: "50%",
+                  }}
+                />
+                <CameraAltIcon
+                  className="camera-icon"
+                  sx={{
+                    position: "absolute",
+                    opacity: 0.3,
+                    transition: "opacity 0.3s, transform 0.3s",
+                    transform: "scale(1)",
+                    color: "white",
+                    fontSize: "50px",
+                  }}
+                />
+              </Box>
             )}
             <Chip
               label={isLoading ? "..." : userData?.data?.fullName}

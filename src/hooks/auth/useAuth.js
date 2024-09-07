@@ -22,7 +22,6 @@ export const useAuth = () => {
     },
     {
       onSuccess: (data) => {
-        console.log("🚀 ~ useAuth ~ data:", data?.userType)
         setUser(data?.tokenId);
         setUserType(data?.userType);
         setTokenType(data?.tokenType);

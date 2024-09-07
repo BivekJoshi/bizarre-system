@@ -24,11 +24,11 @@ export const forgotPassword = async (formData) => {
 };
 
 /*_____________________________FORGET PASSWORD_______________________________________________ */
-export const addProfilePic = async (image, id) => {
+export const addProfilePic = async (formData) => {
   const imgData = new FormData();
 
-  imgData.append("file", image);
-  imgData.append("id", `a053ca12-5cea-11ef-b231-cecd0207e311`);
+  imgData.append("file", formData.multipartFile);
+  imgData.append("id", formData.id);
 
   const { data } = await axiosInstance.post(
     `${USER}/upload-profile-picture`,

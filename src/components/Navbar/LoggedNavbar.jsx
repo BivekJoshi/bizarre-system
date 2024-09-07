@@ -9,7 +9,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import NepaliDate from "nepali-date";
@@ -17,13 +17,18 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import Setting from "./Setting";
 import maleProfile from "../../assets/MaleProfile.png";
+import femaleProfile from "../../assets/FemaleProfile.png";
 import { useGetUserData } from "../../hooks/user/useUser";
 import BizarreBrosLogo from "../../assets/BizarreBrosLogo.png";
 import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserId } from "../../redux/Slice/userIdSlice";
+import { DOC_URL } from "../../api/axiosInterceptor";
 
 const LoggedNavbar = ({ handleOpenDrawer }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const theme = useTheme();
   const cart = useSelector((state) => state.cart.cart);
 
@@ -47,6 +52,20 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
   };
 
   const { data: loggedInUSerData } = useGetUserData();
+
+  const imageFinal = loggedInUSerData?.data?.profilePictureUrl
+    ? DOC_URL + loggedInUSerData?.data?.profilePictureUrl
+    : loggedInUSerData?.data?.gender === "MALE"
+    ? maleProfile
+    : loggedInUSerData?.data?.gender === "FEMALE"
+    ? femaleProfile
+    : null;
+
+  useEffect(() => {
+    if (loggedInUSerData?.data?.id) {
+      dispatch(setUserId(loggedInUSerData?.data?.id));
+    }
+  }, [loggedInUSerData, dispatch]);
 
   const fullName = loggedInUSerData?.data?.fullName;
   const gender = loggedInUSerData?.data?.gender;
@@ -148,7 +167,7 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
             </Tooltip>
             <Box sx={{ display: "flex", gap: "1rem", alignItems: "center" }}>
               <Typography variant="body1">{greeting}</Typography>
-              <Avatar alt="Remy Sharp" src={maleProfile} />
+              <Avatar alt="Profile Image" src={imageFinal} />
             </Box>
           </Box>
         )}

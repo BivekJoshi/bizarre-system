@@ -8,6 +8,7 @@ import {
 } from "../../api/controller/user-api";
 import { useFormik } from "formik";
 import { getErrorMessage } from "../../utils/getErrorMessage";
+import { useSelector } from "react-redux";
 
 /*________________________GET USER DATA_____________________________________*/
 export const useGetUserData = () => {
@@ -55,7 +56,7 @@ export const useForgotPassword = ({ onSuccess }) => {
 export const useAddProfilePicture = ({ onSuccess }) => {
   const queryClient = useQueryClient();
 
-  return useMutation(["addProfile"], (image) => addProfilePic(image), {
+  return useMutation((formData) => addProfilePic(formData), {
     onSuccess: (data, variables, context) => {
       onSuccess && onSuccess(data, variables, context);
       queryClient.invalidateQueries("getUserData");
@@ -68,22 +69,21 @@ export const useAddProfilePicture = ({ onSuccess }) => {
 };
 
 export const useProfilePic = ({ finalImageFile, onClose }) => {
-  const { mutate } = useAddProfilePicture({});
+  const { mutate } = useAddProfilePicture({ onSuccess: onClose });
 
-  const handleAddProfileImage = (value) => {
-    mutate(value, {
-      onSuccess: () => {
-        onClose();
-      },
-    });
+  const userId = useSelector((state) => state?.user?.userId);
+
+  const handleAddProfileImage = (values) => {
+    const formData = { ...values, multipartFile: finalImageFile };
+    mutate(formData);
   };
   const formik = useFormik({
     initialValues: {
-      id:"a053ca12-5cea-11ef-b231-cecd0207e311",
+      id: userId,
       multipartFile: finalImageFile,
     },
-    onSubmit: () => {
-      handleAddProfileImage(finalImageFile);
+    onSubmit: (values) => {
+      handleAddProfileImage(values);
     },
   });
 
@@ -92,4 +92,4 @@ export const useProfilePic = ({ finalImageFile, onClose }) => {
   };
 };
 
-export default useProfilePic
+export default useProfilePic;
