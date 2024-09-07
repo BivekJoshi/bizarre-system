@@ -94,7 +94,7 @@ const Book = () => {
           data={data?.content}
           overFlow={"scroll"}
           width={"100%"}
-          enablePagination={true}
+          enablePagination={false}
           enableRowNumbers
           enableColumnActions
           enableDelete

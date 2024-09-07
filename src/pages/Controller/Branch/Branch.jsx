@@ -9,24 +9,29 @@ import { nanoid } from "nanoid";
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-// import CustomPagination from "../../../components/Pagination/CustomPagination";
+import BranchCardView from "./BranchCardView";
+import { useSelector } from "react-redux";
+import { CustomPagination } from "../../../components/Pagination/CustomPagination";
 
 const Branch = () => {
   const theme = useTheme();
-  const { data } = useGetBranch();
+  const view = useSelector((state) => state?.view?.mode);
 
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [rowData, setRowData] = useState(null);
   const [isAddModalOpen, setIsAddModal] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
+  const { data } = useGetBranch(pageNumber, pageSize);
+
   const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useBranchForm({onClose});
+  const { formik, loading } = useBranchForm({ onClose });
 
   const deleteRow = (row) => {
-    console.log("🚀 ~ deleteRow ~ row:", row);
     setRowData(row?.original?.id);
     setIsDeleteModalOpen(true);
   };
@@ -65,6 +70,38 @@ const Branch = () => {
     []
   );
 
+  const renderView = () => {
+    if (view === "table") {
+      return (
+        <CustomTable
+          columns={columns}
+          data={data?.content}
+          overFlow={"scroll"}
+          width={"100%"}
+          enablePagination={false}
+          enableRowNumbers
+          enableColumnActions
+          enableDelete
+          enableEditing={true}
+          handleDeleteRow={deleteRow}
+          // handleEdit={editRow}
+          delete
+          edit
+        />
+      );
+    } else {
+      return (
+        <Grid container spacing={2}>
+          {data?.content?.map((item, index) => (
+            <Grid item xs={12} md={4} lg={3} sm={12} key={index}>
+              <BranchCardView data={item} />
+            </Grid>
+          ))}
+        </Grid>
+      );
+    }
+  };
+
   return (
     <>
       <Box
@@ -100,25 +137,17 @@ const Branch = () => {
           marginTop: ".1rem",
         }}
       >
-        <CustomTable
-          columns={columns}
-          data={data?.content}
-          overFlow={"scroll"}
-          width={"100%"}
-          enablePagination={true}
-          enableRowNumbers
-          enableColumnActions
-          enableDelete
-          enableEditing={true}
-          handleDeleteRow={deleteRow}
-          // handleEdit={editRow}
-          delete
-          edit
-        />
+        {renderView()}
       </Box>
 
-      {/* <CustomPagination /> */}
-      
+      <CustomPagination
+        totalPages={data?.totalPages || 1}
+        currentPage={pageNumber}
+        onPageChange={setPageNumber}
+        rowsPerPage={pageSize}
+        onRowsPerPageChange={setPageSize}
+      />
+
       <FormModal
         open={isAddModalOpen}
         onClose={() => setIsAddModal(false)}

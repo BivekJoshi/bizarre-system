@@ -13,9 +13,7 @@ import SideBar from "../SideBar/SideBar";
 
 const AppLayout = () => {
   const theme = useTheme();
-  const isXsScreen = useMediaQuery((theme) =>
-    theme.breakpoints.down("md", "sm")
-  );
+  const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const [openDrawer, setOpenDrawer] = React.useState(false);
 
@@ -23,82 +21,67 @@ const AppLayout = () => {
   const handleCloseDrawer = () => setOpenDrawer(false);
 
   return (
-    <div>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh",
+      }}
+    >
       <LoggedNavbar handleOpenDrawer={handleOpenDrawer} />
-      <Box>
-        <Box
-          sx={{
-            minHeight: "90vh",
-            padding: ".1rem 0 0 0",
-            display: "flex",
-            width: "100%",
-          }}
-        >
-          {!isXsScreen && (
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                backgroundColor: theme.palette.background.default,
-                maxHeight: "92vh",
-                width: "298px",
-                // overflowY:"scroll"
-              }}
-            >
-              <Grid
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginLeft: "1rem",
-                  gap: "0.6rem",
-                }}
-              >
-                {/* <img width={40} src={userProfile} alt="admin-logo" /> */}
-                <Typography variant="h6" sx={{ padding: "1rem" }}>
-                  Welcome
-                </Typography>
-              </Grid>
-              <Grid>
-                <SideBar handleCloseDrawer={handleCloseDrawer} />
-              </Grid>
-            </Box>
-          )}
+      <Box
+        sx={{
+          display: "flex",
+          flexGrow: 1,
+        }}
+      >
+        {!isMdScreen && (
           <Box
             sx={{
-              flexGrow: 1,
-              width: isXsScreen ? "100%" : "calc(100% - 298px)",
-              padding: isXsScreen ? "" : "2rem",
+              display: "flex",
+              flexDirection: "column",
+              backgroundColor: theme.palette.background.default,
+              width: "298px",
+              boxSizing: "border-box",
             }}
           >
-            <Outlet />
+            <Grid container alignItems="center" sx={{padding:"1rem" }}>
+              <Typography variant="h6">Welcome</Typography>
+            </Grid>
+            <SideBar handleCloseDrawer={handleCloseDrawer} />
           </Box>
-        </Box>
-      </Box>
+        )}
 
-      {isXsScreen && (
+        <Box
+          sx={{
+            flexGrow: 1,
+            width: isMdScreen ? "100%" : `calc(100% - 298px)`,
+            padding: isMdScreen ? "1rem" : "2rem",
+            boxSizing: "border-box",
+          }}
+        >
+          <Outlet />
+        </Box>
+
         <Drawer
           open={openDrawer}
-          anchor={"left"}
-          onClose={() => setOpenDrawer(false)}
+          anchor="left"
+          onClose={handleCloseDrawer}
           PaperProps={{
-            sx: { width: "320px" },
+            sx: { width: "320px", padding: "1rem" },
           }}
         >
           <Grid
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.6rem",
-              margin: "1rem 2rem",
-            }}
+            container
+            alignItems="center"
+            sx={{ gap: "0.6rem", marginBottom: "1rem" }}
           >
-            {/* <img width={40} src={userProfile} alt="admin-logo" /> */}
             <Typography variant="h6">Welcome</Typography>
           </Grid>
           <SideBar handleCloseDrawer={handleCloseDrawer} />
         </Drawer>
-      )}
-    </div>
+      </Box>
+    </Box>
   );
 };
 

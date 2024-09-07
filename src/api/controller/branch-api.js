@@ -8,9 +8,13 @@ export const addBranch = async (formData) => {
 };
 
 /*________________________GET_____________________________________*/
-export const getBranch = async () => {
-  const { data } = await axiosInstance.get(`${BRANCH}/find`);
-  return data?.data;
+export const getBranch = async (pageNumber, pageSize) => {
+  if (pageNumber && pageSize) {
+    const { data } = await axiosInstance.get(
+      `${BRANCH}/find?pageNumber=${pageNumber}&pageSize=${pageSize}`
+    );
+    return data?.data;
+  }
 };
 
 /*________________________GET_BY_ID_____________________________________*/

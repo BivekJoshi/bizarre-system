@@ -164,7 +164,7 @@ const Item = () => {
         <Grid container spacing={2}>
           {data?.content?.map((data, index) => {
             return (
-              <Grid item xs={12} md={4} lg={4} sm={12} key={index}>
+              <Grid item xs={12} md={3} lg={2} sm={12} key={index}>
                 <ItemCardView data={data} />
               </Grid>
             );

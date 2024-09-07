@@ -7,6 +7,10 @@ import FaceRetouchingNaturalRoundedIcon from "@mui/icons-material/FaceRetouching
 import CopyrightRoundedIcon from "@mui/icons-material/CopyrightRounded";
 import DynamicFeedRoundedIcon from "@mui/icons-material/DynamicFeedRounded";
 import WcRoundedIcon from "@mui/icons-material/WcRounded";
+import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
+import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
+import PostAddIcon from '@mui/icons-material/PostAdd';
+import CoffeeMakerRoundedIcon from '@mui/icons-material/CoffeeMakerRounded';
 
 export const adminTab = [
   {
@@ -17,63 +21,81 @@ export const adminTab = [
   },
   {
     id: nanoid(),
+    label: "Member",
+    value: "cashier",
+    icon: <SupervisedUserCircleRoundedIcon />,
+    subTabs: [
+      {
+        id: nanoid(),
+        label: "Branch Owner",
+        value: "branch-owner",
+        icon: <CopyrightRoundedIcon />,
+      },
+      {
+        id: nanoid(),
+        label: "Cashier",
+        value: "cashier",
+        icon: <CurrencyExchangeRoundedIcon />,
+      },
+      {
+        id: nanoid(),
+        label: "Barista",
+        value: "barista",
+        icon: <CoffeeMakerRoundedIcon />,
+      },
+      {
+        id: nanoid(),
+        label: "Waiter",
+        value: "waiter",
+        icon: <WcRoundedIcon />,
+      },
+    ],
+  },
+  {
+    id: nanoid(),
     label: "Customer",
     value: "customer",
     icon: <FaceRetouchingNaturalRoundedIcon />,
   },
-  {
-    id: nanoid(),
-    label: "Waiter",
-    value: "waiter",
-    icon: <WcRoundedIcon />,
-  },
-  {
-    id: nanoid(),
-    label: "Branch",
-    value: "branch",
-    icon: <DynamicFeedRoundedIcon />,
-  },
-  {
-    id: nanoid(),
-    label: "Cashier",
-    value: "cashier",
-    icon: <CurrencyExchangeRoundedIcon />,
-  },
-  {
-    id: nanoid(),
-    label: "Barista",
-    value: "barista",
-    icon: <CurrencyExchangeRoundedIcon />,
-  },
-  {
-    id: nanoid(),
-    label: "Batch",
-    value: "batch",
-    icon: <BatchPredictionRoundedIcon />,
-  },
-  {
-    id: nanoid(),
-    label: "Branch Owner",
-    value: "branch-owner",
-    icon: <CopyrightRoundedIcon />,
-  },
+
+  // {
+  //   id: nanoid(),
+  //   label: "Batch",
+  //   value: "batch",
+  //   icon: <BatchPredictionRoundedIcon />,
+  // },
+
   {
     id: nanoid(),
     label: "Item",
     value: "item",
-    icon: <SupervisedUserCircleRoundedIcon />,
+    icon: <PostAddIcon />,
   },
   {
     id: nanoid(),
     label: "Book",
     value: "book",
-    icon: <SupervisedUserCircleRoundedIcon />,
+    icon: <MenuBookRoundedIcon />,
   },
   {
     id: nanoid(),
     label: "Setting",
     value: "setting",
-    icon: <SupervisedUserCircleRoundedIcon />,
+    icon: <SettingsRoundedIcon />,
+    subTabs: [
+      {
+        id: nanoid(),
+        label: "Setting",
+        value: "setting",
+        icon: <SettingsRoundedIcon />,
+      },
+      {
+        id: nanoid(),
+        label: "Branch",
+        value: "branch",
+        icon: <DynamicFeedRoundedIcon />,
+      },
+    ],
   },
 ];
 
@@ -132,6 +154,4 @@ export const customerTab = [
   // { label: "Customer", value: "customer" },
   { label: "Order", value: "order" },
   { label: "Item", value: "item" },
-
-
 ];

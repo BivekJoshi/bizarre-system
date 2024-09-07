@@ -32,9 +32,7 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
   const theme = useTheme();
   const cart = useSelector((state) => state.cart.cart);
 
-  const isXsScreen = useMediaQuery((theme) =>
-    theme.breakpoints.down("md", "sm")
-  );
+  const isXsScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [openSettingDrawer, setOpenSettingDrawer] = React.useState(false);
 
   const currentDateTime = new Date();
@@ -48,27 +46,27 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
   const handleSetting = () => setOpenSettingDrawer(true);
 
   const handleCartClick = () => {
-    navigate(`cart`);
+    navigate("cart");
   };
 
-  const { data: loggedInUSerData } = useGetUserData();
+  const { data: loggedInUserData } = useGetUserData();
 
-  const imageFinal = loggedInUSerData?.data?.profilePictureUrl
-    ? DOC_URL + loggedInUSerData?.data?.profilePictureUrl
-    : loggedInUSerData?.data?.gender === "MALE"
+  const imageFinal = loggedInUserData?.data?.profilePictureUrl
+    ? DOC_URL + loggedInUserData?.data?.profilePictureUrl
+    : loggedInUserData?.data?.gender === "MALE"
     ? maleProfile
-    : loggedInUSerData?.data?.gender === "FEMALE"
+    : loggedInUserData?.data?.gender === "FEMALE"
     ? femaleProfile
     : null;
 
   useEffect(() => {
-    if (loggedInUSerData?.data?.id) {
-      dispatch(setUserId(loggedInUSerData?.data?.id));
+    if (loggedInUserData?.data?.id) {
+      dispatch(setUserId(loggedInUserData?.data?.id));
     }
-  }, [loggedInUSerData, dispatch]);
+  }, [loggedInUserData, dispatch]);
 
-  const fullName = loggedInUSerData?.data?.fullName;
-  const gender = loggedInUSerData?.data?.gender;
+  const fullName = loggedInUserData?.data?.fullName;
+  const gender = loggedInUserData?.data?.gender;
 
   const getLastName = (fullName) => {
     if (!fullName) return "";
@@ -92,7 +90,13 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
   const greeting = greetUser(gender, lastName);
 
   return (
-    <Box sx={{ background: theme.palette.background.default }}>
+    <Box
+      sx={{
+        background: theme.palette.background.default,
+        boxShadow: `0 2px 2px rgba(0, 0, 0, 0.1)`,
+        zIndex: 900,
+      }}
+    >
       <Box
         sx={{
           display: "flex",
@@ -118,18 +122,19 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
         <div style={{ width: "100px", height: "60px" }}>
           <img
             src={BizarreBrosLogo}
-            alt="Bizaree Logo"
+            alt="Bizarre Bros Logo"
             style={{ width: "100%", height: "100%" }}
           />
         </div>
+
         {!isXsScreen && (
           <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
             <Tooltip title="Global Date">
               <div
                 style={{ display: "flex", alignItems: "center", gap: "1rem" }}
               >
-                <Typography variant="h3">🌎</Typography>
-                <Typography variant="p">{formattedDateTime}</Typography>
+                <Typography variant="h6">🌎</Typography>
+                <Typography variant="body2">{formattedDateTime}</Typography>
               </div>
             </Tooltip>
 
@@ -137,8 +142,8 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
               <div
                 style={{ display: "flex", alignItems: "center", gap: "1rem" }}
               >
-                <Typography variant="h3">🇳🇵</Typography>
-                <Typography variant="p">{formattedNepaliDate}</Typography>
+                <Typography variant="h6">🇳🇵</Typography>
+                <Typography variant="body2">{formattedNepaliDate}</Typography>
               </div>
             </Tooltip>
           </div>
@@ -174,9 +179,10 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
 
         {isXsScreen && (
           <IconButton onClick={handleSetting}>
-            <Avatar alt="Remy Sharp" src={maleProfile} />
+            <Avatar alt="Profile Image" src={maleProfile} />
           </IconButton>
         )}
+
         <Drawer
           open={openSettingDrawer}
           anchor={"right"}

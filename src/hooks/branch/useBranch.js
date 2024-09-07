@@ -10,12 +10,16 @@ import {
 import { getErrorMessage } from "../../utils/getErrorMessage";
 
 /*________________________GET_____________________________________*/
-export const useGetBranch = () => {
-  return useQuery(["getBranch"], () => getBranch(), {
-    cacheTime: 10000,
-    refetchInterval: false,
-    refetchOnWindowFocus: false,
-  });
+export const useGetBranch = (pageNumber, pageSize) => {
+  return useQuery(
+    ["getBranch", pageNumber, pageSize],
+    () => getBranch(pageNumber, pageSize),
+    {
+      cacheTime: 10000,
+      refetchInterval: false,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
 /*________________________GET_BY_ID_____________________________________*/

@@ -1,18 +1,52 @@
 import { nanoid } from "nanoid";
+import { lazy } from "react";
+import Loadable from "../../components/Loader/Loadable";
 
-import AdminDashboard from "../../pages/AdminPage/Dashboard/AdminDashboard";
-import Branch from "../../pages/Controller/Branch/Branch";
-import Waiter from "../../pages/Controller/Member/Waiter/Waiter";
-import Cashier from "../../pages/Controller/Member/Cashier/Cashier";
-import Customer from "../../pages/Controller/Customer/Customer";
-import Batch from "../../pages/Controller/Batch/Batch";
-import BranchOwner from "../../pages/Controller/Member/BranchOwner/BranchOwner";
-import Item from "../../pages/Controller/Item/Item";
-import Book from "../../pages/Controller/Book/Book";
-import CustomerTable from "../../pages/Controller/CustomerTable/CustomerTable";
-import Cart from "../../pages/Cart/Cart";
-import Setting from "../../pages/Controller/Setting/Setting";
-import Barista from "../../pages/Controller/Member/Barista/Barista";
+const AdminDashboard = Loadable(
+  lazy(() => import("../../pages/AdminPage/Dashboard/AdminDashboard"))
+);
+
+const Branch = Loadable(
+  lazy(() => import("../../pages/Controller/Branch/Branch"))
+);
+
+const Waiter = Loadable(
+  lazy(() => import("../../pages/Controller/Member/Waiter/Waiter"))
+);
+
+const Cashier = Loadable(
+  lazy(() => import("../../pages/Controller/Member/Cashier/Cashier"))
+);
+
+const Customer = Loadable(
+  lazy(() => import("../../pages/Controller/Customer/Customer"))
+);
+
+const Batch = Loadable(
+  lazy(() => import("../../pages/Controller/Batch/Batch"))
+);
+
+const BranchOwner = Loadable(
+  lazy(() => import("../../pages/Controller/Member/BranchOwner/BranchOwner"))
+);
+
+const Item = Loadable(lazy(() => import("../../pages/Controller/Item/Item")));
+
+const Book = Loadable(lazy(() => import("../../pages/Controller/Book/Book")));
+
+const CustomerTable = Loadable(
+  lazy(() => import("../../pages/Controller/CustomerTable/CustomerTable"))
+);
+
+const Cart = Loadable(lazy(() => import("../../pages/Cart/Cart")));
+
+const Setting = Loadable(
+  lazy(() => import("../../pages/Controller/Setting/Setting"))
+);
+
+const Barista = Loadable(
+  lazy(() => import("../../pages/Controller/Member/Barista/Barista"))
+);
 
 const adminRoutes = [
   {

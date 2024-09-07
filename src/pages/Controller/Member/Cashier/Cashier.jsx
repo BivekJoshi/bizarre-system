@@ -1,6 +1,8 @@
 import React, { useMemo, useState } from "react";
-import { Box, Button, Grid, Typography, useTheme } from "@mui/material";
+import { Avatar, Box, Button, Grid, Typography, useTheme } from "@mui/material";
 import { nanoid } from "nanoid";
+import maleProfile from "../../../../assets/MaleProfile.png";
+import femaleProfile from "../../../../assets/FemaleProfile.png";
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import FormModal from "../../../../components/Modal/FormModal";
@@ -12,6 +14,7 @@ import { useCashierMemberForm } from "../../../../hooks/member/Member/CashierMem
 import { useSelector } from "react-redux";
 import CashierCardView from "./CashierCardView";
 import { CustomPagination } from "../../../../components/Pagination/CustomPagination";
+import { DOC_URL } from "../../../../api/axiosInterceptor";
 
 const Cashier = () => {
   const theme = useTheme();
@@ -40,10 +43,24 @@ const Cashier = () => {
     () => [
       {
         id: nanoid(),
-        accessorKey: "user.fullName",
         header: "Name",
-        maxWidth: 80,
         sortable: false,
+        Cell: ({ cell }) => {
+          const data = cell.row.original?.user;
+          const imageFinal = data?.profilePictureUrl
+            ? DOC_URL + data?.profilePictureUrl
+            : data?.gender === "MALE"
+            ? maleProfile
+            : data?.gender === "FEMALE"
+            ? femaleProfile
+            : null;
+          return (
+            <div style={{ display: "flex", gap: ".5rem" }}>
+              <Avatar alt="Profile Image" src={imageFinal} />
+              <p>{data?.fullName}</p>
+            </div>
+          );
+        },
       },
       {
         id: nanoid(),
