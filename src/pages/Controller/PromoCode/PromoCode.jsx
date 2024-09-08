@@ -102,7 +102,7 @@ const PromoCode = () => {
       return (
         <Grid container spacing={2}>
           {data?.content?.map((item, index) => (
-            <Grid item xs={12} md={4} lg={3} sm={12} key={index}>
+            <Grid item xs={12} md={4} lg={4} sm={12} key={index}>
               <PromoCodeCardView data={item} />
             </Grid>
           ))}
