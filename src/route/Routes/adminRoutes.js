@@ -52,6 +52,10 @@ const PromoCode = Loadable(
   lazy(() => import("../../pages/Controller/PromoCode/PromoCode"))
 );
 
+const RedeemCode = Loadable(
+  lazy(() => import("../../pages/Controller/RedeemCode/RedeemCode"))
+);
+
 const adminRoutes = [
   {
     path: "dashboard",
@@ -130,6 +134,12 @@ const adminRoutes = [
     name: "Promo Code",
     id: nanoid(),
     component: PromoCode,
+  },
+  {
+    path: "redeem-code",
+    name: "Redeem Code",
+    id: nanoid(),
+    component: RedeemCode,
   },
   {
     path: "cart",

@@ -11,9 +11,10 @@ import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import MenuBookRoundedIcon from "@mui/icons-material/MenuBookRounded";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import CoffeeMakerRoundedIcon from "@mui/icons-material/CoffeeMakerRounded";
-import TableRowsIcon from '@mui/icons-material/TableRows';
-import FilterFramesIcon from '@mui/icons-material/FilterFrames';
-import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
+import TableRowsIcon from "@mui/icons-material/TableRows";
+import FilterFramesIcon from "@mui/icons-material/FilterFrames";
+import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
+import RedeemRoundedIcon from "@mui/icons-material/RedeemRounded";
 
 export const adminTab = [
   {
@@ -103,6 +104,12 @@ export const adminTab = [
         label: "Promo Code",
         value: "promo-code",
         icon: <QrCodeScannerIcon />,
+      },
+      {
+        id: nanoid(),
+        label: "Redeem Code",
+        value: "redeem-code",
+        icon: <RedeemRoundedIcon />,
       },
     ],
   },

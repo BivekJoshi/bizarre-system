@@ -6,12 +6,12 @@ import { nanoid } from "nanoid";
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 import { useSelector } from "react-redux";
 import { CustomPagination } from "../../../components/Pagination/CustomPagination";
-import PromoCodeCardView from "./PromoCodeCardView";
-import AddPromoCode from "./AddPromoCode";
-import { useGetPromoCode } from "../../../hooks/promoCode/usePromoCode";
-import { usePromoCodeForm } from "../../../hooks/promoCode/PromoCode/usePromoCodeForm";
+import AddRedeemCode from "./AddRedeemCode";
+import RedeemCodeCardView from "./RedeemCodeCardView";
+import { useRedeemCodeForm } from "../../../hooks/redeemCode/RedeemCode/useRedeemCodeForm";
+import { useGetRedeemCode } from "../../../hooks/redeemCode/useRedeemCode";
 
-const PromoCode = () => {
+const RedeemCode = () => {
   const theme = useTheme();
   const view = useSelector((state) => state?.view?.mode);
 
@@ -21,13 +21,13 @@ const PromoCode = () => {
   const [isAddModalOpen, setIsAddModal] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  const { data } = useGetPromoCode(pageNumber, pageSize);
+  const { data } = useGetRedeemCode(pageNumber, pageSize);
 
   const onClose = () => {
     setIsAddModal(false);
     setIsEditModalOpen(false);
   };
-  const { formik, loading } = usePromoCodeForm({ onClose, rowData });
+  const { formik, loading } = useRedeemCodeForm({ onClose, rowData });
 
   const editRow = (row) => {
     setIsEditModalOpen(true);
@@ -45,15 +45,15 @@ const PromoCode = () => {
       },
       {
         id: nanoid(),
-        accessorKey: "discountType",
-        header: "Discount Type",
+        accessorKey: "league",
+        header: "League",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
-        accessorKey: "discountValue",
-        header: "Discount Value",
+        accessorKey: "redeemableCoins",
+        header: "Redeemable Coins",
         maxWidth: 80,
         sortable: false,
       },
@@ -68,13 +68,6 @@ const PromoCode = () => {
         id: nanoid(),
         accessorKey: "terminationDateTime",
         header: "Termination Date Time",
-        maxWidth: 80,
-        sortable: false,
-      },
-      {
-        id: nanoid(),
-        accessorKey: "userType",
-        header: "User Type",
         maxWidth: 80,
         sortable: false,
       },
@@ -103,7 +96,7 @@ const PromoCode = () => {
         <Grid container spacing={2}>
           {data?.content?.map((item, index) => (
             <Grid item xs={12} md={4} lg={3} sm={12} key={index}>
-              <PromoCodeCardView data={item} />
+              <RedeemCodeCardView data={item} />
             </Grid>
           ))}
         </Grid>
@@ -127,14 +120,14 @@ const PromoCode = () => {
             fontWeight: 700,
           }}
         >
-          Promo Code
+          Redeem Code
         </Typography>
         <Button
           variant="outlined"
           onClick={() => setIsAddModal(true)}
           startIcon={<ControlPointRoundedIcon />}
         >
-          Add Promo Code
+          Add Redeem Code
         </Button>
       </Box>
 
@@ -163,12 +156,12 @@ const PromoCode = () => {
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}
-        header={"Add Promo Code"}
+        header={"Add Redeem Code"}
         formik={formik}
         loading={loading}
         formComponent={
           <>
-            <AddPromoCode formik={formik} />
+            <AddRedeemCode formik={formik} />
           </>
         }
         showButton={true}
@@ -179,12 +172,12 @@ const PromoCode = () => {
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}
-        header={"Add Promo Code"}
+        header={"Add Redeem Code"}
         formik={formik}
         loading={loading}
         formComponent={
           <>
-            <AddPromoCode formik={formik} />
+            <AddRedeemCode formik={formik} />
           </>
         }
         showButton={true}
@@ -193,4 +186,4 @@ const PromoCode = () => {
   );
 };
 
-export default PromoCode;
+export default RedeemCode;

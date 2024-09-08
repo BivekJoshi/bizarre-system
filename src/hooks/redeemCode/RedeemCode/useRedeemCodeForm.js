@@ -1,17 +1,16 @@
 import { useFormik } from "formik";
-import { useAddPromoCode, useEditPromoCode } from "../usePromoCode";
+import { useAddRedeemCode, useEditRedeemCode } from "../useRedeemCode";
 
-export const usePromoCodeForm = ({ onClose, rowData }) => {
-  const { mutate: addMutate } = useAddPromoCode({});
-  const { mutate: editMutate } = useEditPromoCode({});
+export const useRedeemCodeForm = ({ onClose, rowData }) => {
+  const { mutate: addMutate } = useAddRedeemCode({});
+  const { mutate: editMutate } = useEditRedeemCode({});
 
   const formik = useFormik({
     initialValues: {
       id: rowData?.id || "",
       code: rowData?.code || "",
-      userType: rowData?.userType || "",
-      discountType: rowData?.discountType || "",
-      discountValue: rowData?.discountValue || "",
+      league: rowData?.league || "",
+      redeemableCoins: rowData?.redeemableCoins || "",
       effectiveDateTime: rowData?.effectiveDateTime
         ? rowData.effectiveDateTime.replace("T", " ")
         : "",

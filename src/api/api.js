@@ -1,3 +1,4 @@
+export const REDEEM_CODE = "redeem-code";
 export const PROMO_CODE = "promo-code";
 export const ORDER = "order";
 export const MEMBER = "member";

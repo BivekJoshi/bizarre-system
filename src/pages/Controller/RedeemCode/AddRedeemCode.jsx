@@ -2,7 +2,7 @@ import React from "react";
 import RenderInput from "../../../components/RenderInput/RenderInput";
 import { nanoid } from "nanoid";
 
-const AddPromoCode = ({ formik }) => {
+const AddRedeemCode = ({ formik }) => {
   const inputField = [
     {
       id: nanoid(),
@@ -17,18 +17,15 @@ const AddPromoCode = ({ formik }) => {
     },
     {
       id: nanoid(),
-      name: "userType",
-      label: "User Type",
+      name: "league",
+      label: "League",
       type: "dropDown",
       required: true,
       options: [
-        { value: "ADMIN", label: "Admin", id: nanoid() },
-        { value: "BRANCH_OWNER", label: "Branch Owner", id: nanoid() },
-        { value: "CASHIER", label: "Cashier", id: nanoid() },
-        { value: "WAITER", label: "Waiter", id: nanoid() },
-        { value: "BARISTA", label: "Barista", id: nanoid() },
-        { value: "SUPPLIER", label: "Supplier", id: nanoid() },
-        { value: "CUSTOMER", label: "Customer", id: nanoid() },
+        { value: "BRONZE", label: "Bronze", id: nanoid() },
+        { value: "SILVER", label: "Silver", id: nanoid() },
+        { value: "GOLD", label: "Gold", id: nanoid() },
+        { value: "PLATINUM", label: "Platinum", id: nanoid() },
       ],
       xs: 12,
       md: 6,
@@ -37,25 +34,8 @@ const AddPromoCode = ({ formik }) => {
     },
     {
       id: nanoid(),
-      name: "discountType",
-      label: "Discount Type",
-      type: "dropDown",
-      required: true,
-      options: [
-        { value: "PERCENTAGE", label: "Percentage", id: nanoid() },
-        { value: "AMOUNT", label: "Amount", id: nanoid() },
-      ],
-
-      required: true,
-      xs: 12,
-      md: 6,
-      lg: 6,
-      sm: 12,
-    },
-    {
-      id: nanoid(),
-      name: "discountValue",
-      label: "discountValue",
+      name: "redeemableCoins",
+      label: "Redeemable Coins",
       type: "number",
       required: true,
       xs: 12,
@@ -89,4 +69,4 @@ const AddPromoCode = ({ formik }) => {
   return <RenderInput inputField={inputField} formik={formik} />;
 };
 
-export default AddPromoCode;
+export default AddRedeemCode;

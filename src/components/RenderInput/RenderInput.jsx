@@ -634,15 +634,31 @@ const RenderInput = ({
           </>
         );
       case "datetime":
-        const formattedValue = formValues
-          ? new Date(formValues).toISOString().slice(0, 16)
-          : "";
+        const formatDateForInput = (date) => {
+          if (!date) return "";
+          const localDate = new Date(date);
+          return localDate.toISOString().slice(0, 16);
+        };
+
+        const formatDateForStorage = (date) => {
+          if (!date) return "";
+          const d = new Date(date);
+          const yyyy = d.getFullYear();
+          const mm = String(d.getMonth() + 1).padStart(2, "0");
+          const dd = String(d.getDate()).padStart(2, "0");
+          const hh = String(d.getHours()).padStart(2, "0");
+          const min = String(d.getMinutes()).padStart(2, "0");
+          const ss = String(d.getSeconds()).padStart(2, "0");
+          return `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
+        };
+
+        const formattedValue = formValues ? formatDateForInput(formValues) : "";
 
         const minDateTime = element.disablePast
           ? new Date().toISOString().slice(0, 16)
           : "";
         const maxDateTime = element.maxDate
-          ? new Date(element.maxDate).toISOString().slice(0, 16)
+          ? formatDateForInput(element.maxDate)
           : "";
 
         return (
@@ -660,7 +676,6 @@ const RenderInput = ({
             </Typography>
             <TextField
               name={element?.name}
-              // label={element?.label}
               placeholder={element?.extraInfo && element?.placeholder}
               key={element?.value}
               type="datetime-local"
@@ -683,10 +698,16 @@ const RenderInput = ({
               }
               InputLabelProps={{ shrink: true }}
               value={formattedValue}
-              onChange={formik.handleChange}
+              onChange={(e) => {
+                const formattedForStorage = formatDateForStorage(
+                  e.target.value
+                );
+                formik.setFieldValue(element.name, formattedForStorage);
+              }}
             />
           </>
         );
+
       case "asyncDropDownOption":
         return (
           <AsyncDropDownOption

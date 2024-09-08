@@ -49,9 +49,9 @@ export const useAddPromoCode = ({ onSuccess }) => {
   const queryClient = useQueryClient();
   return useMutation(["addPromoCode"], (formData) => addPromoCode(formData), {
     onSuccess: (data, variables, context) => {
-      toast.success("Book added successfully");
+      toast.success("Promo Code added successfully");
       onSuccess && onSuccess(data, variables, context);
-      queryClient.invalidateQueries("getBook");
+      queryClient.invalidateQueries("getPromoCode");
     },
     onError: (err, _variables, _context) => {
       toast.error(getErrorMessage(err));
@@ -64,9 +64,9 @@ export const useEditPromoCode = ({ onSuccess }) => {
   const queryClient = useQueryClient();
   return useMutation(["editPromoCode"], (formData) => editPromoCode(formData), {
     onSuccess: (data, variables, context) => {
-      toast.success("Book edited successfully");
+      toast.success("Promo Code edited successfully");
       onSuccess && onSuccess(data, variables, context);
-      queryClient.invalidateQueries("getBook");
+      queryClient.invalidateQueries("getPromoCode");
     },
     onError: (err, _variables, _context) => {
       toast.error(getErrorMessage(err));
