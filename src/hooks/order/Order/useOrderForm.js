@@ -2,23 +2,28 @@ import { useFormik } from "formik";
 import { useAddOrder, useEditOrder } from "../useOrder";
 import { useParams } from "react-router-dom";
 
-export const useOrderForm = ({ remarks = {}, selectedIds = [] }) => {
-  const id = useParams();
-  // console.log("🚀 ~ useOrderForm ~ id:", id);
-  const initialOrderRequests = Object.entries(remarks).map(
-    ([itemId, remark]) => ({
-      itemId,
-      remark,
-    })
+export const useOrderForm = ({ remarks = {}, selectedIds = [], onClose }) => {
+  const { id } = useParams();
+
+  const initialOrderRequests = Object.entries(remarks).flatMap(
+    ([itemId, remarkObj]) =>
+      Object.entries(remarkObj).map(([index, remark]) => ({
+        itemId,
+        remark,
+      }))
   );
 
   const allOrderRequests = [
     ...initialOrderRequests,
     ...selectedIds
       .filter(
-        (id) => !initialOrderRequests.some((request) => request.itemId === id)
+        (itemId) =>
+          !initialOrderRequests.some((request) => request.itemId === itemId)
       )
-      .map((id) => ({ itemId: id, remark: "" })),
+      .map((itemId) => ({
+        itemId,
+        remark: "",
+      })),
   ];
 
   const { mutate: addMutate } = useAddOrder({});
@@ -26,21 +31,20 @@ export const useOrderForm = ({ remarks = {}, selectedIds = [] }) => {
 
   const formik = useFormik({
     initialValues: {
-      customerTableId: id?.id || "",
+      customerTableId: id || "",
       orderRequests: allOrderRequests,
     },
-    // validationSchema: branchSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
       if (values?.id) {
-        handledEditRequest(values);
+        handleEditRequest(values);
       } else {
-        handledAddRequest(values);
+        handleAddRequest(values);
       }
     },
   });
 
-  const handledAddRequest = (values) => {
+  const handleAddRequest = (values) => {
     values = { ...values };
     addMutate(values, {
       onSuccess: () => {
@@ -49,7 +53,7 @@ export const useOrderForm = ({ remarks = {}, selectedIds = [] }) => {
     });
   };
 
-  const handledEditRequest = (values) => {
+  const handleEditRequest = (values) => {
     values = { ...values };
     editMutate(values, {
       onSuccess: () => {

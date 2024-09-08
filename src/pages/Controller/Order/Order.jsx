@@ -30,7 +30,6 @@ const Order = () => {
   const [isSwitchTableModalOpen, setIsSwitchTableModalOpen] = useState(false);
 
   const { data: orderData } = useGetBatchById(tableId);
-  console.log("🚀 ~ Order ~ orderData:", orderData?.data?.orders);
 
   const onClose = () => setIsAddModal(false);
 
@@ -83,7 +82,7 @@ const Order = () => {
             <Typography>Table</Typography>
           </Grid>
           {orderData?.data?.orders?.map((item, index) => (
-            <Grid item xs={12} md={4} lg={2} sm={12} key={index}>
+            <Grid item xs={12} md={4} lg={2} sm={6} key={index}>
               <OrderByTableIdCardView data={item} />
             </Grid>
           ))}
