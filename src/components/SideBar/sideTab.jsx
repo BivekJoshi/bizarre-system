@@ -13,6 +13,7 @@ import PostAddIcon from "@mui/icons-material/PostAdd";
 import CoffeeMakerRoundedIcon from "@mui/icons-material/CoffeeMakerRounded";
 import TableRowsIcon from '@mui/icons-material/TableRows';
 import FilterFramesIcon from '@mui/icons-material/FilterFrames';
+import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 
 export const adminTab = [
   {
@@ -96,6 +97,12 @@ export const adminTab = [
         label: "Branch",
         value: "branch",
         icon: <DynamicFeedRoundedIcon />,
+      },
+      {
+        id: nanoid(),
+        label: "Promo Code",
+        value: "promo-code",
+        icon: <QrCodeScannerIcon />,
       },
     ],
   },

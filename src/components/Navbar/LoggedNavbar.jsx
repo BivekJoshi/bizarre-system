@@ -151,13 +151,13 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
 
         {!isXsScreen && (
           <Box sx={{ display: "flex", gap: "1rem" }}>
-            <Tooltip title="Cart">
+            {/* <Tooltip title="Cart">
               <IconButton onClick={handleCartClick}>
                 <Badge badgeContent={cart.length} color="primary">
                   <ShoppingCartRoundedIcon />
                 </Badge>
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
             <Tooltip title="Notification">
               <IconButton onClick={handleNotiClick}>
                 <Badge badgeContent={4} color="primary">

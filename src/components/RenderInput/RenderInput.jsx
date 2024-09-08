@@ -599,7 +599,8 @@ const RenderInput = ({
                 marginBottom: "0.1rem",
               }}
             >
-              {element?.label}
+              {element?.label}{" "}
+              {element.required && <span style={{ color: "#EC4034" }}>*</span>}
             </Typography>
             <TextField
               name={element?.name}
@@ -607,6 +608,7 @@ const RenderInput = ({
               key={element?.value}
               type="date"
               variant="outlined"
+              size="small"
               className="textfield-icon-input"
               fullWidth
               inputProps={{
@@ -628,7 +630,60 @@ const RenderInput = ({
               InputLabelProps={{ shrink: true }}
               value={formValues}
               onChange={formik.handleChange}
+            />
+          </>
+        );
+      case "datetime":
+        const formattedValue = formValues
+          ? new Date(formValues).toISOString().slice(0, 16)
+          : "";
+
+        const minDateTime = element.disablePast
+          ? new Date().toISOString().slice(0, 16)
+          : "";
+        const maxDateTime = element.maxDate
+          ? new Date(element.maxDate).toISOString().slice(0, 16)
+          : "";
+
+        return (
+          <>
+            <Typography
+              variant="h5"
+              sx={{
+                color: theme.palette.text.default,
+                fontWeight: 700,
+                marginBottom: "0.1rem",
+              }}
+            >
+              {element?.label}{" "}
+              {element.required && <span style={{ color: "#EC4034" }}>*</span>}
+            </Typography>
+            <TextField
+              name={element?.name}
+              // label={element?.label}
+              placeholder={element?.extraInfo && element?.placeholder}
+              key={element?.value}
+              type="datetime-local"
+              variant="outlined"
+              fullWidth
               size="small"
+              inputProps={{
+                min: minDateTime,
+                max: maxDateTime,
+              }}
+              error={
+                formik.touched[element?.name] &&
+                Boolean(formik.errors[element?.name])
+              }
+              helperText={
+                formik.touched[element?.name] && formik.errors[element?.name]
+              }
+              disabled={
+                element.minDate ? !formik?.values[element?.minDate] : false
+              }
+              InputLabelProps={{ shrink: true }}
+              value={formattedValue}
+              onChange={formik.handleChange}
             />
           </>
         );

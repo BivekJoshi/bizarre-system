@@ -1,6 +1,7 @@
 import { nanoid } from "nanoid";
 import Loadable from "../../components/Loader/Loadable";
 import { lazy } from "react";
+import PromoCode from "../../pages/Controller/PromoCode/PromoCode";
 
 const AdminDashboard = Loadable(
   lazy(() => import("../../pages/AdminPage/Dashboard/AdminDashboard"))
@@ -83,6 +84,12 @@ const branchOwnerRoute = [
     name: "customer",
     id: nanoid(),
     component: Customer,
+  },
+  {
+    path: "promo-code",
+    name: "promo-code",
+    id: nanoid(),
+    component: PromoCode,
   },
 ];
 

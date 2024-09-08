@@ -48,6 +48,10 @@ const Barista = Loadable(
   lazy(() => import("../../pages/Controller/Member/Barista/Barista"))
 );
 
+const PromoCode = Loadable(
+  lazy(() => import("../../pages/Controller/PromoCode/PromoCode"))
+);
+
 const adminRoutes = [
   {
     path: "dashboard",
@@ -120,6 +124,12 @@ const adminRoutes = [
     name: "Setting",
     id: nanoid(),
     component: Setting,
+  },
+  {
+    path: "promo-code",
+    name: "Promo Code",
+    id: nanoid(),
+    component: PromoCode,
   },
   {
     path: "cart",
