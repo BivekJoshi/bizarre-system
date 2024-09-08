@@ -123,7 +123,7 @@ const CustomerTable = () => {
         sx={{
           backgroundColor: theme.palette.background.default,
           padding: "1rem",
-          marginTop: ".1rem",
+          marginTop: "1rem",
         }}
       >
         {renderView()}

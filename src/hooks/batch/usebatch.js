@@ -13,7 +13,7 @@ import {
 import { getErrorMessage } from "../../utils/getErrorMessage";
 
 /*________________________GET_BY_ID_____________________________________*/
-export const useGetBookById = (tableId) => {
+export const useGetBatchById = (tableId) => {
   return useQuery(["getBatchByTableId"], () => getBatchByTableId(tableId), {
     cacheTime: 10000,
     refetchInterval: false,

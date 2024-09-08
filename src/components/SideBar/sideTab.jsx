@@ -8,9 +8,11 @@ import CopyrightRoundedIcon from "@mui/icons-material/CopyrightRounded";
 import DynamicFeedRoundedIcon from "@mui/icons-material/DynamicFeedRounded";
 import WcRoundedIcon from "@mui/icons-material/WcRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
-import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
-import PostAddIcon from '@mui/icons-material/PostAdd';
-import CoffeeMakerRoundedIcon from '@mui/icons-material/CoffeeMakerRounded';
+import MenuBookRoundedIcon from "@mui/icons-material/MenuBookRounded";
+import PostAddIcon from "@mui/icons-material/PostAdd";
+import CoffeeMakerRoundedIcon from "@mui/icons-material/CoffeeMakerRounded";
+import TableRowsIcon from '@mui/icons-material/TableRows';
+import FilterFramesIcon from '@mui/icons-material/FilterFrames';
 
 export const adminTab = [
   {
@@ -100,31 +102,55 @@ export const adminTab = [
 ];
 
 export const branchOwnerTab = [
-  { label: "Dashboard", value: "dashboard" },
-  { label: "Customer", value: "customer" },
+  {
+    id: nanoid(),
+    label: "Dashboard",
+    value: "dashboard",
+    icon: <CottageRoundedIcon />,
+  },
   {
     id: nanoid(),
     label: "Customer Table",
     value: "customer-table",
-    icon: <SupervisedUserCircleRoundedIcon />,
+    icon: <TableRowsIcon />,
   },
   {
     id: nanoid(),
-    label: "Waiter",
-    value: "waiter",
-    icon: <WcRoundedIcon />,
+    label: "Orders",
+    value: "orders",
+    icon: <FilterFramesIcon />,
   },
   {
     id: nanoid(),
-    label: "Cashier",
+    label: "Member",
     value: "cashier",
-    icon: <CurrencyExchangeRoundedIcon />,
+    icon: <SupervisedUserCircleRoundedIcon />,
+    subTabs: [
+      {
+        id: nanoid(),
+        label: "Cashier",
+        value: "cashier",
+        icon: <CurrencyExchangeRoundedIcon />,
+      },
+      {
+        id: nanoid(),
+        label: "Barista",
+        value: "barista",
+        icon: <CoffeeMakerRoundedIcon />,
+      },
+      {
+        id: nanoid(),
+        label: "Waiter",
+        value: "waiter",
+        icon: <WcRoundedIcon />,
+      },
+    ],
   },
   {
     id: nanoid(),
-    label: "Barista",
-    value: "barista",
-    icon: <CurrencyExchangeRoundedIcon />,
+    label: "Customer",
+    value: "customer",
+    icon: <FaceRetouchingNaturalRoundedIcon />,
   },
 ];
 

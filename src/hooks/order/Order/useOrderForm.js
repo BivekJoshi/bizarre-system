@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 
 export const useOrderForm = ({ remarks = {}, selectedIds = [] }) => {
   const id = useParams();
-  console.log("🚀 ~ useOrderForm ~ id:", id);
+  // console.log("🚀 ~ useOrderForm ~ id:", id);
   const initialOrderRequests = Object.entries(remarks).map(
     ([itemId, remark]) => ({
       itemId,

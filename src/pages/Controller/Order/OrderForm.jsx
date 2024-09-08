@@ -1,12 +1,21 @@
 import React, { useState } from "react";
-import { Grid, Paper, Typography } from "@mui/material";
+import {
+  Grid,
+  Paper,
+  Typography,
+  Box,
+  Container,
+  TextField,
+  useTheme,
+} from "@mui/material";
 import LocalCafeIcon from "@mui/icons-material/LocalCafe";
 import FastfoodIcon from "@mui/icons-material/Fastfood";
 import CheckroomIcon from "@mui/icons-material/Checkroom";
-import OrderItem from "./OrderItem"; 
+import OrderItem from "./OrderItem";
 
-const OrderForm = () => {
-  const [selectedCategory, setSelectedCategory] = useState(null);
+const OrderForm = ({ onClose }) => {
+  const theme = useTheme();
+  const [selectedCategory, setSelectedCategory] = useState("Beverage");
 
   const categories = [
     { name: "Beverage", icon: <LocalCafeIcon fontSize="large" /> },
@@ -15,41 +24,88 @@ const OrderForm = () => {
   ];
 
   const handleCategoryClick = (category) => {
-    setSelectedCategory(category); 
+    setSelectedCategory(category);
   };
 
   return (
-    <div>
-      {!selectedCategory ? (
-        <Grid container spacing={3} justifyContent="center">
+    <>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: 2,
+          mb: 4,
+          backgroundColor: theme.palette.background.alt,
+          p: 1,
+        }}
+      >
+        <div style={{ display: "flex", gap: "1rem" }}>
           {categories.map((category) => (
-            <Grid item xs={12} sm={6} md={4} key={category.name}>
-              <Paper
-                elevation={4}
-                style={{
-                  padding: "20px",
-                  textAlign: "center",
-                  borderRadius: "10px",
-                  cursor: "pointer",
-                  transition: "transform 0.3s ease",
-                }}
-                onClick={() => handleCategoryClick(category.name)} // Trigger category selection
-                onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
-                onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-              >
-                {category.icon}
-                <Typography variant="h6" style={{ marginTop: "10px", color: "#000" }}>
-                  {category.name}
-                </Typography>
-              </Paper>
-            </Grid>
+            <Paper
+              key={category.name}
+              elevation={4}
+              sx={{
+                display: "flex",
+                justifyContent: "space-around",
+                padding: 1,
+                textAlign: "center",
+                borderRadius: "10px",
+                cursor: "pointer",
+                transition: "transform 0.3s ease",
+                border:
+                  category.name === selectedCategory
+                    ? `3px solid ${theme.palette.text.default}`
+                    : "1px solid #ccc",
+                color:
+                  category.name === selectedCategory
+                    ? `${theme.palette.text.default}`
+                    : `${theme.palette.text.main}`,
+                width: { xs: "100px", sm: "120px" },
+                "&:hover": {
+                  transform: "scale(1.05)",
+                },
+              }}
+              onClick={() => handleCategoryClick(category.name)}
+            >
+              {category.icon}
+              <Typography variant="subtitle1" sx={{ mt: 1, fontSize: "14px" }}>
+                {category.name}
+              </Typography>
+            </Paper>
           ))}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            gap: "1rem",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography
+            variant="subtitle1"
+            sx={{ mt: 1, color: "#000", fontSize: "14px" }}
+          >
+            Filter
+          </Typography>
+          <TextField
+            label="Search Item"
+            variant="outlined"
+            size="small"
+            // value={inputValue}
+            // onChange={handleInputChange}
+            sx={{
+              width: { xs: "150px", sm: "200px", md: "250px" },
+            }}
+          />
+        </div>
+      </Box>
+      <Grid container justifyContent="center">
+        <Grid item xs={12}>
+          <OrderItem category={selectedCategory} onClose={onClose}/>
         </Grid>
-      ) : (
-        // Conditionally render the OrderItem component when a category is selected
-        <OrderItem category={selectedCategory} />
-      )}
-    </div>
+      </Grid>
+    </>
   );
 };
 

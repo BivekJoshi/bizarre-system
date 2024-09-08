@@ -1,11 +1,38 @@
 import { nanoid } from "nanoid";
+import Loadable from "../../components/Loader/Loadable";
+import { lazy } from "react";
 
-import AdminDashboard from "../../pages/AdminPage/Dashboard/AdminDashboard";
-import CustomerTable from "../../pages/Controller/CustomerTable/CustomerTable";
-import Order from "../../pages/Controller/Order/Order";
-import Barista from "../../pages/Controller/Member/Barista/Barista";
-import Cashier from "../../pages/Controller/Member/Cashier/Cashier";
-import Waiter from "../../pages/Controller/Member/Waiter/Waiter";
+const AdminDashboard = Loadable(
+  lazy(() => import("../../pages/AdminPage/Dashboard/AdminDashboard"))
+);
+
+const Barista = Loadable(
+  lazy(() => import("../../pages/Controller/Member/Barista/Barista"))
+);
+
+const Waiter = Loadable(
+  lazy(() => import("../../pages/Controller/Member/Waiter/Waiter"))
+);
+
+const Cashier = Loadable(
+  lazy(() => import("../../pages/Controller/Member/Cashier/Cashier"))
+);
+
+const Customer = Loadable(
+  lazy(() => import("../../pages/Controller/Customer/Customer"))
+);
+
+const Order = Loadable(
+  lazy(() => import("../../pages/Controller/Order/Order"))
+);
+
+const CustomerTable = Loadable(
+  lazy(() => import("../../pages/Controller/CustomerTable/CustomerTable"))
+);
+
+const AllOrders = Loadable(
+  lazy(() => import("../../pages/Controller/Order/AllOrders"))
+);
 
 const branchOwnerRoute = [
   {
@@ -44,6 +71,18 @@ const branchOwnerRoute = [
     name: "waiter",
     id: nanoid(),
     component: Waiter,
+  },
+  {
+    path: "orders",
+    name: "Orders",
+    id: nanoid(),
+    component: AllOrders,
+  },
+  {
+    path: "customer",
+    name: "customer",
+    id: nanoid(),
+    component: Customer,
   },
 ];
 

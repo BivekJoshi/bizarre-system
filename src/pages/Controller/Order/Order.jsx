@@ -12,41 +12,48 @@ import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
 import CustomTable from "../../../components/CustomTable/CustomTable";
 import SwitchTableForm from "../Batch/SwitchTableForm";
 import { CustomPagination } from "../../../components/Pagination/CustomPagination";
+import OrderCardView from "./OrderCardView";
+import { useGetBatchById } from "../../../hooks/batch/usebatch";
+import { useParams } from "react-router-dom";
+import OrderByTableIdCardView from "./OrderByTableIdCardView";
+import NoDataFound from "../../PageNotFound/NoDataFound";
+import OrderReport from "./OrderReport";
 
 const Order = () => {
   const theme = useTheme();
+  const id = useParams();
+  const tableId = id?.id;
+
   const view = useSelector((state) => state?.view?.mode);
 
-  const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [isAddModalOpen, setIsAddModal] = useState(false);
+  const [isAddModalOpen, setIsAddModal] = useState(true);
   const [isSwitchTableModalOpen, setIsSwitchTableModalOpen] = useState(false);
 
-  const { data: orderData } = useGetOrder(pageNumber, pageSize);
+  const { data: orderData } = useGetBatchById(tableId);
+  console.log("🚀 ~ Order ~ orderData:", orderData?.data?.orders);
 
   const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useOrderForm({ onClose });
 
   const columns = useMemo(
     () => [
       {
         id: nanoid(),
-        accessorKey: "item.name",
+        accessorKey: "itemName",
         header: "Name",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
-        accessorKey: "batch.status",
+        accessorKey: "orderStatus",
         header: "Status",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
-        accessorKey: "remark",
-        header: "Remark",
+        accessorKey: "sellingPrice",
+        header: "sellingPrice",
         maxWidth: 80,
         sortable: false,
       },
@@ -59,7 +66,7 @@ const Order = () => {
       return (
         <CustomTable
           columns={columns}
-          data={orderData?.content}
+          data={orderData?.data?.orders}
           overFlow={"scroll"}
           width={"100%"}
           enablePagination={false}
@@ -72,12 +79,15 @@ const Order = () => {
     } else {
       return (
         <Grid container spacing={2}>
-          {orderData?.content?.map((item, index) => (
-            <Grid item xs={12} md={4} lg={3} sm={12} key={index}>
-              {/* Replace with actual card view component */}
-              {/* <OrderCardView data={item} /> */}
+          <Grid item xs={12} sx={{ textAlign: "center" }}>
+            <Typography>Table</Typography>
+          </Grid>
+          {orderData?.data?.orders?.map((item, index) => (
+            <Grid item xs={12} md={4} lg={2} sm={12} key={index}>
+              <OrderByTableIdCardView data={item} />
             </Grid>
           ))}
+          {!orderData?.data?.orders && <NoDataFound />}
         </Grid>
       );
     }
@@ -120,6 +130,8 @@ const Order = () => {
       </Box>
 
       <br />
+      <OrderReport orderReport={orderData?.data} />
+      <br />
       <Box
         sx={{
           backgroundColor: theme.palette.background.default,
@@ -129,24 +141,18 @@ const Order = () => {
       >
         {renderView()}
       </Box>
-      <CustomPagination
-        totalPages={orderData?.totalPages || 1}
-        currentPage={pageNumber}
-        onPageChange={setPageNumber}
-        rowsPerPage={pageSize}
-        onRowsPerPageChange={setPageSize}
-      />
+
       <FormModal
         open={isAddModalOpen}
         onClose={() => setIsAddModal(false)}
-        width={"70%"}
+        width={"90%"}
         height={"auto"}
         maxHeight={"80vh"}
         header={"Place Order"}
-        formik={formik}
-        loading={loading}
-        formComponent={<OrderForm formik={formik} />}
-        showButton={true}
+        // formik={formik}
+        // loading={loading}
+        formComponent={<OrderForm onClose={() => setIsAddModal(false)} />}
+        showButton={false}
       />
       <FormModal
         open={isSwitchTableModalOpen}
