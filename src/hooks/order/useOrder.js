@@ -2,7 +2,10 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import {
   addOrder,
+  deleteOrder,
   editOrder,
+  getbatchOrder,
+  getCancelOrder,
   getOrder,
   getOrderById,
   getOrderReady,
@@ -35,7 +38,7 @@ export const useGetOrderById = (id) => {
 
 /*________________________GET_SERVED_____________________________________*/
 export const useGetOrderServed = (orderId) => {
-  return useQuery(["getOrderServed"], () => getOrderServed(orderId), {
+  return useQuery(["getOrderServed", orderId], () => getOrderServed(orderId), {
     cacheTime: 10000,
     refetchInterval: false,
     refetchOnWindowFocus: false,
@@ -44,7 +47,7 @@ export const useGetOrderServed = (orderId) => {
 
 /*________________________GET_READY_____________________________________*/
 export const useGetOrderReady = (orderId) => {
-  return useQuery(["getOrderReady"], () => getOrderReady(orderId), {
+  return useQuery(["getOrderReady", orderId], () => getOrderReady(orderId), {
     cacheTime: 10000,
     refetchInterval: false,
     refetchOnWindowFocus: false,
@@ -53,7 +56,25 @@ export const useGetOrderReady = (orderId) => {
 
 /*________________________GET_PREPARING_____________________________________*/
 export const useGetOrderPreparing = (orderId) => {
-  return useQuery(["getPreparing"], () => getPreparing(orderId), {
+  return useQuery(["getPreparing", orderId], () => getPreparing(orderId), {
+    cacheTime: 10000,
+    refetchInterval: false,
+    refetchOnWindowFocus: false,
+  });
+};
+
+/*________________________GET_CANCEL_____________________________________*/
+export const useGetCancelOrder = (orderId) => {
+  return useQuery(["getCancelOrder", orderId], () => getCancelOrder(orderId), {
+    cacheTime: 10000,
+    refetchInterval: false,
+    refetchOnWindowFocus: false,
+  });
+};
+
+/*________________________GET_BATCH_ORDER_____________________________________*/
+export const useGetBatchOrder = (orderId) => {
+  return useQuery(["getbatchOrder", orderId], () => getbatchOrder(orderId), {
     cacheTime: 10000,
     refetchInterval: false,
     refetchOnWindowFocus: false,
@@ -86,6 +107,18 @@ export const useEditOrder = ({ onSuccess }) => {
     },
     onError: (err, _variables, _context) => {
       toast.error(getErrorMessage(err));
+    },
+  });
+};
+
+/*________________________DELETE_____________________________________*/
+export const useDeleteOrder = ({ onSuccess }) => {
+  const queryClient = useQueryClient();
+  return useMutation(["deleteOrder"], (id) => deleteOrder(id), {
+    onSuccess: (data, variables, context) => {
+      toast.success("Order deleted successfully");
+      onSuccess && onSuccess(data, variables, context);
+      queryClient.invalidateQueries("getOrder");
     },
   });
 };

@@ -6,6 +6,7 @@ import {
   Box,
   IconButton,
   useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import React from "react";
 import MaleProfile from "../../../assets/MaleProfile.png";
@@ -19,15 +20,18 @@ import { DOC_URL } from "../../../api/axiosInterceptor";
 
 const UserCard = ({ data }) => {
   const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const imageFinal = data?.user?.profilePictureUrl
     ? DOC_URL + data?.user?.profilePictureUrl
     : data?.user?.gender === "MALE"
-    ? MaleProfile
-    : data?.user?.gender === "FEMALE"
-    ? FemaleProfile
-    : null;
+      ? MaleProfile
+      : data?.user?.gender === "FEMALE"
+        ? FemaleProfile
+        : null;
 
+  const avatarSize = isSmallScreen ? 80 : isMediumScreen ? 90 : 100;
   return (
     <Paper
       elevation={3}
@@ -45,8 +49,8 @@ const UserCard = ({ data }) => {
             src={imageFinal}
             alt="User profile"
             sx={{
-              width: 130,
-              height: 130,
+              width: avatarSize,
+              height: avatarSize,
               border: `2px solid ${theme.palette.primary.main}`,
               boxShadow: theme.shadows[3],
             }}

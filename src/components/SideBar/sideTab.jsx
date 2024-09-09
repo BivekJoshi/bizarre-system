@@ -180,8 +180,18 @@ export const waiterTab = [
 ];
 
 export const baristaTab = [
-  { label: "Dashboard", value: "dashboard" },
-  { label: "Customer", value: "customer" },
+  {
+    id: nanoid(),
+    label: "Dashboard",
+    value: "dashboard",
+    icon: <CottageRoundedIcon />,
+  },
+  {
+    id: nanoid(),
+    label: "Orders",
+    value: "orders",
+    icon: <FilterFramesIcon />,
+  },
 ];
 
 export const supplierTab = [

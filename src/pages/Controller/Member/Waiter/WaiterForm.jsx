@@ -76,24 +76,24 @@ const WaiterForm = ({ formik, data }) => {
       lg: 6,
       sm: 12,
     },
-    ...(!data
-      ? [
-          {
-            id: nanoid(),
-            responseId: "id",
-            name: "branchId",
-            label: "Branch",
-            path: "/branch/find",
-            type: "asyncDropDown",
-            required: true,
-            responseLabel: "address",
-            xs: 12,
-            md: 6,
-            lg: 6,
-            sm: 12,
-          },
-        ]
-      : []),
+    // ...(!data
+    //   ? [
+    //       {
+    //         id: nanoid(),
+    //         responseId: "id",
+    //         name: "branchId",
+    //         label: "Branch",
+    //         path: "/branch/find",
+    //         type: "asyncDropDown",
+    //         required: true,
+    //         responseLabel: "address",
+    //         xs: 12,
+    //         md: 6,
+    //         lg: 6,
+    //         sm: 12,
+    //       },
+    //     ]
+    //   : []),
     {
       id: nanoid(),
       name: "salary",

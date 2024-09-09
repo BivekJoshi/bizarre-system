@@ -20,7 +20,7 @@ export const getOrder = async (pageNumber, pageSize) => {
 /*________________________GET SERVED_____________________________________*/
 export const getOrderServed = async (orderId) => {
   if (orderId) {
-    const { data } = await axiosInstance.get(`${ORDER}/find`);
+    const { data } = await axiosInstance.get(`${ORDER}/served/${orderId}`);
     return data?.data;
   }
 };
@@ -28,7 +28,7 @@ export const getOrderServed = async (orderId) => {
 /*________________________GET READY_____________________________________*/
 export const getOrderReady = async (orderId) => {
   if (orderId) {
-    const { data } = await axiosInstance.get(`${ORDER}/find`);
+    const { data } = await axiosInstance.get(`${ORDER}/ready/${orderId}`);
     return data?.data;
   }
 };
@@ -36,10 +36,27 @@ export const getOrderReady = async (orderId) => {
 /*________________________GET PREPARING_____________________________________*/
 export const getPreparing = async (orderId) => {
   if (orderId) {
-    const { data } = await axiosInstance.get(`${ORDER}/find`);
+    const { data } = await axiosInstance.get(`${ORDER}/preparing/${orderId}`);
     return data?.data;
   }
 };
+
+/*________________________GET CANCEL_____________________________________*/
+export const getCancelOrder = async (orderId) => {
+  if (orderId) {
+    const { data } = await axiosInstance.get(`${ORDER}/cancel/${orderId}`);
+    return data?.data;
+  }
+};
+
+/*________________________GET BATCH ORDER_____________________________________*/
+export const getbatchOrder = async (batchId) => {
+  if (batchId) {
+    const { data } = await axiosInstance.get(`${ORDER}/batch/${batchId}`);
+    return data?.data;
+  }
+};
+
 /*________________________GET_BY_ID_____________________________________*/
 export const getOrderById = async (id) => {
   if (id) {
@@ -52,4 +69,12 @@ export const getOrderById = async (id) => {
 export const editOrder = async (formData) => {
   const data = await axiosInstance.put(`${ORDER}/add-order`, formData);
   return data;
+};
+
+/*________________________DELETE_____________________________________*/
+export const deleteOrder = async (id) => {
+  if (id) {
+    const data = await axiosInstance.delete(`${ORDER}/remove/${id}`);
+    return data;
+  }
 };
