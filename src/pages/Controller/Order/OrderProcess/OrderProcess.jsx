@@ -1,24 +1,18 @@
 import React, { useMemo, useState } from "react";
-import { Box, Typography, Grid, useTheme } from "@mui/material";
+import { Box, Grid, useTheme } from "@mui/material";
 import { nanoid } from "nanoid";
 import { useSelector } from "react-redux";
-import { useGetOrder } from "../../../../hooks/order/useOrder";
 import CustomTable from "../../../../components/CustomTable/CustomTable";
 import OrderProcessBaristaCard from "./OrderProcessBaristaCard";
-import { CustomPagination } from "../../../../components/Pagination/CustomPagination";
 import FormModal from "../../../../components/Modal/FormModal";
 import OpenProcessModal from "./OpenProcessModal";
 
-const OrderProcess = () => {
+const OrderProcess = ({ orderData, refetch }) => {
   const theme = useTheme();
   const view = useSelector((state) => state?.view?.mode);
 
-  const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
   const [rowId, setRowId] = useState(null);
   const [openProcessModal, setOpenProcessModal] = useState(false);
-
-  const { data: orderData } = useGetOrder(pageNumber, pageSize);
 
   const columns = useMemo(
     () => [
@@ -79,25 +73,6 @@ const OrderProcess = () => {
     <>
       <Box
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Typography
-          variant="h3"
-          sx={{
-            color: theme.palette.text.default,
-            fontWeight: 700,
-          }}
-        >
-          Order
-        </Typography>
-      </Box>
-
-      <br />
-      <Box
-        sx={{
           backgroundColor: theme.palette.background.default,
           padding: "1rem",
           marginTop: ".1rem",
@@ -105,13 +80,6 @@ const OrderProcess = () => {
       >
         {renderView()}
       </Box>
-      <CustomPagination
-        totalPages={orderData?.totalPages || 1}
-        currentPage={pageNumber}
-        onPageChange={setPageNumber}
-        rowsPerPage={pageSize}
-        onRowsPerPageChange={setPageSize}
-      />
 
       <FormModal
         open={openProcessModal || rowId}
@@ -123,7 +91,16 @@ const OrderProcess = () => {
         height={"auto"}
         maxHeight={"80vh"}
         header={"Order Process"}
-        formComponent={<OpenProcessModal rowId={rowId} />}
+        formComponent={
+          <OpenProcessModal
+            rowId={rowId}
+            refetch={refetch}
+            onClose={() => {
+              setOpenProcessModal(false);
+              setRowId(null);
+            }}
+          />
+        }
         showButton={false}
       />
     </>

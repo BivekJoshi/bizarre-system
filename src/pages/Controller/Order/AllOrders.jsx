@@ -108,6 +108,7 @@ const Order = () => {
         onPageChange={setPageNumber}
         rowsPerPage={pageSize}
         onRowsPerPageChange={setPageSize}
+        totalElements={data?.totalElements || 0}
       />
     </>
   );

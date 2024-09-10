@@ -17,6 +17,7 @@ export const CustomPagination = ({
   rowsPerPageOptions = [10, 25, 50, 100, 200],
   rowsPerPage,
   onRowsPerPageChange,
+  totalElements,
 }) => {
   const theme = useTheme();
   const handlePageChange = (event, newPage) => {
@@ -25,7 +26,7 @@ export const CustomPagination = ({
   };
 
   const handleRowsPerPageChange = (event) => {
-    onRowsPerPageChange(event.target.value);
+    onRowsPerPageChange(event?.target?.value);
   };
 
   const normalizedCurrentPage = Math.min(
@@ -45,7 +46,7 @@ export const CustomPagination = ({
         padding: "1rem",
       }}
     >
-      <div></div>
+      <div>Total Element: {totalElements}</div>
       <Pagination
         count={totalPages || 1}
         page={normalizedCurrentPage}

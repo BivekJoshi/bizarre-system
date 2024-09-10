@@ -8,10 +8,10 @@ export const addOrder = async (formData) => {
 };
 
 /*________________________GET ALL_____________________________________*/
-export const getOrder = async (pageNumber, pageSize) => {
-  if (pageNumber && pageSize) {
+export const getOrder = async (pageNumber, pageSize, status) => {
+  if (pageNumber && pageSize && status) {
     const { data } = await axiosInstance.get(
-      `${ORDER}/find?pageNumber=${pageNumber}&pageSize=${pageSize}`
+      `${ORDER}/find?pageNumber=${pageNumber}&pageSize=${pageSize}&status=${status}`
     );
     return data?.data;
   }

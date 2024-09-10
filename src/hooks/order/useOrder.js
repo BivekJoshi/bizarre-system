@@ -15,10 +15,10 @@ import {
 import { getErrorMessage } from "../../utils/getErrorMessage";
 
 /*________________________GET ALL_____________________________________*/
-export const useGetOrder = (pageNumber, pageSize) => {
+export const useGetOrder = (pageNumber, pageSize, status) => {
   return useQuery(
-    ["getOrder", pageNumber, pageSize],
-    () => getOrder(pageNumber, pageSize),
+    ["getOrder", pageNumber, pageSize, status],
+    () => getOrder(pageNumber, pageSize, status),
     {
       cacheTime: 10000,
       refetchInterval: false,
