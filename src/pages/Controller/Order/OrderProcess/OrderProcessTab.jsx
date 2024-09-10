@@ -1,4 +1,10 @@
-import { Box, Tab, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Tab,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import React, { useState } from "react";
 import { useGetOrder } from "../../../../hooks/order/useOrder";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
@@ -111,7 +117,17 @@ const OrderProcessTab = () => {
         </Box>
 
         {isLoading ? (
-          <Loader />
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              minHeight: "400px",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress />
+          </div>
         ) : (
           statusOptions.map(({ value }) => (
             <TabPanel key={value} value={value}>
