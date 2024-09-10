@@ -5,7 +5,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useGetOrder } from "../../../../hooks/order/useOrder";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import OrderProcess from "./OrderProcess";
@@ -60,6 +60,14 @@ const OrderProcessTab = () => {
     refetch,
     isLoading,
   } = useGetOrder(pageNumber, pageSize, status);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      refetch();
+    }, 10000); 
+
+    return () => clearInterval(intervalId);
+  }, [refetch]);
 
   return (
     <>
