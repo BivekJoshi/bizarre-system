@@ -11,12 +11,16 @@ import {
 } from "@mui/material";
 import { DOC_URL } from "../../../../api/axiosInterceptor";
 
-const OrderProcessBaristaCard = ({ data }) => {
+const OrderProcessBaristaCard = ({ data, setRowId }) => {
     const { item, batch, status } = data;
 
     const { name, sellingPrice, stockCount, itemImageUrl, type } = item;
 
     const { customerTable, totalBilled, orderCount } = batch;
+
+    const handleSelectRow = () => {
+        setRowId(data?.id);
+    };
 
     return (
         <Card
@@ -33,6 +37,7 @@ const OrderProcessBaristaCard = ({ data }) => {
                     boxShadow: "0px 12px 36px rgba(0, 0, 0, 0.12)",
                 },
             }}
+            onClick={handleSelectRow}
         >
             <CardContent>
                 <Box display="flex" alignItems="center" mb={3}>

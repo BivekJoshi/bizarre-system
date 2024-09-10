@@ -1,19 +1,22 @@
 import React, { useMemo, useState } from "react";
-import { Box, Button, Grid, Typography, useTheme } from "@mui/material";
+import { Box, Typography, Grid, useTheme } from "@mui/material";
 import { nanoid } from "nanoid";
 import { useSelector } from "react-redux";
 import { useGetOrder } from "../../../../hooks/order/useOrder";
 import CustomTable from "../../../../components/CustomTable/CustomTable";
 import OrderProcessBaristaCard from "./OrderProcessBaristaCard";
 import { CustomPagination } from "../../../../components/Pagination/CustomPagination";
+import FormModal from "../../../../components/Modal/FormModal";
+import OpenProcessModal from "./OpenProcessModal";
 
 const OrderProcess = () => {
   const theme = useTheme();
-
   const view = useSelector((state) => state?.view?.mode);
 
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [rowId, setRowId] = useState(null);
+  const [openProcessModal, setOpenProcessModal] = useState(false);
 
   const { data: orderData } = useGetOrder(pageNumber, pageSize);
 
@@ -64,7 +67,7 @@ const OrderProcess = () => {
         <Grid container spacing={2}>
           {orderData?.content.map((item, index) => (
             <Grid item xs={12} md={4} lg={3} sm={12} key={index}>
-              <OrderProcessBaristaCard data={item} />
+              <OrderProcessBaristaCard data={item} setRowId={setRowId} />
             </Grid>
           ))}
         </Grid>
@@ -108,6 +111,20 @@ const OrderProcess = () => {
         onPageChange={setPageNumber}
         rowsPerPage={pageSize}
         onRowsPerPageChange={setPageSize}
+      />
+
+      <FormModal
+        open={openProcessModal || rowId}
+        onClose={() => {
+          setOpenProcessModal(false);
+          setRowId(null);
+        }}
+        width={"40%"}
+        height={"auto"}
+        maxHeight={"80vh"}
+        header={"Order Process"}
+        formComponent={<OpenProcessModal rowId={rowId} />}
+        showButton={false}
       />
     </>
   );
