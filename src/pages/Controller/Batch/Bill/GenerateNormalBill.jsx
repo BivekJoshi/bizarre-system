@@ -62,7 +62,7 @@ const GenerateNormalBill = ({batchId}) => {
             Width={"-webkit-fill-available"}
             startIcon={<ControlPointRoundedIcon />}
           >
-            Generate Bill
+            Generate Normal Bill
           </LoadingButton>
         </Stack>
       </Grid>
