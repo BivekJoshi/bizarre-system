@@ -6,10 +6,21 @@ import RenderInput from "../../../components/RenderInput/RenderInput";
 import RandomLogin from "../../../assets/RandomLogin.png";
 import { Link } from "react-router-dom";
 import { useForgotPasswordForm } from "../../../hooks/user/User/useForgotPasswordForm";
+import ReCAPTCHA from "react-google-recaptcha";
+import { useState } from "react";
 
 const ForgotPassword = () => {
   const theme = useTheme();
   const { loading, formik } = useForgotPasswordForm();
+  const [recapchaVal, setRecapchaVal] = useState(false);
+  const handleRecaptcha = (val) => {
+    if (val) {
+      setRecapchaVal(true);
+    } else {
+      setRecapchaVal(false);
+      console.error("ReCAPTCHA validation failed");
+    }
+  }; 
 
   const inputField = [
     {
@@ -79,11 +90,30 @@ const ForgotPassword = () => {
           </Typography>
           <br />
           <RenderInput inputField={inputField} formik={formik} />
+          <br />
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
+              maxWidth: { xs: "100%", sm: "400px" },
+              overflow: "hidden",
+            }}
+          >
+            <ReCAPTCHA
+              onChange={handleRecaptcha}
+              sitekey="6LfAUEAqAAAAAH3DFZXUE-iXWOdi63jXiFo6iavl"
+              style={{
+                width: "100%",
+              }}
+            />
+          </Box>
           <LoadingButton
             loading={loading}
             onClick={() => formik.handleSubmit()}
             variant={"contained"}
             fullWidth
+            disabled={!recapchaVal}
             sx={{
               marginTop: 2,
               "&:hover": {
