@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import CashierCardView from "./CashierCardView";
 import { CustomPagination } from "../../../../components/Pagination/CustomPagination";
 import { DOC_URL } from "../../../../api/axiosInterceptor";
+import PermissionButton from "../../../../components/Button/PermissionButton";
 
 const Cashier = () => {
   const theme = useTheme();
@@ -170,13 +171,15 @@ const Cashier = () => {
         >
           Cashier Member
         </Typography>
-        <Button
+
+        <PermissionButton
+          label="Add Cashier"
           variant="outlined"
           onClick={() => setIsAddModal(true)}
           startIcon={<ControlPointRoundedIcon />}
-        >
-          Add Cashier
-        </Button>
+          allowedUserTypes={["BRANCH_OWNER"]}
+          disabledUserTypes={["ADMIN"]}
+        />
       </Box>
 
       <br />

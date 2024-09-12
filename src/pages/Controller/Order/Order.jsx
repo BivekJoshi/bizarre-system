@@ -1,23 +1,20 @@
 import React, { useMemo, useState } from "react";
-import { Box, Button, Grid, Typography, useTheme } from "@mui/material";
+import { Box, Button, Grid, Stack, Typography, useTheme } from "@mui/material";
 import { nanoid } from "nanoid";
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { useSelector } from "react-redux";
-import { useOrderForm } from "../../../hooks/order/Order/useOrderForm";
 import OrderForm from "./OrderForm";
-import { useGetOrder } from "../../../hooks/order/useOrder";
 import FormModal from "../../../components/Modal/FormModal";
-import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
 import CustomTable from "../../../components/CustomTable/CustomTable";
 import SwitchTableForm from "../Batch/SwitchTableForm";
-import { CustomPagination } from "../../../components/Pagination/CustomPagination";
-import OrderCardView from "./OrderCardView";
 import { useGetBatchById } from "../../../hooks/batch/usebatch";
 import { useParams } from "react-router-dom";
 import OrderByTableIdCardView from "./OrderByTableIdCardView";
 import NoDataFound from "../../PageNotFound/NoDataFound";
 import OrderReport from "./OrderReport";
+import GenerateBillModal from "../Batch/Bill/GenerateBillModal";
+import PaymentModal from "../Batch/Payment/PaymentModal";
+import PermissionButton from "../../../components/Button/PermissionButton";
 
 const Order = () => {
   const theme = useTheme();
@@ -25,13 +22,16 @@ const Order = () => {
   const tableId = id?.id;
 
   const view = useSelector((state) => state?.view?.mode);
+  const userType = useSelector((state) => state?.user?.userType);
 
-  const [isAddModalOpen, setIsAddModal] = useState(true);
+  const [isAddModalOpen, setIsAddModal] = useState(
+    userType == "WAITER" ? true : false
+  );
   const [isSwitchTableModalOpen, setIsSwitchTableModalOpen] = useState(false);
+  const [isGenerateBillModalOpen, setIsGenerateBillModalOpen] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
   const { data: orderData } = useGetBatchById(tableId);
-
-  const onClose = () => setIsAddModal(false);
 
   const columns = useMemo(
     () => [
@@ -110,6 +110,7 @@ const Order = () => {
         >
           Order
         </Typography>
+
         <div style={{ display: "flex", gap: "1rem" }}>
           <Button
             variant="contained"
@@ -141,6 +142,37 @@ const Order = () => {
         {renderView()}
       </Box>
 
+      <Box
+        display="flex"
+        flexWrap="wrap"
+        justifyContent="center"
+        alignItems="center"
+        mt={3}
+        sx={{
+          backgroundColor: theme.palette.background.default,
+          padding: "1rem",
+        }}
+      >
+        <Stack direction="row" spacing={2}>
+          <PermissionButton
+            label="Generate Bill"
+            variant="outlined"
+            onClick={() => setIsGenerateBillModalOpen(true)}
+            // startIcon={<ControlPointRoundedIcon />}
+            allowedUserTypes={["WAITER", "CASHIER"]}
+            disabledUserTypes={[]}
+          />
+          <PermissionButton
+            label="Make Payment"
+            variant="outlined"
+            onClick={() => setIsPaymentModalOpen(true)}
+            // startIcon={<ControlPointRoundedIcon />}
+            allowedUserTypes={["CASHIER"]}
+            disabledUserTypes={[]}
+          />
+        </Stack>
+      </Box>
+
       <FormModal
         open={isAddModalOpen}
         onClose={() => setIsAddModal(false)}
@@ -148,8 +180,6 @@ const Order = () => {
         height={"auto"}
         maxHeight={"80vh"}
         header={"Place Order"}
-        // formik={formik}
-        // loading={loading}
         formComponent={<OrderForm onClose={() => setIsAddModal(false)} />}
         showButton={false}
       />
@@ -161,6 +191,26 @@ const Order = () => {
         maxHeight={"80vh"}
         header={"Switch Table"}
         formComponent={<SwitchTableForm />}
+        showButton={false}
+      />
+      <FormModal
+        open={isGenerateBillModalOpen}
+        onClose={() => setIsGenerateBillModalOpen(false)}
+        width={"30%"}
+        height={"auto"}
+        maxHeight={"80vh"}
+        header={"Generate Bill"}
+        formComponent={<GenerateBillModal batchId={orderData?.data?.batchId} />}
+        showButton={false}
+      />
+      <FormModal
+        open={isPaymentModalOpen}
+        onClose={() => setIsPaymentModalOpen(false)}
+        width={"30%"}
+        height={"auto"}
+        maxHeight={"80vh"}
+        header={"Payment Method"}
+        formComponent={<PaymentModal batchId={orderData?.data?.batchId} />}
         showButton={false}
       />
     </>

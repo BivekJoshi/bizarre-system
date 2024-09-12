@@ -62,7 +62,7 @@ const OrderReport = ({ orderReport }) => {
   return (
     <Box
       sx={{
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: theme.palette.background.default,
         padding: "1.5rem",
         borderRadius: 2,
         marginTop: "1rem",

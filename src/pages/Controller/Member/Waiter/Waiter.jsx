@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import WaiterCardView from "./WaiterCardView";
 import { CustomPagination } from "../../../../components/Pagination/CustomPagination";
 import { DOC_URL } from "../../../../api/axiosInterceptor";
+import PermissionButton from "../../../../components/Button/PermissionButton";
 
 const Waiter = () => {
   const theme = useTheme();
@@ -188,16 +189,15 @@ const Waiter = () => {
         >
           Waiter Member
         </Typography>
-        <Button
+
+        <PermissionButton
+          label="Add Waiter"
           variant="outlined"
-          onClick={() => {
-            formik.resetForm();
-            setIsAddModal(true);
-          }}
+          onClick={() => setIsAddModal(true)}
           startIcon={<ControlPointRoundedIcon />}
-        >
-          Add Waiter
-        </Button>
+          allowedUserTypes={["BRANCH_OWNER"]}
+          disabledUserTypes={["ADMIN"]}
+        />
       </Box>
 
       <br />

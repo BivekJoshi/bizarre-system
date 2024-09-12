@@ -31,8 +31,10 @@ const CustomerTable = Loadable(
   lazy(() => import("../../pages/Controller/CustomerTable/CustomerTable"))
 );
 
-const AllOrders = Loadable(
-  lazy(() => import("../../pages/Controller/Order/AllOrders"))
+const OrderProcessTab = Loadable(
+  lazy(() =>
+    import("../../pages/Controller/Order/OrderProcess/OrderProcessTab")
+  )
 );
 
 const branchOwnerRoute = [
@@ -77,7 +79,7 @@ const branchOwnerRoute = [
     path: "orders",
     name: "Orders",
     id: nanoid(),
-    component: AllOrders,
+    component: OrderProcessTab,
   },
   {
     path: "customer",

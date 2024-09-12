@@ -2,13 +2,13 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import { useNormalPayBatch } from "../usebatch";
 
-export const useNormalPayForm = () => {
+export const useNormalPayForm = ({ batchId }) => {
   const [loading, setLoading] = useState(false);
   const { mutate } = useNormalPayBatch({});
 
   const formik = useFormik({
     initialValues: {
-      batchId: "",
+      batchId: batchId || "",
       cashReceived: "",
       bankReceived: "",
       coinsReceived: "",

@@ -170,8 +170,13 @@ export const branchOwnerTab = [
 
 export const cashierTab = [
   { label: "Dashboard", value: "dashboard" },
-  { label: "Item", value: "item" },
-  { label: "Order", value: "order" },
+  {
+    id: nanoid(),
+    label: "Order",
+    value: "order",
+    icon: <FilterFramesIcon />,
+  },
+  { label: "customer-table", value: "customer-table" },
 ];
 
 export const waiterTab = [
@@ -192,6 +197,7 @@ export const baristaTab = [
     value: "orders",
     icon: <FilterFramesIcon />,
   },
+
 ];
 
 export const supplierTab = [

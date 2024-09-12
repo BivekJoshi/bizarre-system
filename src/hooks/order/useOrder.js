@@ -73,8 +73,8 @@ export const useGetCancelOrder = (orderId) => {
 };
 
 /*________________________GET_BATCH_ORDER_____________________________________*/
-export const useGetBatchOrder = (orderId) => {
-  return useQuery(["getbatchOrder", orderId], () => getbatchOrder(orderId), {
+export const useGetBatchOrder = (batchId) => {
+  return useQuery(["getbatchOrder", batchId], () => getbatchOrder(batchId), {
     cacheTime: 10000,
     refetchInterval: false,
     refetchOnWindowFocus: false,

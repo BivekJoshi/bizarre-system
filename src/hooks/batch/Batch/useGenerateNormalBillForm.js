@@ -2,13 +2,13 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import { useGenerateNormalBillBatch } from "../usebatch";
 
-export const useGenerateNormalBillForm = () => {
+export const useGenerateNormalBillForm = ({ batchId }) => {
   const [loading, setLoading] = useState(false);
   const { mutate } = useGenerateNormalBillBatch({});
 
   const formik = useFormik({
     initialValues: {
-      batchId: "",
+      batchId: batchId || "",
       billingName: "",
       mobileNumber: "",
       promoCode: "",

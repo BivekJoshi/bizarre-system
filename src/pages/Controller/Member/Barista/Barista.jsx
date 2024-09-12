@@ -15,6 +15,7 @@ import BaristaCardView from "./BaristaCardView";
 import { useBaristaMemberForm } from "../../../../hooks/member/Member/BaristaMember/useBaristaMemberForm";
 import { CustomPagination } from "../../../../components/Pagination/CustomPagination";
 import { DOC_URL } from "../../../../api/axiosInterceptor";
+import PermissionButton from "../../../../components/Button/PermissionButton";
 
 const Barista = () => {
   const theme = useTheme();
@@ -170,13 +171,15 @@ const Barista = () => {
         >
           Barista
         </Typography>
-        <Button
+
+        <PermissionButton
+          label="Add Barista"
           variant="outlined"
           onClick={() => setIsAddModal(true)}
           startIcon={<ControlPointRoundedIcon />}
-        >
-          Add Barista
-        </Button>
+          allowedUserTypes={["BRANCH_OWNER"]}
+          disabledUserTypes={["ADMIN"]}
+        />
       </Box>
 
       <br />

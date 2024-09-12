@@ -60,8 +60,13 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
     : null;
 
   useEffect(() => {
-    if (loggedInUserData?.data?.id) {
-      dispatch(setUserId(loggedInUserData?.data?.id));
+    if (loggedInUserData?.data?.id && loggedInUserData?.data?.userType) {
+      dispatch(
+        setUserId({
+          userId: loggedInUserData?.data?.id,
+          userType: loggedInUserData?.data?.userType,
+        })
+      );
     }
   }, [loggedInUserData, dispatch]);
 

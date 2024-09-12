@@ -17,36 +17,36 @@ export const switchTableBatch = async (formData) => {
 
 /*___________________________SPLIT PAY_____________________________________*/
 export const splitPayBatch = async (formData) => {
-  const data = await axiosInstance.post(`${BATCH}/switch-table`, formData);
+  const data = await axiosInstance.post(`${BATCH}/split-pay`, formData);
   return data;
 };
 
 /*___________________________NORMAL PAY_____________________________________*/
 export const normalPayBatch = async (formData) => {
-  const data = await axiosInstance.post(`${BATCH}/switch-table`, formData);
+  const data = await axiosInstance.post(`${BATCH}/normal-pay`, formData);
   return data;
 };
 
 /*___________________________GENERATE SPLIT BILL_____________________________________*/
 export const generateSplitBillBatch = async (formData) => {
-  const data = await axiosInstance.post(`${BATCH}/switch-table`, formData);
+  const data = await axiosInstance.post(`${BATCH}/generate-split-bill`, formData);
   return data;
 };
 
 /*___________________________GENERATE ROULETTE BILL_____________________________________*/
 export const generateRouletteBillBatch = async (formData) => {
-  const data = await axiosInstance.post(`${BATCH}/switch-table`, formData);
+  const data = await axiosInstance.post(`${BATCH}/generate-roulette-bill`, formData);
   return data;
 };
 
 /*___________________________GENERATE NORMAL BILL_____________________________________*/
 export const generateNormalBillBatch = async (formData) => {
-  const data = await axiosInstance.post(`${BATCH}/switch-table`, formData);
+  const data = await axiosInstance.post(`${BATCH}/generate-normal-bill`, formData);
   return data;
 };
 
 /*___________________________BYPASS PAYMEN_____________________________________*/
 export const bypassPaymentBatch = async (formData) => {
-  const data = await axiosInstance.post(`${BATCH}/switch-table`, formData);
+  const data = await axiosInstance.post(`${BATCH}/bypass-payment`, formData);
   return data;
 };

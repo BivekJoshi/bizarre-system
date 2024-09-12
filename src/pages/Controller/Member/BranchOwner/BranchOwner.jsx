@@ -15,10 +15,12 @@ import BranchOwnerCardView from "./BranchOwnerCardView";
 import { useSelector } from "react-redux";
 import { CustomPagination } from "../../../../components/Pagination/CustomPagination";
 import { DOC_URL } from "../../../../api/axiosInterceptor";
+import PermissionButton from "../../../../components/Button/PermissionButton";
 
 const BranchOwner = () => {
   const theme = useTheme();
   const view = useSelector((state) => state?.view?.mode);
+  const userType = useSelector((state) => state?.user?.userType);
 
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -170,13 +172,15 @@ const BranchOwner = () => {
         >
           Branch Owner
         </Typography>
-        <Button
+
+        <PermissionButton
+          label="Add Branch Owner"
           variant="outlined"
           onClick={() => setIsAddModal(true)}
           startIcon={<ControlPointRoundedIcon />}
-        >
-          Add Branch Owner
-        </Button>
+          allowedUserTypes={["ADMIN"]}
+          disabledUserTypes={[]}
+        />
       </Box>
 
       <br />
