@@ -16,12 +16,18 @@ import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useChangePasswordForm } from "../../../hooks/user/User/useChangePasswordForm";
+import FormModal from "../../../components/Modal/FormModal";
+import FinalSelectionUI from "../../../components/Camera/FinalSelectionUI";
+import { useGetUserData } from "../../../hooks/user/useUser";
 
 const ChangePasswordInitial = () => {
   const theme = useTheme();
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [openModal, setOpenModal] = useState(true);
+  const { data: userData, isLoading: isLoadingUserData } = useGetUserData();
+
   const { formik, loading } = useChangePasswordForm();
 
   const { newPassword } = formik.values;
@@ -52,12 +58,32 @@ const ChangePasswordInitial = () => {
     <Box
       sx={{
         padding: {
-          xs: "1rem", 
+          xs: "1rem",
           sm: "0",
-          md: "4rem", 
+          md: "4rem",
         },
       }}
     >
+      <Grid
+        container
+        sx={{
+          backgroundColor: theme.palette.background.default,
+          padding: "1rem",
+        }}
+      >
+        <Grid item xs={12} sx={{ textAlign: "center" }}>
+          <Typography
+            variant="h3"
+            sx={{
+              color: theme.palette.text.default,
+              fontWeight: 700,
+            }}
+          >
+            Welcome To Bizarre System, {userData?.data?.fullName}
+          </Typography>
+        </Grid>
+      </Grid>
+      <br />
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Typography
@@ -166,7 +192,7 @@ const ChangePasswordInitial = () => {
           sm={12}
           sx={{ display: "flex", gap: ".5rem", flexDirection: "column" }}
         >
-          <Typography
+          {/* <Typography
             variant="p"
             sx={{
               color: theme.palette.text.default,
@@ -195,7 +221,7 @@ const ChangePasswordInitial = () => {
             variant="outlined"
             type={"text"}
             size="small"
-          />
+          /> */}
           <Typography
             variant="p"
             sx={{
@@ -351,6 +377,47 @@ const ChangePasswordInitial = () => {
           </Box>
         </Grid>
       </Grid>
+
+      <br />
+      <br />
+      <Grid
+        container
+        sx={{
+          backgroundColor: theme.palette.background.default,
+          padding: "1rem",
+        }}
+      >
+        <Grid item xs={12} sx={{ textAlign: "center" }}>
+          <Button variant="contained" onClick={() => setOpenModal(true)}>
+            Add Picture
+          </Button>
+        </Grid>
+      </Grid>
+
+      <FormModal
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        width={"25%"}
+        height={"auto"}
+        maxHeight={"80vh"}
+        header={"Add Your Profile Image"}
+        formComponent={
+          <>
+            <FinalSelectionUI onClose={() => setOpenModal(false)} />
+            <br />
+            <Box sx={{ display: "flex", justifyContent: "end" }}>
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={() => setOpenModal(false)}
+              >
+                Skip
+              </Button>
+            </Box>
+          </>
+        }
+        showButton={false}
+      />
     </Box>
   );
 };

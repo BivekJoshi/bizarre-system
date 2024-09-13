@@ -25,32 +25,37 @@ export const useAuth = () => {
         setUser(data?.tokenId);
         setUserType(data?.userType);
         setTokenType(data?.tokenType);
+
         toast.success("Login Successful");
 
-        switch (data?.userType) {
-          case "ADMIN":
-            navigate("/admin/dashboard");
-            break;
-          case "BRANCH_OWNER":
-            navigate("/branch_owner/dashboard");
-            break;
-          case "CASHIER":
-            navigate("/cashier/dashboard");
-            break;
-          case "WAITER":
-            navigate("/waiter/dashboard");
-            break;
-          case "BARISTA":
-            navigate("/barista/dashboard");
-            break;
-          case "SUPPLIER":
-            navigate("/supplier/dashboard");
-            break;
-          case "CUSTOMER":
-            navigate("/customer/dashboard");
-            break;
-          default:
-            navigate("/404");
+        if (data?.firstLogin) {
+          navigate("/change-password");
+        } else {
+          switch (data?.userType) {
+            case "ADMIN":
+              navigate("/admin/dashboard");
+              break;
+            case "BRANCH_OWNER":
+              navigate("/branch_owner/dashboard");
+              break;
+            case "CASHIER":
+              navigate("/cashier/dashboard");
+              break;
+            case "WAITER":
+              navigate("/waiter/dashboard");
+              break;
+            case "BARISTA":
+              navigate("/barista/dashboard");
+              break;
+            case "SUPPLIER":
+              navigate("/supplier/dashboard");
+              break;
+            case "CUSTOMER":
+              navigate("/customer/dashboard");
+              break;
+            default:
+              navigate("/404");
+          }
         }
       },
       onError: (err, _variables, _context) => {
