@@ -16,8 +16,8 @@ const Normalpay = ({ batchId }) => {
     {
       id: nanoid(),
       name: "cashReceived",
-      label: "cashReceived",
-      placeholder: "Enter mobile number",
+      label: "Cash Received",
+      placeholder: "Enter cash received",
       type: "text",
       required: true,
       xs: 12,
@@ -28,8 +28,8 @@ const Normalpay = ({ batchId }) => {
     {
       id: nanoid(),
       name: "bankReceived",
-      label: "bankReceived",
-      placeholder: "Enter mobile number",
+      label: "Bank Received",
+      placeholder: "Enter bank received",
       type: "text",
       required: true,
       xs: 12,
@@ -40,8 +40,8 @@ const Normalpay = ({ batchId }) => {
     {
       id: nanoid(),
       name: "coinsReceived",
-      label: "coinsReceived",
-      placeholder: "Enter mobile number",
+      label: "Coins Received",
+      placeholder: "Enter coins received",
       type: "text",
       required: true,
       xs: 12,
@@ -76,7 +76,7 @@ const Normalpay = ({ batchId }) => {
             Width={"-webkit-fill-available"}
             startIcon={<ControlPointRoundedIcon />}
           >
-            Generate Bill
+            Normal Pay
           </LoadingButton>
         </Stack>
       </Grid>
