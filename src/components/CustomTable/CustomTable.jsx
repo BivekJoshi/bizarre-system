@@ -1,5 +1,6 @@
 import { Delete, Edit } from "@mui/icons-material";
 import UploadFileRoundedIcon from "@mui/icons-material/UploadFileRounded";
+import GpsFixedRoundedIcon from "@mui/icons-material/GpsFixedRounded";
 import { Box, IconButton, Tooltip, useTheme } from "@mui/material";
 import { MaterialReactTable } from "material-react-table";
 import { useCallback } from "react";
@@ -12,6 +13,12 @@ const CustomTable = (props) => {
       props?.onRowClick(row);
     }
   };
+
+  const handleEnter = useCallback((row) => {
+    if (props.handleEnter) {
+      props.handleEnter(row);
+    }
+  }, []);
 
   const handleAddDocumentRow = useCallback((row) => {
     if (props.handleAddDocumentRow) {
@@ -131,6 +138,22 @@ const CustomTable = (props) => {
                     }}
                   >
                     <UploadFileRoundedIcon />
+                  </IconButton>
+                </Tooltip>
+              )}
+              {props.enter && (
+                <Tooltip arrow placement="right" title="Enter">
+                  <IconButton
+                    color="terniary"
+                    onClick={() => handleEnter(row)}
+                    sx={{
+                      border: "1px solid",
+                      borderColor: "error",
+                      borderRadius: "6px",
+                      padding: "6px",
+                    }}
+                  >
+                    <GpsFixedRoundedIcon />
                   </IconButton>
                 </Tooltip>
               )}

@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useCallback } from "react";
-import { Box, Button, Grid, Typography, useTheme } from "@mui/material";
+import { Box, Button, Chip, Grid, Typography, useTheme } from "@mui/material";
 import { nanoid } from "nanoid";
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
@@ -12,9 +12,11 @@ import { useSelector } from "react-redux";
 import CustomerTableCardView from "./CustomerTableCardView";
 import { CustomPagination } from "../../../components/Pagination/CustomPagination";
 import CustomerTableForm from "./CustomerTableForm";
+import { useNavigate } from "react-router-dom";
 
 const CustomerTable = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const view = useSelector((state) => state?.view?.mode);
 
   const [pageNumber, setPageNumber] = useState(1);
@@ -43,6 +45,27 @@ const CustomerTable = () => {
     setRowData(row?.original);
   }, []);
 
+  const handleEnter = useCallback((row) => {
+    if (row?.original?.id) {
+      navigate(`${row.original?.id}`);
+    }
+  }, []);
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "OCCUPIED":
+        return "error";
+      case "AVAILABLE":
+        return "success";
+      case "RESERVED":
+        return "warning";
+      case "OUT_OF_ORDER":
+        return "secondary";
+      default:
+        return "default";
+    }
+  };
+
   const columns = useMemo(
     () => [
       {
@@ -58,6 +81,10 @@ const CustomerTable = () => {
         header: "Status",
         maxWidth: 80,
         sortable: false,
+        Cell: ({ cell }) => {
+          const data = cell.getValue();
+          return <Chip label={data} color={getStatusColor(data)}/>;
+        },
       },
     ],
     []
@@ -76,7 +103,9 @@ const CustomerTable = () => {
           enableColumnActions
           enableEditing={true}
           handleEdit={editRow}
+          handleEnter={handleEnter}
           edit
+          enter
         />
       );
     } else {
