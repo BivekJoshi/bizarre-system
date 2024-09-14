@@ -16,6 +16,7 @@ import CashierCardView from "./CashierCardView";
 import { CustomPagination } from "../../../../components/Pagination/CustomPagination";
 import { DOC_URL } from "../../../../api/axiosInterceptor";
 import PermissionButton from "../../../../components/Button/PermissionButton";
+import MemberDocumentForm from "../MemberDocumentForm";
 
 const Cashier = () => {
   const theme = useTheme();
@@ -26,6 +27,7 @@ const Cashier = () => {
   const [rowData, setRowData] = useState(null);
   const [isAddModalOpen, setIsAddModal] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const { data } = useGetMember(pageNumber, pageSize);
@@ -33,11 +35,21 @@ const Cashier = () => {
   // const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useCashierMemberForm({ onClose });
+  const { formik, loading } = useCashierMemberForm({ onClose, rowData });
 
   const deleteRow = (row) => {
     setRowData(row?.original?.id);
     setIsDeleteModalOpen(true);
+  };
+
+  const editRow = (row) => {
+    setIsEditModalOpen(true);
+    setRowData(row?.original);
+  };
+
+  const handleAddDocumentRow = (row) => {
+    setIsDocumentModalOpen(true);
+    setRowData(row?.original);
   };
 
   const columns = useMemo(
@@ -130,12 +142,11 @@ const Cashier = () => {
           // enableDelete
           // handleDeleteRow={deleteRow}
           // delete
-          // enableDelete
-          // enableEditing={true}
-          // handleDeleteRow={deleteRow}
-          // handleEdit={editRow}
-          // delete
-          // edit
+          enableEditing={true}
+          handleEdit={editRow}
+          handleAddDocumentRow={handleAddDocumentRow}
+          edit
+          document
         />
       );
     } else {
@@ -229,10 +240,29 @@ const Cashier = () => {
         loading={loading}
         formComponent={
           <>
-            <CashierForm formik={formik} />
+            <CashierForm formik={formik} rowData={rowData} />
           </>
         }
         showButton={true}
+      />
+      <FormModal
+        open={isDocumentModalOpen}
+        onClose={() => setIsDocumentModalOpen(false)}
+        width={"30%"}
+        height={"auto"}
+        maxHeight={"80vh"}
+        header={"Add Member Document"}
+        // formik={formik}
+        // loading={loading}
+        formComponent={
+          <>
+            <MemberDocumentForm
+              onClose={() => setIsDocumentModalOpen(false)}
+              rowData={rowData?.id}
+            />
+          </>
+        }
+        showButton={false}
       />
       <ConfirmationModal
         disagreeLabel={"Yes, Delete !"}

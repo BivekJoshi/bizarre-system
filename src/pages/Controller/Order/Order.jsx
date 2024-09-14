@@ -190,7 +190,12 @@ const Order = () => {
         height={"auto"}
         maxHeight={"80vh"}
         header={"Switch Table"}
-        formComponent={<SwitchTableForm />}
+        formComponent={
+          <SwitchTableForm
+            onClose={() => setIsSwitchTableModalOpen(false)}
+            tableId={tableId}
+          />
+        }
         showButton={false}
       />
       <FormModal

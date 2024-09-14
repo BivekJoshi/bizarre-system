@@ -16,17 +16,18 @@ import { useSelector } from "react-redux";
 import { CustomPagination } from "../../../../components/Pagination/CustomPagination";
 import { DOC_URL } from "../../../../api/axiosInterceptor";
 import PermissionButton from "../../../../components/Button/PermissionButton";
+import MemberDocumentForm from "../MemberDocumentForm";
 
 const BranchOwner = () => {
   const theme = useTheme();
   const view = useSelector((state) => state?.view?.mode);
-  const userType = useSelector((state) => state?.user?.userType);
 
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [rowData, setRowData] = useState(null);
   const [isAddModalOpen, setIsAddModal] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const { data } = useGetMember(pageNumber, pageSize);
@@ -34,11 +35,21 @@ const BranchOwner = () => {
   // const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useBranchOwnerMemberForm({ onClose });
+  const { formik, loading } = useBranchOwnerMemberForm({ onClose, rowData });
 
   const deleteRow = (row) => {
     setRowData(row?.original?.id);
     setIsDeleteModalOpen(true);
+  };
+
+  const editRow = (row) => {
+    setIsEditModalOpen(true);
+    setRowData(row?.original);
+  };
+
+  const handleAddDocumentRow = (row) => {
+    setIsDocumentModalOpen(true);
+    setRowData(row?.original);
   };
 
   const columns = useMemo(
@@ -128,15 +139,11 @@ const BranchOwner = () => {
           enablePagination={false}
           enableRowNumbers
           enableColumnActions
-          // enableDelete
-          // handleDeleteRow={deleteRow}
-          // delete
-          // enableDelete
-          // enableEditing={true}
-          // handleDeleteRow={deleteRow}
-          // handleEdit={editRow}
-          // delete
-          // edit
+          enableEditing={true}
+          handleEdit={editRow}
+          handleAddDocumentRow={handleAddDocumentRow}
+          edit
+          document
         />
       );
     } else {
@@ -214,7 +221,7 @@ const BranchOwner = () => {
         loading={loading}
         formComponent={
           <>
-            <BranchOwnerForm formik={formik} />
+            <BranchOwnerForm formik={formik} rowData={rowData} />
           </>
         }
         showButton={true}
@@ -234,6 +241,23 @@ const BranchOwner = () => {
           </>
         }
         showButton={true}
+      />
+      <FormModal
+        open={isDocumentModalOpen}
+        onClose={() => setIsDocumentModalOpen(false)}
+        width={"30%"}
+        height={"auto"}
+        maxHeight={"80vh"}
+        header={"Add Member Document"}
+        formComponent={
+          <>
+            <MemberDocumentForm
+              onClose={() => setIsDocumentModalOpen(false)}
+              rowData={rowData?.id}
+            />
+          </>
+        }
+        showButton={false}
       />
       <ConfirmationModal
         disagreeLabel={"Yes, Delete !"}

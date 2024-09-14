@@ -5,6 +5,7 @@ import {
   editCustomerTable,
   getCustomerTable,
   getCustomerTableById,
+  getCustomerTableByStatus,
 } from "../../api/controller/customer-table-api";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 
@@ -13,6 +14,20 @@ export const useGetCustomerTable = (pageNumber, pageSize) => {
   return useQuery(
     ["getCustomerTable", pageNumber, pageSize],
     () => getCustomerTable(pageNumber, pageSize),
+    {
+      cacheTime: 10000,
+      refetchInterval: false,
+      refetchOnWindowFocus: false,
+      keepPreviousData: true,
+    }
+  );
+};
+
+/*________________________GET BY STATUS_____________________________________*/
+export const useGetCustomerTableByStatus = (status) => {
+  return useQuery(
+    ["getCustomerTableByStatus", status],
+    () => getCustomerTableByStatus(status),
     {
       cacheTime: 10000,
       refetchInterval: false,

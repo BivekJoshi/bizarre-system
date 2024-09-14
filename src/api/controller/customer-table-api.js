@@ -17,6 +17,16 @@ export const getCustomerTable = async (pageNumber, pageSize) => {
   }
 };
 
+/*________________________GET_____________________________________*/
+export const getCustomerTableByStatus = async (status) => {
+  if (status) {
+    const { data } = await axiosInstance.get(
+      `${CUSTOMER_TABLE}/find/status/${status}`
+    );
+    return data?.data;
+  }
+};
+
 /*________________________GET_BY_ID_____________________________________*/
 export const getCustomerTableById = async (id) => {
   if (id) {

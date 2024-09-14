@@ -3,6 +3,7 @@ import {
   addBaristaMember,
   addBranchOwnerMember,
   addCashierMember,
+  addIdDocument,
   addWaiterMember,
   editMember,
   getMember,
@@ -113,6 +114,22 @@ export const useEditMember = ({ onSuccess }) => {
       toast.success("Successfully edited memeber detail");
       onSuccess && onSuccess(data, variables, context);
       queryClient.invalidateQueries("getMember");
+    },
+    onError: (err, _variables, _context) => {
+      toast.error(getErrorMessage(err));
+    },
+  });
+};
+
+/*________________________POST PP DETAIL_____________________________________*/
+export const useAddIdDocument = ({ onSuccess }) => {
+  const queryClient = useQueryClient();
+
+  return useMutation((formData) => addIdDocument(formData), {
+    onSuccess: (data, variables, context) => {
+      onSuccess && onSuccess(data, variables, context);
+      queryClient.invalidateQueries("getMember");
+      toast.success("Added Document of memeber successfuly");
     },
     onError: (err, _variables, _context) => {
       toast.error(getErrorMessage(err));

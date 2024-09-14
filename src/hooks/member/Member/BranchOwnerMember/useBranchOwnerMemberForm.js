@@ -2,21 +2,21 @@ import { useFormik } from "formik";
 
 import { useAddBranchOwnerMember } from "../../useMember";
 
-export const useBranchOwnerMemberForm = ({ onClose, data }) => {
+export const useBranchOwnerMemberForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddBranchOwnerMember({});
   const { mutate: editMutate } = useAddBranchOwnerMember({});
 
   const formik = useFormik({
     initialValues: {
-      id: data?.id || "",
-      fullName: data?.fullName || "",
-      mobileNumber: data?.mobileNumber || "",
-      gender: data?.gender || "",
-      birthDate: data?.birthDate || "",
-      address: data?.address || "",
-      email: data?.email || "",
-      branchId: data?.branchId || "",
-      salary: data?.salary || "",
+      id: rowData?.id || "",
+      fullName: rowData?.user?.fullName || "",
+      mobileNumber: rowData?.user?.mobileNumber || "",
+      gender: rowData?.user?.gender || "",
+      birthDate: rowData?.user?.birthDate || "",
+      address: rowData?.user?.address || "",
+      email: rowData?.user?.email || "",
+      salary: rowData?.salary || 0,
+      branchId: rowData?.branch?.id || "",
     },
     //   validationSchema: sendMoneyRecipientBankSchema,
     enableReinitialize: true,

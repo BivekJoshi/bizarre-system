@@ -2,13 +2,13 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import { useSwitchTableBatch } from "../usebatch";
 
-export const useSwitchTableForm = () => {
+export const useSwitchTableForm = ({ tableId }) => {
   const [loading, setLoading] = useState(false);
   const { mutate } = useSwitchTableBatch({});
 
   const formik = useFormik({
     initialValues: {
-      sourceTableId: "",
+      sourceTableId: tableId || "",
       targetTableId: "",
     },
     // validationSchema: userSchema,

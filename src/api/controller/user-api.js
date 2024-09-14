@@ -23,7 +23,7 @@ export const forgotPassword = async (formData) => {
   return data;
 };
 
-/*_____________________________FORGET PASSWORD_______________________________________________ */
+/*_____________________________ADD PROFILE PICTURE_______________________________________________ */
 export const addProfilePic = async (formData) => {
   const imgData = new FormData();
 

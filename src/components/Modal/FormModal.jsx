@@ -77,7 +77,6 @@ const FormModal = ({
                 <IconButton
                   onClick={() => {
                     onClose();
-                    formik.handleReset();
                   }}
                 >
                   <CloseIcon />
@@ -107,7 +106,6 @@ const FormModal = ({
                   variant="outlined"
                   color="error"
                   onClick={() => {
-                    formik.handleReset();
                     onClose();
                   }}
                   startIcon={<HighlightOffRoundedIcon />}

@@ -19,6 +19,7 @@ import React, { useEffect } from "react";
 import AsyncDropDownOption from "./AsyncDropDownOption";
 import AsyncDropDown from "./AsyncDropDown";
 import DropZoneUploadFile from "../DropZoneUploadFIle/DropZoneUploadFile";
+import DropZoneUploadFileDynamic from "./DropZoneUploadFileDynamic";
 
 const RenderInput = ({
   inputField,
@@ -755,6 +756,19 @@ const RenderInput = ({
               )}
             </div> */}
           </div>
+        );
+
+      case "file":
+        return (
+          <DropZoneUploadFileDynamic
+            label={element.label}
+            accept={element.acceptedFileTypes || "image/*"}
+            maxFiles={element.maxFiles || 1}
+            maxSize={element.maxSize || 5000000}
+            formik={formik}
+            fieldName={element.name}
+            multiple={element.multiple || false}
+          />
         );
       default:
         return <TextField name={element?.name} label={element?.label} />;

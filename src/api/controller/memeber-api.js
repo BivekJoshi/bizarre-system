@@ -50,10 +50,22 @@ export const editMember = async (formData) => {
   return data;
 };
 
-/*________________________DELETE_____________________________________*/
-// export const deleteMember = async (id) => {
-//   if (id) {
-//     const data = await axiosInstance.delete(`${MEMBER}/${id}`);
-//     return data;
-//   }
-// };
+/*_____________________________ADD DOCUMENT_______________________________________________ */
+export const addIdDocument = async (formData) => {
+  const imgData = new FormData();
+
+  imgData.append("memberId", formData.memberId);
+  imgData.append("idFrontImage", formData.idFrontImage[0]);
+  imgData.append("idBackImage", formData.idBackImage[0]);
+
+  const { data } = await axiosInstance.post(
+    `${MEMBER}/upload-profile-picture`,
+    imgData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return data;
+};

@@ -1,4 +1,5 @@
 import { Delete, Edit } from "@mui/icons-material";
+import UploadFileRoundedIcon from "@mui/icons-material/UploadFileRounded";
 import { Box, IconButton, Tooltip, useTheme } from "@mui/material";
 import { MaterialReactTable } from "material-react-table";
 import { useCallback } from "react";
@@ -11,6 +12,12 @@ const CustomTable = (props) => {
       props?.onRowClick(row);
     }
   };
+
+  const handleAddDocumentRow = useCallback((row) => {
+    if (props.handleAddDocumentRow) {
+      props.handleAddDocumentRow(row);
+    }
+  }, []);
 
   const handleDeleteRow = useCallback((row) => {
     if (props.handleDeleteRow) {
@@ -108,6 +115,22 @@ const CustomTable = (props) => {
                     }}
                   >
                     <Delete />
+                  </IconButton>
+                </Tooltip>
+              )}
+              {props.document && (
+                <Tooltip arrow placement="right" title="Add Document">
+                  <IconButton
+                    color="terniary"
+                    onClick={() => handleAddDocumentRow(row)}
+                    sx={{
+                      border: "1px solid",
+                      borderColor: "error",
+                      borderRadius: "6px",
+                      padding: "6px",
+                    }}
+                  >
+                    <UploadFileRoundedIcon />
                   </IconButton>
                 </Tooltip>
               )}

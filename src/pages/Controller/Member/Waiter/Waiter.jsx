@@ -16,6 +16,7 @@ import WaiterCardView from "./WaiterCardView";
 import { CustomPagination } from "../../../../components/Pagination/CustomPagination";
 import { DOC_URL } from "../../../../api/axiosInterceptor";
 import PermissionButton from "../../../../components/Button/PermissionButton";
+import MemberDocumentForm from "../MemberDocumentForm";
 
 const Waiter = () => {
   const theme = useTheme();
@@ -26,6 +27,7 @@ const Waiter = () => {
   const [rowData, setRowData] = useState(null);
   const [isAddModalOpen, setIsAddModal] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const { data } = useGetMember(pageNumber, pageSize);
@@ -41,6 +43,11 @@ const Waiter = () => {
   };
   const editRow = (row) => {
     setIsEditModalOpen(true);
+    setRowData(row?.original);
+  };
+
+  const handleAddDocumentRow = (row) => {
+    setIsDocumentModalOpen(true);
     setRowData(row?.original);
   };
 
@@ -145,15 +152,11 @@ const Waiter = () => {
           enablePagination={false}
           enableRowNumbers
           enableColumnActions
-          // enableDelete
-          // handleDeleteRow={deleteRow}
-          // delete
-          enableDelete
           enableEditing={true}
-          handleDeleteRow={deleteRow}
           handleEdit={editRow}
-          delete
+          handleAddDocumentRow={handleAddDocumentRow}
           edit
+          document
         />
       );
     } else {
@@ -251,6 +254,25 @@ const Waiter = () => {
           </>
         }
         showButton={true}
+      />
+      <FormModal
+        open={isDocumentModalOpen}
+        onClose={() => setIsDocumentModalOpen(false)}
+        width={"30%"}
+        height={"auto"}
+        maxHeight={"80vh"}
+        header={"Add Member Document"}
+        // formik={formik}
+        // loading={loading}
+        formComponent={
+          <>
+            <MemberDocumentForm
+              onClose={() => setIsDocumentModalOpen(false)}
+              rowData={rowData?.id}
+            />
+          </>
+        }
+        showButton={false}
       />
       <ConfirmationModal
         disagreeLabel={"Yes, Delete !"}
