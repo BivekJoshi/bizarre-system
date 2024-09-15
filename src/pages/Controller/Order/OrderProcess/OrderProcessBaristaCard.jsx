@@ -11,16 +11,56 @@ import {
 } from "@mui/material";
 import { DOC_URL } from "../../../../api/axiosInterceptor";
 
+const statusOptions = [
+  {
+    label: "Waiting",
+    value: "WAITING",
+    color: "#2980b9",
+    hoverColor: "#3498db",
+  },
+  {
+    label: "Preparing",
+    value: "PREPARING",
+    color: "#27ae60",
+    hoverColor: "#2ecc71",
+  },
+  {
+    label: "Ready",
+    value: "READY",
+    color: "#e67e22",
+    hoverColor: "#f39c12",
+  },
+  {
+    label: "Served",
+    value: "SERVED",
+    color: "#8e44ad",
+    hoverColor: "#9b59b6",
+  },
+  {
+    label: "Canceled",
+    value: "CANCELLED",
+    color: "#c0392b",
+    hoverColor: "#e74c3c",
+  },
+];
+
 const OrderProcessBaristaCard = ({ data, setRowId }) => {
   const { item, batch, status } = data;
 
   const { name, sellingPrice, stockCount, itemImageUrl, type } = item;
-
   const { customerTable, totalBilled, orderCount } = batch;
 
   const handleSelectRow = () => {
     setRowId(data?.id);
   };
+
+  // Find the status option that matches the current status
+  const statusOption = statusOptions.find(
+    (option) => option.value === status
+  );
+
+  const statusColor = statusOption ? statusOption.color : "#3a3a3a";
+  const statusBackground = statusOption ? `${statusOption.hoverColor}1A` : "#f0f0f0"; // Add transparency to hoverColor
 
   return (
     <Card
@@ -114,13 +154,12 @@ const OrderProcessBaristaCard = ({ data, setRowId }) => {
             <Typography
               variant="body1"
               fontWeight="bold"
-              color={status === "WAITING" ? "#d1a754" : "#3a3a3a"}
+              color={statusColor}
               sx={{
-                backgroundColor: status === "WAITING" ? "#fff7e6" : "#f0f0f0",
-                padding: "6px 12px",
+                backgroundColor: statusBackground,
+                padding: "4px 10px",
                 borderRadius: "16px",
-                border: "1px solid",
-                borderColor: status === "WAITING" ? "#d1a754" : "#b3b3b3",
+                border: `1px solid ${statusColor}`,
                 textAlign: "center",
                 minWidth: "100px",
               }}

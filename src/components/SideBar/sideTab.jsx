@@ -169,25 +169,45 @@ export const branchOwnerTab = [
 ];
 
 export const cashierTab = [
-  { label: "Dashboard", value: "dashboard" },
+  {
+    id: nanoid(),
+    label: "Dashboard",
+    value: "dashboard",
+    icon: <CottageRoundedIcon />,
+  },
   {
     id: nanoid(),
     label: "Order",
-    value: "order",
+    value: "orders",
     icon: <FilterFramesIcon />,
   },
-  { label: "customer-table", value: "customer-table" },
+  {
+    id: nanoid(),
+    label: "Customer Table",
+    value: "customer-table",
+    icon: <TableRowsIcon />,
+  },
 ];
 
 export const waiterTab = [
-  { label: "Dashboard", value: "dashboard" },
+  {
+    id: nanoid(),
+    label: "Dashboard",
+    value: "dashboard",
+    icon: <CottageRoundedIcon />,
+  },
   {
     id: nanoid(),
     label: "Order",
-    value: "order",
+    value: "orders",
     icon: <FilterFramesIcon />,
   },
-  { label: "customer-table", value: "customer-table" },
+  {
+    id: nanoid(),
+    label: "Customer Table",
+    value: "customer-table",
+    icon: <TableRowsIcon />,
+  },
 ];
 
 export const baristaTab = [

@@ -10,6 +10,7 @@ import Loadable from "../../components/Loader/Loadable";
 const Order = Loadable(
   lazy(() => import("../../pages/Controller/Order/Order"))
 );
+
 const waiterRoute = [
   {
     path: "dashboard",

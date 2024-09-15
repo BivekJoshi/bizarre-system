@@ -1,14 +1,16 @@
 import { useFormik } from "formik";
 import { useState } from "react";
 import { useNormalPayBatch } from "../usebatch";
+import { useParams } from "react-router-dom";
 
 export const useNormalPayForm = ({ batchId }) => {
   const [loading, setLoading] = useState(false);
   const { mutate } = useNormalPayBatch({});
+  const { id } = useParams();
 
   const formik = useFormik({
     initialValues: {
-      batchId: batchId || "",
+      customerTableId: id || "",
       cashReceived: "",
       bankReceived: "",
       coinsReceived: "",

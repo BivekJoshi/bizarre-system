@@ -13,6 +13,7 @@ import CustomerTableCardView from "./CustomerTableCardView";
 import { CustomPagination } from "../../../components/Pagination/CustomPagination";
 import CustomerTableForm from "./CustomerTableForm";
 import { useNavigate } from "react-router-dom";
+import Filter from "../../../components/Filter/Filter";
 
 const CustomerTable = () => {
   const theme = useTheme();
@@ -83,7 +84,7 @@ const CustomerTable = () => {
         sortable: false,
         Cell: ({ cell }) => {
           const data = cell.getValue();
-          return <Chip label={data} color={getStatusColor(data)}/>;
+          return <Chip label={data} color={getStatusColor(data)} />;
         },
       },
     ],
@@ -123,6 +124,15 @@ const CustomerTable = () => {
 
   return (
     <>
+      {/* <NewFilter
+        inputField={filterMenuItem}
+        searchCallBack={handleSearch}
+        validate={adminUsersViewSchema}
+        showfilter={false}
+        submitButtonText="Search"
+        extraFilter={true}
+        handleSearch={handleSearch}
+      /> */}
       <Box
         sx={{
           display: "flex",
@@ -147,6 +157,13 @@ const CustomerTable = () => {
           Add Customer Table
         </Button>
       </Box>
+
+      <Filter
+        inputField={[]}
+        showfilter={false}
+        submitButtonText="Search"
+        extraFilter={true}
+      />
 
       <Box
         sx={{

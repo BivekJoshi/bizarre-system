@@ -2,10 +2,12 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import { useSplitPayBatch } from "../usebatch";
 import * as Yup from "yup";
+import { useParams } from "react-router-dom";
 
 export const useSplitPayForm = ({ batchId }) => {
   const [loading, setLoading] = useState(false);
   const { mutate } = useSplitPayBatch({});
+  const {id} = useParams();
 
   const validationSchema = Yup.object({
     cashReceived: Yup.string().optional(),
@@ -15,7 +17,7 @@ export const useSplitPayForm = ({ batchId }) => {
 
   const formik = useFormik({
     initialValues: {
-      customerTableId: "",
+      customerTableId: id || "",
       cashReceived: "",
       bankReceived: "",
       coinsReceived: "",
