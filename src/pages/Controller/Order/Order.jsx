@@ -30,6 +30,7 @@ const Order = () => {
   const [isSwitchTableModalOpen, setIsSwitchTableModalOpen] = useState(false);
   const [isGenerateBillModalOpen, setIsGenerateBillModalOpen] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [isBillLayout, setIsBillLayout] = useState(false);
 
   const { data: orderData } = useGetBatchById(tableId);
 
