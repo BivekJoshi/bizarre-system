@@ -14,7 +14,6 @@ import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import NepaliDate from "nepali-date";
 import SettingsIcon from "@mui/icons-material/Settings";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import Setting from "./Setting";
 import maleProfile from "../../assets/MaleProfile.png";
 import femaleProfile from "../../assets/FemaleProfile.png";
@@ -24,6 +23,7 @@ import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserId } from "../../redux/Slice/userIdSlice";
 import { DOC_URL } from "../../api/axiosInterceptor";
+import NotificationMenu from "../Menu/NotificationMenu";
 
 const LoggedNavbar = ({ handleOpenDrawer }) => {
   const navigate = useNavigate();
@@ -40,8 +40,6 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
 
   const currentNepaliDate = new NepaliDate();
   const formattedNepaliDate = currentNepaliDate.format("YYYY-MM-DD");
-
-  const handleNotiClick = () => {};
 
   const handleSetting = () => setOpenSettingDrawer(true);
 
@@ -163,13 +161,9 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
                 </Badge>
               </IconButton>
             </Tooltip> */}
-            <Tooltip title="Notification">
-              <IconButton onClick={handleNotiClick}>
-                <Badge badgeContent={4} color="primary">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
-            </Tooltip>
+
+            <NotificationMenu />
+            
             <Tooltip title="Setting">
               <IconButton onClick={handleSetting}>
                 <SettingsIcon />

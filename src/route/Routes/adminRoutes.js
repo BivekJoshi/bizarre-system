@@ -1,6 +1,7 @@
 import { nanoid } from "nanoid";
 import { lazy } from "react";
 import Loadable from "../../components/Loader/Loadable";
+import NotificationViewAll from "../../components/Menu/NotificationViewAll";
 
 const AdminDashboard = Loadable(
   lazy(() => import("../../pages/AdminPage/Dashboard/AdminDashboard"))
@@ -141,11 +142,12 @@ const adminRoutes = [
     id: nanoid(),
     component: RedeemCode,
   },
+
   {
-    path: "cart",
-    name: "Cart",
+    path: "notifications",
+    name: "notifications",
     id: nanoid(),
-    component: Cart,
+    component: NotificationViewAll,
   },
 ];
 

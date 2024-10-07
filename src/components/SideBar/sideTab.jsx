@@ -208,6 +208,12 @@ export const waiterTab = [
     value: "customer-table",
     icon: <TableRowsIcon />,
   },
+  {
+    id: nanoid(),
+    label: "Chat",
+    value: "chat",
+    icon: <TableRowsIcon />,
+  },
 ];
 
 export const baristaTab = [

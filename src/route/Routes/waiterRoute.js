@@ -7,6 +7,7 @@ import OrderProcessTab from "../../pages/Controller/Order/OrderProcess/OrderProc
 import CustomerTable from "../../pages/Controller/CustomerTable/CustomerTable";
 import { lazy } from "react";
 import Loadable from "../../components/Loader/Loadable";
+import WebSocketClient from "../../constants/websocket";
 const Order = Loadable(
   lazy(() => import("../../pages/Controller/Order/Order"))
 );
@@ -36,6 +37,13 @@ const waiterRoute = [
     name: "Customer Table Details",
     id: nanoid(),
     component: Order,
+  },
+
+  {
+    path: "chat",
+    name: "Chat",
+    id: nanoid(),
+    component: WebSocketClient,
   },
 ];
 
