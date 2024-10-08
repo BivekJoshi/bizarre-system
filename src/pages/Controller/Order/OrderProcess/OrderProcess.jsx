@@ -7,6 +7,7 @@ import OrderProcessBaristaCard from "./OrderProcessBaristaCard";
 import FormModal from "../../../../components/Modal/FormModal";
 import OpenProcessModal from "./OpenProcessModal";
 import { DOC_URL } from "../../../../api/axiosInterceptor";
+import NoDataFound from "../../../PageNotFound/NoDataFound";
 
 const OrderProcess = ({ orderData, refetch }) => {
   const theme = useTheme();
@@ -87,6 +88,11 @@ const OrderProcess = ({ orderData, refetch }) => {
   );
 
   const renderView = () => {
+    if (!orderData?.content || orderData.content.length === 0) {
+      return (
+        <NoDataFound/>
+      );
+    }
     if (view === "table") {
       return (
         <CustomTable

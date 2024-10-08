@@ -6,6 +6,7 @@ import { useGetOrder } from "../../../hooks/order/useOrder";
 import CustomTable from "../../../components/CustomTable/CustomTable";
 import { CustomPagination } from "../../../components/Pagination/CustomPagination";
 import OrderCardView from "./OrderCardView";
+import NoDataFound from "../../PageNotFound/NoDataFound";
 
 const Order = () => {
   const theme = useTheme();
@@ -45,6 +46,11 @@ const Order = () => {
   );
 
   const renderView = () => {
+    if (!data?.content || data.content.length === 0) {
+      return (
+        <NoDataFound/>
+      );
+    }
     if (view === "table") {
       return (
         <CustomTable

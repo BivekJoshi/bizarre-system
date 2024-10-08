@@ -24,7 +24,6 @@
 // import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 // import HighlightOffRoundedIcon from "@mui/icons-material/HighlightOffRounded";
 
-
 // const OrderItem = ({ category, onClose }) => {
 //   const theme = useTheme();
 //   const [pageNumber, setPageNumber] = useState(1);
@@ -225,7 +224,6 @@
 
 // export default OrderItem;
 
-
 import React, { useState } from "react";
 import {
   Grid,
@@ -251,6 +249,7 @@ import { useOrderForm } from "../../../hooks/order/Order/useOrderForm";
 import { LoadingButton } from "@mui/lab";
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 import HighlightOffRoundedIcon from "@mui/icons-material/HighlightOffRounded";
+import NoDataFound from "../../PageNotFound/NoDataFound";
 
 const OrderItem = ({ category, onClose }) => {
   const theme = useTheme();
@@ -296,6 +295,7 @@ const OrderItem = ({ category, onClose }) => {
 
   return (
     <Grid container spacing={3}>
+      {!itemData?.content || (itemData.content.length === 0 && <NoDataFound />)}
       {itemData?.content.map((item) => (
         <Grid item xs={12} sm={6} md={2} key={item.id}>
           <Card

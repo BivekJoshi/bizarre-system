@@ -13,6 +13,7 @@ import { useBookForm } from "../../../hooks/book/Book/useBookForm";
 import { useSelector } from "react-redux";
 import { CustomPagination } from "../../../components/Pagination/CustomPagination";
 import BookCardView from "./BookCardView";
+import NoDataFound from "../../PageNotFound/NoDataFound";
 
 const Book = () => {
   const theme = useTheme();
@@ -87,6 +88,9 @@ const Book = () => {
   );
 
   const renderView = () => {
+    if (!data?.content || data.content.length === 0) {
+      return <NoDataFound />;
+    }
     if (view === "table") {
       return (
         <CustomTable

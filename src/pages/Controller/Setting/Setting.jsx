@@ -9,6 +9,7 @@ import AddSetting from "./AddSetting";
 import { useGetSetting } from "../../../hooks/setting/useSetting";
 import { useSettingForm } from "../../../hooks/setting/Setting/useSettingForm";
 import SettingCardView from "./SettingCardView";
+import NoDataFound from "../../PageNotFound/NoDataFound";
 
 const Setting = () => {
   const theme = useTheme();
@@ -41,6 +42,11 @@ const Setting = () => {
   );
 
   const renderView = () => {
+    if (!data?.content || data.content.length === 0) {
+      return (
+        <NoDataFound/>
+      );
+    }
     if (view === "table") {
       return (
         <CustomTable

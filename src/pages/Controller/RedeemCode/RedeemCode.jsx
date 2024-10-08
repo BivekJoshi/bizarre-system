@@ -10,6 +10,7 @@ import AddRedeemCode from "./AddRedeemCode";
 import RedeemCodeCardView from "./RedeemCodeCardView";
 import { useRedeemCodeForm } from "../../../hooks/redeemCode/RedeemCode/useRedeemCodeForm";
 import { useGetRedeemCode } from "../../../hooks/redeemCode/useRedeemCode";
+import NoDataFound from "../../PageNotFound/NoDataFound";
 
 const RedeemCode = () => {
   const theme = useTheme();
@@ -76,6 +77,11 @@ const RedeemCode = () => {
   );
 
   const renderView = () => {
+    if (!data?.content || data.content.length === 0) {
+      return (
+        <NoDataFound/>
+      );
+    }
     if (view === "table") {
       return (
         <CustomTable

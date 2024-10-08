@@ -15,6 +15,7 @@ import ItemCardView from "./ItemCardView";
 import EditItem from "./EditItem";
 import { DOC_URL } from "../../../api/axiosInterceptor";
 import { CustomPagination } from "../../../components/Pagination/CustomPagination";
+import NoDataFound from "../../PageNotFound/NoDataFound";
 
 const Item = () => {
   const theme = useTheme();
@@ -141,6 +142,10 @@ const Item = () => {
   );
 
   const renderView = () => {
+    if (!data?.content || data.content.length === 0) {
+      return <NoDataFound />;
+    }
+    
     if (view === "table") {
       return (
         <CustomTable
@@ -211,7 +216,6 @@ const Item = () => {
       >
         {renderView()}
       </Box>
-
 
       <CustomPagination
         totalPages={data?.totalPages || 1}

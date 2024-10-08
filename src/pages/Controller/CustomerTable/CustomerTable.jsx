@@ -14,6 +14,7 @@ import { CustomPagination } from "../../../components/Pagination/CustomPaginatio
 import CustomerTableForm from "./CustomerTableForm";
 import { useNavigate } from "react-router-dom";
 import Filter from "../../../components/Filter/Filter";
+import NoDataFound from "../../PageNotFound/NoDataFound";
 
 const CustomerTable = () => {
   const theme = useTheme();
@@ -92,6 +93,9 @@ const CustomerTable = () => {
   );
 
   const renderView = () => {
+    if (!data?.content || data.content.length === 0) {
+      return <NoDataFound />;
+    }
     if (view === "table") {
       return (
         <CustomTable

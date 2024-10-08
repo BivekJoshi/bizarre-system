@@ -10,6 +10,7 @@ import PromoCodeCardView from "./PromoCodeCardView";
 import AddPromoCode from "./AddPromoCode";
 import { useGetPromoCode } from "../../../hooks/promoCode/usePromoCode";
 import { usePromoCodeForm } from "../../../hooks/promoCode/PromoCode/usePromoCodeForm";
+import NoDataFound from "../../PageNotFound/NoDataFound";
 
 const PromoCode = () => {
   const theme = useTheme();
@@ -83,6 +84,11 @@ const PromoCode = () => {
   );
 
   const renderView = () => {
+    if (!data?.content || data.content.length === 0) {
+      return (
+        <NoDataFound/>
+      );
+    }
     if (view === "table") {
       return (
         <CustomTable

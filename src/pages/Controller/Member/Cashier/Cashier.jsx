@@ -17,6 +17,7 @@ import { CustomPagination } from "../../../../components/Pagination/CustomPagina
 import { DOC_URL } from "../../../../api/axiosInterceptor";
 import PermissionButton from "../../../../components/Button/PermissionButton";
 import MemberDocumentForm from "../MemberDocumentForm";
+import NoDataFound from "../../../PageNotFound/NoDataFound";
 
 const Cashier = () => {
   const theme = useTheme();
@@ -129,6 +130,11 @@ const Cashier = () => {
   );
 
   const renderView = () => {
+    if (!data?.content || data.content.length === 0) {
+      return (
+        <NoDataFound/>
+      );
+    }
     if (view === "table") {
       return (
         <CustomTable

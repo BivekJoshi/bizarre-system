@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import { CustomPagination } from "../../../components/Pagination/CustomPagination";
 import { DOC_URL } from "../../../api/axiosInterceptor";
 import CustomerCardView from "./CustomerCardView";
+import NoDataFound from "../../PageNotFound/NoDataFound";
 
 const Customer = () => {
   const theme = useTheme();
@@ -116,28 +117,31 @@ const Customer = () => {
   );
 
   const renderView = () => {
+    if (!data?.content || data.content.length === 0) {
+      return (
+        <NoDataFound/>
+      );
+    }
+  
     if (view === "table") {
       return (
         <CustomTable
           columns={columns}
-          data={data?.content}
+          data={data.content}
           overFlow={"scroll"}
           width={"100%"}
           enablePagination={false}
           enableRowNumbers
           enableColumnActions
-          // enableDelete
           enableEditing={true}
           // handleDeleteRow={deleteRow}
           // handleEdit={editRow}
-          // delete
-          edit
         />
       );
     } else {
       return (
         <Grid container spacing={2}>
-          {data?.content?.map((item, index) => (
+          {data.content.map((item, index) => (
             <Grid item xs={12} md={4} lg={4} sm={12} key={index}>
               <CustomerCardView data={item} />
             </Grid>
@@ -146,6 +150,7 @@ const Customer = () => {
       );
     }
   };
+  
 
   return (
     <>
