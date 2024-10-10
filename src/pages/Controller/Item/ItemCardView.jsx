@@ -62,7 +62,7 @@ const ItemCardView = ({ data }) => {
               $29.99
             </Typography>
           </Grid>
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <Grid container justifyContent="space-between" alignItems="center">
               <Grid item>
                 <Button
@@ -80,7 +80,7 @@ const ItemCardView = ({ data }) => {
                 </IconButton>
               </Grid>
             </Grid>
-          </Grid>
+          </Grid> */}
         </Box>
       </Grid>
     </Paper>

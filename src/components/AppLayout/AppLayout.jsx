@@ -1,11 +1,13 @@
 import {
   Box,
+  Button,
   Drawer,
   Grid,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import ArrowBack from "@mui/icons-material/ArrowBack";
 import React from "react";
 import { Outlet } from "react-router-dom";
 import LoggedNavbar from "../Navbar/LoggedNavbar";
@@ -79,6 +81,17 @@ const AppLayout = () => {
             <Typography variant="h6">Welcome</Typography>
           </Grid>
           <SideBar handleCloseDrawer={handleCloseDrawer} />
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: "3rem",
+              right: "1rem",
+            }}
+          >
+            <Button onClick={handleCloseDrawer} color="primary" variant="contained">
+              <ArrowBack />
+            </Button>
+          </Box>
         </Drawer>
       </Box>
     </Box>

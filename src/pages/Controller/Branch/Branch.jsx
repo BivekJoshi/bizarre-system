@@ -12,6 +12,7 @@ import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import BranchCardView from "./BranchCardView";
 import { useSelector } from "react-redux";
 import { CustomPagination } from "../../../components/Pagination/CustomPagination";
+import NoDataFound from "../../PageNotFound/NoDataFound";
 
 const Branch = () => {
   const theme = useTheme();
@@ -71,6 +72,9 @@ const Branch = () => {
   );
 
   const renderView = () => {
+    if (!data?.content || data.content.length === 0) {
+      return <NoDataFound />;
+    }
     if (view === "table") {
       return (
         <CustomTable

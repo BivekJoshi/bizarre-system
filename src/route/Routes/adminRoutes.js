@@ -1,7 +1,6 @@
 import { nanoid } from "nanoid";
 import { lazy } from "react";
 import Loadable from "../../components/Loader/Loadable";
-import NotificationViewAll from "../../components/Menu/NotificationViewAll";
 
 const AdminDashboard = Loadable(
   lazy(() => import("../../pages/AdminPage/Dashboard/AdminDashboard"))
@@ -55,6 +54,23 @@ const PromoCode = Loadable(
 
 const RedeemCode = Loadable(
   lazy(() => import("../../pages/Controller/RedeemCode/RedeemCode"))
+);
+
+const NotificationViewAll = Loadable(
+  lazy(() => import("../../components/Menu/NotificationViewAll"))
+);
+const ReportDashboard = Loadable(
+  lazy(() =>
+    import("../../pages/Controller/Report/ReportDashboard/ReportDashboard")
+  )
+);
+const ReportBatchOrder = Loadable(
+  lazy(() =>
+    import("../../pages/Controller/Report/ReportBatchOrder/ReportBatchOrder")
+  )
+);
+const ReportSales = Loadable(
+  lazy(() => import("../../pages/Controller/Report/ReportSales/ReportSales"))
 );
 
 const adminRoutes = [
@@ -148,6 +164,27 @@ const adminRoutes = [
     name: "notifications",
     id: nanoid(),
     component: NotificationViewAll,
+  },
+
+  {
+    path: "report-dashboard",
+    name: "report-dashboard",
+    id: nanoid(),
+    component: ReportDashboard,
+  },
+
+  {
+    path: "batch-report",
+    name: "batch-report",
+    id: nanoid(),
+    component: ReportBatchOrder,
+  },
+
+  {
+    path: "sales-report",
+    name: "sales-report",
+    id: nanoid(),
+    component: ReportSales,
   },
 ];
 

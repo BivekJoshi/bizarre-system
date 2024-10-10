@@ -30,7 +30,7 @@ const BranchCardView = ({ data }) => {
       sx={{ p: 3, borderRadius: "16px", maxWidth: "450px", mx: "auto" }}
     >
       <Grid container spacing={2} alignItems="center">
-        <Grid item xs={12} sm={3}>
+        <Grid item xs={12} sm={12} md={3}>
           <Avatar
             sx={{
               bgcolor: theme.palette.primary.main,

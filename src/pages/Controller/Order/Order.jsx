@@ -15,6 +15,8 @@ import OrderReport from "./OrderReport";
 import GenerateBillModal from "../Batch/Bill/GenerateBillModal";
 import PaymentModal from "../Batch/Payment/PaymentModal";
 import PermissionButton from "../../../components/Button/PermissionButton";
+import BillLayout from "../Batch/Payment/BillLayout";
+import { useGetCustomerTableById } from "../../../hooks/customerTable/useCustomerTable";
 
 const Order = () => {
   const theme = useTheme();
@@ -33,6 +35,8 @@ const Order = () => {
   const [isBillLayout, setIsBillLayout] = useState(false);
 
   const { data: orderData } = useGetBatchById(tableId);
+  const { data: coustomerTableData } = useGetCustomerTableById(tableId);
+  console.log("🚀 ~ Order ~ coustomerTableData:", coustomerTableData);
 
   const columns = useMemo(
     () => [
@@ -49,6 +53,7 @@ const Order = () => {
         header: "Status",
         maxWidth: 80,
         sortable: false,
+        setIsBillLayout,
       },
       {
         id: nanoid(),
@@ -79,9 +84,6 @@ const Order = () => {
     } else {
       return (
         <Grid container spacing={2}>
-          <Grid item xs={12} sx={{ textAlign: "center" }}>
-            <Typography>Table</Typography>
-          </Grid>
           {orderData?.data?.orders?.map((item, index) => (
             <Grid item xs={12} md={4} lg={2} sm={6} key={index}>
               <OrderByTableIdCardView data={item} />
@@ -111,7 +113,6 @@ const Order = () => {
         >
           Order
         </Typography>
-
         <div style={{ display: "flex", gap: "1rem" }}>
           <Button
             variant="contained"
@@ -140,12 +141,17 @@ const Order = () => {
           marginTop: ".1rem",
         }}
       >
+        <div style={{ textAlign: "center" }}>
+          <Typography variant="h5">Table No. <b>{coustomerTableData?.data?.tableNumber}</b></Typography>
+          <br/>
+        </div>
         {renderView()}
       </Box>
 
       <Box
         display="flex"
         flexWrap="wrap"
+        setIsBillLayout
         justifyContent="center"
         alignItems="center"
         mt={3}
@@ -171,6 +177,14 @@ const Order = () => {
             allowedUserTypes={["CASHIER"]}
             disabledUserTypes={[]}
           />
+          {/* <PermissionButton
+            label="Make Payment"
+            variant="outlined"
+            onClick={() => setIsBillLayout(true)}
+            // startIcon={<ControlPointRoundedIcon />}
+            allowedUserTypes={["CASHIER"]}
+            disabledUserTypes={[]}
+          /> */}
         </Stack>
       </Box>
 
@@ -189,6 +203,7 @@ const Order = () => {
         onClose={() => setIsSwitchTableModalOpen(false)}
         width={"30%"}
         height={"auto"}
+        setIsBillLayout
         maxHeight={"80vh"}
         header={"Switch Table"}
         formComponent={
@@ -204,6 +219,7 @@ const Order = () => {
         onClose={() => setIsGenerateBillModalOpen(false)}
         width={"30%"}
         height={"auto"}
+        setIsBillLayout
         maxHeight={"80vh"}
         header={"Generate Bill"}
         formComponent={<GenerateBillModal batchId={orderData?.data?.batchId} />}
@@ -219,8 +235,17 @@ const Order = () => {
         formComponent={<PaymentModal batchId={orderData?.data?.batchId} />}
         showButton={false}
       />
+      <FormModal
+        open={isBillLayout}
+        onClose={() => setIsBillLayout(false)}
+        width={"40%"}
+        height={"auto"}
+        maxHeight={"80vh"}
+        // header={"Payment Method"}
+        formComponent={<BillLayout data={orderData?.data} />}
+        showButton={false}
+      />
     </>
   );
 };
-
 export default Order;

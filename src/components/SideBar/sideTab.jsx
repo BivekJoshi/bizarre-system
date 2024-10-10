@@ -15,6 +15,10 @@ import TableRowsIcon from "@mui/icons-material/TableRows";
 import FilterFramesIcon from "@mui/icons-material/FilterFrames";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import RedeemRoundedIcon from "@mui/icons-material/RedeemRounded";
+import DnsIcon from '@mui/icons-material/Dns';
+import AspectRatioIcon from '@mui/icons-material/AspectRatio';
+import ReceiptIcon from '@mui/icons-material/Receipt';
+import BatchPredictionIcon from '@mui/icons-material/BatchPrediction';
 
 export const adminTab = [
   {
@@ -80,6 +84,32 @@ export const adminTab = [
     label: "Book",
     value: "book",
     icon: <MenuBookRoundedIcon />,
+  },
+  {
+    id: nanoid(),
+    label: "Report",
+    value: "report-dashboard",
+    icon: <DnsIcon />,
+    subTabs: [
+      // {
+      //   id: nanoid(),
+      //   label: "Report Dashboard",
+      //   value: "report-dashboard",
+      //   icon: <AspectRatioIcon />,
+      // },
+      {
+        id: nanoid(),
+        label: "Batch Report",
+        value: "batch-report",
+        icon: <BatchPredictionIcon />,
+      },
+      {
+        id: nanoid(),
+        label: "Sales Report",
+        value: "sales-report",
+        icon: <ReceiptIcon />,
+      },
+    ],
   },
   {
     id: nanoid(),

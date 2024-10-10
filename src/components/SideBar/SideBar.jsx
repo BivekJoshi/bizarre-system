@@ -29,7 +29,7 @@ const SideBar = ({ handleCloseDrawer }) => {
     setOpenSubTabs((prev) => (prev === newValue ? "" : newValue));
     navigate(newValue);
     window.scrollTo(0, 0);
-    handleCloseDrawer();
+    // handleCloseDrawer();
   };
 
   const handleSubTabChange = (event, newValue) => {
