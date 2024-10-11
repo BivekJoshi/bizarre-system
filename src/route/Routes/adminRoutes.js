@@ -69,8 +69,8 @@ const ReportBatchOrder = Loadable(
     import("../../pages/Controller/Report/ReportBatchOrder/ReportBatchOrder")
   )
 );
-const ReportSales = Loadable(
-  lazy(() => import("../../pages/Controller/Report/ReportSales/ReportSales"))
+const ReportItemSales = Loadable(
+  lazy(() => import("../../pages/Controller/Report/ReportSales/ReportItemSales"))
 );
 
 const adminRoutes = [
@@ -184,7 +184,7 @@ const adminRoutes = [
     path: "sales-report",
     name: "sales-report",
     id: nanoid(),
-    component: ReportSales,
+    component: ReportItemSales,
   },
 ];
 

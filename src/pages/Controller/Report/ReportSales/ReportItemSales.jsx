@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from "react";
-import { useBatchOrderReportForm } from "../../../../hooks/report/batchOrder/useBatchOrderReportForm";
 import {
   Box,
   Card,
@@ -11,14 +10,15 @@ import {
 } from "@mui/material";
 import { nanoid } from "nanoid";
 import CustomTable from "../../../../components/CustomTable/CustomTable";
-import ReportBatchOrderForm from "./ReportBatchOrderForm";
 import NoDataFound from "../../../PageNotFound/NoDataFound";
+import ReportItemSalesForm from "./ReportItemSalesForm";
+import { useItemSalesReportForm } from "../../../../hooks/report/itemSales/useItemSalesReportForm";
 
-const ReportBatchOrder = () => {
+const ReportItemSales = () => {
   const theme = useTheme();
   const [reportData, setReportData] = useState(null);
 
-  const { formik } = useBatchOrderReportForm({
+  const { formik } = useItemSalesReportForm({
     salesItemReport: (data) => setReportData(data),
   });
 
@@ -155,7 +155,7 @@ const ReportBatchOrder = () => {
 
   return (
     <div>
-      <ReportBatchOrderForm formik={formik} />
+      <ReportItemSalesForm formik={formik} />
       <br />
 
       {reportData && (
@@ -243,4 +243,4 @@ const ReportBatchOrder = () => {
   );
 };
 
-export default ReportBatchOrder;
+export default ReportItemSales;
