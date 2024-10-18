@@ -1,42 +1,49 @@
 import React, { useMemo, useState } from "react";
-import { Box, Button, Grid, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import FormModal from "../../../components/Modal/FormModal";
-import { useBranchForm } from "../../../hooks/branch/Branch/useBranchForm";
 import CustomTable from "../../../components/CustomTable/CustomTable";
 import { nanoid } from "nanoid";
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import AddItem from "./AddItem";
-import { useGetItem } from "../../../hooks/item/useItem";
 import { useItemForm } from "../../../hooks/item/Item/useItemForm";
 import { useSelector } from "react-redux";
 import ItemCardView from "./ItemCardView";
 import EditItem from "./EditItem";
 import { DOC_URL } from "../../../api/axiosInterceptor";
-import { CustomPagination } from "../../../components/Pagination/CustomPagination";
 import NoDataFound from "../../PageNotFound/NoDataFound";
+import FilterItem from "./FilterItem";
+import { useFilterItemForm } from "../../../hooks/item/Item/filterItem/useFilterItemForm";
+import { CustomPaginationUpdated } from "../../../components/Pagination/CustomPaginationUpdated";
 
 const Item = () => {
   const theme = useTheme();
   const view = useSelector((state) => state?.view?.mode);
 
-  const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
   const [rowData, setRowData] = useState(null);
   const [isAddModalOpen, setIsAddModal] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const { data } = useGetItem(pageNumber, pageSize);
-
-  // const { mutate } = useDeleteBranch({ rowData });
+  const [filteredData, setFilteredData] = useState(null);
 
   const onClose = () => {
     setIsAddModal(false);
     setIsEditModalOpen(false);
   };
   const { formik, loading } = useItemForm({ onClose, rowData });
+
+  const { formik: filterFormik, loading: isLoading } = useFilterItemForm({
+    itemData: (data) => setFilteredData(data),
+  });
 
   const deleteRow = (row) => {
     setRowData(row?.original?.id);
@@ -142,15 +149,28 @@ const Item = () => {
   );
 
   const renderView = () => {
-    if (!data?.content || data.content.length === 0) {
+    if (isLoading) {
+      return (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100%"
+        >
+          <CircularProgress />
+        </Box>
+      );
+    }
+
+    if (!filteredData?.content || filteredData.content.length === 0) {
       return <NoDataFound />;
     }
-    
+
     if (view === "table") {
       return (
         <CustomTable
           columns={columns}
-          data={data?.content}
+          data={filteredData?.content}
           overFlow={"scroll"}
           width={"100%"}
           enablePagination={false}
@@ -167,7 +187,7 @@ const Item = () => {
     } else {
       return (
         <Grid container spacing={2}>
-          {data?.content?.map((data, index) => {
+          {filteredData?.content?.map((data, index) => {
             return (
               <Grid item xs={12} md={3} lg={2} sm={12} key={index}>
                 <ItemCardView data={data} />
@@ -207,6 +227,8 @@ const Item = () => {
       </Box>
 
       <br />
+      <FilterItem filterFormik={filterFormik} />
+      <br />
       <Box
         sx={{
           backgroundColor: theme.palette.background.default,
@@ -217,13 +239,20 @@ const Item = () => {
         {renderView()}
       </Box>
 
-      <CustomPagination
+      {/* <CustomPagination
         totalPages={data?.totalPages || 1}
         currentPage={pageNumber}
         onPageChange={setPageNumber}
         rowsPerPage={pageSize}
         onRowsPerPageChange={setPageSize}
         totalElements={data?.totalElements || 0}
+      /> */}
+      <CustomPaginationUpdated
+        totalPages={filteredData?.totalPages || 1}
+        currentPage={filteredData?.pageable?.pageNumber}
+        rowsPerPage={filteredData?.pageable?.pageSize}
+        totalElements={filteredData?.totalElements || 0}
+        filterFormik={filterFormik}
       />
 
       {isAddModalOpen && (

@@ -5,6 +5,7 @@ import {
   addItemChangeStatus,
   addUploadItemImage,
   editItem,
+  filterItem,
   getItem,
   getItemById,
 } from "../../api/controller/item-api";
@@ -80,6 +81,18 @@ export const useChangeStatus = ({ onSuccess }) => {
       },
     }
   );
+};
+
+/*________________________FILTER ITEM_____________________________________*/
+export const useFilterItem = ({ onSuccess }) => {
+  return useMutation(["filterItem"], (formData) => filterItem(formData), {
+    onSuccess: (data, variables, context) => {
+      onSuccess && onSuccess(data, variables, context);
+    },
+    onError: (err, _variables, _context) => {
+      toast.error(getErrorMessage(err));
+    },
+  });
 };
 
 /*________________________UPLOAD ITEM IMAGAGE_____________________________________*/

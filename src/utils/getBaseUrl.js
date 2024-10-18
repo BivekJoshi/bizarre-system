@@ -6,6 +6,6 @@ export const getBaseUrl = () => {
 };
 export const getDocUrl = () => {
   // return "https://demo.filestash.app/s/ACdfCB6/";
-  return "http://188.245.40.176/files/";
+  return "https://cafebizarre.com.np/"
 
 };

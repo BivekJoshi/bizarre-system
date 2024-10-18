@@ -18,7 +18,6 @@ import { getIn } from "formik";
 import React, { useEffect } from "react";
 import AsyncDropDownOption from "./AsyncDropDownOption";
 import AsyncDropDown from "./AsyncDropDown";
-import DropZoneUploadFile from "../DropZoneUploadFIle/DropZoneUploadFile";
 import DropZoneUploadFileDynamic from "./DropZoneUploadFileDynamic";
 
 const RenderInput = ({
@@ -758,6 +757,68 @@ const RenderInput = ({
           </div>
         );
 
+      case "filterField":
+        return (
+          <div>
+            <Typography
+              variant="h5"
+              sx={{
+                color: theme.palette.text.default,
+                fontWeight: 700,
+                marginBottom: "0.1rem",
+              }}
+            >
+              {element?.label}
+            </Typography>
+            <TextField
+              name={element?.name}
+              placeholder={element?.placeholder}
+              value={formValues}
+              onBlur={formik.handleBlur}
+              size="small"
+              onChange={(event) => {
+                const newValue = event.target.value;
+
+                const newSearchEntry = {
+                  field: element?.extraField || "defaultField",
+                  value: newValue,
+                };
+
+                const currentSearch = formik.values.search || [];
+                const updatedSearch = currentSearch.filter(
+                  (entry) => entry.field !== newSearchEntry.field
+                );
+
+                updatedSearch.push(newSearchEntry);
+                formik.setFieldValue("search", updatedSearch);
+              }}
+              fullWidth
+              required={element.required}
+              variant="outlined"
+              className="textfield-icon-input"
+              disabled={element.isDisabled}
+              multiline={element?.multiline || false}
+              rows={element?.rows || false}
+              error={
+                Boolean(element?.err) || (formTouched && Boolean(formError))
+              }
+              helperText={element?.err || (formTouched && formError)}
+              onKeyPress={(ev) => {
+                if (ev.key === "Enter") {
+                  formik.handleSubmit();
+                  ev.preventDefault();
+                }
+              }}
+              sx={
+                element?.extraInfo && element?.extraLabel
+                  ? { "& .MuiOutlinedInput-root": { borderRadius: "2rem" } }
+                  : {}
+              }
+              InputLabelProps={{ shrink: Boolean(formValues?.value) }}
+            />
+          </div>
+        );
+
       case "file":
         return (
           <DropZoneUploadFileDynamic
@@ -770,6 +831,7 @@ const RenderInput = ({
             multiple={element.multiple || false}
           />
         );
+
       default:
         return <TextField name={element?.name} label={element?.label} />;
     }

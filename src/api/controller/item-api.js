@@ -31,6 +31,25 @@ export const addItem = async (formData) => {
   return data;
 };
 
+/*____________________________FILTER_ITEM_______________________________________________ */
+export const filterItem = async (formData) => {
+  const { field, value, ...rest } = formData;
+
+  const updatedFormData = {
+    ...rest,
+    search: [...(formData.search || []), { field, value }],
+    pageable: {
+      paged: true,
+      pageNumber: formData?.pageable?.pageNumber,
+      pageSize: formData?.pageable?.pageSize,
+      offset: formData?.pageable?.pageNumber * formData?.pageable?.pageSize
+    },
+  };
+
+  const data = await axiosInstance.post(`${ITEM}/find`, updatedFormData);
+  return data;
+};
+
 /*_____________________________POST CHANGE STATUS______________________________________________ */
 export const addItemChangeStatus = async (formData) => {
   const data = await axiosInstance.post(`${ITEM}/change-status`, formData);
