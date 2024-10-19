@@ -6,6 +6,7 @@ import {
   addIdDocument,
   addWaiterMember,
   editMember,
+  filterMember,
   getMember,
   getMemberById,
 } from "../../api/controller/memeber-api";
@@ -130,6 +131,18 @@ export const useAddIdDocument = ({ onSuccess }) => {
       onSuccess && onSuccess(data, variables, context);
       queryClient.invalidateQueries("getMember");
       toast.success("Added Document of memeber successfuly");
+    },
+    onError: (err, _variables, _context) => {
+      toast.error(getErrorMessage(err));
+    },
+  });
+};
+
+/*________________________FILTER MEMBER_____________________________________*/
+export const useFilterMember = ({ onSuccess }) => {
+  return useMutation(["filterMember"], (formData) => filterMember(formData), {
+    onSuccess: (data, variables, context) => {
+      onSuccess && onSuccess(data, variables, context);
     },
     onError: (err, _variables, _context) => {
       toast.error(getErrorMessage(err));

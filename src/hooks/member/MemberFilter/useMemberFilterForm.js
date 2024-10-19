@@ -1,18 +1,14 @@
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
-import { useFilterItem } from "../../useItem";
+import { useFilterMember } from "../useMember";
 
-export const useFilterItemForm = ({ onClose, itemData }) => {
-  const { mutate } = useFilterItem({});
+export const useMemberFilterForm = ({ onClose, memberData }) => {
+  const { mutate } = useFilterMember({});
   const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
       search: [],
-      // pageable: {
-      //   pageNumber: "" || 1,
-      //   pageSize: "" || 10,
-      // },
       actionType: "FILTER",
       pageNumber: "" || 1,
       noOfRecords: "" || 10,
@@ -27,7 +23,7 @@ export const useFilterItemForm = ({ onClose, itemData }) => {
     setLoading(true);
     mutate(values, {
       onSuccess: (data) => {
-        itemData(data?.data?.data);
+        memberData(data?.data?.data);
         onClose && onClose();
         setLoading(false);
       },

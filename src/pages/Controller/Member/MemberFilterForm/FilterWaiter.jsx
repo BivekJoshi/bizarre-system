@@ -1,3 +1,12 @@
+// import React from 'react'
+
+// const FilterWaiter = () => {
+//   return (
+//     <div>FilterWaiter</div>
+//   )
+// }
+
+// export default FilterWaiter
 import { Box, Button, Typography, useTheme, IconButton } from "@mui/material";
 import React, { useState } from "react";
 import { nanoid } from "nanoid";

@@ -41,7 +41,7 @@ const LoginPage = () => {
       name: "mobileNumber",
       label: "Mobile Number",
       placeholder: "Enter mobile number",
-      type: "text",
+      type: "number",
       required: true,
       xs: 12,
       md: 12,

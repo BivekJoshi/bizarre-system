@@ -64,10 +64,16 @@ const Item = () => {
         Cell: ({ cell }) => {
           const imageUrl = cell.getValue();
           return (
-            <div style={{ width: "100px", height: "100pxnpm " }}>
+            <div
+              style={{
+                width: "100px",
+                height: "100px",
+                border: "1px solid #e5e5e5",
+              }}
+            >
               <img
                 src={DOC_URL + imageUrl}
-                alt="Image"
+                alt="Upload Image"
                 style={{ width: "100%", height: "100%" }}
               />
             </div>
@@ -78,13 +84,6 @@ const Item = () => {
         id: nanoid(),
         accessorKey: "name",
         header: "Name",
-        maxWidth: 80,
-        sortable: false,
-      },
-      {
-        id: nanoid(),
-        accessorKey: "costPrice",
-        header: "Cost Price",
         maxWidth: 80,
         sortable: false,
       },
@@ -111,13 +110,6 @@ const Item = () => {
       },
       {
         id: nanoid(),
-        accessorKey: "stockCount",
-        header: "Stock Count",
-        maxWidth: 80,
-        sortable: false,
-      },
-      {
-        id: nanoid(),
         accessorKey: "type",
         header: "type",
         maxWidth: 80,
@@ -134,13 +126,6 @@ const Item = () => {
         id: nanoid(),
         accessorKey: "color",
         header: "Color",
-        maxWidth: 80,
-        sortable: false,
-      },
-      {
-        id: nanoid(),
-        accessorKey: "status",
-        header: "Status",
         maxWidth: 80,
         sortable: false,
       },
@@ -249,7 +234,7 @@ const Item = () => {
       /> */}
       <CustomPaginationUpdated
         totalPages={filteredData?.totalPages || 1}
-        currentPage={filteredData?.pageable?.pageNumber}
+        currentPage={filteredData?.pageable?.pageNumber+1}
         rowsPerPage={filteredData?.pageable?.pageSize}
         totalElements={filteredData?.totalElements || 0}
         filterFormik={filterFormik}

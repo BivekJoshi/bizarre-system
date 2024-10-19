@@ -773,7 +773,7 @@ const RenderInput = ({
             <TextField
               name={element?.name}
               placeholder={element?.placeholder}
-              value={formValues}
+              value={element?.defalutValue || formValues}
               onBlur={formik.handleBlur}
               size="small"
               onChange={(event) => {
@@ -782,6 +782,9 @@ const RenderInput = ({
                 const newSearchEntry = {
                   field: element?.extraField || "defaultField",
                   value: newValue,
+                  ...(element?.isObject
+                    ? { type: "object", object: element?.objectValue }
+                    : {}),
                 };
 
                 const currentSearch = formik.values.search || [];

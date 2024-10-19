@@ -27,8 +27,8 @@ export const CustomPaginationUpdated = ({
 
   const handleRowsPerPageChange = (event) => {
     const newSize = event.target.value;
-    filterFormik.setFieldValue("pageable.pageSize", newSize);
-    filterFormik.setFieldValue("pageable.pageNumber", 1);
+    // filterFormik.setFieldValue("pageable.pageSize", newSize);
+    // filterFormik.setFieldValue("pageable.pageNumber", 1);
     filterFormik.setFieldValue("noOfRecords", newSize);
     filterFormik.handleSubmit();
   };

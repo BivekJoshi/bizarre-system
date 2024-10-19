@@ -1,3 +1,13 @@
+// import React from 'react'
+
+// const FilterCashier = () => {
+//   return (
+//     <div>FilterCashier</div>
+//   )
+// }
+
+// export default FilterCashier
+
 import { Box, Button, Typography, useTheme, IconButton } from "@mui/material";
 import React, { useState } from "react";
 import { nanoid } from "nanoid";

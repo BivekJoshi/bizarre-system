@@ -38,12 +38,14 @@ export const filterItem = async (formData) => {
   const updatedFormData = {
     ...rest,
     search: [...(formData.search || []), { field, value }],
-    pageable: {
-      paged: true,
-      pageNumber: formData?.pageable?.pageNumber,
-      pageSize: formData?.pageable?.pageSize,
-      offset: formData?.pageable?.pageNumber * formData?.pageable?.pageSize
-    },
+    pageNumber: formData?.pageNumber,
+    noOfRecords: formData?.noOfRecords,
+    // pageable: {
+    //   paged: true,
+    //   pageNumber: formData?.pageable?.pageNumber,
+    //   pageSize: formData?.pageable?.pageSize,
+    //   offset: formData?.pageable?.pageNumber * formData?.pageable?.pageSize,
+    // },
   };
 
   const data = await axiosInstance.post(`${ITEM}/find`, updatedFormData);

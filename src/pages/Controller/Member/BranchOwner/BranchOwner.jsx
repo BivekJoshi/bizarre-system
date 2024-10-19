@@ -13,11 +13,13 @@ import BranchOwnerForm from "./BranchOwnerForm";
 import { useBranchOwnerMemberForm } from "../../../../hooks/member/Member/BranchOwnerMember/useBranchOwnerMemberForm";
 import BranchOwnerCardView from "./BranchOwnerCardView";
 import { useSelector } from "react-redux";
-import { CustomPagination } from "../../../../components/Pagination/CustomPagination";
 import { DOC_URL } from "../../../../api/axiosInterceptor";
 import PermissionButton from "../../../../components/Button/PermissionButton";
 import MemberDocumentForm from "../MemberDocumentForm";
 import NoDataFound from "../../../PageNotFound/NoDataFound";
+import FilterBranchOwner from "../MemberFilterForm/FilterBranchOwner";
+import { useMemberFilterForm } from "../../../../hooks/member/MemberFilter/useMemberFilterForm";
+import { CustomPaginationUpdated } from "../../../../components/Pagination/CustomPaginationUpdated";
 
 const BranchOwner = () => {
   const theme = useTheme();
@@ -33,10 +35,17 @@ const BranchOwner = () => {
 
   const { data } = useGetMember(pageNumber, pageSize);
 
+  const [filteredData, setFilteredData] = useState(null);
+  console.log("🚀 ~ BranchOwner ~ filteredData:", filteredData);
+
   // const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
   const { formik, loading } = useBranchOwnerMemberForm({ onClose, rowData });
+
+  const { formik: filterFormik, loading: isLoading } = useMemberFilterForm({
+    memberData: (data) => setFilteredData(data),
+  });
 
   const deleteRow = (row) => {
     setRowData(row?.original?.id);
@@ -130,16 +139,14 @@ const BranchOwner = () => {
   );
 
   const renderView = () => {
-    if (!data?.content || data.content.length === 0) {
-      return (
-        <NoDataFound/>
-      );
+    if (!filteredData?.content || filteredData.content.length === 0) {
+      return <NoDataFound />;
     }
     if (view === "table") {
       return (
         <CustomTable
           columns={columns}
-          data={data?.content}
+          data={filteredData?.content}
           overFlow={"scroll"}
           width={"100%"}
           enablePagination={false}
@@ -155,7 +162,7 @@ const BranchOwner = () => {
     } else {
       return (
         <Grid container spacing={2}>
-          {data?.content?.map((data, index) => {
+          {filteredData?.content?.map((data, index) => {
             return (
               <Grid item xs={12} md={4} lg={4} sm={12} key={index}>
                 <BranchOwnerCardView data={data} />
@@ -197,6 +204,10 @@ const BranchOwner = () => {
       </Box>
 
       <br />
+      <FilterBranchOwner filterFormik={filterFormik} />
+      <br />
+
+      <br />
       <Box
         sx={{
           backgroundColor: theme.palette.background.default,
@@ -207,13 +218,12 @@ const BranchOwner = () => {
         {renderView()}
       </Box>
 
-      <CustomPagination
-        totalPages={data?.totalPages || 1}
-        currentPage={pageNumber}
-        onPageChange={setPageNumber}
-        rowsPerPage={pageSize}
-        onRowsPerPageChange={setPageSize}
-        totalElements={data?.totalElements || 0}
+      <CustomPaginationUpdated
+        totalPages={filteredData?.totalPages || 1}
+        currentPage={filteredData?.pageable?.pageNumber + 1}
+        rowsPerPage={filteredData?.pageable?.pageSize}
+        totalElements={filteredData?.totalElements || 0}
+        filterFormik={filterFormik}
       />
 
       <FormModal

@@ -69,3 +69,18 @@ export const addIdDocument = async (formData) => {
   );
   return data;
 };
+
+/*____________________________FILTER_MEMBER_______________________________________________ */
+export const filterMember = async (formData) => {
+  const { field, value, ...rest } = formData;
+
+  const updatedFormData = {
+    ...rest,
+    search: [...(formData.search || []), { field, value }],
+    pageNumber: formData?.pageNumber,
+    noOfRecords: formData?.noOfRecords,
+  };
+
+  const data = await axiosInstance.post(`${MEMBER}/find`, updatedFormData);
+  return data;
+};
