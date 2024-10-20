@@ -1,5 +1,13 @@
 import React, { useMemo, useState } from "react";
-import { Avatar, Box, Button, Grid, Typography, useTheme } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { nanoid } from "nanoid";
 import maleProfile from "../../../../assets/MaleProfile.png";
 import femaleProfile from "../../../../assets/FemaleProfile.png";
@@ -32,7 +40,6 @@ const Waiter = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const [filteredData, setFilteredData] = useState(null);
-
 
   // const { mutate } = useDeleteBranch({ rowData });
 
@@ -148,6 +155,18 @@ const Waiter = () => {
   );
 
   const renderView = () => {
+    if (isLoading) {
+      return (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100%"
+        >
+          <CircularProgress />
+        </Box>
+      );
+    }
     if (!filteredData?.content || filteredData.content.length === 0) {
       return <NoDataFound />;
     }

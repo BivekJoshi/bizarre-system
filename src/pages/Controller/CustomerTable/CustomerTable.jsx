@@ -191,12 +191,12 @@ const CustomerTable = () => {
       <FilterCustomerTableForm filterFormik={filterFormik} />
       <br />
 
-      <Filter
+      {/* <Filter
         inputField={[]}
         showfilter={false}
         submitButtonText="Search"
         extraFilter={true}
-      />
+      /> */}
 
       <Box
         sx={{
