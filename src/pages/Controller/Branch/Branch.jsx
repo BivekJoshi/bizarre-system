@@ -1,6 +1,13 @@
 import React, { useMemo, useState } from "react";
-import { useDeleteBranch, useGetBranch } from "../../../hooks/branch/useBranch";
-import { Box, Button, Grid, Typography, useTheme } from "@mui/material";
+import { useDeleteBranch } from "../../../hooks/branch/useBranch";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import FormModal from "../../../components/Modal/FormModal";
 import AddBranch from "./AddBranch";
 import { useBranchForm } from "../../../hooks/branch/Branch/useBranchForm";
@@ -11,26 +18,30 @@ import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import BranchCardView from "./BranchCardView";
 import { useSelector } from "react-redux";
-import { CustomPagination } from "../../../components/Pagination/CustomPagination";
 import NoDataFound from "../../PageNotFound/NoDataFound";
+import { useFilterBranchForm } from "../../../hooks/branch/Branch/filterBranch/useFilterBranchForm";
+import { CustomPaginationUpdated } from "../../../components/Pagination/CustomPaginationUpdated";
+import FilterBranchForm from "./FilterBranchForm";
 
 const Branch = () => {
   const theme = useTheme();
   const view = useSelector((state) => state?.view?.mode);
 
-  const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
   const [rowData, setRowData] = useState(null);
   const [isAddModalOpen, setIsAddModal] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const { data } = useGetBranch(pageNumber, pageSize);
+  const [filteredData, setFilteredData] = useState(null);
 
   const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
   const { formik, loading } = useBranchForm({ onClose });
+
+  const { formik: filterFormik, loading: isLoading } = useFilterBranchForm({
+    branchData: (data) => setFilteredData(data),
+  });
 
   const deleteRow = (row) => {
     setRowData(row?.original?.id);
@@ -72,14 +83,26 @@ const Branch = () => {
   );
 
   const renderView = () => {
-    if (!data?.content || data.content.length === 0) {
+    if (isLoading) {
+      return (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100%"
+        >
+          <CircularProgress />
+        </Box>
+      );
+    }
+    if (!filteredData?.content || filteredData.content.length === 0) {
       return <NoDataFound />;
     }
     if (view === "table") {
       return (
         <CustomTable
           columns={columns}
-          data={data?.content}
+          data={filteredData?.content}
           overFlow={"scroll"}
           width={"100%"}
           enablePagination={false}
@@ -96,7 +119,7 @@ const Branch = () => {
     } else {
       return (
         <Grid container spacing={2}>
-          {data?.content?.map((item, index) => (
+          {filteredData?.content?.map((item, index) => (
             <Grid item xs={12} md={3} lg={4} sm={12} key={index}>
               <BranchCardView data={item} />
             </Grid>
@@ -134,6 +157,9 @@ const Branch = () => {
       </Box>
 
       <br />
+      <FilterBranchForm filterFormik={filterFormik} />
+      <br />
+
       <Box
         sx={{
           backgroundColor: theme.palette.background.default,
@@ -144,13 +170,12 @@ const Branch = () => {
         {renderView()}
       </Box>
 
-      <CustomPagination
-        totalPages={data?.totalPages || 1}
-        currentPage={pageNumber}
-        onPageChange={setPageNumber}
-        rowsPerPage={pageSize}
-        onRowsPerPageChange={setPageSize}
-        totalElements={data?.totalElements || 0}
+      <CustomPaginationUpdated
+        totalPages={filteredData?.totalPages || 1}
+        currentPage={filteredData?.pageable?.pageNumber + 1}
+        rowsPerPage={filteredData?.pageable?.pageSize}
+        totalElements={filteredData?.totalElements || 0}
+        filterFormik={filterFormik}
       />
 
       <FormModal

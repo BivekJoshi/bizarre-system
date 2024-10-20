@@ -4,9 +4,9 @@ import { nanoid } from "nanoid";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
 import SearchIcon from "@mui/icons-material/Search";
-import RenderInput from "../../../../components/RenderInput/RenderInput";
+import RenderInput from "../../../components/RenderInput/RenderInput";
 
-const FilterCashierForm = ({ filterFormik }) => {
+const FilterCustomerForm = ({ filterFormik }) => {
   const theme = useTheme();
   const [showFields, setShowFields] = useState(false);
 
@@ -14,7 +14,7 @@ const FilterCashierForm = ({ filterFormik }) => {
     {
       id: nanoid(),
       name: "value",
-      label: "Cashier Name",
+      label: "Customer Name",
       placeholder: "Filter by full name",
       type: "textfilterField",
       extraField: "fullName",
@@ -124,4 +124,4 @@ const FilterCashierForm = ({ filterFormik }) => {
   );
 };
 
-export default FilterCashierForm;
+export default FilterCustomerForm;

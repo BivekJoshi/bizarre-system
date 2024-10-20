@@ -14,7 +14,7 @@ const FilterWaiterForm = ({ filterFormik }) => {
     {
       id: nanoid(),
       name: "value",
-      label: "Branch Owner Name",
+      label: "Waiter Name",
       placeholder: "Filter by full name",
       type: "textfilterField",
       extraField: "fullName",

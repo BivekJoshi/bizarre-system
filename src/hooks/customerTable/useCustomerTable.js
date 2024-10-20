@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import {
   addCustomerTable,
   editCustomerTable,
+  filterCustomerTable,
   getCustomerTable,
   getCustomerTableById,
   getCustomerTableByStatus,
@@ -76,6 +77,22 @@ export const useEditCustomerTable = ({ onSuccess }) => {
         toast.success("Customer Table edited successfully");
         onSuccess && onSuccess(data, variables, context);
         queryClient.invalidateQueries("getCustomerTable");
+      },
+      onError: (err, _variables, _context) => {
+        toast.error(getErrorMessage(err));
+      },
+    }
+  );
+};
+
+/*________________________FILTER_CUSTOMER_TABLE_____________________________________*/
+export const useFilterCustomerTable = ({ onSuccess }) => {
+  return useMutation(
+    ["filterCustomerTable"],
+    (formData) => filterCustomerTable(formData),
+    {
+      onSuccess: (data, variables, context) => {
+        onSuccess && onSuccess(data, variables, context);
       },
       onError: (err, _variables, _context) => {
         toast.error(getErrorMessage(err));

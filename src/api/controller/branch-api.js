@@ -38,3 +38,18 @@ export const deleteBranch = async (id) => {
     return data;
   }
 };
+
+/*____________________________FILTER_BRANCH_______________________________________________ */
+export const filterBranch = async (formData) => {
+  const { field, value, ...rest } = formData;
+
+  const updatedFormData = {
+    ...rest,
+    search: [...(formData.search || []), { field, value }],
+    pageNumber: formData?.pageNumber,
+    noOfRecords: formData?.noOfRecords,
+  };
+
+  const data = await axiosInstance.post(`${BRANCH}/find`, updatedFormData);
+  return data;
+};

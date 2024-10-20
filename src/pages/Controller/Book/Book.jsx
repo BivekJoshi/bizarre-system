@@ -1,5 +1,12 @@
 import React, { useMemo, useState } from "react";
-import { Box, Button, Grid, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import FormModal from "../../../components/Modal/FormModal";
 import { useBranchForm } from "../../../hooks/branch/Branch/useBranchForm";
 import CustomTable from "../../../components/CustomTable/CustomTable";
@@ -8,25 +15,25 @@ import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import AddBook from "./AddBook";
-import { useDeleteBook, useGetBook } from "../../../hooks/book/useBook";
+import { useDeleteBook } from "../../../hooks/book/useBook";
 import { useBookForm } from "../../../hooks/book/Book/useBookForm";
 import { useSelector } from "react-redux";
-import { CustomPagination } from "../../../components/Pagination/CustomPagination";
 import BookCardView from "./BookCardView";
 import NoDataFound from "../../PageNotFound/NoDataFound";
+import { CustomPaginationUpdated } from "../../../components/Pagination/CustomPaginationUpdated";
+import FilterBookForm from "./FilterBookForm";
+import { useFilterBookForm } from "../../../hooks/book/Book/filterBook/useFilterBookForm";
 
 const Book = () => {
   const theme = useTheme();
   const view = useSelector((state) => state?.view?.mode);
 
-  const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
   const [rowData, setRowData] = useState(null);
   const [isAddModalOpen, setIsAddModal] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const { data } = useGetBook(pageNumber, pageSize);
+  const [filteredData, setFilteredData] = useState(null);
 
   const { mutate } = useDeleteBook({ rowData });
 
@@ -35,6 +42,10 @@ const Book = () => {
     setIsEditModalOpen(false);
   };
   const { formik, loading } = useBookForm({ onClose, rowData });
+
+  const { formik: filterFormik, loading: isLoading } = useFilterBookForm({
+    bookData: (data) => setFilteredData(data),
+  });
 
   const deleteRow = (row) => {
     setRowData(row?.original?.id);
@@ -88,14 +99,26 @@ const Book = () => {
   );
 
   const renderView = () => {
-    if (!data?.content || data.content.length === 0) {
+    if (isLoading) {
+      return (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100%"
+        >
+          <CircularProgress />
+        </Box>
+      );
+    }
+    if (!filteredData?.content || filteredData.content.length === 0) {
       return <NoDataFound />;
     }
     if (view === "table") {
       return (
         <CustomTable
           columns={columns}
-          data={data?.content}
+          data={filteredData?.content}
           overFlow={"scroll"}
           width={"100%"}
           enablePagination={false}
@@ -112,7 +135,7 @@ const Book = () => {
     } else {
       return (
         <Grid container spacing={2}>
-          {data?.content?.map((item, index) => (
+          {filteredData?.content?.map((item, index) => (
             <Grid item xs={12} md={4} lg={3} sm={12} key={index}>
               <BookCardView data={item} />
             </Grid>
@@ -150,6 +173,9 @@ const Book = () => {
       </Box>
 
       <br />
+      <FilterBookForm filterFormik={filterFormik} />
+      <br />
+
       <Box
         sx={{
           backgroundColor: theme.palette.background.default,
@@ -160,13 +186,12 @@ const Book = () => {
         {renderView()}
       </Box>
 
-      <CustomPagination
-        totalPages={data?.totalPages || 1}
-        currentPage={pageNumber}
-        onPageChange={setPageNumber}
-        rowsPerPage={pageSize}
-        onRowsPerPageChange={setPageSize}
-        totalElements={data?.totalElements || 0}
+      <CustomPaginationUpdated
+        totalPages={filteredData?.totalPages || 1}
+        currentPage={filteredData?.pageable?.pageNumber + 1}
+        rowsPerPage={filteredData?.pageable?.pageSize}
+        totalElements={filteredData?.totalElements || 0}
+        filterFormik={filterFormik}
       />
 
       <FormModal

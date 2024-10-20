@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import {
   addCustomer,
   editCustomer,
+  filterCustomer,
   getCustomer,
   getCustomerById,
 } from "../../api/controller/customer-api";
@@ -53,6 +54,18 @@ export const useEditCustomer = ({ onSuccess }) => {
       toast.success("Customer edited successfully");
       onSuccess && onSuccess(data, variables, context);
       queryClient.invalidateQueries("getCustomer");
+    },
+    onError: (err, _variables, _context) => {
+      toast.error(getErrorMessage(err));
+    },
+  });
+};
+
+/*________________________FILTER CUSTOMER_____________________________________*/
+export const useFilterCustomer = ({ onSuccess }) => {
+  return useMutation(["filterCustomer"], (formData) => filterCustomer(formData), {
+    onSuccess: (data, variables, context) => {
+      onSuccess && onSuccess(data, variables, context);
     },
     onError: (err, _variables, _context) => {
       toast.error(getErrorMessage(err));

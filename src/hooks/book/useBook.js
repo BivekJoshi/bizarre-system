@@ -4,6 +4,7 @@ import {
   addBook,
   deleteBook,
   editBook,
+  filterBook,
   getBook,
   getBookById,
 } from "../../api/controller/book-api";
@@ -69,6 +70,18 @@ export const useDeleteBook = ({ onSuccess }) => {
       toast.success("Book deleted successfully");
       onSuccess && onSuccess(data, variables, context);
       queryClient.invalidateQueries("getBook");
+    },
+  });
+};
+
+/*________________________FILTER_CUSTOMER_TABLE_____________________________________*/
+export const useFilterBook = ({ onSuccess }) => {
+  return useMutation(["filterBook"], (formData) => filterBook(formData), {
+    onSuccess: (data, variables, context) => {
+      onSuccess && onSuccess(data, variables, context);
+    },
+    onError: (err, _variables, _context) => {
+      toast.error(getErrorMessage(err));
     },
   });
 };

@@ -4,9 +4,9 @@ import { nanoid } from "nanoid";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
 import SearchIcon from "@mui/icons-material/Search";
-import RenderInput from "../../../../components/RenderInput/RenderInput";
+import RenderInput from "../../../components/RenderInput/RenderInput";
 
-const FilterCashierForm = ({ filterFormik }) => {
+const FilterCustomerTableForm = ({ filterFormik }) => {
   const theme = useTheme();
   const [showFields, setShowFields] = useState(false);
 
@@ -14,13 +14,11 @@ const FilterCashierForm = ({ filterFormik }) => {
     {
       id: nanoid(),
       name: "value",
-      label: "Cashier Name",
-      placeholder: "Filter by full name",
+      label: "Table Number",
+      placeholder: "Search by table number",
       type: "textfilterField",
-      extraField: "fullName",
-      isObject: true,
-      objectValue: "user",
-      defalutValue: "",
+      extraField: "tableNumber",
+      required: true,
       xs: 12,
       md: 3,
       lg: 3,
@@ -29,47 +27,15 @@ const FilterCashierForm = ({ filterFormik }) => {
     {
       id: nanoid(),
       name: "value",
-      label: "Mobile Number",
-      placeholder: "Filter by mobile number",
-      type: "numberfilterField",
-      extraField: "mobileNumber",
-      isObject: true,
-      objectValue: "user",
-      defalutValue: "",
-      xs: 12,
-      md: 3,
-      lg: 3,
-      sm: 12,
-    },
-    {
-      id: nanoid(),
-      name: "value",
-      label: "Email",
-      placeholder: "Filter by email",
-      type: "textfilterField",
-      extraField: "email",
-      isObject: true,
-      objectValue: "user",
-      defalutValue: "",
-      xs: 12,
-      md: 3,
-      lg: 3,
-      sm: 12,
-    },
-    {
-      id: nanoid(),
-      name: "value",
-      label: "Gender",
-      placeholder: "Filter by gender",
+      label: "Status",
+      placeholder: "Filter by status",
       type: "dropDownfilterField",
-      extraField: "gender",
-      isObject: true,
-      objectValue: "user",
-      defalutValue: "",
+      extraField: "status",
       options: [
-        { value: "FEMALE", label: "Female", id: nanoid() },
-        { value: "MALE", label: "Male", id: nanoid() },
-        { value: "OTHERS", label: "Others", id: nanoid() },
+        { value: "RESERVED", label: "Reserved", id: nanoid() },
+        { value: "AVAILABLE", label: "Available", id: nanoid() },
+        { value: "OCCUPIED", label: "Occupied", id: nanoid() },
+        { value: "OUT_OF_ORDER", label: "Out of Order", id: nanoid() },
       ],
       xs: 12,
       md: 3,
@@ -124,4 +90,4 @@ const FilterCashierForm = ({ filterFormik }) => {
   );
 };
 
-export default FilterCashierForm;
+export default FilterCustomerTableForm;

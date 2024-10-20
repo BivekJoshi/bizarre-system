@@ -30,3 +30,18 @@ export const editCustomer = async (formData) => {
   const data = await axiosInstance.put(`${CUSTOMER}/save`, formData);
   return data;
 };
+
+/*____________________________FILTER_CUSTOMER_______________________________________________ */
+export const filterCustomer = async (formData) => {
+  const { field, value, ...rest } = formData;
+
+  const updatedFormData = {
+    ...rest,
+    search: [...(formData.search || []), { field, value }],
+    pageNumber: formData?.pageNumber,
+    noOfRecords: formData?.noOfRecords,
+  };
+
+  const data = await axiosInstance.post(`${CUSTOMER}/find`, updatedFormData);
+  return data;
+};

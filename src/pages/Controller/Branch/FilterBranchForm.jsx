@@ -4,9 +4,9 @@ import { nanoid } from "nanoid";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
 import SearchIcon from "@mui/icons-material/Search";
-import RenderInput from "../../../../components/RenderInput/RenderInput";
+import RenderInput from "../../../components/RenderInput/RenderInput";
 
-const FilterCashierForm = ({ filterFormik }) => {
+const FilterBranchForm = ({ filterFormik }) => {
   const theme = useTheme();
   const [showFields, setShowFields] = useState(false);
 
@@ -14,13 +14,11 @@ const FilterCashierForm = ({ filterFormik }) => {
     {
       id: nanoid(),
       name: "value",
-      label: "Cashier Name",
-      placeholder: "Filter by full name",
+      label: "Address",
+      placeholder: "Search by address",
       type: "textfilterField",
-      extraField: "fullName",
-      isObject: true,
-      objectValue: "user",
-      defalutValue: "",
+      extraField: "address",
+      required: true,
       xs: 12,
       md: 3,
       lg: 3,
@@ -29,13 +27,11 @@ const FilterCashierForm = ({ filterFormik }) => {
     {
       id: nanoid(),
       name: "value",
-      label: "Mobile Number",
-      placeholder: "Filter by mobile number",
+      label: "Phone Number",
+      placeholder: "Search by phone number",
       type: "numberfilterField",
-      extraField: "mobileNumber",
-      isObject: true,
-      objectValue: "user",
-      defalutValue: "",
+      extraField: "phoneNumber",
+      required: true,
       xs: 12,
       md: 3,
       lg: 3,
@@ -44,33 +40,11 @@ const FilterCashierForm = ({ filterFormik }) => {
     {
       id: nanoid(),
       name: "value",
-      label: "Email",
-      placeholder: "Filter by email",
-      type: "textfilterField",
-      extraField: "email",
-      isObject: true,
-      objectValue: "user",
-      defalutValue: "",
-      xs: 12,
-      md: 3,
-      lg: 3,
-      sm: 12,
-    },
-    {
-      id: nanoid(),
-      name: "value",
-      label: "Gender",
-      placeholder: "Filter by gender",
-      type: "dropDownfilterField",
-      extraField: "gender",
-      isObject: true,
-      objectValue: "user",
-      defalutValue: "",
-      options: [
-        { value: "FEMALE", label: "Female", id: nanoid() },
-        { value: "MALE", label: "Male", id: nanoid() },
-        { value: "OTHERS", label: "Others", id: nanoid() },
-      ],
+      label: "Housing Capacity",
+      placeholder: "Search by housing capacity",
+      type: "numberfilterField",
+      extraField: "housingCapacity",
+      required: true,
       xs: 12,
       md: 3,
       lg: 3,
@@ -124,4 +98,4 @@ const FilterCashierForm = ({ filterFormik }) => {
   );
 };
 
-export default FilterCashierForm;
+export default FilterBranchForm;

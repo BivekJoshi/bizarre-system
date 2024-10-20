@@ -38,3 +38,18 @@ export const deleteBook = async (id) => {
     return data;
   }
 };
+
+/*____________________________FILTER_BOOK_______________________________________________ */
+export const filterBook = async (formData) => {
+  const { field, value, ...rest } = formData;
+
+  const updatedFormData = {
+    ...rest,
+    search: [...(formData.search || []), { field, value }],
+    pageNumber: formData?.pageNumber,
+    noOfRecords: formData?.noOfRecords,
+  };
+
+  const data = await axiosInstance.post(`${BOOK}/find`, updatedFormData);
+  return data;
+};

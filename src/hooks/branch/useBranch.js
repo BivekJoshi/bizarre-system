@@ -4,6 +4,7 @@ import {
   addBranch,
   deleteBranch,
   editBranch,
+  filterBranch,
   getBranch,
   getBranchById,
 } from "../../api/controller/branch-api";
@@ -69,6 +70,18 @@ export const useDeleteBranch = ({ onSuccess }) => {
       toast.success("Branch deleted successfully");
       onSuccess && onSuccess(data, variables, context);
       queryClient.invalidateQueries("getBranch");
+    },
+  });
+};
+
+/*________________________FILTER_BRANCH_____________________________________*/
+export const useFilterBranch = ({ onSuccess }) => {
+  return useMutation(["filterBook"], (formData) => filterBranch(formData), {
+    onSuccess: (data, variables, context) => {
+      onSuccess && onSuccess(data, variables, context);
+    },
+    onError: (err, _variables, _context) => {
+      toast.error(getErrorMessage(err));
     },
   });
 };

@@ -13,7 +13,7 @@ const FilterBaristaForm = ({ filterFormik }) => {
     {
       id: nanoid(),
       name: "value",
-      label: "Branch Owner Name",
+      label: "Barista Name",
       placeholder: "Filter by full name",
       type: "textfilterField",
       extraField: "fullName",

@@ -1,5 +1,13 @@
 import React, { useMemo, useState, useCallback } from "react";
-import { Box, Button, Chip, Grid, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Chip,
+  CircularProgress,
+  Grid,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { nanoid } from "nanoid";
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
@@ -7,28 +15,27 @@ import { useCustomerTableForm } from "../../../hooks/customerTable/CustomerTable
 import FormModal from "../../../components/Modal/FormModal";
 import CustomTable from "../../../components/CustomTable/CustomTable";
 import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
-import { useGetCustomerTable } from "../../../hooks/customerTable/useCustomerTable";
 import { useSelector } from "react-redux";
 import CustomerTableCardView from "./CustomerTableCardView";
-import { CustomPagination } from "../../../components/Pagination/CustomPagination";
 import CustomerTableForm from "./CustomerTableForm";
 import { useNavigate } from "react-router-dom";
 import Filter from "../../../components/Filter/Filter";
 import NoDataFound from "../../PageNotFound/NoDataFound";
+import { useFilterCustomerTableForm } from "../../../hooks/customerTable/CustomerTable/filterCustomerTable/useFilterCustomerTableForm";
+import FilterCustomerTableForm from "./FilterCustomerTableForm";
+import { CustomPaginationUpdated } from "../../../components/Pagination/CustomPaginationUpdated";
 
 const CustomerTable = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const view = useSelector((state) => state?.view?.mode);
 
-  const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
   const [rowData, setRowData] = useState(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const { data } = useGetCustomerTable(pageNumber, pageSize);
+  const [filteredData, setFilteredData] = useState(null);
 
   const onClose = () => {
     setIsAddModalOpen(false);
@@ -36,6 +43,11 @@ const CustomerTable = () => {
   };
 
   const { formik, loading } = useCustomerTableForm({ onClose, rowData });
+
+  const { formik: filterFormik, loading: isLoading } =
+    useFilterCustomerTableForm({
+      customerTableData: (data) => setFilteredData(data),
+    });
 
   const deleteRow = useCallback((row) => {
     setRowData(row?.original?.id);
@@ -93,14 +105,27 @@ const CustomerTable = () => {
   );
 
   const renderView = () => {
-    if (!data?.content || data.content.length === 0) {
+    if (isLoading) {
+      return (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100%"
+        >
+          <CircularProgress />
+        </Box>
+      );
+    }
+
+    if (!filteredData?.content || filteredData.content.length === 0) {
       return <NoDataFound />;
     }
     if (view === "table") {
       return (
         <CustomTable
           columns={columns}
-          data={data?.content || []}
+          data={filteredData?.content || []}
           overFlow={"scroll"}
           width={"100%"}
           enablePagination={false}
@@ -116,7 +141,7 @@ const CustomerTable = () => {
     } else {
       return (
         <Grid container spacing={2}>
-          {data?.content?.map((item, index) => (
+          {filteredData?.content?.map((item, index) => (
             <Grid item xs={12} md={4} lg={3} sm={12} key={index}>
               <CustomerTableCardView data={item} />
             </Grid>
@@ -162,6 +187,10 @@ const CustomerTable = () => {
         </Button>
       </Box>
 
+      <br />
+      <FilterCustomerTableForm filterFormik={filterFormik} />
+      <br />
+
       <Filter
         inputField={[]}
         showfilter={false}
@@ -178,14 +207,15 @@ const CustomerTable = () => {
       >
         {renderView()}
       </Box>
-      <CustomPagination
-        totalPages={data?.totalPages || 1}
-        currentPage={pageNumber}
-        onPageChange={setPageNumber}
-        rowsPerPage={pageSize}
-        onRowsPerPageChange={setPageSize}
-        totalElements={data?.totalElements || 0}
+
+      <CustomPaginationUpdated
+        totalPages={filteredData?.totalPages || 1}
+        currentPage={filteredData?.pageable?.pageNumber + 1}
+        rowsPerPage={filteredData?.pageable?.pageSize}
+        totalElements={filteredData?.totalElements || 0}
+        filterFormik={filterFormik}
       />
+
       <FormModal
         open={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
