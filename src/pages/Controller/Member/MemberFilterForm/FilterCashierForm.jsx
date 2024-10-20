@@ -13,12 +13,14 @@ const FilterCashierForm = ({ filterFormik }) => {
   const inputField = [
     {
       id: nanoid(),
-      name: "value", 
-      label: "Item Name",
-      placeholder:"Search by item name",
-      type: "filterField",
-      extraField: "name", 
-      required: true,
+      name: "value",
+      label: "Branch Owner Name",
+      placeholder: "Filter by full name",
+      type: "textfilterField",
+      extraField: "fullName",
+      isObject: true,
+      objectValue: "user",
+      defalutValue: "",
       xs: 12,
       md: 3,
       lg: 3,
@@ -27,11 +29,48 @@ const FilterCashierForm = ({ filterFormik }) => {
     {
       id: nanoid(),
       name: "value",
-      label: "Type",
-      placeholder:"Search by item type",
-      type: "filterField",
-      extraField: "type",
-      required: true,
+      label: "Mobile Number",
+      placeholder: "Filter by mobile number",
+      type: "numberfilterField",
+      extraField: "mobileNumber",
+      isObject: true,
+      objectValue: "user",
+      defalutValue: "",
+      xs: 12,
+      md: 3,
+      lg: 3,
+      sm: 12,
+    },
+    {
+      id: nanoid(),
+      name: "value",
+      label: "Email",
+      placeholder: "Filter by email",
+      type: "textfilterField",
+      extraField: "email",
+      isObject: true,
+      objectValue: "user",
+      defalutValue: "",
+      xs: 12,
+      md: 3,
+      lg: 3,
+      sm: 12,
+    },
+    {
+      id: nanoid(),
+      name: "value",
+      label: "Gender",
+      placeholder: "Filter by gender",
+      type: "dropDownfilterField",
+      extraField: "gender",
+      isObject: true,
+      objectValue: "user",
+      defalutValue: "",
+      options: [
+        { value: "FEMALE", label: "Female", id: nanoid() },
+        { value: "MALE", label: "Male", id: nanoid() },
+        { value: "OTHERS", label: "Others", id: nanoid() },
+      ],
       xs: 12,
       md: 3,
       lg: 3,
@@ -46,7 +85,12 @@ const FilterCashierForm = ({ filterFormik }) => {
         padding: "1rem",
       }}
     >
-      <Box display="flex" flexWrap="wrap" justifyContent="space-between" alignItems="center">
+      <Box
+        display="flex"
+        flexWrap="wrap"
+        justifyContent="space-between"
+        alignItems="center"
+      >
         <Typography
           variant="h5"
           sx={{

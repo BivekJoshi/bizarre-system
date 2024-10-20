@@ -757,7 +757,7 @@ const RenderInput = ({
           </div>
         );
 
-      case "filterField":
+      case "textfilterField":
         return (
           <div>
             <Typography
@@ -818,6 +818,146 @@ const RenderInput = ({
                   : {}
               }
               InputLabelProps={{ shrink: Boolean(formValues?.value) }}
+            />
+          </div>
+        );
+
+      case "numberfilterField":
+        return (
+          <>
+            <Typography
+              variant="h5"
+              sx={{
+                color: theme.palette.text.default,
+                fontWeight: 700,
+                marginBottom: "0.1rem",
+              }}
+            >
+              {element?.label}
+            </Typography>
+            <TextField
+              name={element?.name}
+              placeholder={element?.placeholder}
+              // label={element?.label}
+              onChange={(event) => {
+                const newValue = event.target.value;
+
+                const newSearchEntry = {
+                  field: element?.extraField || "defaultField",
+                  value: newValue,
+                  ...(element?.isObject
+                    ? { type: "object", object: element?.objectValue }
+                    : {}),
+                };
+
+                const currentSearch = formik.values.search || [];
+                const updatedSearch = currentSearch.filter(
+                  (entry) => entry.field !== newSearchEntry.field
+                );
+
+                updatedSearch.push(newSearchEntry);
+                formik.setFieldValue("search", updatedSearch);
+              }}
+              InputLabelProps={{ shrink: Boolean(formValues) }}
+              onKeyPress={(ev) => {
+                if (
+                  ev.key === "E" ||
+                  ev.key === "e" ||
+                  ev.key === "." ||
+                  ev.key === "+"
+                ) {
+                  ev.preventDefault();
+                }
+              }}
+              fullWidth
+              type="number"
+              required={element.required}
+              inputProps={{
+                min: element?.min,
+                max: element?.max,
+              }}
+              variant="outlined"
+              error={formTouched && Boolean(formError)}
+              helperText={formTouched && formError}
+              size="small"
+            />
+          </>
+        );
+
+      case "dropDownfilterField":
+        return (
+          <div>
+            <Typography
+              variant="h5"
+              sx={{
+                color: theme.palette.text.default,
+                fontWeight: 700,
+                marginBottom: "0.1rem",
+              }}
+            >
+              {element?.label}{" "}
+              {element.required && <span style={{ color: "#EC4034" }}>*</span>}
+            </Typography>
+            <Autocomplete
+              id={element.name}
+              key={formValues}
+              fullWidth
+              sx={{
+                marginBottom: element?.marginBottom,
+              }}
+              name={element.name}
+              disabled={
+                firstDropdownDisable && index === 0
+                  ? firstDropdownDisable
+                  : element?.isDisabled
+              }
+              options={element?.options || []}
+              getOptionLabel={(option) => option?.label || ""}
+              onChange={(event, newValue) => {
+                const newSearchEntry = {
+                  field: element?.extraField || "defaultField",
+                  value: newValue?.value || "",
+                  ...(element?.isObject
+                    ? { type: "object", object: element?.objectValue }
+                    : {}),
+                };
+
+                const currentSearch = formik.values.search || [];
+                const updatedSearch = currentSearch.filter(
+                  (entry) => entry.field !== newSearchEntry.field
+                );
+
+                updatedSearch.push(newSearchEntry);
+                formik.setFieldValue("search", updatedSearch);
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="outlined"
+                  placeholder={element?.placeholder}
+                  className="textfield-icon-input"
+                  disabled={element?.isDisabled}
+                  error={formTouched && Boolean(formError)}
+                  required={element.required}
+                  helperText={formTouched && formError}
+                  InputProps={{
+                    ...params.InputProps,
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        {element?.isImage ? (
+                          <img
+                            width={element?.iconWidth || 20}
+                            src={element?.iconStart}
+                          />
+                        ) : (
+                          <Tooltip>{element?.iconStart}</Tooltip>
+                        )}
+                      </InputAdornment>
+                    ),
+                  }}
+                  size="small"
+                />
+              )}
             />
           </div>
         );
