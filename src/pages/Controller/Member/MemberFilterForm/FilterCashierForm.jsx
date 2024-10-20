@@ -1,22 +1,12 @@
-// import React from 'react'
-
-// const FilterCashier = () => {
-//   return (
-//     <div>FilterCashier</div>
-//   )
-// }
-
-// export default FilterCashier
-
 import { Box, Button, Typography, useTheme, IconButton } from "@mui/material";
 import React, { useState } from "react";
 import { nanoid } from "nanoid";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
 import SearchIcon from "@mui/icons-material/Search";
-import RenderInput from "../../../components/RenderInput/RenderInput";
+import RenderInput from "../../../../components/RenderInput/RenderInput";
 
-const FilterItem = ({ filterFormik }) => {
+const FilterCashierForm = ({ filterFormik }) => {
   const theme = useTheme();
   const [showFields, setShowFields] = useState(false);
 
@@ -90,4 +80,4 @@ const FilterItem = ({ filterFormik }) => {
   );
 };
 
-export default FilterItem;
+export default FilterCashierForm;

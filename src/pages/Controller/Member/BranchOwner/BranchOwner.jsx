@@ -7,7 +7,6 @@ import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import FormModal from "../../../../components/Modal/FormModal";
 import CustomTable from "../../../../components/CustomTable/CustomTable";
-import { useGetMember } from "../../../../hooks/member/useMember";
 import ConfirmationModal from "../../../../components/Modal/ConfirmationModal";
 import BranchOwnerForm from "./BranchOwnerForm";
 import { useBranchOwnerMemberForm } from "../../../../hooks/member/Member/BranchOwnerMember/useBranchOwnerMemberForm";
@@ -17,23 +16,19 @@ import { DOC_URL } from "../../../../api/axiosInterceptor";
 import PermissionButton from "../../../../components/Button/PermissionButton";
 import MemberDocumentForm from "../MemberDocumentForm";
 import NoDataFound from "../../../PageNotFound/NoDataFound";
-import FilterBranchOwner from "../MemberFilterForm/FilterBranchOwner";
-import { useMemberFilterForm } from "../../../../hooks/member/MemberFilter/useMemberFilterForm";
+import { useBranchOwnerFilterForm } from "../../../../hooks/member/MemberFilter/useBranchOwnerFilterForm";
 import { CustomPaginationUpdated } from "../../../../components/Pagination/CustomPaginationUpdated";
+import FilterBranchOwnerForm from "../MemberFilterForm/FilterBranchOwnerForm";
 
 const BranchOwner = () => {
   const theme = useTheme();
   const view = useSelector((state) => state?.view?.mode);
 
-  const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
   const [rowData, setRowData] = useState(null);
   const [isAddModalOpen, setIsAddModal] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-
-  const { data } = useGetMember(pageNumber, pageSize);
 
   const [filteredData, setFilteredData] = useState(null);
   console.log("🚀 ~ BranchOwner ~ filteredData:", filteredData);
@@ -43,9 +38,11 @@ const BranchOwner = () => {
   const onClose = () => setIsAddModal(false);
   const { formik, loading } = useBranchOwnerMemberForm({ onClose, rowData });
 
-  const { formik: filterFormik, loading: isLoading } = useMemberFilterForm({
-    memberData: (data) => setFilteredData(data),
-  });
+  const { formik: filterFormik, loading: isLoading } = useBranchOwnerFilterForm(
+    {
+      memberData: (data) => setFilteredData(data),
+    }
+  );
 
   const deleteRow = (row) => {
     setRowData(row?.original?.id);
@@ -204,7 +201,7 @@ const BranchOwner = () => {
       </Box>
 
       <br />
-      <FilterBranchOwner filterFormik={filterFormik} />
+      <FilterBranchOwnerForm filterFormik={filterFormik} />
       <br />
 
       <br />

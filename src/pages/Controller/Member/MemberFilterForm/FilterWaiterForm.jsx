@@ -1,33 +1,23 @@
-// import React from 'react'
-
-// const FilterBarista = () => {
-//   return (
-//     <div>FilterBarista</div>
-//   )
-// }
-
-// export default FilterBarista
-
 import { Box, Button, Typography, useTheme, IconButton } from "@mui/material";
 import React, { useState } from "react";
 import { nanoid } from "nanoid";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
 import SearchIcon from "@mui/icons-material/Search";
-import RenderInput from "../../../components/RenderInput/RenderInput";
+import RenderInput from "../../../../components/RenderInput/RenderInput";
 
-const FilterItem = ({ filterFormik }) => {
+const FilterWaiterForm = ({ filterFormik }) => {
   const theme = useTheme();
   const [showFields, setShowFields] = useState(false);
 
   const inputField = [
     {
       id: nanoid(),
-      name: "value", 
+      name: "value",
       label: "Item Name",
-      placeholder:"Search by item name",
+      placeholder: "Search by item name",
       type: "filterField",
-      extraField: "name", 
+      extraField: "name",
       required: true,
       xs: 12,
       md: 3,
@@ -38,7 +28,7 @@ const FilterItem = ({ filterFormik }) => {
       id: nanoid(),
       name: "value",
       label: "Type",
-      placeholder:"Search by item type",
+      placeholder: "Search by item type",
       type: "filterField",
       extraField: "type",
       required: true,
@@ -56,7 +46,12 @@ const FilterItem = ({ filterFormik }) => {
         padding: "1rem",
       }}
     >
-      <Box display="flex" flexWrap="wrap" justifyContent="space-between" alignItems="center">
+      <Box
+        display="flex"
+        flexWrap="wrap"
+        justifyContent="space-between"
+        alignItems="center"
+      >
         <Typography
           variant="h5"
           sx={{
@@ -90,4 +85,4 @@ const FilterItem = ({ filterFormik }) => {
   );
 };
 
-export default FilterItem;
+export default FilterWaiterForm;

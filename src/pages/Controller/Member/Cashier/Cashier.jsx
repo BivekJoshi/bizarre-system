@@ -7,36 +7,39 @@ import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import FormModal from "../../../../components/Modal/FormModal";
 import CustomTable from "../../../../components/CustomTable/CustomTable";
-import { useGetMember } from "../../../../hooks/member/useMember";
 import ConfirmationModal from "../../../../components/Modal/ConfirmationModal";
 import CashierForm from "./CashierForm";
 import { useCashierMemberForm } from "../../../../hooks/member/Member/CashierMemeber/useCashierMemberForm";
 import { useSelector } from "react-redux";
 import CashierCardView from "./CashierCardView";
-import { CustomPagination } from "../../../../components/Pagination/CustomPagination";
 import { DOC_URL } from "../../../../api/axiosInterceptor";
 import PermissionButton from "../../../../components/Button/PermissionButton";
 import MemberDocumentForm from "../MemberDocumentForm";
 import NoDataFound from "../../../PageNotFound/NoDataFound";
+import { CustomPaginationUpdated } from "../../../../components/Pagination/CustomPaginationUpdated";
+import { useCashierFilterForm } from "../../../../hooks/member/MemberFilter/useCashierFilterForm";
+import FilterCashierForm from "../MemberFilterForm/FilterCashierForm";
 
 const Cashier = () => {
   const theme = useTheme();
   const view = useSelector((state) => state?.view?.mode);
 
-  const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
   const [rowData, setRowData] = useState(null);
   const [isAddModalOpen, setIsAddModal] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const { data } = useGetMember(pageNumber, pageSize);
+  const [filteredData, setFilteredData] = useState(null);
 
   // const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
   const { formik, loading } = useCashierMemberForm({ onClose, rowData });
+
+  const { formik: filterFormik, loading: isLoading } = useCashierFilterForm({
+    memberData: (data) => setFilteredData(data),
+  });
 
   const deleteRow = (row) => {
     setRowData(row?.original?.id);
@@ -130,16 +133,14 @@ const Cashier = () => {
   );
 
   const renderView = () => {
-    if (!data?.content || data.content.length === 0) {
-      return (
-        <NoDataFound/>
-      );
+    if (!filteredData?.content || filteredData.content.length === 0) {
+      return <NoDataFound />;
     }
     if (view === "table") {
       return (
         <CustomTable
           columns={columns}
-          data={data?.content}
+          data={filteredData?.content}
           overFlow={"scroll"}
           width={"100%"}
           enablePagination={false}
@@ -158,7 +159,7 @@ const Cashier = () => {
     } else {
       return (
         <Grid container spacing={2}>
-          {data?.content?.map((data, index) => {
+          {filteredData?.content?.map((data, index) => {
             return (
               <Grid item xs={12} md={4} lg={4} sm={12} key={index}>
                 <CashierCardView data={data} />
@@ -200,6 +201,10 @@ const Cashier = () => {
       </Box>
 
       <br />
+      <FilterCashierForm filterFormik={filterFormik} />
+      <br />
+
+      <br />
       <Box
         sx={{
           backgroundColor: theme.palette.background.default,
@@ -210,13 +215,12 @@ const Cashier = () => {
         {renderView()}
       </Box>
 
-      <CustomPagination
-        totalPages={data?.totalPages || 1}
-        currentPage={pageNumber}
-        onPageChange={setPageNumber}
-        rowsPerPage={pageSize}
-        onRowsPerPageChange={setPageSize}
-        totalElements={data?.totalElements || 0}
+      <CustomPaginationUpdated
+        totalPages={filteredData?.totalPages || 1}
+        currentPage={filteredData?.pageable?.pageNumber + 1}
+        rowsPerPage={filteredData?.pageable?.pageSize}
+        totalElements={filteredData?.totalElements || 0}
+        filterFormik={filterFormik}
       />
 
       <FormModal

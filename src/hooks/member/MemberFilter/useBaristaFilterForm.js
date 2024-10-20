@@ -2,13 +2,20 @@ import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useFilterMember } from "../useMember";
 
-export const useMemberFilterForm = ({ onClose, memberData }) => {
+export const useBaristaFilterForm = ({ onClose, memberData }) => {
   const { mutate } = useFilterMember({});
   const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
-      search: [],
+      search: [
+        {
+          field: "userType",
+          value: "BARISTA",
+          type: "object",
+          object: "user",
+        }
+      ],
       actionType: "FILTER",
       pageNumber: "" || 1,
       noOfRecords: "" || 10,
