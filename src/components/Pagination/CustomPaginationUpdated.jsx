@@ -16,6 +16,7 @@ export const CustomPaginationUpdated = ({
   rowsPerPage,
   totalElements = 0,
   filterFormik,
+  backgroundColor,
 }) => {
   const theme = useTheme();
 
@@ -42,7 +43,9 @@ export const CustomPaginationUpdated = ({
     <Box
       mt={3}
       sx={{
-        backgroundColor: theme.palette.background.default,
+        backgroundColor: backgroundColor
+          ? backgroundColor
+          : theme.palette.background.default,
         padding: "1rem",
         display: "flex",
         justifyContent: "space-between",

@@ -2,13 +2,20 @@ import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useFilterItem } from "../../useItem";
 
-export const useFilterItemForm = ({ onClose, itemData }) => {
+export const useFilterItemForm = ({ onClose, itemData, type }) => {
   const { mutate } = useFilterItem({});
   const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
-      search: [],
+      search: type
+        ? [
+            {
+              field: "type",
+              value: type,
+            },
+          ]
+        : [],
       // pageable: {
       //   pageNumber: "" || 1,
       //   pageSize: "" || 10,

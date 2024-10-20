@@ -12,15 +12,36 @@ import LocalCafeIcon from "@mui/icons-material/LocalCafe";
 import FastfoodIcon from "@mui/icons-material/Fastfood";
 import CheckroomIcon from "@mui/icons-material/Checkroom";
 import OrderItem from "./OrderItem";
+import { useFilterItemForm } from "../../../hooks/item/Item/filterItem/useFilterItemForm";
+import RenderInput from "../../../components/RenderInput/RenderInput";
 
 const OrderForm = ({ onClose }) => {
   const theme = useTheme();
   const [selectedCategory, setSelectedCategory] = useState("Beverage");
 
+  const [filteredData, setFilteredData] = useState(null);
+
+  const { formik: filterFormik, loading: isLoadingItem } = useFilterItemForm({
+    itemData: (data) => setFilteredData(data),
+    type: selectedCategory,
+  });
+
   const categories = [
-    { name: "Beverage", icon: <LocalCafeIcon fontSize="large" /> },
-    { name: "Food", icon: <FastfoodIcon fontSize="large" /> },
-    { name: "Clothing", icon: <CheckroomIcon fontSize="large" /> },
+    {
+      name: "Beverage",
+      value: "BEVERAGE",
+      icon: <LocalCafeIcon fontSize="large" />,
+    },
+    {
+      name: "Food",
+      value: "FOOD",
+      icon: <FastfoodIcon fontSize="large" />,
+    },
+    {
+      name: "Clothing",
+      value: "CLOTHING",
+      icon: <CheckroomIcon fontSize="large" />,
+    },
   ];
 
   const handleCategoryClick = (category) => {
@@ -53,11 +74,11 @@ const OrderForm = ({ onClose }) => {
                 cursor: "pointer",
                 transition: "transform 0.3s ease",
                 border:
-                  category.name === selectedCategory
+                  category.value === selectedCategory
                     ? `3px solid ${theme.palette.text.default}`
                     : "1px solid #ccc",
                 color:
-                  category.name === selectedCategory
+                  category.value === selectedCategory
                     ? `${theme.palette.text.default}`
                     : `${theme.palette.text.main}`,
                 width: { xs: "100px", sm: "120px" },
@@ -65,7 +86,7 @@ const OrderForm = ({ onClose }) => {
                   transform: "scale(1.05)",
                 },
               }}
-              onClick={() => handleCategoryClick(category.name)}
+              onClick={() => handleCategoryClick(category.value)}
             >
               {category.icon}
               <Typography variant="subtitle1" sx={{ mt: 1, fontSize: "14px" }}>
@@ -88,21 +109,33 @@ const OrderForm = ({ onClose }) => {
           >
             Filter
           </Typography>
-          <TextField
-            label="Search Item"
-            variant="outlined"
-            size="small"
-            // value={inputValue}
-            // onChange={handleInputChange}
-            sx={{
-              width: { xs: "150px", sm: "200px", md: "250px" },
-            }}
+          <RenderInput
+            inputField={[
+              {
+                id: 1,
+                name: "value",
+                placeholder: "Search by item name",
+                type: "textfilterField",
+                extraField: "name",
+                required: true,
+                xs: 12,
+                md: 12,
+                lg: 12,
+                sm: 12,
+              },
+            ]}
+            formik={filterFormik}
           />
         </div>
       </Box>
       <Grid container justifyContent="center">
         <Grid item xs={12}>
-          <OrderItem category={selectedCategory} onClose={onClose}/>
+          <OrderItem
+            filteredData={filteredData}
+            filterFormik={filterFormik}
+            isLoadingItem={isLoadingItem}
+            onClose={onClose}
+          />
         </Grid>
       </Grid>
     </>
