@@ -1,21 +1,23 @@
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useFilterCustomerTable } from "../../useCustomerTable";
+import { debounce } from "lodash";
 
-export const useFilterCustomerTableForm = ({ onClose, customerTableData }) => {
-  const { mutate } = useFilterCustomerTable({});
+export const useFilterCustomerTableForm = ({
+  onClose,
+  customerTableData,
+  successFlag,
+}) => {
+
+  const { mutate, isLoading } = useFilterCustomerTable({});
   const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
       search: [],
-      // pageable: {
-      //   pageNumber: "" || 1,
-      //   pageSize: "" || 10,
-      // },
       actionType: "FILTER",
-      pageNumber: "" || 1,
-      noOfRecords: "" || 10,
+      pageNumber: 1,
+      noOfRecords: 10,
     },
     enableReinitialize: true,
     onSubmit: (values) => {
@@ -37,14 +39,18 @@ export const useFilterCustomerTableForm = ({ onClose, customerTableData }) => {
     });
   };
 
+  const debouncedSearch = debounce(() => {
+    handleAddRequest(formik.values);
+  }, 300);
+
   useEffect(() => {
-    if (formik?.values?.pageNumber > 0) {
-      handleAddRequest(formik.values);
+    if (formik?.values?.pageNumber > 0 || successFlag) {
+      debouncedSearch();
     }
-  }, [formik.values.search]);
+  }, [formik.values.search, successFlag]);
 
   return {
     formik,
-    loading,
+    loading: isLoading || loading,
   };
 };

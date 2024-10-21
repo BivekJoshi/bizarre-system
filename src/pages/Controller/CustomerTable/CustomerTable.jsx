@@ -11,7 +11,7 @@ import {
 import { nanoid } from "nanoid";
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import { useCustomerTableForm } from "../../../hooks/customerTable/CustomerTable/useCustomerTable";
+import { useCustomerTableForm } from "../../../hooks/customerTable/CustomerTable/useCustomerTableForm";
 import FormModal from "../../../components/Modal/FormModal";
 import CustomTable from "../../../components/CustomTable/CustomTable";
 import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
@@ -42,11 +42,15 @@ const CustomerTable = () => {
     setIsEditModalOpen(false);
   };
 
-  const { formik, loading } = useCustomerTableForm({ onClose, rowData });
+  const { formik, successFlag, loading } = useCustomerTableForm({
+    onClose,
+    rowData,
+  });
 
   const { formik: filterFormik, loading: isLoading } =
     useFilterCustomerTableForm({
       customerTableData: (data) => setFilteredData(data),
+      successFlag
     });
 
   const deleteRow = useCallback((row) => {
