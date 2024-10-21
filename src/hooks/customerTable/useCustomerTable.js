@@ -57,7 +57,7 @@ export const useAddCustomerTable = ({ onSuccess }) => {
       onSuccess: (data, variables, context) => {
         toast.success("Customer Table added successfully");
         onSuccess && onSuccess(data, variables, context);
-        queryClient.invalidateQueries("getCustomerTable");
+        queryClient.invalidateQueries("filterCustomerTable");
       },
       onError: (err, _variables, _context) => {
         toast.error(getErrorMessage(err));
@@ -76,7 +76,7 @@ export const useEditCustomerTable = ({ onSuccess }) => {
       onSuccess: (data, variables, context) => {
         toast.success("Customer Table edited successfully");
         onSuccess && onSuccess(data, variables, context);
-        queryClient.invalidateQueries("getCustomerTable");
+        queryClient.invalidateQueries("filterCustomerTable");
       },
       onError: (err, _variables, _context) => {
         toast.error(getErrorMessage(err));

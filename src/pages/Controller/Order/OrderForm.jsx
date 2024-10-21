@@ -15,7 +15,7 @@ import OrderItem from "./OrderItem";
 import { useFilterItemForm } from "../../../hooks/item/Item/filterItem/useFilterItemForm";
 import RenderInput from "../../../components/RenderInput/RenderInput";
 
-const OrderForm = ({ onClose }) => {
+const OrderForm = ({ onClose, orderData }) => {
   const theme = useTheme();
   const [selectedCategory, setSelectedCategory] = useState("Beverage");
 
@@ -135,6 +135,7 @@ const OrderForm = ({ onClose }) => {
             filterFormik={filterFormik}
             isLoadingItem={isLoadingItem}
             onClose={onClose}
+            orderData={orderData}
           />
         </Grid>
       </Grid>

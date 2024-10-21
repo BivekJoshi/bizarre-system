@@ -26,7 +26,13 @@ import HighlightOffRoundedIcon from "@mui/icons-material/HighlightOffRounded";
 import NoDataFound from "../../PageNotFound/NoDataFound";
 import { CustomPaginationUpdated } from "../../../components/Pagination/CustomPaginationUpdated";
 
-const OrderItem = ({ filteredData, filterFormik, isLoadingItem, onClose }) => {
+const OrderItem = ({
+  filteredData,
+  filterFormik,
+  isLoadingItem,
+  onClose,
+  orderData,
+}) => {
   const theme = useTheme();
 
   const [selectedIds, setSelectedIds] = useState([]);
@@ -37,6 +43,7 @@ const OrderItem = ({ filteredData, filterFormik, isLoadingItem, onClose }) => {
     remarks,
     selectedIds,
     onClose,
+    orderData,
   });
 
   const handleClick = (id) => {
@@ -248,7 +255,7 @@ const OrderItem = ({ filteredData, filterFormik, isLoadingItem, onClose }) => {
             startIcon={<ControlPointRoundedIcon />}
             size="large"
           >
-            Place Order
+            {orderData?.orders?.length > 0 ? "Add Order" : "Place Order"}
           </LoadingButton>
         </Box>
       </Grid>

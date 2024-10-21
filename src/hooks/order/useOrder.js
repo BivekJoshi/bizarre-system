@@ -88,7 +88,7 @@ export const useAddOrder = ({ onSuccess }) => {
     onSuccess: (data, variables, context) => {
       toast.success("Ordered placed successfully");
       onSuccess && onSuccess(data, variables, context);
-      queryClient.invalidateQueries("getOrder");
+      queryClient.invalidateQueries("getBatchByTableId");
     },
     onError: (err, _variables, _context) => {
       toast.error(getErrorMessage(err));
@@ -103,7 +103,7 @@ export const useEditOrder = ({ onSuccess }) => {
     onSuccess: (data, variables, context) => {
       toast.success("Order edited successfully");
       onSuccess && onSuccess(data, variables, context);
-      queryClient.invalidateQueries("getOrder");
+      queryClient.invalidateQueries("getBatchByTableId");
     },
     onError: (err, _variables, _context) => {
       toast.error(getErrorMessage(err));

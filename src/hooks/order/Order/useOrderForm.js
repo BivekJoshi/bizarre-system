@@ -2,7 +2,12 @@ import { useFormik } from "formik";
 import { useAddOrder, useEditOrder } from "../useOrder";
 import { useParams } from "react-router-dom";
 
-export const useOrderForm = ({ remarks = {}, selectedIds = [], onClose }) => {
+export const useOrderForm = ({
+  remarks = {},
+  selectedIds = [],
+  onClose,
+  orderData,
+}) => {
   const { id } = useParams();
 
   const initialOrderRequests = Object.entries(remarks).flatMap(
@@ -33,10 +38,11 @@ export const useOrderForm = ({ remarks = {}, selectedIds = [], onClose }) => {
     initialValues: {
       customerTableId: id || "",
       orderRequests: allOrderRequests,
+      batchId: orderData?.batchId || "",
     },
     enableReinitialize: true,
     onSubmit: (values) => {
-      if (values?.id) {
+      if (values?.batchId) {
         handleEditRequest(values);
       } else {
         handleAddRequest(values);

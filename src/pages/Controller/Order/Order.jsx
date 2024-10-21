@@ -35,8 +35,9 @@ const Order = () => {
   const [isBillLayout, setIsBillLayout] = useState(false);
 
   const { data: orderData } = useGetBatchById(tableId);
+  console.log("🚀 ~ Order ~ orderData:", orderData?.data?.orders);
   const { data: coustomerTableData } = useGetCustomerTableById(tableId);
-  console.log("🚀 ~ Order ~ coustomerTableData:", coustomerTableData);
+  // console.log("🚀 ~ Order ~ coustomerTableData:", coustomerTableData);
 
   const columns = useMemo(
     () => [
@@ -126,7 +127,7 @@ const Order = () => {
             onClick={() => setIsAddModal(true)}
             startIcon={<ControlPointRoundedIcon />}
           >
-            Place Order
+            {orderData?.data?.orders?.length > 0 ? "Add Order" : " Place Order"}
           </Button>
         </div>
       </Box>
@@ -142,8 +143,10 @@ const Order = () => {
         }}
       >
         <div style={{ textAlign: "center" }}>
-          <Typography variant="h5">Table No. <b>{coustomerTableData?.data?.tableNumber}</b></Typography>
-          <br/>
+          <Typography variant="h5">
+            Table No. <b>{coustomerTableData?.data?.tableNumber}</b>
+          </Typography>
+          <br />
         </div>
         {renderView()}
       </Box>
@@ -195,7 +198,12 @@ const Order = () => {
         height={"auto"}
         maxHeight={"80vh"}
         header={"Place Order"}
-        formComponent={<OrderForm onClose={() => setIsAddModal(false)} />}
+        formComponent={
+          <OrderForm
+            onClose={() => setIsAddModal(false)}
+            orderData={orderData?.data}
+          />
+        }
         showButton={false}
       />
       <FormModal
