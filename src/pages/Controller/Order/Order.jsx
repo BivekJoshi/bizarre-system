@@ -1,5 +1,13 @@
 import React, { useMemo, useState } from "react";
-import { Box, Button, Grid, Stack, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  Stack,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { nanoid } from "nanoid";
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 import { useSelector } from "react-redux";
@@ -15,7 +23,6 @@ import OrderReport from "./OrderReport";
 import GenerateBillModal from "../Batch/Bill/GenerateBillModal";
 import PaymentModal from "../Batch/Payment/PaymentModal";
 import PermissionButton from "../../../components/Button/PermissionButton";
-import BillLayout from "../Batch/Payment/BillLayout";
 import { useGetCustomerTableById } from "../../../hooks/customerTable/useCustomerTable";
 
 const Order = () => {
@@ -34,9 +41,10 @@ const Order = () => {
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [isBillLayout, setIsBillLayout] = useState(false);
 
-  const { data: orderData } = useGetBatchById(tableId);
-  console.log("🚀 ~ Order ~ orderData:", orderData?.data?.orders);
-  const { data: coustomerTableData } = useGetCustomerTableById(tableId);
+  const { data: orderData, isLoading: loadingOrder } = useGetBatchById(tableId);
+  console.log("🚀 ~ Order ~ orderData:", orderData?.data?.orders?.length);
+  const { data: coustomerTableData, isLoading: loadingCustomerTable } =
+    useGetCustomerTableById(tableId);
   // console.log("🚀 ~ Order ~ coustomerTableData:", coustomerTableData);
 
   const columns = useMemo(
@@ -68,6 +76,23 @@ const Order = () => {
   );
 
   const renderView = () => {
+    if (loadingOrder && loadingCustomerTable) {
+      return (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100%"
+        >
+          <CircularProgress />
+        </Box>
+      );
+    }
+
+    if (orderData?.data?.orders?.length === (0 || undefined)) {
+      return <NoDataFound />;
+    }
+
     if (view === "table") {
       return (
         <CustomTable
@@ -90,7 +115,6 @@ const Order = () => {
               <OrderByTableIdCardView data={item} />
             </Grid>
           ))}
-          {!orderData?.data?.orders && <NoDataFound />}
         </Grid>
       );
     }
@@ -241,16 +265,6 @@ const Order = () => {
         maxHeight={"80vh"}
         header={"Payment Method"}
         formComponent={<PaymentModal batchId={orderData?.data?.batchId} />}
-        showButton={false}
-      />
-      <FormModal
-        open={isBillLayout}
-        onClose={() => setIsBillLayout(false)}
-        width={"40%"}
-        height={"auto"}
-        maxHeight={"80vh"}
-        // header={"Payment Method"}
-        formComponent={<BillLayout data={orderData?.data} />}
         showButton={false}
       />
     </>

@@ -39,10 +39,11 @@ const Item = () => {
     setIsAddModal(false);
     setIsEditModalOpen(false);
   };
-  const { formik, loading } = useItemForm({ onClose, rowData });
+  const { formik, successFlag, loading } = useItemForm({ onClose, rowData });
 
   const { formik: filterFormik, loading: isLoading } = useFilterItemForm({
     itemData: (data) => setFilteredData(data),
+    successFlag,
   });
 
   const deleteRow = (row) => {
@@ -234,7 +235,7 @@ const Item = () => {
       /> */}
       <CustomPaginationUpdated
         totalPages={filteredData?.totalPages || 1}
-        currentPage={filteredData?.pageable?.pageNumber+1}
+        currentPage={filteredData?.pageable?.pageNumber + 1}
         rowsPerPage={filteredData?.pageable?.pageSize}
         totalElements={filteredData?.totalElements || 0}
         filterFormik={filterFormik}

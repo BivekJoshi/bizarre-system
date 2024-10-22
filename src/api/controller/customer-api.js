@@ -45,3 +45,11 @@ export const filterCustomer = async (formData) => {
   const data = await axiosInstance.post(`${CUSTOMER}/find`, updatedFormData);
   return data;
 };
+
+/*________________________VERIFY CUSTOMER_____________________________________*/
+export const verifyCustomer = async (id) => {
+  if (id) {
+    const { data } = await axiosInstance.get(`${CUSTOMER}/verify/${id}`);
+    return data;
+  }
+};

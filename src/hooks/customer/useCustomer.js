@@ -6,6 +6,7 @@ import {
   filterCustomer,
   getCustomer,
   getCustomerById,
+  verifyCustomer,
 } from "../../api/controller/customer-api";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 
@@ -68,6 +69,19 @@ export const useFilterCustomer = ({ onSuccess }) => {
       onSuccess && onSuccess(data, variables, context);
     },
     onError: (err, _variables, _context) => {
+      toast.error(getErrorMessage(err));
+    },
+  });
+};
+
+/*________________________VERIFY CUSTOMER_____________________________________*/
+export const useVerifyCustomer = (id) => {
+  console.log("🚀 ~ useVerifyCustomer ~ id:", id)
+  return useMutation(() => verifyCustomer(id), {
+    onSuccess: (data) => {
+      toast.success("Customer verified successfully")
+    },
+    onError: (err) => {
       toast.error(getErrorMessage(err));
     },
   });

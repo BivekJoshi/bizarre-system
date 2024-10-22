@@ -26,20 +26,24 @@ import NoDataFound from "../../PageNotFound/NoDataFound";
 import FilterCustomerForm from "./FilterCustomerForm";
 import { useFilterCustomerForm } from "../../../hooks/customer/Customer/filterCustomer/useFilterCustomerForm";
 import { CustomPaginationUpdated } from "../../../components/Pagination/CustomPaginationUpdated";
+import VerfiedIcon from "@mui/icons-material/Verified";
+import { useVerifyCustomer } from "../../../hooks/customer/useCustomer";
 
 const Customer = () => {
   const theme = useTheme();
   const view = useSelector((state) => state?.view?.mode);
 
   const [rowData, setRowData] = useState(null);
+  const rowId = rowData?.id;
   const [isAddModalOpen, setIsAddModal] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
+  const [isVerifyModalOpen, setIsVerifyModalOpen] = useState(false);
+
   const [filteredData, setFilteredData] = useState(null);
 
-
-  // const { mutate } = useDeleteBranch({ rowData });
+  const { mutate: verifyCustomer } = useVerifyCustomer(rowId);
 
   const onClose = () => setIsAddModal(false);
   const { formik, loading } = useCustomerForm({ onClose });
@@ -51,6 +55,19 @@ const Customer = () => {
   const deleteRow = (row) => {
     setRowData(row?.original?.id);
     setIsDeleteModalOpen(true);
+  };
+
+  const handleEnter = (row) => {
+    setRowData(row?.original);
+    setIsVerifyModalOpen(true);
+  };
+
+  const confimVerify = () => {
+    verifyCustomer({
+      onSuccess: () => {
+        setIsVerifyModalOpen(false);
+      },
+    });
   };
 
   const columns = useMemo(
@@ -159,6 +176,10 @@ const Customer = () => {
           enableEditing={true}
           // handleDeleteRow={deleteRow}
           // handleEdit={editRow}
+          handleEnter={handleEnter}
+          enterIcon={<VerfiedIcon />}
+          entertooltip={"Verify Customer"}
+          enter
         />
       );
     } else {
@@ -273,6 +294,30 @@ const Customer = () => {
             }}
           />
         }
+      />
+      <ConfirmationModal
+        disagreeLabel={"Yes, Confirm"}
+        agreeLabel={"No, Don't Verify."}
+        alertTitle={"Confirm !!!"}
+        header={"Verify Customer"}
+        confirmhead={"Are you sure ?"}
+        handleModalClose={() => {
+          setIsVerifyModalOpen(false);
+          close();
+        }}
+        isModalOpen={isVerifyModalOpen}
+        icon={
+          <VerfiedIcon
+            sx={{
+              backgroundColor: "#a3fca1",
+              borderRadius: "50%",
+              fontSize: 36,
+              padding: "1rem",
+              color: "green",
+            }}
+          />
+        }
+        handleSave={confimVerify}
       />
     </>
   );

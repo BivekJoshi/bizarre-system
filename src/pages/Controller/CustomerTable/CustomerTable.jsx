@@ -24,6 +24,7 @@ import NoDataFound from "../../PageNotFound/NoDataFound";
 import { useFilterCustomerTableForm } from "../../../hooks/customerTable/CustomerTable/filterCustomerTable/useFilterCustomerTableForm";
 import FilterCustomerTableForm from "./FilterCustomerTableForm";
 import { CustomPaginationUpdated } from "../../../components/Pagination/CustomPaginationUpdated";
+import GpsFixedRoundedIcon from "@mui/icons-material/GpsFixedRounded";
 
 const CustomerTable = () => {
   const theme = useTheme();
@@ -34,6 +35,7 @@ const CustomerTable = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  
 
   const [filteredData, setFilteredData] = useState(null);
 
@@ -138,6 +140,8 @@ const CustomerTable = () => {
           enableEditing={true}
           handleEdit={editRow}
           handleEnter={handleEnter}
+          enterIcon={<GpsFixedRoundedIcon/>}
+          entertooltip={"Enter"}
           edit
           enter
         />

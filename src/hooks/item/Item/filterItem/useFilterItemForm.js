@@ -1,9 +1,10 @@
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useFilterItem } from "../../useItem";
+import { debounce } from "@mui/material";
 
-export const useFilterItemForm = ({ onClose, itemData, type }) => {
-  const { mutate } = useFilterItem({});
+export const useFilterItemForm = ({ onClose, itemData, type, successFlag }) => {
+  const { mutate, isLoading } = useFilterItem({});
   const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
@@ -44,14 +45,18 @@ export const useFilterItemForm = ({ onClose, itemData, type }) => {
     });
   };
 
+  const debouncedSearch = debounce(() => {
+    handleAddRequest(formik.values);
+  }, 300);
+
   useEffect(() => {
-    if (formik?.values?.pageNumber > 0) {
-      handleAddRequest(formik.values);
+    if (formik?.values?.pageNumber > 0 || successFlag) {
+      debouncedSearch();
     }
-  }, [formik.values.search]);
+  }, [formik.values.search, successFlag]);
 
   return {
     formik,
-    loading,
+    loading: isLoading || loading,
   };
 };

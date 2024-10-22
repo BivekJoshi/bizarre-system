@@ -1,9 +1,11 @@
 import { useFormik } from "formik";
 import { useAddItem, useEditItem } from "../useItem";
+import { useState } from "react";
 
 export const useItemForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddItem({});
   const { mutate: editMutate } = useEditItem({});
+  const [successFlag, setSuccessFlag] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -33,7 +35,15 @@ export const useItemForm = ({ onClose, rowData }) => {
     values = { ...values };
     addMutate(values, {
       onSuccess: () => {
+        setSuccessFlag(true);
         onClose();
+
+        setTimeout(() => {
+          setSuccessFlag(false);
+        }, 1000);
+      },
+      onError: () => {
+        setSuccessFlag(false);
       },
     });
   };
@@ -42,12 +52,21 @@ export const useItemForm = ({ onClose, rowData }) => {
     values = { ...values };
     editMutate(values, {
       onSuccess: () => {
+        setSuccessFlag(true);
         onClose();
+
+        setTimeout(() => {
+          setSuccessFlag(false);
+        }, 1000);
+      },
+      onError: () => {
+        setSuccessFlag(false);
       },
     });
   };
 
   return {
     formik,
+    successFlag,
   };
 };

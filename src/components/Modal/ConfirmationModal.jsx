@@ -25,7 +25,8 @@ const ConfirmationModal = (props) => {
     alertTitle,
     confirmhead,
     icon,
-    handleSave
+    handleSave,
+    color,
   } = props;
 
   // const handleSave = () => {
@@ -42,7 +43,11 @@ const ConfirmationModal = (props) => {
       aria-describedby="alert-dialog-slide-description"
     >
       <DialogTitle
-        sx={{ display: "flex", justifyContent: "center", color: "#FF544E" }}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          color: color ? color : "#FF544E",
+        }}
       >
         {icon}
       </DialogTitle>

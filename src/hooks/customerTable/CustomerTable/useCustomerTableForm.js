@@ -5,13 +5,13 @@ import { useState, useEffect } from "react";
 export const useCustomerTableForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddCustomerTable({});
   const { mutate: editMutate } = useEditCustomerTable({});
-  const [successFlag, setSuccessFlag] = useState(false); 
+  const [successFlag, setSuccessFlag] = useState(false);
 
   const formik = useFormik({
     initialValues: {
       id: rowData?.id || "",
       tableNumber: rowData?.tableNumber || "",
-      status: rowData?.status || "",
+      status: rowData?.status || "AVAILABLE",
     },
     // validationSchema: branchSchema,
     enableReinitialize: true,
@@ -32,10 +32,10 @@ export const useCustomerTableForm = ({ onClose, rowData }) => {
 
         setTimeout(() => {
           setSuccessFlag(false);
-        }, 5000);
+        }, 1000);
       },
       onError: () => {
-        setSuccessFlag(false); 
+        setSuccessFlag(false);
       },
     });
   };
@@ -48,16 +48,16 @@ export const useCustomerTableForm = ({ onClose, rowData }) => {
 
         setTimeout(() => {
           setSuccessFlag(false);
-        }, 5000);
+        }, 1000);
       },
       onError: () => {
-        setSuccessFlag(false); 
+        setSuccessFlag(false);
       },
     });
   };
 
   return {
     formik,
-    successFlag, 
+    successFlag,
   };
 };
