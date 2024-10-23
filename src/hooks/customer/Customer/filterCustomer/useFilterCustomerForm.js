@@ -1,9 +1,14 @@
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useFilterCustomer } from "../../useCustomer";
+import { debounce } from "@mui/material";
 
-export const useFilterCustomerForm = ({ onClose, customerData }) => {
-  const { mutate } = useFilterCustomer({});
+export const useFilterCustomerForm = ({
+  onClose,
+  customerData,
+  successFlag,
+}) => {
+  const { mutate, isLoading } = useFilterCustomer({});
   const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
@@ -37,14 +42,17 @@ export const useFilterCustomerForm = ({ onClose, customerData }) => {
     });
   };
 
-  useEffect(() => {
-    if (formik?.values?.pageNumber > 0) {
-      handleAddRequest(formik.values);
-    }
-  }, [formik.values.search]);
+  const debouncedSearch = debounce(() => {
+    handleAddRequest(formik.values);
+  }, 300);
 
+  useEffect(() => {
+    if (formik?.values?.pageNumber > 0 || successFlag) {
+      debouncedSearch();
+    }
+  }, [formik.values.search, successFlag]);
   return {
     formik,
-    loading,
+    loading: isLoading || loading,
   };
 };

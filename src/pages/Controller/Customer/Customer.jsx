@@ -46,10 +46,11 @@ const Customer = () => {
   const { mutate: verifyCustomer } = useVerifyCustomer(rowId);
 
   const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useCustomerForm({ onClose });
+  const { formik,successFlag, loading } = useCustomerForm({ onClose });
 
   const { formik: filterFormik, loading: isLoading } = useFilterCustomerForm({
     customerData: (data) => setFilteredData(data),
+    successFlag
   });
 
   const deleteRow = (row) => {

@@ -2,10 +2,12 @@ import { useFormik } from "formik";
 
 // import { branchSchema } from "./branchSchema";
 import { useAddCustomer, useEditCustomer } from "../useCustomer";
+import { useState } from "react";
 
 export const useCustomerForm = ({ onClose, data }) => {
   const { mutate: addMutate } = useAddCustomer({});
   const { mutate: editMutate } = useEditCustomer({});
+  const [successFlag, setSuccessFlag] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -24,12 +26,19 @@ export const useCustomerForm = ({ onClose, data }) => {
       }
     },
   });
-
   const handledAddRequest = (values) => {
     values = { ...values };
     addMutate(values, {
       onSuccess: () => {
+        setSuccessFlag(true);
         onClose();
+
+        setTimeout(() => {
+          setSuccessFlag(false);
+        }, 1000);
+      },
+      onError: () => {
+        setSuccessFlag(false);
       },
     });
   };
@@ -38,12 +47,21 @@ export const useCustomerForm = ({ onClose, data }) => {
     values = { ...values };
     editMutate(values, {
       onSuccess: () => {
+        setSuccessFlag(true);
         onClose();
+
+        setTimeout(() => {
+          setSuccessFlag(false);
+        }, 1000);
+      },
+      onError: () => {
+        setSuccessFlag(false);
       },
     });
   };
 
   return {
     formik,
+    successFlag,
   };
 };

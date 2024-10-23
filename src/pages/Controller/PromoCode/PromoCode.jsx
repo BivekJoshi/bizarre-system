@@ -1,5 +1,12 @@
 import React, { useMemo, useState } from "react";
-import { Box, Button, Grid, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import FormModal from "../../../components/Modal/FormModal";
 import CustomTable from "../../../components/CustomTable/CustomTable";
 import { nanoid } from "nanoid";
@@ -22,7 +29,7 @@ const PromoCode = () => {
   const [isAddModalOpen, setIsAddModal] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  const { data } = useGetPromoCode(pageNumber, pageSize);
+  const { data, isLoading } = useGetPromoCode(pageNumber, pageSize);
 
   const onClose = () => {
     setIsAddModal(false);
@@ -84,10 +91,20 @@ const PromoCode = () => {
   );
 
   const renderView = () => {
-    if (!data?.content || data.content.length === 0) {
+    if (isLoading) {
       return (
-        <NoDataFound/>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100%"
+        >
+          <CircularProgress />
+        </Box>
       );
+    }
+    if (!data?.content || data.content.length === 0) {
+      return <NoDataFound />;
     }
     if (view === "table") {
       return (
