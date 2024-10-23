@@ -5,7 +5,7 @@ import Normalpay from "./Normalpay";
 import SplitPay from "./SplitPay";
 import BypassPayment from "./BypassPayment";
 
-const PaymentModal = ({ batchId }) => {
+const PaymentModal = ({ batchId, onClose }) => {
   const [value, setValue] = React.useState("NORMAL");
 
   const handleChange = (event, newValue) => {

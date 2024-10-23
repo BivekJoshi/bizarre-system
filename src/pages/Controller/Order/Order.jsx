@@ -241,7 +241,12 @@ const Order = () => {
         height={"auto"}
         maxHeight={"80vh"}
         header={"Generate Bill"}
-        formComponent={<GenerateBillModal batchId={orderData?.data?.batchId} />}
+        formComponent={
+          <GenerateBillModal
+            batchId={orderData?.data?.batchId}
+            onClose={() => setIsGenerateBillModalOpen(false)}
+          />
+        }
         showButton={false}
       />
       <FormModal
@@ -251,7 +256,12 @@ const Order = () => {
         height={"auto"}
         maxHeight={"80vh"}
         header={"Payment Method"}
-        formComponent={<PaymentModal batchId={orderData?.data?.batchId} />}
+        formComponent={
+          <PaymentModal
+            batchId={orderData?.data?.batchId}
+            onClose={() => setIsPaymentModalOpen(false)}
+          />
+        }
         showButton={false}
       />
     </>

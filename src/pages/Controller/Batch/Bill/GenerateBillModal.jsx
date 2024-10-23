@@ -5,7 +5,7 @@ import GenerateNormalBill from "./GenerateNormalBill";
 import GenerateSplitBill from "./GenerateSplitBill";
 import GenerateRouletteBill from "./GenerateRouletteBill";
 
-const GenerateBillModal = ({ batchId }) => {
+const GenerateBillModal = ({ batchId, onClose }) => {
   const [value, setValue] = React.useState("NORMAL");
 
   const handleChange = (event, newValue) => {
@@ -23,13 +23,13 @@ const GenerateBillModal = ({ batchId }) => {
           </TabList>
         </Box>
         <TabPanel value="NORMAL">
-          <GenerateNormalBill batchId={batchId} />
+          <GenerateNormalBill batchId={batchId} onClose={onClose} />
         </TabPanel>
         <TabPanel value="SPLIT">
-          <GenerateSplitBill batchId={batchId} />
+          <GenerateSplitBill batchId={batchId} onClose={onClose} />
         </TabPanel>
         <TabPanel value="ROULETTE">
-          <GenerateRouletteBill batchId={batchId} />
+          <GenerateRouletteBill batchId={batchId} onClose={onClose} />
         </TabPanel>
       </TabContext>
     </Box>

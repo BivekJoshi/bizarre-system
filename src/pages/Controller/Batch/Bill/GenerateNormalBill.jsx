@@ -10,7 +10,7 @@ import FormModal from "../../../../components/Modal/FormModal";
 import BillLayout from "../Payment/BillLayout";
 import { useGetCustomerByMobileNumber } from "../../../../hooks/customer/useCustomer";
 
-const GenerateNormalBill = ({ batchId }) => {
+const GenerateNormalBill = ({ batchId, onClose }) => {
   const [finalBillModalOpen, setFinalBillModalOpen] = useState(false);
   const [finalBill, setFinalBill] = useState(null);
 
@@ -95,7 +95,10 @@ const GenerateNormalBill = ({ batchId }) => {
           <>
             <BillLayout
               finalBill={finalBill}
-              onClose={() => setFinalBillModalOpen(false)}
+              onClose={() => {
+                setFinalBillModalOpen(false); 
+                onClose()
+              }}
             />
           </>
         }
