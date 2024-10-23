@@ -35,10 +35,11 @@ const Cashier = () => {
   // const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useCashierMemberForm({ onClose, rowData });
+  const { formik,successFlag, loading } = useCashierMemberForm({ onClose, rowData });
 
   const { formik: filterFormik, loading: isLoading } = useCashierFilterForm({
     memberData: (data) => setFilteredData(data),
+    successFlag
   });
 
   const deleteRow = (row) => {

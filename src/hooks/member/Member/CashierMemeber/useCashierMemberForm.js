@@ -1,10 +1,12 @@
 import { useFormik } from "formik";
 
 import { useAddCashierMember, useEditMember } from "../../useMember";
+import { useState } from "react";
 
 export const useCashierMemberForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddCashierMember({});
   const { mutate: editMutate } = useEditMember({});
+  const [successFlag, setSuccessFlag] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -32,7 +34,15 @@ export const useCashierMemberForm = ({ onClose, rowData }) => {
     values = { ...values };
     addMutate(values, {
       onSuccess: () => {
+        setSuccessFlag(true);
         onClose();
+
+        setTimeout(() => {
+          setSuccessFlag(false);
+        }, 1000);
+      },
+      onError: () => {
+        setSuccessFlag(false);
       },
     });
   };
@@ -41,12 +51,21 @@ export const useCashierMemberForm = ({ onClose, rowData }) => {
     values = { ...values };
     editMutate(values, {
       onSuccess: () => {
+        setSuccessFlag(true);
         onClose();
+
+        setTimeout(() => {
+          setSuccessFlag(false);
+        }, 1000);
+      },
+      onError: () => {
+        setSuccessFlag(false);
       },
     });
   };
 
   return {
     formik,
+    successFlag,
   };
 };

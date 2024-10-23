@@ -1,5 +1,13 @@
 import React, { useMemo, useState } from "react";
-import { Avatar, Box, Button, CircularProgress, Grid, Typography, useTheme } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { nanoid } from "nanoid";
 import maleProfile from "../../../../assets/MaleProfile.png";
 import femaleProfile from "../../../../assets/FemaleProfile.png";
@@ -33,14 +41,17 @@ const Barista = () => {
 
   const [filteredData, setFilteredData] = useState(null);
 
-
   // const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useBaristaMemberForm({ onClose, rowData });
+  const { formik, successFlag, loading } = useBaristaMemberForm({
+    onClose,
+    rowData,
+  });
 
   const { formik: filterFormik, loading: isLoading } = useBaristaFilterForm({
     memberData: (data) => setFilteredData(data),
+    successFlag,
   });
 
   const deleteRow = (row) => {

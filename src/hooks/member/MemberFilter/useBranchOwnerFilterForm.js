@@ -1,9 +1,14 @@
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useFilterMember } from "../useMember";
+import { debounce } from "@mui/material";
 
-export const useBranchOwnerFilterForm = ({ onClose, memberData }) => {
-  const { mutate } = useFilterMember({});
+export const useBranchOwnerFilterForm = ({
+  onClose,
+  memberData,
+  successFlag,
+}) => {
+  const { mutate, isLoading } = useFilterMember({});
   const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
@@ -14,7 +19,7 @@ export const useBranchOwnerFilterForm = ({ onClose, memberData }) => {
           value: "BRANCH_OWNER",
           type: "object",
           object: "user",
-        }
+        },
       ],
       actionType: "FILTER",
       pageNumber: "" || 1,
@@ -40,14 +45,18 @@ export const useBranchOwnerFilterForm = ({ onClose, memberData }) => {
     });
   };
 
+  const debouncedSearch = debounce(() => {
+    handleAddRequest(formik.values);
+  }, 300);
+
   useEffect(() => {
-    if (formik?.values?.pageNumber > 0) {
-      handleAddRequest(formik.values);
+    if (formik?.values?.pageNumber > 0 || successFlag) {
+      debouncedSearch();
     }
-  }, [formik.values.search]);
+  }, [formik.values.search, successFlag]);
 
   return {
     formik,
-    loading,
+    loading: isLoading || loading,
   };
 };

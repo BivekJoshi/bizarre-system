@@ -1,10 +1,12 @@
 import { useFormik } from "formik";
 
 import { useAddBaristaMember, useEditMember } from "../../useMember";
+import { useState } from "react";
 
 export const useBaristaMemberForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddBaristaMember({});
   const { mutate: editMutate } = useEditMember({});
+  const [successFlag, setSuccessFlag] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -33,7 +35,15 @@ export const useBaristaMemberForm = ({ onClose, rowData }) => {
     values = { ...values };
     addMutate(values, {
       onSuccess: () => {
+        setSuccessFlag(true);
         onClose();
+
+        setTimeout(() => {
+          setSuccessFlag(false);
+        }, 1000);
+      },
+      onError: () => {
+        setSuccessFlag(false);
       },
     });
   };
@@ -42,12 +52,21 @@ export const useBaristaMemberForm = ({ onClose, rowData }) => {
     values = { ...values };
     editMutate(values, {
       onSuccess: () => {
+        setSuccessFlag(true);
         onClose();
+
+        setTimeout(() => {
+          setSuccessFlag(false);
+        }, 1000);
+      },
+      onError: () => {
+        setSuccessFlag(false);
       },
     });
   };
 
   return {
     formik,
+    successFlag,
   };
 };

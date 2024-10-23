@@ -44,11 +44,12 @@ const BranchOwner = () => {
   // const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useBranchOwnerMemberForm({ onClose, rowData });
+  const { formik,successFlag, loading } = useBranchOwnerMemberForm({ onClose, rowData });
 
   const { formik: filterFormik, loading: isLoading } = useBranchOwnerFilterForm(
     {
       memberData: (data) => setFilteredData(data),
+      successFlag,
     }
   );
 

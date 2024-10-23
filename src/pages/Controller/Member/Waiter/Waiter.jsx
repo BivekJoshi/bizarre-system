@@ -44,10 +44,11 @@ const Waiter = () => {
   // const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useWaiterMemberForm({ onClose, rowData });
+  const { formik,successFlag, loading } = useWaiterMemberForm({ onClose, rowData });
 
   const { formik: filterFormik, loading: isLoading } = useWaiterFilterForm({
     memberData: (data) => setFilteredData(data),
+    successFlag
   });
 
   const deleteRow = (row) => {
