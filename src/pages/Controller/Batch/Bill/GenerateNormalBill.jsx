@@ -8,10 +8,12 @@ import { useGenerateNormalBillForm } from "../../../../hooks/batch/Batch/useGene
 import { LoadingButton } from "@mui/lab";
 import FormModal from "../../../../components/Modal/FormModal";
 import BillLayout from "../Payment/BillLayout";
+import { useGetCustomerByMobileNumber } from "../../../../hooks/customer/useCustomer";
 
 const GenerateNormalBill = ({ batchId }) => {
-  const [finalBillModalOpen, setFinalBillModalOpen] = useState(true);
+  const [finalBillModalOpen, setFinalBillModalOpen] = useState(false);
   const [finalBill, setFinalBill] = useState(null);
+
   const { formik, loading } = useGenerateNormalBillForm({
     batchId,
     finalBill: (data) => {
@@ -20,11 +22,15 @@ const GenerateNormalBill = ({ batchId }) => {
     },
   });
 
+  const mobileNumber = formik.values.mobileNumber;
+
+  const { data: customerDetail } = useGetCustomerByMobileNumber(mobileNumber);
+
   const inputField = [
     {
       id: nanoid(),
-      name: "billingName",
-      label: "Billing Name",
+      name: "mobileNumber",
+      label: "Mobile Number",
       placeholder: "Enter mobile number",
       type: "text",
       required: true,
@@ -35,11 +41,9 @@ const GenerateNormalBill = ({ batchId }) => {
     },
     {
       id: nanoid(),
-      name: "mobileNumber",
-      label: "Mobile Number",
-      placeholder: "Enter mobile number",
-      type: "text",
-      required: true,
+      type: "showData",
+      data1: customerDetail?.data?.user?.fullName,
+      data2: customerDetail?.data?.user?.email,
       xs: 12,
       md: 12,
       lg: 12,
@@ -72,6 +76,7 @@ const GenerateNormalBill = ({ batchId }) => {
               variant={"outlined"}
               Width={"-webkit-fill-available"}
               startIcon={<ControlPointRoundedIcon />}
+              disabled={!customerDetail}
             >
               Generate Normal Bill
             </LoadingButton>
@@ -88,7 +93,10 @@ const GenerateNormalBill = ({ batchId }) => {
         header={"Bill Layout"}
         formComponent={
           <>
-            <BillLayout finalBill={finalBill}/>
+            <BillLayout
+              finalBill={finalBill}
+              onClose={() => setFinalBillModalOpen(false)}
+            />
           </>
         }
         showButton={false}

@@ -17,7 +17,7 @@ export const useBatchOrderReportForm = ({ onClose, salesItemReport }) => {
       tableId: "",
       customerName: "",
       memberName: "",
-      fileType: "",
+      // fileType: "",
     },
     // validationSchema: branchSchema,
     enableReinitialize: true,

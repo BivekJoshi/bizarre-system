@@ -3,8 +3,10 @@ import {
   Avatar,
   Box,
   Button,
+  Chip,
   CircularProgress,
   Grid,
+  Stack,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -28,6 +30,8 @@ import { useFilterCustomerForm } from "../../../hooks/customer/Customer/filterCu
 import { CustomPaginationUpdated } from "../../../components/Pagination/CustomPaginationUpdated";
 import VerfiedIcon from "@mui/icons-material/Verified";
 import { useVerifyCustomer } from "../../../hooks/customer/useCustomer";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 const Customer = () => {
   const theme = useTheme();
@@ -46,11 +50,11 @@ const Customer = () => {
   const { mutate: verifyCustomer } = useVerifyCustomer(rowId);
 
   const onClose = () => setIsAddModal(false);
-  const { formik,successFlag, loading } = useCustomerForm({ onClose });
+  const { formik, successFlag, loading } = useCustomerForm({ onClose });
 
   const { formik: filterFormik, loading: isLoading } = useFilterCustomerForm({
     customerData: (data) => setFilteredData(data),
-    successFlag
+    successFlag,
   });
 
   const deleteRow = (row) => {
@@ -96,13 +100,6 @@ const Customer = () => {
       },
       {
         id: nanoid(),
-        accessorKey: "user.gender",
-        header: "Gender",
-        maxWidth: 80,
-        sortable: false,
-      },
-      {
-        id: nanoid(),
         accessorKey: "user.birthDate",
         header: "DOB",
         maxWidth: 80,
@@ -131,17 +128,22 @@ const Customer = () => {
       },
       {
         id: nanoid(),
-        accessorKey: "user.userType",
-        header: "User Type",
+        accessorKey: "verified",
+        header: "Is Verified",
         maxWidth: 80,
         sortable: false,
-      },
-      {
-        id: nanoid(),
-        accessorKey: "user.status",
-        header: "Status",
-        maxWidth: 80,
-        sortable: false,
+        Cell: ({ cell }) => {
+          const data = cell.getValue();
+          return (
+            <Chip
+              avatar={
+                <Avatar>{data ? <CheckCircleIcon /> : <CancelIcon />}</Avatar>
+              }
+              label={data ? "Verified" : "UnVerified"}
+              color={data ? "success" : "error"}
+            />
+          );
+        },
       },
     ],
     []
@@ -250,7 +252,7 @@ const Customer = () => {
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}
-        header={"Add Cashier"}
+        header={"Add Customer"}
         formik={formik}
         loading={loading}
         formComponent={
@@ -266,7 +268,7 @@ const Customer = () => {
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}
-        header={"Edit Cashier Detial"}
+        header={"Edit Customer Detial"}
         formik={formik}
         loading={loading}
         formComponent={

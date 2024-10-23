@@ -1,9 +1,12 @@
 import { useFormik } from "formik";
-import { useGenerateItemSalesReport } from "../useReport";
+import { useDownloadBatchOrderReport } from "../useReport";
 import { useEffect } from "react";
 
-export const useItemSalesReportForm = ({ onClose, salesItemReport }) => {
-  const { mutate } = useGenerateItemSalesReport({});
+export const useBatchOrderReportDownloadForm = ({
+  onClose,
+  salesItemReport,
+}) => {
+  const { mutate } = useDownloadBatchOrderReport({});
 
   const today = new Date();
   const lastMonthDate = new Date();
@@ -13,8 +16,11 @@ export const useItemSalesReportForm = ({ onClose, salesItemReport }) => {
     initialValues: {
       from: lastMonthDate.toISOString().slice(0, 10),
       to: today.toISOString().slice(0, 10),
-      itemId: "",
-      itemType: ""||"FOOD",
+      branchId: "",
+      tableId: "",
+      customerName: "",
+      memberName: "",
+      fileType: "" || "xml",
     },
     // validationSchema: branchSchema,
     enableReinitialize: true,
@@ -31,11 +37,6 @@ export const useItemSalesReportForm = ({ onClose, salesItemReport }) => {
       },
     });
   };
-  useEffect(() => {
-    if (formik.values.from && formik.values.to) {
-      handleAddRequest(formik.values);
-    }
-  }, []);
 
   return {
     formik,

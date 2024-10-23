@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from "react";
-import { useBatchOrderReportForm } from "../../../../hooks/report/batchOrder/useBatchOrderReportForm";
 import {
   Box,
   Card,
@@ -13,13 +12,24 @@ import { nanoid } from "nanoid";
 import CustomTable from "../../../../components/CustomTable/CustomTable";
 import ReportBatchOrderForm from "./ReportBatchOrderForm";
 import NoDataFound from "../../../PageNotFound/NoDataFound";
+import { useBatchOrderReportForm } from "../../../../hooks/report/batchOrder/useBatchOrderReportForm";
+import { useBatchOrderReportDownloadForm } from "../../../../hooks/report/batchOrder/useBatchOrderReportDownloadForm";
 
 const ReportBatchOrder = () => {
   const theme = useTheme();
   const [reportData, setReportData] = useState(null);
+  const [downloadReportData, setDownlaodReportData] = useState(null);
+  console.log(
+    "🚀 ~ ReportBatchOrder ~ downloadReportData:",
+    downloadReportData
+  );
 
   const { formik } = useBatchOrderReportForm({
     salesItemReport: (data) => setReportData(data),
+  });
+
+  const { formik: downloadFormik } = useBatchOrderReportDownloadForm({
+    salesItemReport: (data) => setDownlaodReportData(data),
   });
 
   const columns = useMemo(
@@ -104,8 +114,14 @@ const ReportBatchOrder = () => {
         accessorKey: "batchStatus",
         header: "Status",
         maxWidth: 80,
-        Cell: ({ cell }) => <Chip label={cell.getValue()} color="primary" />,
+        Cell: ({ cell }) => {
+          const status = cell.getValue();
+          const chipColor = status === "UNPAID" ? "error" : "success";
+
+          return <Chip label={status} color={chipColor} />;
+        },
       },
+
       {
         id: nanoid(),
         header: "Served By",
@@ -155,7 +171,7 @@ const ReportBatchOrder = () => {
 
   return (
     <div>
-      <ReportBatchOrderForm formik={formik} />
+      <ReportBatchOrderForm formik={formik} downloadFormik={downloadFormik} />
       <br />
 
       {reportData && (

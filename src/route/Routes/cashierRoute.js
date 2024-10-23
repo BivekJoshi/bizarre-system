@@ -10,6 +10,9 @@ import Loadable from "../../components/Loader/Loadable";
 const Order = Loadable(
   lazy(() => import("../../pages/Controller/Order/Order"))
 );
+const Customer = Loadable(
+  lazy(() => import("../../pages/Controller/Customer/Customer"))
+);
 const cashierRoute = [
   {
     path: "dashboard",
@@ -35,6 +38,12 @@ const cashierRoute = [
     name: "Customer Table Details",
     id: nanoid(),
     component: Order,
+  },
+  {
+    path: "customer",
+    name: "customer",
+    id: nanoid(),
+    component: Customer,
   },
 ];
 

@@ -53,3 +53,13 @@ export const verifyCustomer = async (id) => {
     return data;
   }
 };
+
+/*________________________GET_BY_MOBILE_NUMBER_____________________________________*/
+export const getCustomerByMobileNumber = async (mobileNumber) => {
+  if (mobileNumber.length>9) {
+    const { data } = await axiosInstance.get(
+      `${CUSTOMER}/find/mobile-number/${mobileNumber}`
+    );
+    return data;
+  }
+};

@@ -1,10 +1,7 @@
 import React, { useMemo, useState } from "react";
 import {
   Box,
-  Card,
-  CardContent,
-  Chip,
-  Grid,
+  Paper,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -26,131 +23,24 @@ const ReportItemSales = () => {
     () => [
       {
         id: nanoid(),
-        accessorKey: "branch",
-        header: "Branch",
+        accessorKey: "name",
+        header: "Item Name",
         maxWidth: 80,
       },
       {
         id: nanoid(),
-        accessorKey: "tableNumber",
-        header: "Table No.",
+        accessorKey: "sales",
+        header: "Total sales",
         maxWidth: 80,
       },
       {
         id: nanoid(),
-        header: "Customer",
-        Cell: ({ cell }) => {
-          const data = cell?.row?.original;
-          return (
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <div>
-                Customer Name: <b>{data?.customerName || "NA"}</b>
-              </div>
-              <div>
-                Order: <b>{data?.orderCount || "NA"}</b>
-              </div>
-            </div>
-          );
-        },
-      },
-      {
-        id: nanoid(),
-        header: "Bill",
-        Cell: ({ cell }) => {
-          const data = cell?.row?.original;
-          return (
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <div>
-                Total Billed: <b>रु {data?.totalBilled || "NA"}</b>
-              </div>
-              <div>
-                Bank Received: <b>रु {data?.bankReceived || "NA"}</b>
-              </div>
-              <div>
-                Cash Received: <b>रु {data?.cashReceived || "NA"}</b>
-              </div>
-              <div>
-                Coins Received: <b>{data?.coinsReceived || "NA"}</b>
-              </div>
-              <div>
-                Total Received: <b>रु {data?.totalReceived || "NA"}</b>
-              </div>
-            </div>
-          );
-        },
-      },
-      {
-        id: nanoid(),
-        header: "Discount",
-        Cell: ({ cell }) => {
-          const data = cell?.row?.original;
-          return (
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <div>
-                Promo Code: <b>{data?.promoCode || "NA"}</b>
-              </div>
-              <div>
-                Discount Type: <b>{data?.discountType || "NA"}</b>
-              </div>
-              <div>
-                Discount Value: <b>{data?.discountValue || "NA"}</b>
-              </div>
-            </div>
-          );
-        },
-      },
-      {
-        id: nanoid(),
-        accessorKey: "batchStatus",
-        header: "Status",
+        accessorKey: "sellingPrice",
+        header: "Selling Price",
         maxWidth: 80,
-        Cell: ({ cell }) => <Chip label={cell.getValue()} color="primary" />,
-      },
-      {
-        id: nanoid(),
-        header: "Served By",
-        Cell: ({ cell }) => {
-          const data = cell?.row?.original;
-          return (
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <div>
-                Name: <b>{data?.handledBy || "NA"}</b>
-              </div>
-              <div>
-                Type: <b>{data?.userType || "NA"}</b>
-              </div>
-            </div>
-          );
-        },
-      },
-      {
-        id: nanoid(),
-        header: "Duration",
-        Cell: ({ cell }) => {
-          const data = cell?.row?.original;
-          return (
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <div>Arrival: {data?.orderBeginDateTime || "NA"}</div>
-              <div>Departure: {data?.orderEndDateTime || "NA"}</div>
-            </div>
-          );
-        },
       },
     ],
     []
-  );
-
-  const renderReportCard = (title, value, icon) => (
-    <Card>
-      <CardContent sx={{ display: "flex", alignItems: "center" }}>
-        <div>
-          <Typography variant="h6">{title}</Typography>
-          <Typography variant="h4" sx={{ fontWeight: 700 }}>
-            {value ?? "N/A"}
-          </Typography>
-        </div>
-      </CardContent>
-    </Card>
   );
 
   return (
@@ -170,69 +60,70 @@ const ReportItemSales = () => {
             variant="h3"
             sx={{ color: theme.palette.text.default, fontWeight: 700 }}
           >
-            Batch Order Report
+            Item Sales Report
           </Typography>
           <br />
 
-          {reportData?.batchOrders && reportData?.batchOrders?.length > 0 ? (
+          {reportData?.itemSalesList ? (
             <>
-              <Grid
-                container
-                spacing={3}
-                sx={{ justifyContent: "center", alignItems: "center" }}
+              <Paper
+                sx={{
+                  padding: "2rem",
+                  backgroundColor: theme.palette.background.alt,
+                }}
               >
-                <Grid item xs={12} md={2}>
-                  {renderReportCard(
-                    "Total Billed",
-                    `रु ${reportData.sumTotalBilled}`,
-                    "attach_money"
-                  )}
-                </Grid>
-                <Grid item xs={12} md={2}>
-                  {renderReportCard(
-                    "Total Cash Received",
-                    `रु ${reportData.totalCashReceived}`,
-                    "money"
-                  )}
-                </Grid>
-                <Grid item xs={12} md={2}>
-                  {renderReportCard(
-                    "Total Bank Received",
-                    `रु ${reportData.totalBankReceived}`,
-                    "account_balance"
-                  )}
-                </Grid>
-                <Grid item xs={12} md={2}>
-                  {renderReportCard(
-                    "Total Coins Received",
-                    reportData.totalCoinsReceived,
-                    "monetization_on"
-                  )}
-                </Grid>
-                <Grid item xs={12} md={2}>
-                  {renderReportCard(
-                    "Total Received",
-                    `रु ${reportData.sumTotalReceived}`,
-                    "savings"
-                  )}
-                </Grid>
-                <Grid item xs={12} md={2}>
-                  {renderReportCard(
-                    "Grand Total",
-                    `रु ${reportData.total}`,
-                    "calculate"
-                  )}
-                </Grid>
-              </Grid>
+                <div style={{ display: "flex", gap: "2rem" }}>
+                  <Typography
+                    variant="h4"
+                    sx={{ color: theme.palette.text.default, fontWeight: 700 }}
+                  >
+                    Best Sold Item
+                  </Typography>
+                  <Typography
+                    variant="h4"
+                    sx={{ color: "green", fontWeight: 900 }}
+                  >
+                    {reportData?.bestItem}
+                  </Typography>
+                </div>
+              </Paper>
               <br />
               <CustomTable
                 columns={columns}
-                data={reportData.batchOrders}
+                data={reportData.itemSalesList}
                 overFlow="scroll"
                 width="100%"
                 enablePagination={false}
                 enableRowNumbers
               />
+              <br />
+              <Paper
+                sx={{
+                  padding: "2rem",
+                  backgroundColor: theme.palette.background.alt,
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "2rem",
+                    justifyContent: "end",
+                  }}
+                >
+                  <Typography
+                    variant="h5"
+                    sx={{ color: theme.palette.text.default, fontWeight: 700 }}
+                  >
+                    Total Sales
+                  </Typography>
+                  <Typography
+                    variant="h4"
+                    sx={{ color: "green", fontWeight: 900 }}
+                  >
+                    रु {reportData?.totalSales}
+                  </Typography>
+                </div>
+              </Paper>
             </>
           ) : (
             <NoDataFound />

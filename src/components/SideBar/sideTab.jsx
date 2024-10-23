@@ -217,6 +217,12 @@ export const cashierTab = [
     value: "customer-table",
     icon: <TableRowsIcon />,
   },
+  {
+    id: nanoid(),
+    label: "Customer",
+    value: "customer",
+    icon: <FaceRetouchingNaturalRoundedIcon />,
+  },
 ];
 
 export const waiterTab = [

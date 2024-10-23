@@ -13,6 +13,7 @@ import {
   Typography,
   FormControl,
   useTheme,
+  Paper,
 } from "@mui/material";
 import { getIn } from "formik";
 import React, { useEffect } from "react";
@@ -975,6 +976,24 @@ const RenderInput = ({
           />
         );
 
+      case "showData":
+        return (
+          <>
+            {element?.data1 && (
+              <Paper
+                sx={{
+                  padding: "1rem",
+                  backgroundColor: theme.palette.text.default,
+                  display:"flex",
+                  flexDirection:'column'
+                }}
+              >
+                <div> Customer Name : {element?.data1}</div>
+                <div> Email : {element?.data2}</div>
+              </Paper>
+            )}
+          </>
+        );
       default:
         return <TextField name={element?.name} label={element?.label} />;
     }

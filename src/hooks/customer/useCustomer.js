@@ -6,6 +6,7 @@ import {
   filterCustomer,
   getCustomer,
   getCustomerById,
+  getCustomerByMobileNumber,
   verifyCustomer,
 } from "../../api/controller/customer-api";
 import { getErrorMessage } from "../../utils/getErrorMessage";
@@ -64,25 +65,45 @@ export const useEditCustomer = ({ onSuccess }) => {
 
 /*________________________FILTER CUSTOMER_____________________________________*/
 export const useFilterCustomer = ({ onSuccess }) => {
-  return useMutation(["filterCustomer"], (formData) => filterCustomer(formData), {
-    onSuccess: (data, variables, context) => {
-      onSuccess && onSuccess(data, variables, context);
-    },
-    onError: (err, _variables, _context) => {
-      toast.error(getErrorMessage(err));
-    },
-  });
+  return useMutation(
+    ["filterCustomer"],
+    (formData) => filterCustomer(formData),
+    {
+      onSuccess: (data, variables, context) => {
+        onSuccess && onSuccess(data, variables, context);
+      },
+      onError: (err, _variables, _context) => {
+        toast.error(getErrorMessage(err));
+      },
+    }
+  );
 };
 
 /*________________________VERIFY CUSTOMER_____________________________________*/
 export const useVerifyCustomer = (id) => {
-  console.log("🚀 ~ useVerifyCustomer ~ id:", id)
+  console.log("🚀 ~ useVerifyCustomer ~ id:", id);
   return useMutation(() => verifyCustomer(id), {
     onSuccess: (data) => {
-      toast.success("Customer verified successfully")
+      toast.success("Customer verified successfully");
     },
     onError: (err) => {
       toast.error(getErrorMessage(err));
     },
   });
+};
+
+/*________________________GET_BY_ID_____________________________________*/
+export const useGetCustomerByMobileNumber = (mobileNumber) => {
+  return useQuery(
+    ["getCustomerByMobileNumber", mobileNumber],
+    () => getCustomerByMobileNumber(mobileNumber),
+    {
+      cacheTime: 10000,
+      refetchInterval: false,
+      refetchOnWindowFocus: false,
+      onError: (err) => {
+        toast.error(getErrorMessage(err)); 
+      },
+    }
+  );
 };

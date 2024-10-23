@@ -4,9 +4,9 @@ import RenderInput from "../../../../components/RenderInput/RenderInput";
 import { nanoid } from "nanoid";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
-import SearchIcon from '@mui/icons-material/Search';
+import SearchIcon from "@mui/icons-material/Search";
 
-const ReportBatchOrderForm = ({ formik }) => {
+const ReportBatchOrderForm = ({ formik, downloadFormik }) => {
   const theme = useTheme();
   const [showFields, setShowFields] = useState(true);
 
@@ -120,8 +120,11 @@ const ReportBatchOrderForm = ({ formik }) => {
       <br />
       {showFields && (
         <>
-          <RenderInput inputField={inputField} formik={formik} />
-          <div style={{ display: "flex", justifyContent: "end" }}>
+          <RenderInput
+            inputField={inputField}
+            formik={formik || downloadFormik}
+          />
+          <div style={{ display: "flex", justifyContent: "end", gap: "1rem" }}>
             <Button
               onClick={() => formik.handleSubmit()}
               variant="outlined"
@@ -129,6 +132,14 @@ const ReportBatchOrderForm = ({ formik }) => {
               startIcon={<SearchIcon />}
             >
               Search
+            </Button>
+            <Button
+              onClick={() => downloadFormik.handleSubmit()}
+              variant="contained"
+              sx={{ marginTop: "1rem" }}
+              startIcon={<SearchIcon />}
+            >
+              Download Report
             </Button>
           </div>
         </>
