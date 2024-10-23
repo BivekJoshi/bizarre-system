@@ -1,10 +1,12 @@
 import { useFormik } from "formik";
 
 import { useAddBook, useEditBook } from "../useBook";
+import { useState } from "react";
 
 export const useBookForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddBook({});
   const { mutate: editMutate } = useEditBook({});
+  const [successFlag, setSuccessFlag] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -30,21 +32,37 @@ export const useBookForm = ({ onClose, rowData }) => {
     values = { ...values };
     addMutate(values, {
       onSuccess: () => {
+        setSuccessFlag(true);
         onClose();
+
+        setTimeout(() => {
+          setSuccessFlag(false);
+        }, 1000);
+      },
+      onError: () => {
+        setSuccessFlag(false);
       },
     });
   };
-
   const handledEditRequest = (values) => {
     values = { ...values };
     editMutate(values, {
       onSuccess: () => {
+        setSuccessFlag(true);
         onClose();
+
+        setTimeout(() => {
+          setSuccessFlag(false);
+        }, 1000);
+      },
+      onError: () => {
+        setSuccessFlag(false);
       },
     });
   };
 
   return {
     formik,
+    successFlag,
   };
 };

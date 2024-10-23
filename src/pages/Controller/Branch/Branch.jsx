@@ -37,10 +37,11 @@ const Branch = () => {
   const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useBranchForm({ onClose });
+  const { formik, successFlag, loading } = useBranchForm({ onClose });
 
   const { formik: filterFormik, loading: isLoading } = useFilterBranchForm({
     branchData: (data) => setFilteredData(data),
+    successFlag,
   });
 
   const deleteRow = (row) => {

@@ -1,9 +1,10 @@
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useFilterBook } from "../../useBook";
+import { debounce } from "@mui/material";
 
-export const useFilterBookForm = ({ onClose, bookData }) => {
-  const { mutate } = useFilterBook({});
+export const useFilterBookForm = ({ onClose, bookData, successFlag }) => {
+  const { mutate, isLoading } = useFilterBook({});
   const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
@@ -37,11 +38,15 @@ export const useFilterBookForm = ({ onClose, bookData }) => {
     });
   };
 
+  const debouncedSearch = debounce(() => {
+    handleAddRequest(formik.values);
+  }, 300);
+
   useEffect(() => {
-    if (formik?.values?.pageNumber > 0) {
-      handleAddRequest(formik.values);
+    if (formik?.values?.pageNumber > 0 || successFlag) {
+      debouncedSearch();
     }
-  }, [formik.values.search]);
+  }, [formik.values.search, successFlag]);
 
   return {
     formik,

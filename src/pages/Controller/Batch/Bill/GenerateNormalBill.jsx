@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { nanoid } from "nanoid";
 import HighlightOffRoundedIcon from "@mui/icons-material/HighlightOffRounded";
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
@@ -6,9 +6,19 @@ import { Button, Grid, Stack } from "@mui/material";
 import RenderInput from "../../../../components/RenderInput/RenderInput";
 import { useGenerateNormalBillForm } from "../../../../hooks/batch/Batch/useGenerateNormalBillForm";
 import { LoadingButton } from "@mui/lab";
+import FormModal from "../../../../components/Modal/FormModal";
+import BillLayout from "../Payment/BillLayout";
 
-const GenerateNormalBill = ({batchId}) => {
-  const { formik, loading } = useGenerateNormalBillForm({batchId});
+const GenerateNormalBill = ({ batchId }) => {
+  const [finalBillModalOpen, setFinalBillModalOpen] = useState(true);
+  const [finalBill, setFinalBill] = useState(null);
+  const { formik, loading } = useGenerateNormalBillForm({
+    batchId,
+    finalBill: (data) => {
+      setFinalBill(data);
+      setFinalBillModalOpen(true);
+    },
+  });
 
   const inputField = [
     {
@@ -38,35 +48,52 @@ const GenerateNormalBill = ({batchId}) => {
   ];
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <RenderInput formik={formik} inputField={inputField} />
+    <>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <RenderInput formik={formik} inputField={inputField} />
+        </Grid>
+        <Grid item xs={12}>
+          <Stack direction="row" justifyContent="end" spacing={2}>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={() => {
+                formik.handleReset();
+                onClose();
+              }}
+              startIcon={<HighlightOffRoundedIcon />}
+            >
+              Close
+            </Button>
+            <LoadingButton
+              loading={loading}
+              onClick={() => formik.handleSubmit()}
+              variant={"outlined"}
+              Width={"-webkit-fill-available"}
+              startIcon={<ControlPointRoundedIcon />}
+            >
+              Generate Normal Bill
+            </LoadingButton>
+          </Stack>
+        </Grid>
       </Grid>
-      <Grid item xs={12}>
-        <Stack direction="row" justifyContent="end" spacing={2}>
-          <Button
-            variant="outlined"
-            color="error"
-            onClick={() => {
-              formik.handleReset();
-              onClose();
-            }}
-            startIcon={<HighlightOffRoundedIcon />}
-          >
-            Close
-          </Button>
-          <LoadingButton
-            loading={loading}
-            onClick={() => formik.handleSubmit()}
-            variant={"outlined"}
-            Width={"-webkit-fill-available"}
-            startIcon={<ControlPointRoundedIcon />}
-          >
-            Generate Normal Bill
-          </LoadingButton>
-        </Stack>
-      </Grid>
-    </Grid>
+
+      <FormModal
+        open={finalBillModalOpen}
+        onClose={() => setFinalBillModalOpen(false)}
+        width={"25%"}
+        height={"auto"}
+        maxHeight={"80vh"}
+        header={"Bill Layout"}
+        formComponent={
+          <>
+            <BillLayout finalBill={finalBill}/>
+          </>
+        }
+        showButton={false}
+      />
+    </>
   );
 };
 

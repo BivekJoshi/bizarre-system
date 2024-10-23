@@ -41,10 +41,11 @@ const Book = () => {
     setIsAddModal(false);
     setIsEditModalOpen(false);
   };
-  const { formik, loading } = useBookForm({ onClose, rowData });
+  const { formik, successFlag, loading } = useBookForm({ onClose, rowData });
 
   const { formik: filterFormik, loading: isLoading } = useFilterBookForm({
     bookData: (data) => setFilteredData(data),
+    successFlag,
   });
 
   const deleteRow = (row) => {

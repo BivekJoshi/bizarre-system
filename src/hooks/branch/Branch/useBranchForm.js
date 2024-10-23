@@ -2,10 +2,12 @@ import { useFormik } from "formik";
 
 import { useAddBranch } from "../useBranch";
 import { branchSchema } from "./branchSchema";
+import { useState } from "react";
 
 export const useBranchForm = ({ onClose, data }) => {
   const { mutate: addMutate } = useAddBranch({});
   const { mutate: editMutate } = useAddBranch({});
+  const [successFlag, setSuccessFlag] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -29,7 +31,15 @@ export const useBranchForm = ({ onClose, data }) => {
     values = { ...values };
     addMutate(values, {
       onSuccess: () => {
+        setSuccessFlag(true);
         onClose();
+
+        setTimeout(() => {
+          setSuccessFlag(false);
+        }, 1000);
+      },
+      onError: () => {
+        setSuccessFlag(false);
       },
     });
   };
@@ -38,12 +48,21 @@ export const useBranchForm = ({ onClose, data }) => {
     values = { ...values };
     editMutate(values, {
       onSuccess: () => {
+        setSuccessFlag(true);
         onClose();
+
+        setTimeout(() => {
+          setSuccessFlag(false);
+        }, 1000);
+      },
+      onError: () => {
+        setSuccessFlag(false);
       },
     });
   };
 
   return {
     formik,
+    successFlag,
   };
 };

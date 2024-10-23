@@ -39,7 +39,6 @@ const Order = () => {
   const [isSwitchTableModalOpen, setIsSwitchTableModalOpen] = useState(false);
   const [isGenerateBillModalOpen, setIsGenerateBillModalOpen] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
-  const [isBillLayout, setIsBillLayout] = useState(false);
 
   const { data: orderData, isLoading: loadingOrder } = useGetBatchById(tableId);
   console.log("🚀 ~ Order ~ orderData:", orderData?.data?.orders?.length);
@@ -62,7 +61,6 @@ const Order = () => {
         header: "Status",
         maxWidth: 80,
         sortable: false,
-        setIsBillLayout,
       },
       {
         id: nanoid(),
@@ -178,7 +176,6 @@ const Order = () => {
       <Box
         display="flex"
         flexWrap="wrap"
-        setIsBillLayout
         justifyContent="center"
         alignItems="center"
         mt={3}
@@ -204,14 +201,6 @@ const Order = () => {
             allowedUserTypes={["CASHIER"]}
             disabledUserTypes={[]}
           />
-          {/* <PermissionButton
-            label="Make Payment"
-            variant="outlined"
-            onClick={() => setIsBillLayout(true)}
-            // startIcon={<ControlPointRoundedIcon />}
-            allowedUserTypes={["CASHIER"]}
-            disabledUserTypes={[]}
-          /> */}
         </Stack>
       </Box>
 
@@ -235,7 +224,6 @@ const Order = () => {
         onClose={() => setIsSwitchTableModalOpen(false)}
         width={"30%"}
         height={"auto"}
-        setIsBillLayout
         maxHeight={"80vh"}
         header={"Switch Table"}
         formComponent={
@@ -251,7 +239,6 @@ const Order = () => {
         onClose={() => setIsGenerateBillModalOpen(false)}
         width={"30%"}
         height={"auto"}
-        setIsBillLayout
         maxHeight={"80vh"}
         header={"Generate Bill"}
         formComponent={<GenerateBillModal batchId={orderData?.data?.batchId} />}

@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import { useGenerateNormalBillBatch } from "../usebatch";
 
-export const useGenerateNormalBillForm = ({ batchId }) => {
+export const useGenerateNormalBillForm = ({ batchId, finalBill }) => {
   const [loading, setLoading] = useState(false);
   const { mutate } = useGenerateNormalBillBatch({});
 
@@ -24,8 +24,9 @@ export const useGenerateNormalBillForm = ({ batchId }) => {
     setLoading(true);
     values = { ...values };
     mutate(values, {
-      onSuccess: () => {
+      onSuccess: (data) => {
         setLoading(false);
+        finalBill(data?.data?.data);
       },
     });
   };
