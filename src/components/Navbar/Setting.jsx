@@ -22,6 +22,7 @@ import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
 import ConfirmationModal from "../Modal/ConfirmationModal";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useLogout } from "../../hooks/auth/useAuth";
 
 const Setting = ({ close }) => {
   const dispatch = useDispatch();
@@ -29,6 +30,9 @@ const Setting = ({ close }) => {
   const theme = useTheme();
   const [settings, setSettings] = useState({ mode: "light", view: "grid" });
   const [openLogoutModal, setOpenLogoutModal] = useState(false);
+
+
+  const { mutate: logout } = useLogout();
 
   useEffect(() => {
     const mode = localStorage.getItem("themeMode") || "light";
@@ -47,10 +51,10 @@ const Setting = ({ close }) => {
   };
 
   const handleLogout = () => {
-    localStorage.clear();
+    logout()
+    // localStorage.clear();
     navigate("/");
     close();
-    toast.success("Logged out successful !");
   };
 
   return (

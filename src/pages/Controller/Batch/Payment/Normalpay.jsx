@@ -8,9 +8,8 @@ import { Button, Grid, Stack } from "@mui/material";
 import RenderInput from "../../../../components/RenderInput/RenderInput";
 import { LoadingButton } from "@mui/lab";
 
-const Normalpay = ({ batchId }) => {
-  const { formik, loading } = useNormalPayForm({ batchId });
-
+const Normalpay = ({ batchId, onClose }) => {
+  const { formik, loading } = useNormalPayForm({ batchId, onClose });
 
   const inputField = [
     {

@@ -1,8 +1,9 @@
 import { useMutation } from "react-query";
-import { authenticate } from "../../api/controller/auth-api";
+import { authenticate, logout } from "../../api/controller/auth-api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { setTokenType, setUser, setUserType } from "../../utils/cookieHelper";
+import { getErrorMessage } from "../../utils/getErrorMessage";
 
 /*________________________AUTHENTICATE_____________________________________*/
 export const useAuth = () => {
@@ -63,4 +64,17 @@ export const useAuth = () => {
       },
     }
   );
+};
+
+
+/*________________________LOGOUT_____________________________________*/
+export const useLogout = () => {
+  return useMutation(() => logout(), {
+    onSuccess: (data) => {
+      toast.success("Loggedout successfully");
+    },
+    onError: (err) => {
+      toast.error(getErrorMessage(err));
+    },
+  });
 };

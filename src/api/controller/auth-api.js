@@ -7,3 +7,9 @@ export const authenticate = async (mobileNumber, password) => {
   });
   return data;
 };
+
+/*________________________LOGOUT_____________________________________*/
+export const logout = async () => {
+  const { data } = await axiosInstance.get("/logout");
+  return data;
+};

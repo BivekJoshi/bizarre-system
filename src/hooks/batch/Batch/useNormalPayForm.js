@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNormalPayBatch } from "../usebatch";
 import { useParams } from "react-router-dom";
 
-export const useNormalPayForm = ({ batchId }) => {
+export const useNormalPayForm = ({ batchId, onClose }) => {
   const [loading, setLoading] = useState(false);
   const { mutate } = useNormalPayBatch({});
   const { id } = useParams();
@@ -12,8 +12,8 @@ export const useNormalPayForm = ({ batchId }) => {
     initialValues: {
       customerTableId: id || "",
       cashReceived: "",
-      bankReceived: "",
-      coinsReceived: "",
+      bankReceived: "" || 0,
+      coinsReceived: "" || 0,
     },
     // validationSchema: userSchema,
     enableReinitialize: true,
@@ -28,6 +28,7 @@ export const useNormalPayForm = ({ batchId }) => {
     mutate(values, {
       onSuccess: () => {
         setLoading(false);
+        onClose();
       },
     });
   };

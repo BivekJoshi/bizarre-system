@@ -23,13 +23,13 @@ const PaymentModal = ({ batchId, onClose }) => {
           </TabList>
         </Box>
         <TabPanel value="NORMAL">
-          <Normalpay batchId={batchId} />
+          <Normalpay batchId={batchId} onClose={onClose} />
         </TabPanel>
         <TabPanel value="SPLIT">
-          <SplitPay batchId={batchId} />
+          <SplitPay batchId={batchId} onClose={onClose} />
         </TabPanel>
         <TabPanel value="BYPASS">
-          <BypassPayment batchId={batchId} />
+          <BypassPayment batchId={batchId} onClose={onClose} />
         </TabPanel>
       </TabContext>
     </Box>
