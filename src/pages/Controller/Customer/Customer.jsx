@@ -32,6 +32,8 @@ import VerfiedIcon from "@mui/icons-material/Verified";
 import { useVerifyCustomer } from "../../../hooks/customer/useCustomer";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
+import CustomerUnboardForm from "./CustomerUnboardForm";
+import { useCustomerOnBoardForm } from "../../../hooks/customer/Customer/CustomerOnBoard/useCustomerOnBoardForm";
 
 const Customer = () => {
   const theme = useTheme();
@@ -42,6 +44,8 @@ const Customer = () => {
   const [isAddModalOpen, setIsAddModal] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isCustomerOnBoardModalOpen, setIsCustomerOnBoardModalOpen] = useState(false);
+
 
   const [isVerifyModalOpen, setIsVerifyModalOpen] = useState(false);
 
@@ -49,13 +53,18 @@ const Customer = () => {
 
   const { mutate: verifyCustomer } = useVerifyCustomer(rowId);
 
-  const onClose = () => setIsAddModal(false);
+  const onClose = () => {
+    setIsAddModal(false);
+    setIsCustomerOnBoardModalOpen(false)
+  };
   const { formik, successFlag, loading } = useCustomerForm({ onClose });
 
   const { formik: filterFormik, loading: isLoading } = useFilterCustomerForm({
     customerData: (data) => setFilteredData(data),
     successFlag,
   });
+
+  const { formik: onBoardFormik, loading: isLoadingOnBoard } = useCustomerOnBoardForm({ onClose });
 
   const deleteRow = (row) => {
     setRowData(row?.original?.id);
@@ -86,10 +95,10 @@ const Customer = () => {
           const imageFinal = data?.profilePictureUrl
             ? DOC_URL + data?.profilePictureUrl
             : data?.gender === "MALE"
-            ? maleProfile
-            : data?.gender === "FEMALE"
-            ? femaleProfile
-            : null;
+              ? maleProfile
+              : data?.gender === "FEMALE"
+                ? femaleProfile
+                : null;
           return (
             <div style={{ display: "flex", gap: ".5rem" }}>
               <Avatar alt="Profile Image" src={imageFinal} />
@@ -216,13 +225,23 @@ const Customer = () => {
         >
           Customer
         </Typography>
-        <Button
-          variant="outlined"
-          onClick={() => setIsAddModal(true)}
-          startIcon={<ControlPointRoundedIcon />}
-        >
-          Add Customer
-        </Button>
+        <div style={{ display: "flex", gap: "1rem" }}>
+          <Button
+            variant="outlined"
+            onClick={() => setIsAddModal(true)}
+            startIcon={<ControlPointRoundedIcon />}
+          >
+            Add Customer
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => setIsCustomerOnBoardModalOpen(true)}
+            startIcon={<ControlPointRoundedIcon />}
+          >
+            Customer Unboard
+          </Button>
+        </div>
+
       </Box>
 
       <br />
@@ -274,6 +293,22 @@ const Customer = () => {
         formComponent={
           <>
             <CustomerForm formik={formik} />
+          </>
+        }
+        showButton={true}
+      />
+      <FormModal
+        open={isCustomerOnBoardModalOpen}
+        onClose={() => setIsCustomerOnBoardModalOpen(false)}
+        width={"30%"}
+        height={"auto"}
+        maxHeight={"80vh"}
+        header={"Customer onboard"}
+        formik={onBoardFormik}
+        loading={isLoadingOnBoard}
+        formComponent={
+          <>
+            <CustomerUnboardForm formik={onBoardFormik} />
           </>
         }
         showButton={true}
