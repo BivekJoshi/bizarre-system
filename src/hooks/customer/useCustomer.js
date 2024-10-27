@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import {
   addCustomer,
+  addCustomerByOnBoard,
   editCustomer,
   filterCustomer,
   getCustomer,
@@ -46,6 +47,25 @@ export const useAddCustomer = ({ onSuccess }) => {
       toast.error(getErrorMessage(err));
     },
   });
+};
+
+/*________________________POST CUSTOMER ONBOARD_____________________________________*/
+export const useAddCustomerByOnBoard = ({ onSuccess }) => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    ["addCustomerByOnBoard"],
+    (formData) => addCustomerByOnBoard(formData),
+    {
+      onSuccess: (data, variables, context) => {
+        toast.success("Customer onboarded successfully");
+        onSuccess && onSuccess(data, variables, context);
+        queryClient.invalidateQueries("filterCustomer");
+      },
+      onError: (err, _variables, _context) => {
+        toast.error(getErrorMessage(err));
+      },
+    }
+  );
 };
 
 /*________________________PATCH_____________________________________*/
@@ -102,7 +122,7 @@ export const useGetCustomerByMobileNumber = (mobileNumber) => {
       refetchInterval: false,
       refetchOnWindowFocus: false,
       onError: (err) => {
-        toast.error(getErrorMessage(err)); 
+        toast.error(getErrorMessage(err));
       },
     }
   );

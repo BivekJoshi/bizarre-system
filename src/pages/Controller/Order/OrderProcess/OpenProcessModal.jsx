@@ -28,14 +28,14 @@ const OpenProcessModal = ({ rowId, refetch, onClose }) => {
 
   const { data: orderData, isLoading: isOrderLoading } = useGetOrderById(rowId);
 
-  const { isLoading: isPreparingLoading, refetch: refetchPreparing } =
-    useGetOrderPreparing(rowId);
-  const { isLoading: isReadyLoading, refetch: refetchReady } =
-    useGetOrderReady(rowId);
-  const { isLoading: isServedLoading, refetch: refetchServed } =
-    useGetOrderServed(rowId);
-  const { isLoading: isCancelledLoading, refetch: refetchCancelled } =
-    useGetCancelOrder(rowId);
+  const { mutate: fetchPreparingOrder, isLoading: isPreparingLoading } =
+    useGetOrderPreparing();
+  const { mutate: fetchReadyOrder, isLoading: isReadyLoading } =
+    useGetOrderReady();
+  const { mutate: fetchServedOrder, isLoading: isServedLoading } =
+    useGetOrderServed();
+  const { mutate: fetchCancelledOrder, isLoading: isCancelledLoading } =
+    useGetCancelOrder();
 
   const isLoading =
     isOrderLoading ||
@@ -69,28 +69,24 @@ const OpenProcessModal = ({ rowId, refetch, onClose }) => {
     setSelectedCard(status.toLowerCase());
     switch (status.toLowerCase()) {
       case "preparing":
-        refetchPreparing();
-        refetch();
-        toast.success("Status Changed to Preparing sucessfully");
+        fetchPreparingOrder(rowId);
         onClose();
+        refetch();
         break;
       case "ready":
-        refetchReady();
-        refetch();
-        toast.success("Status Changed to Ready sucessfully");
+        fetchReadyOrder(rowId);
         onClose();
+        refetch();
         break;
       case "served":
-        refetchServed();
-        refetch();
-        toast.success("Status Changed to Served sucessfully");
+        fetchServedOrder(rowId);
         onClose();
+        refetch();
         break;
       case "cancelled":
-        refetchCancelled();
-        refetch();
-        toast.success("Status Changed to Cancelled sucessfully");
+        fetchCancelledOrder(rowId);
         onClose();
+        refetch();
         break;
       default:
         break;
@@ -115,7 +111,7 @@ const OpenProcessModal = ({ rowId, refetch, onClose }) => {
               display: "flex",
               justifyContent: "space-between",
               flexWrap: "wrap",
-              marginBottom:'1rem'
+              marginBottom: "1rem",
             }}
           >
             <Box display="flex" alignItems="center" mb={3}>

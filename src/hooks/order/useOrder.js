@@ -37,38 +37,50 @@ export const useGetOrderById = (id) => {
 };
 
 /*________________________GET_SERVED_____________________________________*/
-export const useGetOrderServed = (orderId) => {
-  return useQuery(["getOrderServed", orderId], () => getOrderServed(orderId), {
-    cacheTime: 10000,
-    refetchInterval: false,
-    refetchOnWindowFocus: false,
+export const useGetOrderServed = () => {
+  return useMutation((orderId) => getOrderServed(orderId), {
+    onSuccess: (data) => {
+      toast.success("Order is being served");
+    },
+    onError: (err) => {
+      toast.error(getErrorMessage(err));
+    },
   });
 };
 
 /*________________________GET_READY_____________________________________*/
-export const useGetOrderReady = (orderId) => {
-  return useQuery(["getOrderReady", orderId], () => getOrderReady(orderId), {
-    cacheTime: 10000,
-    refetchInterval: false,
-    refetchOnWindowFocus: false,
+export const useGetOrderReady = () => {
+  return useMutation((orderId) => getOrderReady(orderId), {
+    onSuccess: (data) => {
+      toast.success("Order is being ready");
+    },
+    onError: (err) => {
+      toast.error(getErrorMessage(err));
+    },
   });
 };
 
 /*________________________GET_PREPARING_____________________________________*/
-export const useGetOrderPreparing = (orderId) => {
-  return useQuery(["getPreparing", orderId], () => getPreparing(orderId), {
-    cacheTime: 10000,
-    refetchInterval: false,
-    refetchOnWindowFocus: false,
+export const useGetOrderPreparing = () => {
+  return useMutation((orderId) => getPreparing(orderId), {
+    onSuccess: (data) => {
+      toast.success("Order is being prepared");
+    },
+    onError: (err) => {
+      toast.error(getErrorMessage(err));
+    },
   });
 };
 
 /*________________________GET_CANCEL_____________________________________*/
-export const useGetCancelOrder = (orderId) => {
-  return useQuery(["getCancelOrder", orderId], () => getCancelOrder(orderId), {
-    cacheTime: 10000,
-    refetchInterval: false,
-    refetchOnWindowFocus: false,
+export const useGetCancelOrder = () => {
+  return useMutation((orderId) => getCancelOrder(orderId), {
+    onSuccess: (data) => {
+      toast.success("Order is being cancelled");
+    },
+    onError: (err) => {
+      toast.error(getErrorMessage(err));
+    },
   });
 };
 

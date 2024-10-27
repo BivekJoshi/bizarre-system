@@ -7,6 +7,12 @@ export const addCustomer = async (formData) => {
   return data;
 };
 
+/*_____________________________POST CUSTOMER ONBOARD_______________________________________________ */
+export const addCustomerByOnBoard = async (formData) => {
+  const data = await axiosInstance.post(`${CUSTOMER}/onboard`, formData);
+  return data;
+};
+
 /*________________________GET_____________________________________*/
 export const getCustomer = async (pageNumber, pageSize) => {
   if (pageNumber && pageSize) {
@@ -56,7 +62,7 @@ export const verifyCustomer = async (id) => {
 
 /*________________________GET_BY_MOBILE_NUMBER_____________________________________*/
 export const getCustomerByMobileNumber = async (mobileNumber) => {
-  if (mobileNumber.length>9) {
+  if (mobileNumber.length > 9) {
     const { data } = await axiosInstance.get(
       `${CUSTOMER}/find/mobile-number/${mobileNumber}`
     );
