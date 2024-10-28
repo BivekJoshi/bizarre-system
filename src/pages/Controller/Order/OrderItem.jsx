@@ -11,7 +11,6 @@ import {
   ButtonGroup,
   useTheme,
   Chip,
-  Badge,
   Button,
   CircularProgress,
 } from "@mui/material";
@@ -44,6 +43,7 @@ const OrderItem = ({
     selectedIds,
     onClose,
     orderData,
+    itemCounts,
   });
 
   const handleClick = (id) => {
@@ -52,23 +52,57 @@ const OrderItem = ({
         ? prevSelected.filter((selectedId) => selectedId !== id)
         : [...prevSelected, id]
     );
-  };
 
-  const handleRemarkChange = (id, index, value) => {
-    setRemarks((prevRemarks) => ({
-      ...prevRemarks,
-      [id]: {
-        ...prevRemarks[id],
-        [index]: value,
-      },
-    }));
+    if (!selectedIds.includes(id)) {
+      setRemarks((prevRemarks) => ({
+        ...prevRemarks,
+        [id]: [""] 
+      }));
+    } else {
+      const { [id]: _, ...remainingRemarks } = remarks;
+      setRemarks(remainingRemarks);
+      setItemCounts((prevCounts) => {
+        const { [id]: _, ...remainingCounts } = prevCounts;
+        return remainingCounts;
+      });
+    }
   };
 
   const handleCountChange = (id, increment) => {
-    setItemCounts((prevCounts) => ({
-      ...prevCounts,
-      [id]: Math.max(1, (prevCounts[id] || 1) + increment),
-    }));
+    setItemCounts((prevCounts) => {
+      const newCount = Math.max(1, (prevCounts[id] || 1) + increment);
+      setRemarks((prevRemarks) => {
+        const currentRemarks = prevRemarks[id] || [];
+        const updatedRemarks = [...currentRemarks];
+
+        if (newCount > currentRemarks.length) {
+          updatedRemarks.push("");
+        } else {
+          updatedRemarks.length = newCount; 
+        }
+
+        return {
+          ...prevRemarks,
+          [id]: updatedRemarks,
+        };
+      });
+
+      return {
+        ...prevCounts,
+        [id]: newCount,
+      };
+    });
+  };
+
+  const handleRemarkChange = (id, index, value) => {
+    setRemarks((prevRemarks) => {
+      const updatedRemarks = [...(prevRemarks[id] || [])];
+      updatedRemarks[index] = value || "";
+      return {
+        ...prevRemarks,
+        [id]: updatedRemarks,
+      };
+    });
   };
 
   return (
@@ -127,15 +161,13 @@ const OrderItem = ({
                   borderRadius: "0 0 8px 0",
                 }}
               >
-                {item.stockCount <= 0 ? "Out of Stock" : null}
+                Out of Stock
               </div>
             )}
 
             <CardContent
               sx={{
-                backgroundColor: selectedIds.includes(item.id)
-                  ? theme.palette.background.alt
-                  : theme.palette.background.alt,
+                backgroundColor: theme.palette.background.alt,
               }}
             >
               <Typography

@@ -3,10 +3,11 @@ import { useAddOrder, useEditOrder } from "../useOrder";
 import { useParams } from "react-router-dom";
 
 export const useOrderForm = ({
-  remarks = {},
+  remarks = '',
   selectedIds = [],
   onClose,
   orderData,
+  itemCounts ={}
 }) => {
   const { id } = useParams();
 
