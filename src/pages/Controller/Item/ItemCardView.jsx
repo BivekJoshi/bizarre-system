@@ -3,11 +3,8 @@ import {
   Paper,
   Typography,
   Grid,
-  Button,
-  IconButton,
   Box,
 } from "@mui/material";
-import { AddShoppingCart, FavoriteBorder } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../../redux/Slice/cartSlice";
 import { DOC_URL } from "../../../api/axiosInterceptor";
@@ -20,7 +17,18 @@ const ItemCardView = ({ data }) => {
   };
 
   return (
-    <Paper elevation={3} sx={{ p: 0, borderRadius: 2, maxWidth: 345 }}>
+    <Paper
+      elevation={3}
+      sx={{
+        p: 0,
+        borderRadius: 2,
+        maxWidth: 345,
+        transition: "transform 0.1s ease", // Smooth transition
+        '&:hover': {
+          transform: 'scale(1.05)', // Scale up on hover
+        },
+      }}
+    >
       <Grid container spacing={0}>
         <Grid item xs={12}>
           <div style={{ width: "100%", height: "150px" }}>
@@ -35,6 +43,7 @@ const ItemCardView = ({ data }) => {
                 width: "100%",
                 borderRadius: "8px 8px 0 0",
                 height: "100%",
+                objectFit: "cover", // Ensure the image covers the area
               }}
             />
           </div>
@@ -48,9 +57,23 @@ const ItemCardView = ({ data }) => {
             >
               {data?.name}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Short description of the product goes here. It should be concise
-              and informative.
+            <Typography 
+              variant="body2" 
+              color="text.secondary" 
+              sx={{
+                display: "-webkit-box",
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+                WebkitLineClamp: 2, // Limit to 2 lines
+                height: "3em", // Set a specific height for 2 lines
+                transition: "height 0.3s ease", // Smooth transition for height
+                '&:hover': {
+                  WebkitLineClamp: 'unset', // Remove line clamp on hover
+                  height: 'auto', // Allow height to expand
+                },
+              }}
+            >
+              {data?.description}
             </Typography>
           </Grid>
           <Grid item xs={12}>
@@ -59,28 +82,9 @@ const ItemCardView = ({ data }) => {
               color="primary"
               sx={{ fontWeight: "bold" }}
             >
-              $29.99
+              Rs 29.99
             </Typography>
           </Grid>
-          {/* <Grid item xs={12}>
-            <Grid container justifyContent="space-between" alignItems="center">
-              <Grid item>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleAddToCart}
-                  startIcon={<AddShoppingCart />}
-                >
-                  Add to Cart
-                </Button>
-              </Grid>
-              <Grid item>
-                <IconButton color="secondary" aria-label="add to favorites">
-                  <FavoriteBorder />
-                </IconButton>
-              </Grid>
-            </Grid>
-          </Grid> */}
         </Box>
       </Grid>
     </Paper>

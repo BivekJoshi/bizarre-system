@@ -41,7 +41,7 @@ const Order = () => {
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
   const { data: orderData, isLoading: loadingOrder } = useGetBatchById(tableId);
-  console.log("🚀 ~ Order ~ orderData:", orderData?.data?.orders?.length);
+  console.log("🚀 ~ Order ~ orderData:", orderData?.data?.isBillCalculated);
   const { data: coustomerTableData, isLoading: loadingCustomerTable } =
     useGetCustomerTableById(tableId);
   // console.log("🚀 ~ Order ~ coustomerTableData:", coustomerTableData);
@@ -185,22 +185,25 @@ const Order = () => {
         }}
       >
         <Stack direction="row" spacing={2}>
-          <PermissionButton
-            label="Generate Bill"
-            variant="outlined"
-            onClick={() => setIsGenerateBillModalOpen(true)}
-            // startIcon={<ControlPointRoundedIcon />}
-            allowedUserTypes={["WAITER", "CASHIER"]}
-            disabledUserTypes={[]}
-          />
-          <PermissionButton
-            label="Make Payment"
-            variant="outlined"
-            onClick={() => setIsPaymentModalOpen(true)}
-            // startIcon={<ControlPointRoundedIcon />}
-            allowedUserTypes={["CASHIER"]}
-            disabledUserTypes={[]}
-          />
+          {orderData?.data?.isBillCalculated ? (
+            <PermissionButton
+              label="Make Payment"
+              variant="contained"
+              onClick={() => setIsPaymentModalOpen(true)}
+              // startIcon={<ControlPointRoundedIcon />}
+              allowedUserTypes={["CASHIER"]}
+              disabledUserTypes={[]}
+            />
+          ) : (
+            <PermissionButton
+              label="Generate Bill"
+              variant="outlined"
+              onClick={() => setIsGenerateBillModalOpen(true)}
+              // startIcon={<ControlPointRoundedIcon />}
+              allowedUserTypes={["WAITER", "CASHIER"]}
+              disabledUserTypes={[]}
+            />
+          )}
         </Stack>
       </Box>
 

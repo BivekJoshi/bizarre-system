@@ -140,7 +140,7 @@ const BillLayout = ({ finalBill, onClose }) => {
   <body>
     <div class="ticket">
       <div class="centered">
-        <img alt="Bizarre-Bros-Logo" src=${receiptlogo} />
+        <img alt="Bizarre-Bros-Logo" src="${receiptlogo}" />
       </div>
       <h1 class="centered">Bizarre Bros.</h1>
       <h2 class="centered">Cafe Bizarre</h2>
@@ -156,7 +156,7 @@ const BillLayout = ({ finalBill, onClose }) => {
           <td class="header-right">${finalBill?.tableNumber || "NA"}</td>
         </tr>
         <tr>
-          <td class="header-left"> Applied PromoCode :</td>
+          <td class="header-left">Applied PromoCode :</td>
           <td class="header-right">${finalBill?.appliedPromoCode || "NA"}</td>
         </tr>
         <tr>
@@ -174,7 +174,7 @@ const BillLayout = ({ finalBill, onClose }) => {
           </tr>
         </thead>
         <tbody>
-   ${itemRows}
+          ${itemRows}
           <tr>
             <td colspan="2" class="description line bold">SUB TOTAL</td>
             <td class="price line">रु ${finalBill?.totalBilled || "0"}</td>
