@@ -7,8 +7,9 @@ import {
   Grid,
   Box,
   Avatar,
-  Button,
 } from "@mui/material";
+import { CheckCircle } from "@mui/icons-material";
+import CancelIcon from "@mui/icons-material/Cancel";
 import { DOC_URL } from "../../../../api/axiosInterceptor";
 
 const statusOptions = [
@@ -24,18 +25,8 @@ const statusOptions = [
     color: "#27ae60",
     hoverColor: "#2ecc71",
   },
-  {
-    label: "Ready",
-    value: "READY",
-    color: "#e67e22",
-    hoverColor: "#f39c12",
-  },
-  {
-    label: "Served",
-    value: "SERVED",
-    color: "#8e44ad",
-    hoverColor: "#9b59b6",
-  },
+  { label: "Ready", value: "READY", color: "#e67e22", hoverColor: "#f39c12" },
+  { label: "Served", value: "SERVED", color: "#8e44ad", hoverColor: "#9b59b6" },
   {
     label: "Canceled",
     value: "CANCELLED",
@@ -46,31 +37,30 @@ const statusOptions = [
 
 const OrderProcessBaristaCard = ({ data, setRowId }) => {
   const { item, batch, status } = data;
-
   const { name, sellingPrice, stockCount, itemImageUrl, type } = item;
   const { customerTable, totalBilled, orderCount } = batch;
 
   const handleSelectRow = () => {
-    setRowId(data?.id);
+    if (status !== "CANCELLED" && status !== "SERVED") {
+      setRowId(data?.id);
+    }
   };
 
-  // Find the status option that matches the current status
-  const statusOption = statusOptions.find(
-    (option) => option.value === status
-  );
-
+  const statusOption = statusOptions.find((option) => option.value === status);
   const statusColor = statusOption ? statusOption.color : "#3a3a3a";
-  const statusBackground = statusOption ? `${statusOption.hoverColor}1A` : "#f0f0f0"; // Add transparency to hoverColor
+  const statusBackground = statusOption
+    ? `${statusOption.hoverColor}1A`
+    : "#f0f0f0";
 
   return (
     <Card
       sx={{
         maxWidth: 450,
-        margin: "20px auto",
-        padding: 2,
+        padding: 0,
         boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.05)",
         borderRadius: "16px",
         border: "1px solid #e0e0e0",
+        position: "relative",
         transition: "transform 0.3s ease, box-shadow 0.3s ease",
         "&:hover": {
           transform: "translateY(-8px)",
@@ -168,6 +158,33 @@ const OrderProcessBaristaCard = ({ data, setRowId }) => {
             </Typography>
           </Grid>
         </Grid>
+
+        {status === "SERVED" && (
+          <CheckCircle
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              color: "green",
+              fontSize: 50,
+              opacity: 0.8,
+            }}
+          />
+        )}
+        {status === "CANCELLED" && (
+          <CancelIcon
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              color: "#c0392b",
+              fontSize: 50,
+              opacity: 0.8,
+            }}
+          />
+        )}
       </CardContent>
     </Card>
   );

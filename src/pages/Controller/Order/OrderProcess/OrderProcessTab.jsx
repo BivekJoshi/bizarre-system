@@ -4,6 +4,7 @@ import {
   Tab,
   Typography,
   useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useGetOrder } from "../../../../hooks/order/useOrder";
@@ -25,18 +26,8 @@ const statusOptions = [
     color: "#27ae60",
     hoverColor: "#2ecc71",
   },
-  {
-    label: "Ready",
-    value: "READY",
-    color: "#e67e22",
-    hoverColor: "#f39c12",
-  },
-  {
-    label: "Served",
-    value: "SERVED",
-    color: "#8e44ad",
-    hoverColor: "#9b59b6",
-  },
+  { label: "Ready", value: "READY", color: "#e67e22", hoverColor: "#f39c12" },
+  { label: "Served", value: "SERVED", color: "#8e44ad", hoverColor: "#9b59b6" },
   {
     label: "Canceled",
     value: "CANCELLED",
@@ -47,6 +38,7 @@ const statusOptions = [
 
 const OrderProcessTab = () => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [status, setStatus] = useState("WAITING");
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -64,8 +56,7 @@ const OrderProcessTab = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       refetch();
-    }, 10000); 
-
+    }, 10000);
     return () => clearInterval(intervalId);
   }, [refetch]);
 
@@ -76,13 +67,15 @@ const OrderProcessTab = () => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          flexDirection: isMobile ? "column" : "row",
         }}
       >
         <Typography
-          variant="h3"
+          variant={isMobile ? "h5" : "h3"}
           sx={{
             color: theme.palette.text.default,
             fontWeight: 700,
+            textAlign: isMobile ? "center" : "left",
           }}
         >
           Order
@@ -93,14 +86,20 @@ const OrderProcessTab = () => {
         <Box
           sx={{
             backgroundColor: theme.palette.background.default,
-            padding: "1rem",
+            padding: isMobile ? "0" : "1rem",
             marginTop: ".1rem",
           }}
         >
           <TabList
             onChange={handleChange}
             aria-label="Order Status Tabs"
+            variant={isMobile ? "scrollable" : "standard"}
             indicatorColor="none"
+            sx={{
+              display: "flex",
+              flexWrap: isMobile ? "wrap" : "nowrap",
+              justifyContent: isMobile ? "center" : "flex-start",
+            }}
           >
             {statusOptions.map(({ label, value, color, hoverColor }) => (
               <Tab
@@ -113,8 +112,9 @@ const OrderProcessTab = () => {
                   fontWeight: status === value ? "bold" : "normal",
                   borderRadius: "8px",
                   textTransform: "none",
-                  padding: "10px 20px",
-                  marginRight: "8px",
+                  padding: "8px 16px",
+                  margin: isMobile ? "4px" : "0 8px",
+                  minWidth: isMobile ? "auto" : "120px",
                   "&:hover": {
                     backgroundColor: hoverColor,
                   },
@@ -125,8 +125,8 @@ const OrderProcessTab = () => {
         </Box>
 
         {isLoading ? (
-          <div
-            style={{
+          <Box
+            sx={{
               width: "100%",
               display: "flex",
               justifyContent: "center",
@@ -135,10 +135,14 @@ const OrderProcessTab = () => {
             }}
           >
             <CircularProgress />
-          </div>
+          </Box>
         ) : (
           statusOptions.map(({ value }) => (
-            <TabPanel key={value} value={value}>
+            <TabPanel
+              key={value}
+              value={value}
+              sx={{ padding: "0", marginTop: ".4rem" }}
+            >
               <OrderProcess orderData={orderData} refetch={refetch} />
             </TabPanel>
           ))

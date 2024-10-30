@@ -16,9 +16,13 @@ const OrderProcess = ({ orderData, refetch }) => {
   const [rowId, setRowId] = useState(null);
   const [openProcessModal, setOpenProcessModal] = useState(false);
 
+
   const editRow = (row) => {
-    setOpenProcessModal(true);
-    setRowId(row?.original?.id);
+    const status = row?.original?.status;
+    if (status !== "CANCELLED" && status !== "SERVED") {
+      setOpenProcessModal(true);
+      setRowId(row?.original?.id);
+    }
   };
 
   const columns = useMemo(

@@ -12,6 +12,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import FastfoodIcon from "@mui/icons-material/Fastfood";
 import {
+  useDeleteOrder,
   useGetCancelOrder,
   useGetOrderById,
   useGetOrderPreparing,
@@ -19,14 +20,15 @@ import {
   useGetOrderServed,
 } from "../../../../hooks/order/useOrder";
 import { DOC_URL } from "../../../../api/axiosInterceptor";
-import { toast } from "react-toastify";
 import { nanoid } from "nanoid";
 import CancelIcon from "@mui/icons-material/Cancel";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 const OpenProcessModal = ({ rowId, refetch, onClose }) => {
   const [selectedCard, setSelectedCard] = useState(null);
 
   const { data: orderData, isLoading: isOrderLoading } = useGetOrderById(rowId);
+  console.log("🚀 ~ OpenProcessModal ~ orderData:", orderData);
 
   const { mutate: fetchPreparingOrder, isLoading: isPreparingLoading } =
     useGetOrderPreparing();
@@ -37,6 +39,10 @@ const OpenProcessModal = ({ rowId, refetch, onClose }) => {
   const { mutate: fetchCancelledOrder, isLoading: isCancelledLoading } =
     useGetCancelOrder();
 
+  const { mutate: deleteOrder, isLoading: isDelitingOrder } = useDeleteOrder({
+    rowId,
+  });
+
   const isLoading =
     isOrderLoading ||
     (selectedCard === "preparing" && isPreparingLoading) ||
@@ -44,53 +50,43 @@ const OpenProcessModal = ({ rowId, refetch, onClose }) => {
     (selectedCard === "cancelled" && isCancelledLoading) ||
     (selectedCard === "served" && isServedLoading);
 
+  const statusOrder = ["waiting", "preparing", "ready", "served"];
+  const currentStatusIndex = statusOrder.indexOf(
+    orderData?.data?.status?.toLowerCase()
+  );
+
   const statusCards = [
     {
       id: nanoid(),
       status: "Preparing",
       icon: <HourglassEmptyIcon style={{ fontSize: 40, color: "orange" }} />,
       description: "The order is being prepared.",
+      action: fetchPreparingOrder,
+      statusKey: "preparing",
     },
     {
       id: nanoid(),
       status: "Ready",
       icon: <FastfoodIcon style={{ fontSize: 40, color: "blue" }} />,
       description: "The order is ready for pickup.",
+      action: fetchReadyOrder,
+      statusKey: "ready",
     },
     {
       id: nanoid(),
       status: "Served",
       icon: <CheckCircleIcon style={{ fontSize: 40, color: "green" }} />,
       description: "The order has been served.",
+      action: fetchServedOrder,
+      statusKey: "served",
     },
   ];
 
-  const handleCardClick = (status) => {
-    setSelectedCard(status.toLowerCase());
-    switch (status.toLowerCase()) {
-      case "preparing":
-        fetchPreparingOrder(rowId);
-        onClose();
-        refetch();
-        break;
-      case "ready":
-        fetchReadyOrder(rowId);
-        onClose();
-        refetch();
-        break;
-      case "served":
-        fetchServedOrder(rowId);
-        onClose();
-        refetch();
-        break;
-      case "cancelled":
-        fetchCancelledOrder(rowId);
-        onClose();
-        refetch();
-        break;
-      default:
-        break;
-    }
+  const handleCardClick = (status, action) => {
+    setSelectedCard(status);
+    action(rowId);
+    onClose();
+    refetch();
   };
 
   return (
@@ -154,6 +150,7 @@ const OpenProcessModal = ({ rowId, refetch, onClose }) => {
                 </div>
               </Box>
             </Box>
+
             <Card
               variant="outlined"
               sx={{
@@ -169,16 +166,32 @@ const OpenProcessModal = ({ rowId, refetch, onClose }) => {
                   boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)",
                 },
               }}
-              onClick={() => handleCardClick("cancelled")}
+              // onClick={() => handleCardClick("cancelled", fetchCancelledOrder)}
+              onClick={
+                orderData?.data?.status === "WAITING"
+                  ? () => handleCardClick("delete", deleteOrder)
+                  : () => handleClick("cancelled", fetchCancelledOrder)
+              }
             >
-              <CancelIcon style={{ color: "red" }} />
-              <Typography variant="h6" gutterBottom>
-                Cancel Order
-              </Typography>
+              {orderData?.data?.status === "WAITING" ? (
+                <>
+                  <DeleteForeverIcon style={{ color: "red" }} />
+                  <Typography variant="h6" gutterBottom>
+                    Delete Order
+                  </Typography>
+                </>
+              ) : (
+                <>
+                  <CancelIcon style={{ color: "red" }} />
+                  <Typography variant="h6" gutterBottom>
+                    Cancel Order
+                  </Typography>
+                </>
+              )}
             </Card>
           </div>
           <Grid container spacing={3}>
-            {statusCards.map((card) => (
+            {statusCards.map((card, index) => (
               <Grid item xs={12} sm={6} md={4} key={card.id}>
                 <Card
                   variant="outlined"
@@ -187,13 +200,22 @@ const OpenProcessModal = ({ rowId, refetch, onClose }) => {
                     padding: "1rem",
                     transition:
                       "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
-                    cursor: "pointer",
+                    cursor:
+                      currentStatusIndex === index ? "pointer" : "not-allowed",
+                    opacity: currentStatusIndex === index ? 1 : 0.5,
                     "&:hover": {
-                      transform: "scale(1.05)",
-                      boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)",
+                      transform:
+                        currentStatusIndex === index ? "scale(1.05)" : "none",
+                      boxShadow:
+                        currentStatusIndex === index
+                          ? "0px 8px 16px rgba(0, 0, 0, 0.2)"
+                          : "none",
                     },
                   }}
-                  onClick={() => handleCardClick(card.status)}
+                  onClick={() =>
+                    currentStatusIndex === index &&
+                    handleCardClick(card.statusKey, card.action)
+                  }
                 >
                   <CardContent>
                     {card.icon}

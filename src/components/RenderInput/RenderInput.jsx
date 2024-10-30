@@ -362,6 +362,7 @@ const RenderInput = ({
             <TextField
               name={element?.name}
               // label={element?.label}
+              placeholder={element?.placeholder}
               value={formValues}
               onChange={formik.handleChange}
               InputLabelProps={{ shrink: Boolean(formValues) }}

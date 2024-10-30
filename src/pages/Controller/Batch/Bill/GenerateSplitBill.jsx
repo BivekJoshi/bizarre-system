@@ -34,7 +34,7 @@ const GenerateSplitBill = ({ batchId, onClose }) => {
                   id: nanoid(),
                   name: "billingName",
                   label: "Billing Name",
-                  placeholder: "Enter mobile number",
+                  placeholder: "Enter billing name",
                   type: "text",
                   required: true,
                   xs: 12,

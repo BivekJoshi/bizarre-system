@@ -8,6 +8,7 @@ import {
   MenuItem,
   Select,
   useTheme,
+  useMediaQuery,
 } from "@mui/material";
 
 export const CustomPagination = ({
@@ -20,6 +21,8 @@ export const CustomPagination = ({
   totalElements,
 }) => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm")); 
+
   const handlePageChange = (event, newPage) => {
     onPageChange(newPage);
     window.scrollTo(0, 0);
@@ -38,15 +41,16 @@ export const CustomPagination = ({
     <Box
       display="flex"
       flexWrap="wrap"
-      justifyContent="space-between"
+      justifyContent={isMobile ? "center" : "space-between"}
       alignItems="center"
       mt={3}
       sx={{
         backgroundColor: theme.palette.background.default,
         padding: "1rem",
+        gap: "2rem",
       }}
     >
-      <div>Total Element: {totalElements}</div>
+      {!isMobile && <div>Total Element: {totalElements}</div>} 
       <Pagination
         count={totalPages || 1}
         page={normalizedCurrentPage}
@@ -56,22 +60,24 @@ export const CustomPagination = ({
         showLastButton
         aria-label="Pagination"
       />
-      <FormControl variant="outlined" size="small">
-        <InputLabel>Rows per page</InputLabel>
-        <Select
-          value={rowsPerPage}
-          onChange={handleRowsPerPageChange}
-          label="Rows per page"
-          aria-label="Rows per page"
-          sx={{ width: "200px" }}
-        >
-          {rowsPerPageOptions.map((option) => (
-            <MenuItem key={option} value={option}>
-              {option}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+      {!isMobile && (
+        <FormControl variant="outlined" size="small">
+          <InputLabel>Rows per page</InputLabel>
+          <Select
+            value={rowsPerPage}
+            onChange={handleRowsPerPageChange}
+            label="Rows per page"
+            aria-label="Rows per page"
+            sx={{ width: "200px" }}
+          >
+            {rowsPerPageOptions.map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      )}
     </Box>
   );
 };

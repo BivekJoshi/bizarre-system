@@ -109,7 +109,7 @@ const Order = () => {
       return (
         <Grid container spacing={2}>
           {orderData?.data?.orders?.map((item, index) => (
-            <Grid item xs={12} md={4} lg={2} sm={6} key={index}>
+            <Grid item xs={12} md={4} lg={3} sm={6} key={index}>
               <OrderByTableIdCardView data={item} />
             </Grid>
           ))}

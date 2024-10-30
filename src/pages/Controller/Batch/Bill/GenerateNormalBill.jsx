@@ -29,6 +29,18 @@ const GenerateNormalBill = ({ batchId, onClose }) => {
   const inputField = [
     {
       id: nanoid(),
+      name: "billingName",
+      label: "Billing Name",
+      placeholder: "Enter billing name",
+      type: "text",
+      required: true,
+      xs: 12,
+      md: 12,
+      lg: 12,
+      sm: 12,
+    },
+    {
+      id: nanoid(),
       name: "mobileNumber",
       label: "Mobile Number",
       placeholder: "Enter mobile number",
