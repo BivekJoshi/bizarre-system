@@ -21,8 +21,10 @@ import EditItem from "./EditItem";
 import { DOC_URL } from "../../../api/axiosInterceptor";
 import NoDataFound from "../../PageNotFound/NoDataFound";
 import FilterItem from "./FilterItem";
+import PublishIcon from "@mui/icons-material/Publish";
 import { useFilterItemForm } from "../../../hooks/item/Item/filterItem/useFilterItemForm";
 import { CustomPaginationUpdated } from "../../../components/Pagination/CustomPaginationUpdated";
+import ImportItemCSV from "./ImportItemCSV";
 
 const Item = () => {
   const theme = useTheme();
@@ -32,6 +34,7 @@ const Item = () => {
   const [isAddModalOpen, setIsAddModal] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isImportCsvModalOpen, setIsImportCsvModalOpen] = useState(false);
 
   const [filteredData, setFilteredData] = useState(null);
 
@@ -203,13 +206,22 @@ const Item = () => {
         >
           Item
         </Typography>
-        <Button
-          variant="outlined"
-          onClick={() => setIsAddModal(true)}
-          startIcon={<ControlPointRoundedIcon />}
-        >
-          Add Item
-        </Button>
+        <div style={{ display: "flex", gap: "1rem" }}>
+          <Button
+            variant="contained"
+            onClick={() => setIsImportCsvModalOpen(true)}
+            startIcon={<PublishIcon />}
+          >
+            Import CSV
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={() => setIsAddModal(true)}
+            startIcon={<ControlPointRoundedIcon />}
+          >
+            Add Item
+          </Button>
+        </div>
       </Box>
 
       <br />
@@ -279,6 +291,27 @@ const Item = () => {
           showButton={true}
         />
       )}
+
+      {isImportCsvModalOpen && (
+        <FormModal
+          open={isImportCsvModalOpen}
+          onClose={() => setIsImportCsvModalOpen(false)}
+          width={"30%"}
+          height={"auto"}
+          maxHeight={"80vh"}
+          header={"Import Csv File"}
+          formik={formik}
+          loading={loading}
+          enableAddPhoto={true}
+          formComponent={
+            <>
+              <ImportItemCSV />
+            </>
+          }
+          showButton={true}
+        />
+      )}
+
       <ConfirmationModal
         disagreeLabel={"Yes, Delete !"}
         agreeLabel={"No, Keep It."}

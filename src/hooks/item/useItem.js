@@ -138,3 +138,23 @@ export const useUploadItemImageForm = ({ finalImageFile, rowDataId }) => {
 };
 
 export default useUploadItemImageForm;
+
+/*________________________UPDATE ALL ITEM_____________________________________*/
+export const useUpdateAllItem = ({ onSuccess }) => {
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    ["addUploadItemImage"],
+    (image, formData) => addUploadItemImage(image, formData),
+    {
+      onSuccess: (data, variables, context) => {
+        onSuccess && onSuccess(data, variables, context);
+        queryClient.invalidateQueries("getItem");
+        toast.success("Item Image Uplaoded Successfully");
+      },
+      onError: (err, _variables, _context) => {
+        toast.error(getErrorMessage(err));
+      },
+    }
+  );
+};

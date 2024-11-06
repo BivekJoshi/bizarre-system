@@ -40,12 +40,6 @@ export const filterItem = async (formData) => {
     search: [...(formData.search || []), { field, value }],
     pageNumber: formData?.pageNumber,
     noOfRecords: formData?.noOfRecords,
-    // pageable: {
-    //   paged: true,
-    //   pageNumber: formData?.pageable?.pageNumber,
-    //   pageSize: formData?.pageable?.pageSize,
-    //   offset: formData?.pageable?.pageNumber * formData?.pageable?.pageSize,
-    // },
   };
 
   const data = await axiosInstance.post(`${ITEM}/find`, updatedFormData);
@@ -70,5 +64,23 @@ export const addUploadItemImage = async (formData) => {
       "Content-Type": "multipart/form-data",
     },
   });
+  return data;
+};
+
+/*_____________________________UPLOAD ITEM IMAGAGE______________________________________________ */
+export const addUpadteAllItem = async (formData) => {
+  const imgData = new FormData();
+
+  imgData.append("file", formData.multipartFile);
+
+  const { data } = await axiosInstance.post(
+    `${ITEM}/update-all-items`,
+    imgData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
   return data;
 };

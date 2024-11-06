@@ -114,10 +114,13 @@ export const useVerifyCustomer = (id) => {
 
 /*________________________GET_BY_ID_____________________________________*/
 export const useGetCustomerByMobileNumber = (mobileNumber) => {
+  console.log("🚀 ~ useGetCustomerByMobileNumber ~ mobileNumber:", mobileNumber)
   return useQuery(
     ["getCustomerByMobileNumber", mobileNumber],
     () => getCustomerByMobileNumber(mobileNumber),
     {
+      enabled: mobileNumber.length === 10,
+      keepPreviousData: true, 
       cacheTime: 10000,
       refetchInterval: false,
       refetchOnWindowFocus: false,

@@ -9,6 +9,50 @@ import RenderInput from "../../../../components/RenderInput/RenderInput";
 import { useGenerateSplitBillForm } from "../../../../hooks/batch/Batch/useGenerateSplitBillForm";
 import FormModal from "../../../../components/Modal/FormModal";
 import BillLayout from "../Payment/BillLayout";
+import { useGetCustomerByMobileNumber } from "../../../../hooks/customer/useCustomer";
+
+const MobileNumberInput = ({ index, mobileNumber, formik, arrayHelpers }) => {
+  const { data: customerDetail } = useGetCustomerByMobileNumber(mobileNumber);
+
+  return (
+    <div>
+      <RenderInput
+        formik={formik}
+        inputField={[
+          {
+            id: nanoid(),
+            name: `mobileNumbers[${index}]`,
+            label: `Mobile Number ${index + 1}`,
+            placeholder: "Enter number",
+            type: "number",
+            required: true,
+            xs: 12,
+            md: 12,
+            lg: 12,
+            sm: 12,
+          },
+          {
+            id: nanoid(),
+            type: "showData",
+            data1: customerDetail?.data?.user?.fullName,
+            data2: customerDetail?.data?.user?.email,
+            xs: 12,
+            md: 12,
+            lg: 12,
+            sm: 12,
+          },
+        ]}
+      />
+      <Button
+        onClick={() => arrayHelpers.remove(index)}
+        color="error"
+        disabled={formik.values.mobileNumbers.length === 1}
+      >
+        Remove
+      </Button>
+    </div>
+  );
+};
 
 const GenerateSplitBill = ({ batchId, onClose }) => {
   const [finalBillModalOpen, setFinalBillModalOpen] = useState(false);
@@ -63,40 +107,15 @@ const GenerateSplitBill = ({ batchId, onClose }) => {
               name="mobileNumbers"
               render={(arrayHelpers) => (
                 <>
-                  {formik.values.mobileNumbers.map((typedNumber, index) => {
-                    console.log(
-                      "🚀 ~ {formik.values.mobileNumbers.map ~ typedNumber:",
-                      typedNumber
-                    );
-                    return (
-                      <div key={index}>
-                        <RenderInput
-                          formik={formik}
-                          inputField={[
-                            {
-                              id: nanoid(),
-                              name: `mobileNumbers[${index}]`,
-                              label: `Mobile Number ${index + 1}`,
-                              placeholder: "Enter number",
-                              type: "number",
-                              required: true,
-                              xs: 12,
-                              md: 12,
-                              lg: 12,
-                              sm: 12,
-                            },
-                          ]}
-                        />
-                        <Button
-                          onClick={() => arrayHelpers.remove(index)}
-                          color="error"
-                          disabled={formik.values.mobileNumbers.length === 1}
-                        >
-                          Remove
-                        </Button>
-                      </div>
-                    );
-                  })}
+                  {formik.values.mobileNumbers.map((mobileNumber, index) => (
+                    <MobileNumberInput
+                      key={index}
+                      index={index}
+                      mobileNumber={mobileNumber}
+                      formik={formik}
+                      arrayHelpers={arrayHelpers}
+                    />
+                  ))}
                   <Button
                     onClick={() => arrayHelpers.push("")}
                     variant="contained"
