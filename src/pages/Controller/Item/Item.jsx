@@ -300,15 +300,15 @@ const Item = () => {
           height={"auto"}
           maxHeight={"80vh"}
           header={"Import Csv File"}
-          formik={formik}
-          loading={loading}
+          // formik={formik}
+          // loading={loading}
           enableAddPhoto={true}
           formComponent={
             <>
-              <ImportItemCSV />
+              <ImportItemCSV onClose={() => setIsImportCsvModalOpen(false)} />
             </>
           }
-          showButton={true}
+          showButton={false}
         />
       )}
 

@@ -1,8 +1,9 @@
 import React from 'react'
+import DropZoneUploadCsv from '../../../components/DropZoneUploadFIle/DropZoneUploadCsv'
 
-const ImportItemCSV = () => {
+const ImportItemCSV = ({onClose}) => {
   return (
-    <div>ImportItemCSV</div>
+    <DropZoneUploadCsv onClose={onClose}/>
   )
 }
 

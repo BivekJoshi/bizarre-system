@@ -9,6 +9,14 @@ export const getBatchByTableId = async (tableId) => {
   }
 };
 
+/*___________________________REGENERATE BILL_____________________________________*/
+export const getReGenerateBillByBatchId = async (batchId) => {
+  if (batchId) {
+    const { data } = await axiosInstance.get(`${BATCH}/regenerate-bill/${batchId}`);
+    return data;
+  }
+};
+
 /*___________________________SWITCH TABLE_____________________________________*/
 export const switchTableBatch = async (formData) => {
   const data = await axiosInstance.post(`${BATCH}/switch-table`, formData);
@@ -45,7 +53,7 @@ export const generateNormalBillBatch = async (formData) => {
   return data;
 };
 
-/*___________________________BYPASS PAYMEN_____________________________________*/
+/*___________________________BYPASS PAYMENT_____________________________________*/
 export const bypassPaymentBatch = async (formData) => {
   const data = await axiosInstance.post(`${BATCH}/bypass-payment`, formData);
   return data;
