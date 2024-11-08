@@ -15,7 +15,10 @@ import OrderForm from "./OrderForm";
 import FormModal from "../../../components/Modal/FormModal";
 import CustomTable from "../../../components/CustomTable/CustomTable";
 import SwitchTableForm from "../Batch/SwitchTableForm";
-import { useGetBatchById } from "../../../hooks/batch/usebatch";
+import {
+  useGetBatchById,
+  useGetRegenerateBillByBatchId,
+} from "../../../hooks/batch/usebatch";
 import { useParams } from "react-router-dom";
 import OrderByTableIdCardView from "./OrderByTableIdCardView";
 import NoDataFound from "../../PageNotFound/NoDataFound";
@@ -24,6 +27,9 @@ import GenerateBillModal from "../Batch/Bill/GenerateBillModal";
 import PaymentModal from "../Batch/Payment/PaymentModal";
 import PermissionButton from "../../../components/Button/PermissionButton";
 import { useGetCustomerTableById } from "../../../hooks/customerTable/useCustomerTable";
+import ReGenerateBillModal from "../Batch/Bill/ReGenerateBillModal";
+import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
+import CardMembershipIcon from "@mui/icons-material/CardMembership";
 
 const Order = () => {
   const theme = useTheme();
@@ -38,13 +44,19 @@ const Order = () => {
   );
   const [isSwitchTableModalOpen, setIsSwitchTableModalOpen] = useState(false);
   const [isGenerateBillModalOpen, setIsGenerateBillModalOpen] = useState(false);
+  const [isReGenerateBillModalOpen, setIsReGenerateBillModalOpen] =
+    useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
+  const [openBillLayout, setOpenLayout] = useState(false);
+
   const { data: orderData, isLoading: loadingOrder } = useGetBatchById(tableId);
-  console.log("🚀 ~ Order ~ orderData:", orderData?.data?.isBillCalculated);
   const { data: coustomerTableData, isLoading: loadingCustomerTable } =
     useGetCustomerTableById(tableId);
-  // console.log("🚀 ~ Order ~ coustomerTableData:", coustomerTableData);
+
+  const handleReGenerateBill = () => {
+    setOpenLayout(true);
+  };
 
   const columns = useMemo(
     () => [
@@ -186,14 +198,24 @@ const Order = () => {
       >
         <Stack direction="row" spacing={2}>
           {orderData?.data?.isBillCalculated ? (
-            <PermissionButton
-              label="Make Payment"
-              variant="contained"
-              onClick={() => setIsPaymentModalOpen(true)}
-              // startIcon={<ControlPointRoundedIcon />}
-              allowedUserTypes={["CASHIER"]}
-              disabledUserTypes={[]}
-            />
+            <div style={{ display: "flex", gap: "1rem" }}>
+              <PermissionButton
+                label="Regenerate Bill"
+                variant="outlined"
+                onClick={() => setIsReGenerateBillModalOpen(true)}
+                // startIcon={<ControlPointRoundedIcon />}
+                allowedUserTypes={["CASHIER"]}
+                disabledUserTypes={[]}
+              />
+              <PermissionButton
+                label="Make Payment"
+                variant="contained"
+                onClick={() => setIsPaymentModalOpen(true)}
+                // startIcon={<ControlPointRoundedIcon />}
+                allowedUserTypes={["CASHIER"]}
+                disabledUserTypes={[]}
+              />
+            </div>
           ) : (
             <PermissionButton
               label="Generate Bill"
@@ -263,6 +285,47 @@ const Order = () => {
           <PaymentModal
             batchId={orderData?.data?.batchId}
             onClose={() => setIsPaymentModalOpen(false)}
+          />
+        }
+        showButton={false}
+      />
+
+      <ConfirmationModal
+        disagreeLabel={"No, Close !"}
+        agreeLabel={"Yes, Procced"}
+        alertTitle={"Regerate Bill"}
+        header={"You are going to regenerate bill!"}
+        confirmhead={"Are you sure ?"}
+        isModalOpen={isReGenerateBillModalOpen}
+        handleModalClose={handleReGenerateBill}
+        handleSave={() => setIsReGenerateBillModalOpen(false)}
+        icon={
+          <CardMembershipIcon
+            sx={{
+              backgroundColor: "#e9d3f1",
+              borderRadius: "50%",
+              fontSize: 36,
+              padding: "1rem",
+              color: "#ab0ad8",
+            }}
+          />
+        }
+      />
+
+      <FormModal
+        open={openBillLayout}
+        onClose={() => setOpenLayout(false)}
+        width={"30%"}
+        height={"auto"}
+        maxHeight={"80vh"}
+        header={"Regenerate Bill"}
+        formComponent={
+          <ReGenerateBillModal
+            batchId={orderData?.data?.batchId}
+            onClose={() => {
+              setOpenLayout(false);
+              setIsReGenerateBillModalOpen(false);
+            }}
           />
         }
         showButton={false}

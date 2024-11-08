@@ -357,7 +357,9 @@ const RenderInput = ({
                 marginBottom: "0.1rem",
               }}
             >
-              {element?.label}
+              {element?.label}{" "}
+              {element.required && <span style={{ color: "#EC4034" }}>*</span>}
+
             </Typography>
             <TextField
               name={element?.name}
@@ -380,8 +382,8 @@ const RenderInput = ({
               type={element?.type}
               required={element.required}
               inputProps={{
-                min: element?.min,
-                max: element?.max,
+                minLength: element?.min,
+                minLength: element?.max,
               }}
               variant="outlined"
               error={formTouched && Boolean(formError)}

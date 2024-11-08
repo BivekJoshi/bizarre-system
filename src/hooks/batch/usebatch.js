@@ -23,8 +23,9 @@ export const useGetBatchById = (tableId) => {
 };
 
 /*________________________GET_REGENERATE_BILL_BY_BATCHID_____________________________________*/
-export const useGetRegenerateBillByBatchId = (tableId) => {
-  return useQuery(["getReGenerateBillByBatchId"], () => getReGenerateBillByBatchId(tableId), {
+export const useGetRegenerateBillByBatchId = (batchId) => {
+  console.log("🚀 ~ useGetRegenerateBillByBatchId ~ batchId:", batchId)
+  return useQuery(["getReGenerateBillByBatchId"], () => getReGenerateBillByBatchId(batchId), {
     cacheTime: 10000,
     refetchInterval: false,
     refetchOnWindowFocus: false,

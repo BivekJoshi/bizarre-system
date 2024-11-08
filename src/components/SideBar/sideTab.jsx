@@ -30,7 +30,7 @@ export const adminTab = [
   {
     id: nanoid(),
     label: "Member",
-    value: "cashier",
+    value: "branch-owner",
     icon: <SupervisedUserCircleRoundedIcon />,
     subTabs: [
       {
@@ -88,7 +88,7 @@ export const adminTab = [
   {
     id: nanoid(),
     label: "Report",
-    value: "report-dashboard",
+    value: "batch-report",
     icon: <DnsIcon />,
     subTabs: [
       // {

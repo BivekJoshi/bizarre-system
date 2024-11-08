@@ -33,7 +33,7 @@ const GenerateNormalBill = ({ batchId, onClose }) => {
       label: "Billing Name",
       placeholder: "Enter billing name",
       type: "text",
-      required: true,
+      // required: true,
       xs: 12,
       md: 12,
       lg: 12,
@@ -44,8 +44,8 @@ const GenerateNormalBill = ({ batchId, onClose }) => {
       name: "mobileNumber",
       label: "Mobile Number",
       placeholder: "Enter mobile number",
-      type: "text",
-      required: true,
+      type: "number",
+      // required: true,
       xs: 12,
       md: 12,
       lg: 12,
@@ -88,7 +88,7 @@ const GenerateNormalBill = ({ batchId, onClose }) => {
               variant={"outlined"}
               Width={"-webkit-fill-available"}
               startIcon={<ControlPointRoundedIcon />}
-              disabled={!customerDetail}
+              // disabled={!customerDetail}
             >
               Generate Normal Bill
             </LoadingButton>
