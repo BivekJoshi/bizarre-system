@@ -9,9 +9,9 @@ export const useGenerateSplitBillForm = ({ batchId, finalBill }) => {
   const { mutate } = useGenerateSplitBillBatch({});
 
   const validationSchema = Yup.object({
-    mobileNumbers: Yup.array()
-      .of(Yup.string().required("Mobile number is required"))
-      .min(1, "At least one mobile number is required"),
+    // mobileNumbers: Yup.array()
+    //   .of(Yup.string().optional("Mobile number is required"))
+    //   .min(1, "At least one mobile number is required"),
     promoCode: Yup.string().optional(),
   });
 
@@ -21,7 +21,7 @@ export const useGenerateSplitBillForm = ({ batchId, finalBill }) => {
       mobileNumbers: [""],
       promoCode: "",
     },
-    validationSchema,
+    // validationSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
       handledAddRequest(values);
@@ -33,7 +33,7 @@ export const useGenerateSplitBillForm = ({ batchId, finalBill }) => {
     values = { ...values };
 
     mutate(values, {
-      onSuccess: () => {
+      onSuccess: (data) => {
         setLoading(false);
         formik.resetForm();
         finalBill(data?.data?.data);

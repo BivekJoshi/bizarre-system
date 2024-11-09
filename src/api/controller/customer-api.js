@@ -62,8 +62,10 @@ export const verifyCustomer = async (id) => {
 
 /*________________________GET_BY_MOBILE_NUMBER_____________________________________*/
 export const getCustomerByMobileNumber = async (mobileNumber) => {
-  const { data } = await axiosInstance.get(
-    `${CUSTOMER}/find/mobile-number/${mobileNumber}`
-  );
-  return data;
+  if (mobileNumber) {
+    const { data } = await axiosInstance.get(
+      `${CUSTOMER}/find/mobile-number/${mobileNumber}`
+    );
+    return data;
+  }
 };

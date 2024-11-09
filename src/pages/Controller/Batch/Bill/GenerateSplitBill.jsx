@@ -10,6 +10,7 @@ import { useGenerateSplitBillForm } from "../../../../hooks/batch/Batch/useGener
 import FormModal from "../../../../components/Modal/FormModal";
 import BillLayout from "../Payment/BillLayout";
 import { useGetCustomerByMobileNumber } from "../../../../hooks/customer/useCustomer";
+import SplitBillPrint from "./SplitBillPrint";
 
 const MobileNumberInput = ({ index, mobileNumber, formik, arrayHelpers }) => {
   const { data: customerDetail } = useGetCustomerByMobileNumber(mobileNumber);
@@ -55,6 +56,7 @@ const MobileNumberInput = ({ index, mobileNumber, formik, arrayHelpers }) => {
 };
 
 const GenerateSplitBill = ({ batchId, onClose }) => {
+  console.log("🚀 ~ GenerateSplitBill ~ batchId:", batchId)
   const [finalBillModalOpen, setFinalBillModalOpen] = useState(false);
   const [finalBill, setFinalBill] = useState(null);
 
@@ -142,7 +144,7 @@ const GenerateSplitBill = ({ batchId, onClose }) => {
               </Button>
               <LoadingButton
                 loading={loading}
-                onClick={formik.handleSubmit}
+                onClick={() => formik.handleSubmit()}
                 variant="outlined"
                 startIcon={<ControlPointRoundedIcon />}
               >
@@ -162,7 +164,14 @@ const GenerateSplitBill = ({ batchId, onClose }) => {
         header={"Bill Layout"}
         formComponent={
           <>
-            <BillLayout
+            {/* <BillLayout
+              finalBill={finalBill}
+              onClose={() => {
+                setFinalBillModalOpen(false);
+                onClose();
+              }}
+            /> */}
+            <SplitBillPrint
               finalBill={finalBill}
               onClose={() => {
                 setFinalBillModalOpen(false);

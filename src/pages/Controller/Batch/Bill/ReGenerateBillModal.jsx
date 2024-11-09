@@ -12,10 +12,7 @@ const ReGenerateBillModal = ({ batchId, onClose }) => {
     <>
       <BillRegerateLayout
         finalBill={regenerateBillData?.data}
-        onClose={() => {
-          setFinalBillModalOpen(false);
-          onClose();
-        }}
+        onClose={onClose}
       />
     </>
   );

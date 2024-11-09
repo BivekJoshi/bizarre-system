@@ -8,7 +8,7 @@ import { useGenerateNormalBillForm } from "../../../../hooks/batch/Batch/useGene
 import { LoadingButton } from "@mui/lab";
 import FormModal from "../../../../components/Modal/FormModal";
 import BillLayout from "../Payment/BillLayout";
-import { useGetCustomerByMobileNumber } from "../../../../hooks/customer/useCustomer";
+import {  useGetCustomerByMobileNumber } from "../../../../hooks/customer/useCustomer";
 
 const GenerateNormalBill = ({ batchId, onClose }) => {
   const [finalBillModalOpen, setFinalBillModalOpen] = useState(false);
@@ -22,7 +22,7 @@ const GenerateNormalBill = ({ batchId, onClose }) => {
     },
   });
 
-  const mobileNumber = formik.values.mobileNumber;
+  const mobileNumber = formik.values.mobileNumber || '';
 
   const { data: customerDetail } = useGetCustomerByMobileNumber(mobileNumber);
 
