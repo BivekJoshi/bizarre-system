@@ -1,15 +1,18 @@
 import React from "react";
 import { nanoid } from "nanoid";
-import { useGetBatchOrder } from "../../../../hooks/order/useOrder";
 import HighlightOffRoundedIcon from "@mui/icons-material/HighlightOffRounded";
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
-import { useNormalPayForm } from "../../../../hooks/batch/Batch/useNormalPayForm";
 import { Button, Grid, Stack } from "@mui/material";
 import RenderInput from "../../../../components/RenderInput/RenderInput";
 import { LoadingButton } from "@mui/lab";
+import { useSplitPayForm } from "../../../../hooks/batch/Batch/useSplitPayForm";
+import { useNormalPayForm } from "../../../../hooks/batch/Batch/useNormalPayForm";
 
-const Normalpay = ({ batchId, onClose }) => {
-  const { formik, loading } = useNormalPayForm({ batchId, onClose });
+const Normalpay = ({ batchStatus, batchId, onClose }) => {
+  const { formik, loading } =
+    batchStatus === "SPLIT"
+      ? useSplitPayForm({ batchId, onClose })
+      : useNormalPayForm({ batchId, onClose });
 
   const inputField = [
     {
@@ -18,7 +21,6 @@ const Normalpay = ({ batchId, onClose }) => {
       label: "Cash Received",
       placeholder: "Enter cash received",
       type: "text",
-      required: true,
       xs: 12,
       md: 12,
       lg: 12,
@@ -30,7 +32,6 @@ const Normalpay = ({ batchId, onClose }) => {
       label: "Bank Received",
       placeholder: "Enter bank received",
       type: "text",
-      required: true,
       xs: 12,
       md: 12,
       lg: 12,
@@ -42,7 +43,6 @@ const Normalpay = ({ batchId, onClose }) => {
       label: "Coins Received",
       placeholder: "Enter coins received",
       type: "text",
-      required: true,
       xs: 12,
       md: 12,
       lg: 12,
@@ -72,10 +72,10 @@ const Normalpay = ({ batchId, onClose }) => {
             loading={loading}
             onClick={() => formik.handleSubmit()}
             variant={"outlined"}
-            Width={"-webkit-fill-available"}
+            width={"-webkit-fill-available"}
             startIcon={<ControlPointRoundedIcon />}
           >
-            Normal Pay
+            Make Payment
           </LoadingButton>
         </Stack>
       </Grid>

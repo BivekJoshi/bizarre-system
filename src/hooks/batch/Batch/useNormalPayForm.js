@@ -11,7 +11,7 @@ export const useNormalPayForm = ({ batchId, onClose }) => {
   const formik = useFormik({
     initialValues: {
       customerTableId: id || "",
-      cashReceived: "",
+      cashReceived: "" || 0,
       bankReceived: "" || 0,
       coinsReceived: "" || 0,
     },

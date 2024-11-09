@@ -5,7 +5,7 @@ import Normalpay from "./Normalpay";
 import SplitPay from "./SplitPay";
 import BypassPayment from "./BypassPayment";
 
-const PaymentModal = ({ batchId, onClose }) => {
+const PaymentModal = ({ batchStatus, batchId, onClose }) => {
   const [value, setValue] = React.useState("NORMAL");
 
   const handleChange = (event, newValue) => {
@@ -17,13 +17,17 @@ const PaymentModal = ({ batchId, onClose }) => {
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab label="Normal Pay" value="NORMAL" />
-            <Tab label="Split Pay" value="SPLIT" />
+            <Tab label="Make Payment" value="NORMAL" />
+            {/* <Tab label="Split Pay" value="SPLIT" /> */}
             <Tab label="Bypass Payment" value="BYPASS" />
           </TabList>
         </Box>
         <TabPanel value="NORMAL">
-          <Normalpay batchId={batchId} onClose={onClose} />
+          <Normalpay
+            batchStatus={batchStatus}
+            batchId={batchId}
+            onClose={onClose}
+          />
         </TabPanel>
         <TabPanel value="SPLIT">
           <SplitPay batchId={batchId} onClose={onClose} />

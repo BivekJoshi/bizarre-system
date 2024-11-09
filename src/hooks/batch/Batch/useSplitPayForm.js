@@ -4,10 +4,10 @@ import { useSplitPayBatch } from "../usebatch";
 import * as Yup from "yup";
 import { useParams } from "react-router-dom";
 
-export const useSplitPayForm = ({ batchId }) => {
+export const useSplitPayForm = ({ batchId, onClose }) => {
   const [loading, setLoading] = useState(false);
   const { mutate } = useSplitPayBatch({});
-  const {id} = useParams();
+  const { id } = useParams();
 
   const validationSchema = Yup.object({
     cashReceived: Yup.string().optional(),
@@ -18,9 +18,9 @@ export const useSplitPayForm = ({ batchId }) => {
   const formik = useFormik({
     initialValues: {
       customerTableId: id || "",
-      cashReceived: "",
-      bankReceived: "",
-      coinsReceived: "",
+      cashReceived: "" || 0,
+      bankReceived: "" || 0,
+      coinsReceived: "" || 0,
     },
     validationSchema: validationSchema,
     enableReinitialize: true,
@@ -36,9 +36,11 @@ export const useSplitPayForm = ({ batchId }) => {
       onSuccess: () => {
         setLoading(false);
         formik.resetForm();
+        onClose();
       },
       onError: () => {
         setLoading(false);
+        onClose();
       },
     });
   };

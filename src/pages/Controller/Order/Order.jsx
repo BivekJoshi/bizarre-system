@@ -283,6 +283,7 @@ const Order = () => {
         header={"Payment Method"}
         formComponent={
           <PaymentModal
+            batchStatus={orderData?.data?.batchStatus}
             batchId={orderData?.data?.batchId}
             onClose={() => setIsPaymentModalOpen(false)}
           />
