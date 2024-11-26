@@ -1,9 +1,12 @@
 import { useFormik } from "formik";
-import { useGenerateItemSalesReport } from "../useReport";
+import { useDownloadItemSalesReport } from "../useReport";
 import { useEffect } from "react";
 
-export const useItemSalesReportForm = ({ onClose, salesItemReport }) => {
-  const { mutate } = useGenerateItemSalesReport({});
+export const useItemSalesReportDownloadForm = ({
+  onClose,
+  salesItemReport,
+}) => {
+  const { mutate } = useDownloadItemSalesReport({});
 
   const today = new Date();
   const lastMonthDate = new Date();
@@ -13,8 +16,8 @@ export const useItemSalesReportForm = ({ onClose, salesItemReport }) => {
     initialValues: {
       from: lastMonthDate.toISOString().slice(0, 10),
       to: today.toISOString().slice(0, 10),
-      itemId: "",
-      itemType: ""||"FOOD",
+      itemType: "" || "FOOD",
+      fileType: "" || "excel",
     },
     // validationSchema: branchSchema,
     enableReinitialize: true,

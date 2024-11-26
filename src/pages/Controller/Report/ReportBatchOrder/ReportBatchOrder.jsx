@@ -5,6 +5,7 @@ import {
   CardContent,
   Chip,
   Grid,
+  Tooltip,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -14,21 +15,34 @@ import ReportBatchOrderForm from "./ReportBatchOrderForm";
 import NoDataFound from "../../../PageNotFound/NoDataFound";
 import { useBatchOrderReportForm } from "../../../../hooks/report/batchOrder/useBatchOrderReportForm";
 import { useBatchOrderReportDownloadForm } from "../../../../hooks/report/batchOrder/useBatchOrderReportDownloadForm";
+import ConfirmationModal from "../../../../components/Modal/ConfirmationModal";
+import CardMembershipIcon from "@mui/icons-material/CardMembership";
+import FormModal from "../../../../components/Modal/FormModal";
+import ReGenerateBillModal from "../../Batch/Bill/ReGenerateBillModal";
+import { DOC_URL } from "../../../../api/axiosInterceptor";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import AnalyticsIcon from "@mui/icons-material/Analytics";
 
 const ReportBatchOrder = () => {
   const theme = useTheme();
   const [reportData, setReportData] = useState(null);
+  const [rowData, setRowData] = useState(null);
+  const [fileType, setFileType] = useState(null);
+
   const [downloadReportData, setDownlaodReportData] = useState(null);
-  console.log(
-    "🚀 ~ ReportBatchOrder ~ downloadReportData:",
-    downloadReportData
-  );
+  const [isReGenerateBillModalOpen, setIsReGenerateBillModalOpen] =
+    useState(false);
+  const [openBillLayout, setOpenLayout] = useState(false);
 
   const { formik } = useBatchOrderReportForm({
-    salesItemReport: (data) => setReportData(data),
+    salesItemReport: (data) => {
+      setReportData(data);
+    },
   });
 
   const { formik: downloadFormik } = useBatchOrderReportDownloadForm({
+    setData: formik?.values,
+    fileType: fileType,
     salesItemReport: (data) => setDownlaodReportData(data),
   });
 
@@ -156,6 +170,21 @@ const ReportBatchOrder = () => {
     []
   );
 
+  const handleGenerate = (row) => {
+    setIsReGenerateBillModalOpen(true);
+    setRowData(row?.original);
+  };
+
+  const handleReGenerateBill = () => {
+    setOpenLayout(true);
+  };
+
+  const handleClickExport = (fileType) => {
+    if (fileType) {
+      setFileType(fileType);
+      downloadFormik.handleSubmit();
+    }
+  };
   const renderReportCard = (title, value, icon) => (
     <Card>
       <CardContent sx={{ display: "flex", alignItems: "center" }}>
@@ -169,9 +198,19 @@ const ReportBatchOrder = () => {
     </Card>
   );
 
+  if (downloadReportData) {
+    const fullURL = DOC_URL + downloadReportData;
+    window.open(fullURL, "_blank");
+  }
+
   return (
     <div>
-      <ReportBatchOrderForm formik={formik} downloadFormik={downloadFormik} />
+      <ReportBatchOrderForm
+        formik={formik}
+        downloadFormik={downloadFormik}
+        fileType={fileType}
+        setFileType
+      />
       <br />
 
       {reportData && (
@@ -182,12 +221,29 @@ const ReportBatchOrder = () => {
             marginTop: ".1rem",
           }}
         >
-          <Typography
-            variant="h3"
-            sx={{ color: theme.palette.text.default, fontWeight: 700 }}
-          >
-            Batch Order Report
-          </Typography>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <Typography
+              variant="h3"
+              sx={{ color: theme.palette.text.default, fontWeight: 700 }}
+            >
+              Batch Order Report
+            </Typography>
+            <div style={{ display: "flex", gap: "1rem" }}>
+              <Tooltip
+                title="Export as PDF"
+                onClick={() => handleClickExport("pdf")}
+              >
+                <PictureAsPdfIcon sx={{ fontSize: "30px" }} />
+              </Tooltip>
+              <Tooltip
+                title="Export as Excel"
+                onClick={() => handleClickExport("excel")}
+              >
+                <AnalyticsIcon sx={{ fontSize: "30px" }} />
+              </Tooltip>
+            </div>
+          </div>
+
           <br />
 
           {reportData?.batchOrders && reportData?.batchOrders?.length > 0 ? (
@@ -248,6 +304,12 @@ const ReportBatchOrder = () => {
                 width="100%"
                 enablePagination={false}
                 enableRowNumbers
+                enableColumnActions
+                generate
+                enableEditing={true}
+                generateTitle="Regenerate Bill"
+                generateButton="Regenerate Bill"
+                handleGenerate={handleGenerate}
               />
             </>
           ) : (
@@ -255,6 +317,46 @@ const ReportBatchOrder = () => {
           )}
         </Box>
       )}
+
+      <ConfirmationModal
+        disagreeLabel={"No, Close !"}
+        agreeLabel={"Yes, Procced"}
+        alertTitle={"Regerate Bill"}
+        header={"You are going to regenerate bill!"}
+        confirmhead={"Are you sure ?"}
+        isModalOpen={isReGenerateBillModalOpen}
+        handleModalClose={handleReGenerateBill}
+        handleSave={() => setIsReGenerateBillModalOpen(false)}
+        icon={
+          <CardMembershipIcon
+            sx={{
+              backgroundColor: "#e9d3f1",
+              borderRadius: "50%",
+              fontSize: 36,
+              padding: "1rem",
+              color: "#ab0ad8",
+            }}
+          />
+        }
+      />
+      <FormModal
+        open={openBillLayout}
+        onClose={() => setOpenLayout(false)}
+        width={"30%"}
+        height={"auto"}
+        maxHeight={"80vh"}
+        header={"Regenerate Bill"}
+        formComponent={
+          <ReGenerateBillModal
+            batchId={rowData?.id}
+            onClose={() => {
+              setOpenLayout(false);
+              setIsReGenerateBillModalOpen(false);
+            }}
+          />
+        }
+        showButton={false}
+      />
     </div>
   );
 };

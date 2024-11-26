@@ -1,6 +1,6 @@
 import { Delete, Edit } from "@mui/icons-material";
 import UploadFileRoundedIcon from "@mui/icons-material/UploadFileRounded";
-import { Box, IconButton, Tooltip, useTheme } from "@mui/material";
+import { Box, Button, IconButton, Tooltip, useTheme } from "@mui/material";
 import { MaterialReactTable } from "material-react-table";
 import { useCallback } from "react";
 
@@ -16,6 +16,12 @@ const CustomTable = (props) => {
   const handleEnter = useCallback((row) => {
     if (props.handleEnter) {
       props.handleEnter(row);
+    }
+  }, []);
+
+  const handleGenerate = useCallback((row) => {
+    if (props.handleGenerate) {
+      props.handleGenerate(row);
     }
   }, []);
 
@@ -154,6 +160,17 @@ const CustomTable = (props) => {
                   >
                     {props?.enterIcon}
                   </IconButton>
+                </Tooltip>
+              )}
+
+              {props.generate && (
+                <Tooltip arrow placement="right" title={props.generateTitle}>
+                  <Button
+                    variant="contained"
+                    onClick={() => handleGenerate(row)}
+                  >
+                    {props?.generateButton}
+                  </Button>
                 </Tooltip>
               )}
             </Box>

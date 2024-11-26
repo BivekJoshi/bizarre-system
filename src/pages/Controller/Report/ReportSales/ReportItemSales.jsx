@@ -1,22 +1,25 @@
 import React, { useMemo, useState } from "react";
-import {
-  Box,
-  Paper,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Box, Paper, Typography, useTheme } from "@mui/material";
 import { nanoid } from "nanoid";
 import CustomTable from "../../../../components/CustomTable/CustomTable";
 import NoDataFound from "../../../PageNotFound/NoDataFound";
 import ReportItemSalesForm from "./ReportItemSalesForm";
 import { useItemSalesReportForm } from "../../../../hooks/report/itemSales/useItemSalesReportForm";
+import { useItemSalesReportDownloadForm } from "../../../../hooks/report/itemSales/useItemSalesReportDownloadForm";
+import { DOC_URL } from "../../../../api/axiosInterceptor";
 
 const ReportItemSales = () => {
   const theme = useTheme();
   const [reportData, setReportData] = useState(null);
 
+  const [downloadReportData, setDownlaodReportData] = useState(null);
+
   const { formik } = useItemSalesReportForm({
     salesItemReport: (data) => setReportData(data),
+  });
+
+  const { formik: downloadFormik } = useItemSalesReportDownloadForm({
+    salesItemReport: (data) => setDownlaodReportData(data),
   });
 
   const columns = useMemo(
@@ -43,9 +46,14 @@ const ReportItemSales = () => {
     []
   );
 
+  if (downloadReportData) {
+    const fullURL = DOC_URL + downloadReportData;
+    window.open(fullURL, "_blank");
+  }
+
   return (
     <div>
-      <ReportItemSalesForm formik={formik} />
+      <ReportItemSalesForm formik={formik} downloadFormik={downloadFormik} />
       <br />
 
       {reportData && (

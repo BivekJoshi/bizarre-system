@@ -71,7 +71,7 @@ const UserCard = ({ data }) => {
               {data?.user?.fullName || "User Name"}
             </Typography>
             <IconButton sx={{ color: theme.palette.primary.main }}>
-              <EditRoundedIcon />
+              {/* <EditRoundedIcon /> */}
             </IconButton>
           </Box>
 

@@ -6,7 +6,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
 import SearchIcon from "@mui/icons-material/Search";
 
-const ReportItemSalesForm = ({ formik }) => {
+const ReportItemSalesForm = ({ formik, downloadFormik }) => {
   const theme = useTheme();
   const [showFields, setShowFields] = useState(true);
 
@@ -98,8 +98,11 @@ const ReportItemSalesForm = ({ formik }) => {
       <br />
       {showFields && (
         <>
-          <RenderInput inputField={inputField} formik={formik} />
-          <div style={{ display: "flex", justifyContent: "end" }}>
+          <RenderInput
+            inputField={inputField}
+            formik={formik || downloadFormik}
+          />
+          <div style={{ display: "flex", justifyContent: "end", gap: "1rem" }}>
             <Button
               onClick={() => formik.handleSubmit()}
               variant="outlined"
@@ -108,6 +111,14 @@ const ReportItemSalesForm = ({ formik }) => {
             >
               Search
             </Button>
+            {/* <Button
+              onClick={() => downloadFormik.handleSubmit()}
+              variant="contained"
+              sx={{ marginTop: "1rem" }}
+              startIcon={<SearchIcon />}
+            >
+              Download Report
+            </Button> */}
           </div>
         </>
       )}

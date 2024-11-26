@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import { useGenerateBatchOrderReport } from "../useReport";
 import { useEffect } from "react";
 
-export const useBatchOrderReportForm = ({ onClose, salesItemReport }) => {
+export const useBatchOrderReportForm = ({ salesItemReport }) => {
   const { mutate } = useGenerateBatchOrderReport({});
 
   const today = new Date();
@@ -30,15 +30,10 @@ export const useBatchOrderReportForm = ({ onClose, salesItemReport }) => {
     mutate(values, {
       onSuccess: (data) => {
         salesItemReport(data?.data?.data);
-        onClose && onClose();
+        formik.resetForm();
       },
     });
   };
-  useEffect(() => {
-    if (formik.values.from && formik.values.to) {
-      handleAddRequest(formik.values); 
-    }
-  }, []);
 
   return {
     formik,

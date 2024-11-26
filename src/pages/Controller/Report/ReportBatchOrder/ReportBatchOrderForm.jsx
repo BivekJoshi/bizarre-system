@@ -6,7 +6,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
 import SearchIcon from "@mui/icons-material/Search";
 
-const ReportBatchOrderForm = ({ formik, downloadFormik }) => {
+const ReportBatchOrderForm = ({ formik, downloadFormik, fileType }) => {
   const theme = useTheme();
   const [showFields, setShowFields] = useState(true);
 
@@ -120,10 +120,12 @@ const ReportBatchOrderForm = ({ formik, downloadFormik }) => {
       <br />
       {showFields && (
         <>
-          <RenderInput
-            inputField={inputField}
-            formik={formik || downloadFormik}
-          />
+          {fileType ? (
+            <RenderInput inputField={inputField} formik={downloadFormik} />
+          ) : (
+            <RenderInput inputField={inputField} formik={formik} />
+          )}
+
           <div style={{ display: "flex", justifyContent: "end", gap: "1rem" }}>
             <Button
               onClick={() => formik.handleSubmit()}
@@ -133,14 +135,14 @@ const ReportBatchOrderForm = ({ formik, downloadFormik }) => {
             >
               Search
             </Button>
-            <Button
+            {/* <Button
               onClick={() => downloadFormik.handleSubmit()}
               variant="contained"
               sx={{ marginTop: "1rem" }}
               startIcon={<SearchIcon />}
             >
               Download Report
-            </Button>
+            </Button> */}
           </div>
         </>
       )}

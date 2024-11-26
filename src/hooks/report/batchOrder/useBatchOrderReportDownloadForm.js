@@ -3,7 +3,8 @@ import { useDownloadBatchOrderReport } from "../useReport";
 import { useEffect } from "react";
 
 export const useBatchOrderReportDownloadForm = ({
-  onClose,
+  setData,
+  fileType,
   salesItemReport,
 }) => {
   const { mutate } = useDownloadBatchOrderReport({});
@@ -14,13 +15,13 @@ export const useBatchOrderReportDownloadForm = ({
 
   const formik = useFormik({
     initialValues: {
-      from: lastMonthDate.toISOString().slice(0, 10),
-      to: today.toISOString().slice(0, 10),
-      branchId: "",
-      tableId: "",
-      customerName: "",
-      memberName: "",
-      fileType: "" || "xml",
+      from: setData?.from || "",
+      to: setData?.to || "",
+      branchId: setData?.branchId || "",
+      tableId: setData?.tableId || "",
+      customerName: setData?.customerName || "",
+      memberName: setData?.memberName || "",
+      fileType: fileType || "excel",
     },
     // validationSchema: branchSchema,
     enableReinitialize: true,
@@ -33,7 +34,7 @@ export const useBatchOrderReportDownloadForm = ({
     mutate(values, {
       onSuccess: (data) => {
         salesItemReport(data?.data?.data);
-        onClose && onClose();
+        formik.resetForm();
       },
     });
   };
