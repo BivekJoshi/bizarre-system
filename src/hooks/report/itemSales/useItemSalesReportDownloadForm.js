@@ -1,25 +1,17 @@
 import { useFormik } from "formik";
 import { useDownloadItemSalesReport } from "../useReport";
-import { useEffect } from "react";
+import { DOC_URL } from "../../../api/axiosInterceptor";
 
-export const useItemSalesReportDownloadForm = ({
-  onClose,
-  salesItemReport,
-}) => {
+export const useItemSalesReportDownloadForm = ({ setData, fileType }) => {
   const { mutate } = useDownloadItemSalesReport({});
-
-  const today = new Date();
-  const lastMonthDate = new Date();
-  lastMonthDate.setMonth(today.getMonth() - 1);
 
   const formik = useFormik({
     initialValues: {
-      from: lastMonthDate.toISOString().slice(0, 10),
-      to: today.toISOString().slice(0, 10),
-      itemType: "" || "FOOD",
-      fileType: "" || "excel",
+      from: setData?.from || "",
+      to: setData?.to || "",
+      itemType: setData?.itemType || "FOOD",
+      fileType: fileType || "excel",
     },
-    // validationSchema: branchSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
       handleAddRequest(values);
@@ -29,8 +21,8 @@ export const useItemSalesReportDownloadForm = ({
   const handleAddRequest = (values) => {
     mutate(values, {
       onSuccess: (data) => {
-        salesItemReport(data?.data?.data);
-        onClose && onClose();
+        const fullURL = DOC_URL + data?.data?.data;
+        window.open(fullURL, "_blank");
       },
     });
   };

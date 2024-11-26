@@ -29,7 +29,6 @@ const ReportBatchOrder = () => {
   const [rowData, setRowData] = useState(null);
   const [fileType, setFileType] = useState(null);
 
-  const [downloadReportData, setDownlaodReportData] = useState(null);
   const [isReGenerateBillModalOpen, setIsReGenerateBillModalOpen] =
     useState(false);
   const [openBillLayout, setOpenLayout] = useState(false);
@@ -43,7 +42,6 @@ const ReportBatchOrder = () => {
   const { formik: downloadFormik } = useBatchOrderReportDownloadForm({
     setData: formik?.values,
     fileType: fileType,
-    salesItemReport: (data) => setDownlaodReportData(data),
   });
 
   const columns = useMemo(
@@ -198,19 +196,9 @@ const ReportBatchOrder = () => {
     </Card>
   );
 
-  if (downloadReportData) {
-    const fullURL = DOC_URL + downloadReportData;
-    window.open(fullURL, "_blank");
-  }
-
   return (
     <div>
-      <ReportBatchOrderForm
-        formik={formik}
-        downloadFormik={downloadFormik}
-        fileType={fileType}
-        setFileType
-      />
+      <ReportBatchOrderForm formik={formik} />
       <br />
 
       {reportData && (

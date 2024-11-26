@@ -129,18 +129,18 @@ const BillLayout = ({ finalBill, onClose }) => {
         max-width: 160px;
       }
 
-      @media print {
-        .hidden-print,
-        .hidden-print * {
-          display: none !important;
-        }
-      }
+@media print {
+  .hidden-print,
+  .hidden-print * {
+    display: none !important;
+  }
+}
     </style>
   </head>
   <body>
     <div class="ticket">
       <div class="centered">
-        <img alt="Bizarre-Bros-Logo" src="${receiptlogo}" />
+        <img alt="Bizarre-Bros-Logo" src="https://cafebizarre.com.np/files/images/Bizarre-Bros-Outline-Black.png" style="width:50px; display:block; margin:0 auto;" />
       </div>
       <h1 class="centered">Bizarre Bros.</h1>
       <h2 class="centered">Cafe Bizarre</h2>
@@ -197,6 +197,7 @@ const BillLayout = ({ finalBill, onClose }) => {
         Issuer Agreement
       </p>
       <p class="centered">* Customer Copy *</p>
+      <p class="centered">Billing Date : ${finalBill?.billingDate}</p>
     </div>
   </body>
 </html>

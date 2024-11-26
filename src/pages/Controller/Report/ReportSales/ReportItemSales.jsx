@@ -1,25 +1,27 @@
 import React, { useMemo, useState } from "react";
-import { Box, Paper, Typography, useTheme } from "@mui/material";
+import { Box, Paper, Tooltip, Typography, useTheme } from "@mui/material";
 import { nanoid } from "nanoid";
 import CustomTable from "../../../../components/CustomTable/CustomTable";
 import NoDataFound from "../../../PageNotFound/NoDataFound";
 import ReportItemSalesForm from "./ReportItemSalesForm";
 import { useItemSalesReportForm } from "../../../../hooks/report/itemSales/useItemSalesReportForm";
 import { useItemSalesReportDownloadForm } from "../../../../hooks/report/itemSales/useItemSalesReportDownloadForm";
-import { DOC_URL } from "../../../../api/axiosInterceptor";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import AnalyticsIcon from "@mui/icons-material/Analytics";
 
 const ReportItemSales = () => {
   const theme = useTheme();
   const [reportData, setReportData] = useState(null);
+  const [fileType, setFileType] = useState(null);
 
-  const [downloadReportData, setDownlaodReportData] = useState(null);
 
   const { formik } = useItemSalesReportForm({
     salesItemReport: (data) => setReportData(data),
   });
 
   const { formik: downloadFormik } = useItemSalesReportDownloadForm({
-    salesItemReport: (data) => setDownlaodReportData(data),
+    setData: formik?.values,
+    fileType: fileType,
   });
 
   const columns = useMemo(
@@ -32,28 +34,43 @@ const ReportItemSales = () => {
       },
       {
         id: nanoid(),
-        accessorKey: "sales",
-        header: "Total sales",
+        accessorKey: "cost",
+        header: "Cost",
         maxWidth: 80,
       },
+      {
+        id: nanoid(),
+        accessorKey: "sales",
+        header: "Sales",
+        maxWidth: 80,
+      },
+
       {
         id: nanoid(),
         accessorKey: "sellingPrice",
         header: "Selling Price",
         maxWidth: 80,
       },
+      {
+        id: nanoid(),
+        accessorKey: "salesAmount",
+        header: "Sales Amount",
+        maxWidth: 80,
+      },
     ],
     []
   );
 
-  if (downloadReportData) {
-    const fullURL = DOC_URL + downloadReportData;
-    window.open(fullURL, "_blank");
-  }
+  const handleClickExport = (fileType) => {
+    if (fileType) {
+      setFileType(fileType);
+      downloadFormik.handleSubmit();
+    }
+  };
 
   return (
     <div>
-      <ReportItemSalesForm formik={formik} downloadFormik={downloadFormik} />
+      <ReportItemSalesForm formik={formik} />
       <br />
 
       {reportData && (
@@ -64,12 +81,28 @@ const ReportItemSales = () => {
             marginTop: ".1rem",
           }}
         >
-          <Typography
-            variant="h3"
-            sx={{ color: theme.palette.text.default, fontWeight: 700 }}
-          >
-            Item Sales Report
-          </Typography>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <Typography
+              variant="h3"
+              sx={{ color: theme.palette.text.default, fontWeight: 700 }}
+            >
+              Item Sales Report
+            </Typography>
+            <div style={{ display: "flex", gap: "1rem" }}>
+              <Tooltip
+                title="Export as PDF"
+                onClick={() => handleClickExport("pdf")}
+              >
+                <PictureAsPdfIcon sx={{ fontSize: "30px" }} />
+              </Tooltip>
+              <Tooltip
+                title="Export as Excel"
+                onClick={() => handleClickExport("excel")}
+              >
+                <AnalyticsIcon sx={{ fontSize: "30px" }} />
+              </Tooltip>
+            </div>
+          </div>
           <br />
 
           {reportData?.itemSalesList ? (
@@ -93,6 +126,42 @@ const ReportItemSales = () => {
                   >
                     {reportData?.bestItem}
                   </Typography>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography variant="h5">Total Cost</Typography>
+                    <Typography variant="h5">
+                      {reportData?.totalCost || "NA"}
+                    </Typography>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography variant="h5">Total Sales</Typography>
+                    <Typography variant="h5">
+                      {reportData?.totalSales || "NA"}
+                    </Typography>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography variant="h5">Total Profit</Typography>
+                    <Typography variant="h5">
+                      {reportData?.totalProfit || "NA"}
+                    </Typography>
+                  </div>
                 </div>
               </Paper>
               <br />

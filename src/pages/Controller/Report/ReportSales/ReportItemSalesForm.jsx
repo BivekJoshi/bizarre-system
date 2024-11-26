@@ -6,7 +6,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
 import SearchIcon from "@mui/icons-material/Search";
 
-const ReportItemSalesForm = ({ formik, downloadFormik }) => {
+const ReportItemSalesForm = ({ formik }) => {
   const theme = useTheme();
   const [showFields, setShowFields] = useState(true);
 
@@ -54,7 +54,6 @@ const ReportItemSalesForm = ({ formik, downloadFormik }) => {
       name: "itemType",
       label: "Item Type",
       type: "dropDown",
-      required: true,
       options: [
         { value: "BEVERAGE", label: "Beverage", id: nanoid() },
         { value: "FOOD", label: "Food", id: nanoid() },
@@ -100,7 +99,7 @@ const ReportItemSalesForm = ({ formik, downloadFormik }) => {
         <>
           <RenderInput
             inputField={inputField}
-            formik={formik || downloadFormik}
+            formik={formik }
           />
           <div style={{ display: "flex", justifyContent: "end", gap: "1rem" }}>
             <Button

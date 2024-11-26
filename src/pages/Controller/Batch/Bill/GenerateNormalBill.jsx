@@ -41,6 +41,18 @@ const GenerateNormalBill = ({ batchId, onClose }) => {
     },
     {
       id: nanoid(),
+      name: "promoCode",
+      label: "Promo Code",
+      placeholder: "Enter promo code",
+      type: "text",
+      // required: true,
+      xs: 12,
+      md: 12,
+      lg: 12,
+      sm: 12,
+    },
+    {
+      id: nanoid(),
       name: "mobileNumber",
       label: "Mobile Number",
       placeholder: "Enter mobile number",

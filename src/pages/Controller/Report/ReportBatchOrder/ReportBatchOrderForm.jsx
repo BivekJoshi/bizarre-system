@@ -6,7 +6,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
 import SearchIcon from "@mui/icons-material/Search";
 
-const ReportBatchOrderForm = ({ formik, downloadFormik, fileType }) => {
+const ReportBatchOrderForm = ({ formik }) => {
   const theme = useTheme();
   const [showFields, setShowFields] = useState(true);
 
@@ -40,7 +40,6 @@ const ReportBatchOrderForm = ({ formik, downloadFormik, fileType }) => {
       name: "customerName",
       label: "Customer Name",
       placeholder: "Enter customer name",
-      required: true,
       type: "text",
       xs: 12,
       md: 3,
@@ -52,7 +51,6 @@ const ReportBatchOrderForm = ({ formik, downloadFormik, fileType }) => {
       name: "memberName",
       label: "Member Name",
       placeholder: "Enter member name",
-      required: true,
       type: "text",
       xs: 12,
       md: 3,
@@ -66,7 +64,6 @@ const ReportBatchOrderForm = ({ formik, downloadFormik, fileType }) => {
       label: "Branch",
       path: "/branch/find",
       type: "asyncDropDown",
-      required: true,
       responseLabel: "address",
       xs: 12,
       md: 3,
@@ -120,12 +117,10 @@ const ReportBatchOrderForm = ({ formik, downloadFormik, fileType }) => {
       <br />
       {showFields && (
         <>
-          {fileType ? (
-            <RenderInput inputField={inputField} formik={downloadFormik} />
-          ) : (
-            <RenderInput inputField={inputField} formik={formik} />
-          )}
-
+          <RenderInput
+            inputField={inputField}
+            formik={formik}
+          />
           <div style={{ display: "flex", justifyContent: "end", gap: "1rem" }}>
             <Button
               onClick={() => formik.handleSubmit()}

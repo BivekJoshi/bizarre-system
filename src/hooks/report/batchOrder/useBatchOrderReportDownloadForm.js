@@ -1,17 +1,12 @@
 import { useFormik } from "formik";
 import { useDownloadBatchOrderReport } from "../useReport";
-import { useEffect } from "react";
+import { DOC_URL } from "../../../api/axiosInterceptor";
 
 export const useBatchOrderReportDownloadForm = ({
   setData,
   fileType,
-  salesItemReport,
 }) => {
   const { mutate } = useDownloadBatchOrderReport({});
-
-  const today = new Date();
-  const lastMonthDate = new Date();
-  lastMonthDate.setMonth(today.getMonth() - 1);
 
   const formik = useFormik({
     initialValues: {
@@ -23,7 +18,6 @@ export const useBatchOrderReportDownloadForm = ({
       memberName: setData?.memberName || "",
       fileType: fileType || "excel",
     },
-    // validationSchema: branchSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
       handleAddRequest(values);
@@ -33,8 +27,8 @@ export const useBatchOrderReportDownloadForm = ({
   const handleAddRequest = (values) => {
     mutate(values, {
       onSuccess: (data) => {
-        salesItemReport(data?.data?.data);
-        formik.resetForm();
+        const fullURL = DOC_URL + data?.data?.data;
+        window.open(fullURL, "_blank");
       },
     });
   };
