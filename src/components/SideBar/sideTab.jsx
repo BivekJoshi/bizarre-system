@@ -196,6 +196,32 @@ export const branchOwnerTab = [
     value: "customer",
     icon: <FaceRetouchingNaturalRoundedIcon />,
   },
+  {
+    id: nanoid(),
+    label: "Report",
+    value: "batch-report",
+    icon: <DnsIcon />,
+    subTabs: [
+      // {
+      //   id: nanoid(),
+      //   label: "Report Dashboard",
+      //   value: "report-dashboard",
+      //   icon: <AspectRatioIcon />,
+      // },
+      {
+        id: nanoid(),
+        label: "Batch Report",
+        value: "batch-report",
+        icon: <BatchPredictionIcon />,
+      },
+      {
+        id: nanoid(),
+        label: "Sales Report",
+        value: "sales-report",
+        icon: <ReceiptIcon />,
+      },
+    ],
+  },
 ];
 
 export const cashierTab = [

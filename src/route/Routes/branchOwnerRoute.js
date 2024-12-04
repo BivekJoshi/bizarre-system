@@ -36,6 +36,14 @@ const OrderProcessTab = Loadable(
     import("../../pages/Controller/Order/OrderProcess/OrderProcessTab")
   )
 );
+const ReportBatchOrder = Loadable(
+  lazy(() =>
+    import("../../pages/Controller/Report/ReportBatchOrder/ReportBatchOrder")
+  )
+);
+const ReportItemSales = Loadable(
+  lazy(() => import("../../pages/Controller/Report/ReportSales/ReportItemSales"))
+);
 
 const branchOwnerRoute = [
   {
@@ -93,6 +101,21 @@ const branchOwnerRoute = [
     id: nanoid(),
     component: PromoCode,
   },
+
+  {
+    path: "batch-report",
+    name: "batch-report",
+    id: nanoid(),
+    component: ReportBatchOrder,
+  },
+
+  {
+    path: "sales-report",
+    name: "sales-report",
+    id: nanoid(),
+    component: ReportItemSales,
+  },
+  
 ];
 
 export { branchOwnerRoute };
