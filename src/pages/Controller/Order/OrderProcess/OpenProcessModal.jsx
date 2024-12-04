@@ -89,6 +89,13 @@ const OpenProcessModal = ({ rowId, refetch, onClose }) => {
     refetch();
   };
 
+  const handleClick = (status, action) => {
+    setSelectedCard(status);
+    action(rowId);
+    onClose();
+    refetch();
+  };
+
   return (
     <Box p={2}>
       {isLoading ? (
@@ -166,7 +173,6 @@ const OpenProcessModal = ({ rowId, refetch, onClose }) => {
                   boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)",
                 },
               }}
-              // onClick={() => handleCardClick("cancelled", fetchCancelledOrder)}
               onClick={
                 orderData?.data?.status === "WAITING"
                   ? () => handleCardClick("delete", deleteOrder)

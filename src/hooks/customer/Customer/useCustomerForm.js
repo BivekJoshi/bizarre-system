@@ -4,17 +4,19 @@ import { useFormik } from "formik";
 import { useAddCustomer, useEditCustomer } from "../useCustomer";
 import { useState } from "react";
 
-export const useCustomerForm = ({ onClose, data }) => {
+export const useCustomerForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddCustomer({});
   const { mutate: editMutate } = useEditCustomer({});
   const [successFlag, setSuccessFlag] = useState(false);
 
   const formik = useFormik({
     initialValues: {
-      id: data?.id || "",
-      address: data?.address || "",
-      phoneNumber: data?.phoneNumber || "",
-      housingCapacity: data?.housingCapacity || "",
+      id: rowData?.id || "",
+      fullName: rowData?.user?.fullName || "",
+      gender: rowData?.user?.gender || "",
+      birthDate: rowData?.user?.birthDate || "",
+      address: rowData?.user?.address || "",
+      email: rowData?.user?.email || "",
     },
     // validationSchema: branchSchema,
     enableReinitialize: true,

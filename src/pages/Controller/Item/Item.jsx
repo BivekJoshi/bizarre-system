@@ -109,9 +109,27 @@ const Item = () => {
         id: nanoid(),
         accessorKey: "description",
         header: "Description",
-        maxWidth: 80,
+        maxWidth: 180,
+        size: 300,
         sortable: false,
+        Cell: ({ cell }) => {
+          const description = cell.getValue();
+          return (
+            <div
+              style={{
+                display: "block", 
+                wordWrap: "break-word", 
+                overflow: "hidden", 
+                textOverflow: "ellipsis", 
+                whiteSpace: "normal", 
+              }}
+              dangerouslySetInnerHTML={{ __html: description }}
+            />
+          );
+        },
       },
+      
+      
       {
         id: nanoid(),
         accessorKey: "type",

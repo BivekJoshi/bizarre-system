@@ -7,9 +7,11 @@ import { Button, Grid, Stack } from "@mui/material";
 import RenderInput from "../../../../components/RenderInput/RenderInput";
 import { LoadingButton } from "@mui/lab";
 import { useByPassPaymentBatchForm } from "../../../../hooks/batch/Batch/useByPassPaymentForm";
+import { useSelector } from "react-redux";
 
 const BypassPayment = ({ batchId }) => {
   const { formik, loading } = useByPassPaymentBatchForm({ batchId });
+  const userType = useSelector((state) => state?.user?.userType);
 
   const inputField = [
     {
@@ -47,6 +49,9 @@ const BypassPayment = ({ batchId }) => {
           <LoadingButton
             loading={loading}
             onClick={() => formik.handleSubmit()}
+            disabled={
+              userType === "ADMIN" || userType === "BRANCH_OWNER" ? false : true
+            }
             variant={"outlined"}
             Width={"-webkit-fill-available"}
             startIcon={<ControlPointRoundedIcon />}

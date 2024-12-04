@@ -36,7 +36,7 @@ const BillRegerateLayout = ({ finalBill, onClose }) => {
                     bill?.appliedPromoCode || "NA"
                   }</td></tr>
                   <tr><td>Attendant:</td><td>${
-                    bill?.attendent || "NA"
+                    bill?.attendant || "NA"
                   }</td></tr>
                 </table>
                 <br />

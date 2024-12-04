@@ -64,16 +64,25 @@ const ItemCardView = ({ data }) => {
                 display: "-webkit-box",
                 WebkitBoxOrient: "vertical",
                 overflow: "hidden",
-                WebkitLineClamp: 2, // Limit to 2 lines
-                height: "3em", // Set a specific height for 2 lines
-                transition: "height 0.3s ease", // Smooth transition for height
+                WebkitLineClamp: 2, 
+                height: "3em", 
+                transition: "height 0.3s ease", 
                 '&:hover': {
-                  WebkitLineClamp: 'unset', // Remove line clamp on hover
-                  height: 'auto', // Allow height to expand
+                  WebkitLineClamp: 'unset', 
+                  height: 'auto', 
                 },
               }}
             >
-              {data?.description}
+              <div
+              style={{
+                display: "block", 
+                wordWrap: "break-word", 
+                overflow: "hidden", 
+                textOverflow: "ellipsis", 
+                whiteSpace: "normal", 
+              }}
+              dangerouslySetInnerHTML={{ __html: data?.description }}
+            />
             </Typography>
           </Grid>
           <Grid item xs={12}>

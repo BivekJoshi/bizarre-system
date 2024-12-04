@@ -4,9 +4,11 @@ import React from "react";
 import Normalpay from "./Normalpay";
 import SplitPay from "./SplitPay";
 import BypassPayment from "./BypassPayment";
+import { useSelector } from "react-redux";
 
 const PaymentModal = ({ batchStatus, batchId, onClose }) => {
   const [value, setValue] = React.useState("NORMAL");
+  const userType = useSelector((state) => state?.user?.userType);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -19,7 +21,10 @@ const PaymentModal = ({ batchStatus, batchId, onClose }) => {
           <TabList onChange={handleChange} aria-label="lab API tabs example">
             <Tab label="Make Payment" value="NORMAL" />
             {/* <Tab label="Split Pay" value="SPLIT" /> */}
-            <Tab label="Bypass Payment" value="BYPASS" />
+            {userType === "ADMIN" ||
+              (userType === "BRANCH_OWNER" && (
+                <Tab label="Bypass Payment" value="BYPASS" />
+              ))}
           </TabList>
         </Box>
         <TabPanel value="NORMAL">

@@ -204,7 +204,7 @@ const Order = () => {
                 variant="outlined"
                 onClick={() => setIsReGenerateBillModalOpen(true)}
                 // startIcon={<ControlPointRoundedIcon />}
-                allowedUserTypes={["CASHIER"]}
+                allowedUserTypes={["CASHIER", "BRANCH_OWNER", "ADMIN"]}
                 disabledUserTypes={[]}
               />
               <PermissionButton
@@ -212,7 +212,7 @@ const Order = () => {
                 variant="contained"
                 onClick={() => setIsPaymentModalOpen(true)}
                 // startIcon={<ControlPointRoundedIcon />}
-                allowedUserTypes={["CASHIER"]}
+                allowedUserTypes={["CASHIER", "BRANCH_OWNER", "ADMIN"]}
                 disabledUserTypes={[]}
               />
             </div>
@@ -222,7 +222,7 @@ const Order = () => {
               variant="outlined"
               onClick={() => setIsGenerateBillModalOpen(true)}
               // startIcon={<ControlPointRoundedIcon />}
-              allowedUserTypes={["WAITER", "CASHIER"]}
+              allowedUserTypes={["WAITER", "CASHIER", "BRANCH_OWNER", "ADMIN"]}
               disabledUserTypes={[]}
             />
           )}

@@ -20,7 +20,7 @@ export const useItemSalesReportForm = ({ salesItemReport }) => {
       from: "",
       to: "",
       itemId: "",
-      itemType: "" || "FOOD",
+      itemType: "",
     },
     validationSchema: batchOrderReportSchema,
     enableReinitialize: true,

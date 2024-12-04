@@ -34,6 +34,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CustomerUnboardForm from "./CustomerUnboardForm";
 import { useCustomerOnBoardForm } from "../../../hooks/customer/Customer/CustomerOnBoard/useCustomerOnBoardForm";
+import CustomerEditForm from "./CustomerEditForm";
 
 const Customer = () => {
   const theme = useTheme();
@@ -44,8 +45,8 @@ const Customer = () => {
   const [isAddModalOpen, setIsAddModal] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isCustomerOnBoardModalOpen, setIsCustomerOnBoardModalOpen] = useState(false);
-
+  const [isCustomerOnBoardModalOpen, setIsCustomerOnBoardModalOpen] =
+    useState(false);
 
   const [isVerifyModalOpen, setIsVerifyModalOpen] = useState(false);
 
@@ -55,16 +56,21 @@ const Customer = () => {
 
   const onClose = () => {
     setIsAddModal(false);
-    setIsCustomerOnBoardModalOpen(false)
+    setIsCustomerOnBoardModalOpen(false);
+    setIsEditModalOpen(false);
   };
-  const { formik, successFlag, loading } = useCustomerForm({ onClose });
+  const { formik, successFlag, loading } = useCustomerForm({
+    onClose,
+    rowData,
+  });
 
   const { formik: filterFormik, loading: isLoading } = useFilterCustomerForm({
     customerData: (data) => setFilteredData(data),
     successFlag,
   });
 
-  const { formik: onBoardFormik, loading: isLoadingOnBoard } = useCustomerOnBoardForm({ onClose });
+  const { formik: onBoardFormik, loading: isLoadingOnBoard } =
+    useCustomerOnBoardForm({ onClose });
 
   const deleteRow = (row) => {
     setRowData(row?.original?.id);
@@ -84,6 +90,11 @@ const Customer = () => {
     });
   };
 
+  const editRow = (row) => {
+    setIsEditModalOpen(true);
+    setRowData(row?.original);
+  };
+
   const columns = useMemo(
     () => [
       {
@@ -95,10 +106,10 @@ const Customer = () => {
           const imageFinal = data?.profilePictureUrl
             ? DOC_URL + data?.profilePictureUrl
             : data?.gender === "MALE"
-              ? maleProfile
-              : data?.gender === "FEMALE"
-                ? femaleProfile
-                : null;
+            ? maleProfile
+            : data?.gender === "FEMALE"
+            ? femaleProfile
+            : null;
           return (
             <div style={{ display: "flex", gap: ".5rem" }}>
               <Avatar alt="Profile Image" src={imageFinal} />
@@ -187,11 +198,12 @@ const Customer = () => {
           enableColumnActions
           enableEditing={true}
           // handleDeleteRow={deleteRow}
-          // handleEdit={editRow}
+          handleEdit={editRow}
           handleEnter={handleEnter}
           enterIcon={<VerfiedIcon />}
           entertooltip={"Verify Customer"}
           enter
+          edit
         />
       );
     } else {
@@ -241,7 +253,6 @@ const Customer = () => {
             Customer Unboard
           </Button>
         </div>
-
       </Box>
 
       <br />
@@ -292,7 +303,7 @@ const Customer = () => {
         loading={loading}
         formComponent={
           <>
-            <CustomerForm formik={formik} />
+            <CustomerEditForm formik={formik} />
           </>
         }
         showButton={true}

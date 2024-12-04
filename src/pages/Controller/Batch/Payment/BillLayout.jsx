@@ -161,7 +161,7 @@ const BillLayout = ({ finalBill, onClose }) => {
         </tr>
         <tr>
           <td class="header-left">Attendant:</td>
-          <td class="header-right">NA</td>
+          <td class="header-right">${finalBill?.attendant || "NA"}</td>
         </tr>
       </table>
       <br />
@@ -277,10 +277,10 @@ const BillLayout = ({ finalBill, onClose }) => {
             </TableRow>
             <TableRow>
               <TableCell sx={{ border: "none", padding: "7px" }}>
-                Attendent :
+                Attendant :
               </TableCell>
               <TableCell sx={{ border: "none", padding: "7px" }}>
-                {finalBill?.attendent || "NA"}
+                {finalBill?.attendant || "NA"}
               </TableCell>
             </TableRow>
           </TableBody>
