@@ -162,7 +162,7 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
               </IconButton>
             </Tooltip> */}
 
-            <NotificationMenu />
+            {/* <NotificationMenu /> */}
             
             <Tooltip title="Setting">
               <IconButton onClick={handleSetting}>
