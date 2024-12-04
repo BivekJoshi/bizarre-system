@@ -207,6 +207,29 @@ const BillLayout = ({ finalBill, onClose }) => {
     printWindow.focus();
     printWindow.print();
     printWindow.close();
+    const logo = printWindow.document.getElementById("printLogo");
+
+    function loadImagePromise(img) {
+      return new Promise((resolve, reject) => {
+        if (img.complete) {
+          resolve(); // Image is already loaded
+        } else {
+          img.onload = () => resolve(); // Resolve when the image is loaded
+          img.onerror = () => reject(new Error("Image failed to load")); // Reject on error
+        }
+      });
+    }
+
+    loadImagePromise(logo)
+      .then(() => {
+        // Image loaded successfully, proceed with printing
+        printWindow.focus();
+        printWindow.print();
+        printWindow.close();
+      })
+      .catch((error) => {
+        console.error("Error loading image:", error);
+      });
   };
 
   return (

@@ -24,7 +24,7 @@ const BillRegerateLayout = ({ finalBill, onClose }) => {
         return `
               <div class="ticket">
                 <div class="centered">
-                  <img alt="Bizarre Bros Logo" src="https://cafebizarre.com.np/files/images/Bizarre-Bros-Outline-Black.png" style="width:50px; display:block; margin:0 auto;" />
+                  <img alt="Bizarre Bros Logo" src="https://cafebizarre.com.np/files/images/Bizarre-Bros-Outline-Black.png" style="width:50px; height:50px;display:block; margin:0 auto;" />
                   <h1>Bizarre Bros.</h1>
                   <h2>Cafe Bizarre</h2>
                   <p>Naxal, Kathmandu, Nepal</p>
@@ -95,10 +95,24 @@ const BillRegerateLayout = ({ finalBill, onClose }) => {
         </html>
       `);
 
-    printWindow.document.close();
-    printWindow.focus();
-    printWindow.print();
-    printWindow.close();
+    // printWindow.document.close();
+    // printWindow.focus();
+    // printWindow.print();
+    // printWindow.close();
+
+    const images = printWindow.document.querySelectorAll("img");
+    const promises = Array.from(images).map((img) => {
+      return new Promise((resolve) => {
+        img.onload = resolve;
+        img.onerror = resolve; 
+      });
+    });
+
+    Promise.all(promises).then(() => {
+      printWindow.focus();
+      printWindow.print();
+      printWindow.close();
+    });
   };
 
   return (
