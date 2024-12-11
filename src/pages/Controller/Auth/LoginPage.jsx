@@ -150,7 +150,7 @@ const LoginPage = () => {
             onClick={() => formik.handleSubmit()}
             variant={"contained"}
             fullWidth
-            disabled={!recapchaVal}
+            // disabled={!recapchaVal}
             sx={{
               marginTop: 2,
               "&:hover": {
