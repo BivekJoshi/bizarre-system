@@ -3,7 +3,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useAuthForm } from "../../../hooks/auth/Auth/useAuthForm";
 import { LoadingButton } from "@mui/lab";
 import RenderInput from "../../../components/RenderInput/RenderInput";
-import RandomLogin from "../../../assets/Bizarre-Bros-Neon-Splash.png";
+import RandomLogin from "../../../assets/RandomLoginAlt.png";
 import { Link } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from "react";
