@@ -91,7 +91,7 @@ const ItemCardView = ({ data }) => {
               color="primary"
               sx={{ fontWeight: "bold" }}
             >
-              Rs 29.99
+              Rs {data?.sellingPrice}
             </Typography>
           </Grid>
         </Box>
