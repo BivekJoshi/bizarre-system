@@ -93,6 +93,13 @@ const BranchOwner = () => {
       },
       {
         id: nanoid(),
+        accessorKey: "branch.address",
+        header: "Branch",
+        maxWidth: 80,
+        sortable: false,
+      },
+      {
+        id: nanoid(),
         accessorKey: "user.gender",
         header: "Gender",
         maxWidth: 80,
