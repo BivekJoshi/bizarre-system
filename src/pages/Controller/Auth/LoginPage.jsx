@@ -128,7 +128,7 @@ const LoginPage = () => {
             </Link>
           </Typography>
           <br />
-          {/* <Box
+          <Box
             sx={{
               display: "flex",
               justifyContent: "center",
@@ -144,13 +144,13 @@ const LoginPage = () => {
                 width: "100%",
               }}
             />
-          </Box> */}
+          </Box>
           <LoadingButton
             loading={loading}
             onClick={() => formik.handleSubmit()}
             variant={"contained"}
             fullWidth
-            // disabled={!recapchaVal}
+            disabled={!recapchaVal}
             sx={{
               marginTop: 2,
               "&:hover": {
