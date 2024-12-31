@@ -220,6 +220,7 @@ const Book = () => {
         header={"Add Book"}
         formik={formik}
         loading={loading}
+        isEditModalOpen={isEditModalOpen}
         formComponent={
           <>
             <AddBook formik={formik} />

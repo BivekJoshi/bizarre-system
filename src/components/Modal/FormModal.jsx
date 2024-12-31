@@ -26,6 +26,7 @@ const FormModal = ({
   formik,
   loading,
   showButton,
+  isEditModalOpen
 }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -121,8 +122,7 @@ const FormModal = ({
                   Width={"-webkit-fill-available"}
                   startIcon={<ControlPointRoundedIcon />}
                 >
-                  {/* {data ? "Update" : "Add"} */}
-                  Add
+                  {isEditModalOpen ? "Update" : "Add"}
                 </LoadingButton>
               </Grid>
             </Grid>

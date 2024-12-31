@@ -449,6 +449,7 @@ const Customer = () => {
         header={"Edit Customer Detial"}
         formik={formik}
         loading={loading}
+        isEditModalOpen={isEditModalOpen}
         formComponent={
           <>
             <CustomerEditForm formik={formik} />

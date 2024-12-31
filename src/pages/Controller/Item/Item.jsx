@@ -365,6 +365,7 @@ const Item = () => {
           formik={formik}
           loading={loading}
           enableAddPhoto={true}
+          isEditModalOpen={isEditModalOpen}
           formComponent={
             <>
               <EditItem formik={formik} rowData={rowData} />

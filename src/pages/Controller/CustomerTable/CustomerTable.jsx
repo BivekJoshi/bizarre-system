@@ -245,6 +245,7 @@ const CustomerTable = () => {
         header={"Edit Customer Table"}
         formik={formik}
         loading={loading}
+        isEditModalOpen={isEditModalOpen}
         formComponent={<CustomerTableForm formik={formik} />}
         showButton={true}
       />

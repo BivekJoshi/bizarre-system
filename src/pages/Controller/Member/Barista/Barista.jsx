@@ -412,6 +412,7 @@ const Barista = () => {
         header={"Edit Cashier Detial"}
         formik={formik}
         loading={loading}
+        isEditModalOpen={isEditModalOpen}
         formComponent={
           <>
             <BaristaForm formik={formik} isEditModalOpen={isEditModalOpen} />

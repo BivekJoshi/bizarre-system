@@ -17,7 +17,7 @@ export const useAddSetting = ({ onSuccess }) => {
   const queryClient = useQueryClient();
   return useMutation(["addSetting"], (formData) => addSetting(formData), {
     onSuccess: (data, variables, context) => {
-      toast.success("Successfully added setting");
+      toast.success("Successfully edited setting");
       onSuccess && onSuccess(data, variables, context);
       queryClient.invalidateQueries("getSetting");
     },

@@ -199,6 +199,7 @@ const RedeemCode = () => {
         header={"Add Redeem Code"}
         formik={formik}
         loading={loading}
+        isEditModalOpen={isEditModalOpen}
         formComponent={
           <>
             <AddRedeemCode formik={formik} />

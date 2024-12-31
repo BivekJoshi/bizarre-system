@@ -129,6 +129,7 @@ const Setting = () => {
         header={"Edit Setting"}
         formik={formik}
         loading={loading}
+        isEditModalOpen={isAddModalOpen}
         formComponent={
           <>
             <AddSetting formik={formik} />

@@ -1,20 +1,20 @@
 import { useFormik } from "formik";
 
-import { useAddBranch } from "../useBranch";
+import { useAddBranch, useEditBranch } from "../useBranch";
 import { branchSchema } from "./branchSchema";
 import { useState } from "react";
 
-export const useBranchForm = ({ onClose, data }) => {
+export const useBranchForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddBranch({});
-  const { mutate: editMutate } = useAddBranch({});
+  const { mutate: editMutate } = useEditBranch({});
   const [successFlag, setSuccessFlag] = useState(false);
 
   const formik = useFormik({
     initialValues: {
-      id: data?.id || "",
-      address: data?.address || "",
-      phoneNumber: data?.phoneNumber || "",
-      housingCapacity: data?.housingCapacity || "",
+      id: rowData?.id || "",
+      address: rowData?.address || "",
+      phoneNumber: rowData?.phoneNumber || "",
+      housingCapacity: rowData?.housingCapacity || "",
     },
     validationSchema: branchSchema,
     enableReinitialize: true,

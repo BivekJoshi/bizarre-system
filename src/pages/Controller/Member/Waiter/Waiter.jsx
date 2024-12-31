@@ -411,6 +411,7 @@ const Waiter = () => {
         header={"Add Branch"}
         formik={formik}
         loading={loading}
+        isEditModalOpen={isEditModalOpen}
         formComponent={
           <>
             <WaiterForm

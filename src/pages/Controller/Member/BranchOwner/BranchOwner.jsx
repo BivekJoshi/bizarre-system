@@ -402,7 +402,7 @@ const BranchOwner = () => {
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}
-        header={"Add Cashier"}
+        header={"Add Branch Owner Details"}
         formik={formik}
         loading={loading}
         formComponent={
@@ -421,6 +421,7 @@ const BranchOwner = () => {
         header={"Edit Branch Owner Detial"}
         formik={formik}
         loading={loading}
+        isEditModalOpen={isEditModalOpen}
         formComponent={
           <>
             <BranchOwnerForm

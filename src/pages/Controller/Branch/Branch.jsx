@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useDeleteBranch } from "../../../hooks/branch/useBranch";
 import {
   Box,
@@ -37,7 +37,7 @@ const Branch = () => {
   const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
-  const { formik, successFlag, loading } = useBranchForm({ onClose });
+  const { formik, successFlag, loading } = useBranchForm({ onClose, rowData });
 
   const { formik: filterFormik, loading: isLoading } = useFilterBranchForm({
     branchData: (data) => setFilteredData(data),
@@ -48,6 +48,10 @@ const Branch = () => {
     setRowData(row?.original?.id);
     setIsDeleteModalOpen(true);
   };
+  const editRow = useCallback((row) => {
+    setIsEditModalOpen(true);
+    setRowData(row?.original);
+  }, []);
 
   const columns = useMemo(
     () => [
@@ -112,7 +116,7 @@ const Branch = () => {
           enableDelete
           enableEditing={true}
           handleDeleteRow={deleteRow}
-          // handleEdit={editRow}
+          handleEdit={editRow}
           delete
           edit
         />
@@ -204,6 +208,7 @@ const Branch = () => {
         header={"Add Branch"}
         formik={formik}
         loading={loading}
+        isEditModalOpen={isEditModalOpen}
         formComponent={
           <>
             <AddBranch formik={formik} />

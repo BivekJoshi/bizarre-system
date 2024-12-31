@@ -206,6 +206,7 @@ const PromoCode = () => {
         header={"Add Promo Code"}
         formik={formik}
         loading={loading}
+        isEditModalOpen={isEditModalOpen}
         formComponent={
           <>
             <AddPromoCode formik={formik} />
