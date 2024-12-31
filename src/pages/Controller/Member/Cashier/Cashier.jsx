@@ -37,6 +37,7 @@ import {
   useLockUserForm,
   useUnLockUserForm,
 } from "../../../../hooks/user/User/useLockUnlockUserForm";
+import CustomDocumentView from "../../../../components/CustomTable/CustomDocumentView";
 
 const Cashier = () => {
   const theme = useTheme();
@@ -261,6 +262,19 @@ const Cashier = () => {
                 </div>
               </Collapse>
             </div>
+          );
+        },
+      },
+      {
+        id: nanoid(),
+        accessorKey: "documents",
+        header: "Documents",
+        size: 250,
+        sortable: false,
+        Cell: ({ row }) => {
+          const { idFrontUrl, idBackUrl } = row.original;
+          return (
+            <CustomDocumentView idFrontUrl={idFrontUrl} idBackUrl={idBackUrl} />
           );
         },
       },

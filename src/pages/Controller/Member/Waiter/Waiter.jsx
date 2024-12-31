@@ -38,6 +38,7 @@ import {
   useLockUserForm,
   useUnLockUserForm,
 } from "../../../../hooks/user/User/useLockUnlockUserForm";
+import CustomDocumentView from "../../../../components/CustomTable/CustomDocumentView";
 
 const Waiter = () => {
   const theme = useTheme();
@@ -261,6 +262,19 @@ const Waiter = () => {
                 </div>
               </Collapse>
             </div>
+          );
+        },
+      },
+      {
+        id: nanoid(),
+        accessorKey: "documents",
+        header: "Documents",
+        size: 250,
+        sortable: false,
+        Cell: ({ row }) => {
+          const { idFrontUrl, idBackUrl } = row.original;
+          return (
+            <CustomDocumentView idFrontUrl={idFrontUrl} idBackUrl={idBackUrl} />
           );
         },
       },

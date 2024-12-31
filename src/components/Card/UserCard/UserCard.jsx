@@ -19,7 +19,12 @@ import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import { DOC_URL } from "../../../api/axiosInterceptor";
 import UploadFileRoundedIcon from "@mui/icons-material/UploadFileRounded";
 
-const UserCard = ({ data, setIsEditModalOpen, setRowData }) => {
+const UserCard = ({
+  data,
+  setIsEditModalOpen,
+  setRowData,
+  setIsDocumentModalOpen,
+}) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -81,14 +86,14 @@ const UserCard = ({ data, setIsEditModalOpen, setRowData }) => {
               >
                 <EditRoundedIcon />
               </IconButton>
-              <IconButton
+              {/* <IconButton
                 onClick={() => {
-                  setIsEditModalOpen(true);
+                  setIsDocumentModalOpen(true);
                   setRowData(data);
                 }}
               >
-                <UploadFileRoundedIcon/>
-              </IconButton>
+                <UploadFileRoundedIcon />
+              </IconButton> */}
             </div>
           </Box>
 

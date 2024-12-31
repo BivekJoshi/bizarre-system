@@ -8,6 +8,6 @@ export const getSetting = async () => {
 };
 /*_____________________________POST_______________________________________________ */
 export const addSetting = async (formData) => {
-  const data = await axiosInstance.post(`${SETTING}/save`, formData);
+  const data = await axiosInstance.put(`${SETTING}/save`, formData);
   return data;
 };

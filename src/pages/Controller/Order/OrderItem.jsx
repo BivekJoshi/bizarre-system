@@ -56,7 +56,7 @@ const OrderItem = ({
     if (!selectedIds.includes(id)) {
       setRemarks((prevRemarks) => ({
         ...prevRemarks,
-        [id]: [""] 
+        [id]: [""],
       }));
     } else {
       const { [id]: _, ...remainingRemarks } = remarks;
@@ -78,7 +78,7 @@ const OrderItem = ({
         if (newCount > currentRemarks.length) {
           updatedRemarks.push("");
         } else {
-          updatedRemarks.length = newCount; 
+          updatedRemarks.length = newCount;
         }
 
         return {
@@ -154,6 +154,22 @@ const OrderItem = ({
                   backgroundColor: "red",
                   position: "absolute",
                   top: 0,
+                  right: 0,
+                  color: "white",
+                  fontWeight: 900,
+                  padding: "5px",
+                  borderRadius: "0 0 0 8px",
+                }}
+              >
+                Out of Stock
+              </div>
+            )}
+            {item.status !== "ACTIVE" && (
+              <div
+                style={{
+                  backgroundColor: "red",
+                  position: "absolute",
+                  top: 0,
                   left: 0,
                   color: "white",
                   fontWeight: 900,
@@ -161,10 +177,9 @@ const OrderItem = ({
                   borderRadius: "0 0 8px 0",
                 }}
               >
-                Out of Stock
+                Not Available
               </div>
             )}
-
             <CardContent
               sx={{
                 backgroundColor: theme.palette.background.alt,

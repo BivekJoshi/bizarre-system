@@ -7,8 +7,9 @@ export const useSettingForm = ({ onClose, rowData }) => {
 
   const formik = useFormik({
     initialValues: {
-      setting: rowData?.setting || "",
+      // setting: rowData?.setting || "",
       value: rowData?.value || "",
+      id: rowData?.id,
     },
     // validationSchema: branchSchema,
     enableReinitialize: true,

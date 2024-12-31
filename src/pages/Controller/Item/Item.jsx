@@ -30,7 +30,8 @@ import PublishIcon from "@mui/icons-material/Publish";
 import { useFilterItemForm } from "../../../hooks/item/Item/filterItem/useFilterItemForm";
 import { CustomPaginationUpdated } from "../../../components/Pagination/CustomPaginationUpdated";
 import ImportItemCSV from "./ImportItemCSV";
-import PausePresentationIcon from '@mui/icons-material/PausePresentation';
+import PausePresentationIcon from "@mui/icons-material/PausePresentation";
+import { useChangeItemStatusForm } from "../../../hooks/item/Item/changeStatus/useChangeItemStatusForm";
 
 const Item = () => {
   const theme = useTheme();
@@ -74,27 +75,34 @@ const Item = () => {
         size: 80,
         sortable: false,
         Cell: ({ row }) => {
-          console.log("🚀 ~ Item ~ row:", row?.original)
           const [anchorEl, setAnchorEl] = useState(null);
-      
+          const [status, setStatus] = useState(null);
+
+          const itemId = row?.original?.id;
+          const { formik: changeStatusFormik } = useChangeItemStatusForm({
+            itemId,
+            status,
+          });
+
           const handleOpenMenu = (event) => {
             setAnchorEl(event.currentTarget);
           };
-      
+
           const handleCloseMenu = () => {
             setAnchorEl(null);
           };
-      
+
           const handleMenuItemClick = (status) => {
-            console.log(`Change status to ${status} for row:`, row.original);
+            setStatus(status);
+            changeStatusFormik.handleSubmit();
             handleCloseMenu();
           };
-      
+
           return (
             <div style={{ display: "flex", gap: "0.5rem" }}>
               <Tooltip title="Change Status">
                 <Chip
-                  label="Active"
+                  label={row?.original?.status}
                   onClick={handleOpenMenu}
                   style={{ cursor: "pointer" }}
                 />
@@ -104,13 +112,19 @@ const Item = () => {
                 open={Boolean(anchorEl)}
                 onClose={handleCloseMenu}
               >
-                <MenuItem onClick={() => handleMenuItemClick("ACTIVE")}>Active</MenuItem>
-                <MenuItem onClick={() => handleMenuItemClick("INACTIVE")}>Inactive</MenuItem>
-                <MenuItem onClick={() => handleMenuItemClick("LOCKED")}>Lock</MenuItem>
+                <MenuItem onClick={() => handleMenuItemClick("ACTIVE")}>
+                  Active
+                </MenuItem>
+                <MenuItem onClick={() => handleMenuItemClick("INACTIVE")}>
+                  Inactive
+                </MenuItem>
+                <MenuItem onClick={() => handleMenuItemClick("LOCKED")}>
+                  Lock
+                </MenuItem>
               </Menu>
             </div>
           );
-        }
+        },
       },
       {
         id: nanoid(),
@@ -168,19 +182,18 @@ const Item = () => {
           return (
             <div
               style={{
-                display: "block", 
-                wordWrap: "break-word", 
-                overflow: "hidden", 
-                textOverflow: "ellipsis", 
-                whiteSpace: "normal", 
+                display: "block",
+                wordWrap: "break-word",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "normal",
               }}
               dangerouslySetInnerHTML={{ __html: description }}
             />
           );
         },
       },
-      
-      
+
       {
         id: nanoid(),
         accessorKey: "type",

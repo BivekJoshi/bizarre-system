@@ -37,6 +37,7 @@ import {
   useLockUserForm,
   useUnLockUserForm,
 } from "../../../../hooks/user/User/useLockUnlockUserForm";
+import CustomDocumentView from "../../../../components/CustomTable/CustomDocumentView";
 
 const BranchOwner = () => {
   const theme = useTheme();
@@ -52,7 +53,7 @@ const BranchOwner = () => {
 
   // const { mutate } = useDeleteBranch({ rowData });
 
-  const onClose = () => setIsAddModal(false);
+  const onClose = () => {setIsAddModal(false)};
   const { formik, successFlag, loading } = useBranchOwnerMemberForm({
     onClose,
     rowData,
@@ -273,6 +274,19 @@ const BranchOwner = () => {
           );
         },
       },
+      {
+        id: nanoid(),
+        accessorKey: "documents",
+        header: "Documents",
+        size: 250,
+        sortable: false,
+        Cell: ({ row }) => {
+          const { idFrontUrl, idBackUrl } = row.original;
+          return (
+            <CustomDocumentView idFrontUrl={idFrontUrl} idBackUrl={idBackUrl} />
+          );
+        },
+      },
     ],
     []
   );
@@ -320,6 +334,7 @@ const BranchOwner = () => {
                   data={data}
                   setIsEditModalOpen={setIsEditModalOpen}
                   setRowData={setRowData}
+                  setIsDocumentModalOpen={setIsDocumentModalOpen}
                 />
               </Grid>
             );
