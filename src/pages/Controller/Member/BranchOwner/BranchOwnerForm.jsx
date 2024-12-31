@@ -2,7 +2,8 @@ import React from "react";
 import { nanoid } from "nanoid";
 import RenderInput from "../../../../components/RenderInput/RenderInput";
 
-const BranchOwnerForm = ({ formik }) => {
+const BranchOwnerForm = ({ formik, isEditModalOpen }) => {
+  console.log("🚀 ~ BranchOwnerForm ~ isEditModalOpen:", isEditModalOpen);
   const inputField = [
     {
       id: nanoid(),
@@ -15,17 +16,21 @@ const BranchOwnerForm = ({ formik }) => {
       lg: 12,
       sm: 12,
     },
-    {
-      id: nanoid(),
-      name: "mobileNumber",
-      label: "Mobile Number",
-      type: "number",
-      required: true,
-      xs: 12,
-      md: 6,
-      lg: 6,
-      sm: 12,
-    },
+    ...(!isEditModalOpen
+      ? [
+          {
+            id: nanoid(),
+            name: "mobileNumber",
+            label: "Mobile Number",
+            type: "number",
+            required: true,
+            xs: 12,
+            md: 6,
+            lg: 6,
+            sm: 12,
+          },
+        ]
+      : []),
     {
       id: nanoid(),
       name: "gender",
@@ -76,21 +81,24 @@ const BranchOwnerForm = ({ formik }) => {
       lg: 6,
       sm: 12,
     },
-    {
-      id: nanoid(),
-      responseId: "id",
-      name: "branchId",
-      label: "Branch",
-      path: "/branch/find",
-      type: "asyncDropDown",
-      required: true,
-      responseLabel: "address",
-      xs: 12,
-      md: 6,
-      lg: 6,
-      sm: 12,
-    },
-
+    ...(!isEditModalOpen
+      ? [
+          {
+            id: nanoid(),
+            responseId: "id",
+            name: "branchId",
+            label: "Branch",
+            path: "/branch/find",
+            type: "asyncDropDown",
+            required: true,
+            responseLabel: "address",
+            xs: 12,
+            md: 6,
+            lg: 6,
+            sm: 12,
+          },
+        ]
+      : []),
     {
       id: nanoid(),
       name: "salary",

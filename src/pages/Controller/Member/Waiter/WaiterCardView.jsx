@@ -1,9 +1,13 @@
 import React from 'react'
 import UserCard from '../../../../components/Card/UserCard/UserCard'
 
-const WaiterCardView = ({data}) => {
+const WaiterCardView = ({ data, setIsEditModalOpen, setRowData }) => {
   return (
-    <UserCard data={data}/>
+    <UserCard
+      data={data}
+      setIsEditModalOpen={setIsEditModalOpen}
+      setRowData={setRowData}
+    />
   )
 }
 

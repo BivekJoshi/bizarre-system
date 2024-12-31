@@ -3,8 +3,14 @@ import {
   Avatar,
   Box,
   Button,
+  Chip,
   CircularProgress,
+  Collapse,
   Grid,
+  Menu,
+  MenuItem,
+  TextField,
+  Tooltip,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -27,6 +33,10 @@ import NoDataFound from "../../../PageNotFound/NoDataFound";
 import { useBranchOwnerFilterForm } from "../../../../hooks/member/MemberFilter/useBranchOwnerFilterForm";
 import { CustomPaginationUpdated } from "../../../../components/Pagination/CustomPaginationUpdated";
 import FilterBranchOwnerForm from "../MemberFilterForm/FilterBranchOwnerForm";
+import {
+  useLockUserForm,
+  useUnLockUserForm,
+} from "../../../../hooks/user/User/useLockUnlockUserForm";
 
 const BranchOwner = () => {
   const theme = useTheme();
@@ -39,12 +49,14 @@ const BranchOwner = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const [filteredData, setFilteredData] = useState(null);
-  console.log("🚀 ~ BranchOwner ~ filteredData:", filteredData);
 
   // const { mutate } = useDeleteBranch({ rowData });
 
   const onClose = () => setIsAddModal(false);
-  const { formik,successFlag, loading } = useBranchOwnerMemberForm({ onClose, rowData });
+  const { formik, successFlag, loading } = useBranchOwnerMemberForm({
+    onClose,
+    rowData,
+  });
 
   const { formik: filterFormik, loading: isLoading } = useBranchOwnerFilterForm(
     {
@@ -100,52 +112,166 @@ const BranchOwner = () => {
       },
       {
         id: nanoid(),
-        accessorKey: "user.gender",
-        header: "Gender",
-        maxWidth: 80,
+        accessorKey: "user.details",
+        header: "User Details",
+        size: 250,
         sortable: false,
+        Cell: ({ row }) => {
+          const { gender, birthDate, address, email, mobileNumber } =
+            row.original.user;
+          return (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem",
+              }}
+            >
+              <div>
+                <strong>Gender:</strong> {gender}
+              </div>
+              <div>
+                <strong>DOB:</strong> {birthDate}
+              </div>
+              <div>
+                <strong>Address:</strong> {address}
+              </div>
+              <div>
+                <strong>Email:</strong> {email}
+              </div>
+              <div>
+                <strong>Mobile:</strong> {mobileNumber}
+              </div>
+            </div>
+          );
+        },
       },
       {
         id: nanoid(),
-        accessorKey: "user.birthDate",
-        header: "DOB",
-        maxWidth: 80,
-        sortable: false,
-      },
-      {
-        id: nanoid(),
-        accessorKey: "user.address",
-        header: "Address",
-        maxWidth: 80,
-        sortable: false,
-      },
-      {
-        id: nanoid(),
-        accessorKey: "user.email",
-        header: "Email",
-        maxWidth: 80,
-        sortable: false,
-      },
-      {
-        id: nanoid(),
-        accessorKey: "user.mobileNumber",
-        header: "Mobile Number",
-        maxWidth: 80,
-        sortable: false,
-      },
-      {
-        id: nanoid(),
-        accessorKey: "user.userType",
-        header: "User Type",
-        maxWidth: 80,
-        sortable: false,
-      },
-      {
-        id: nanoid(),
-        accessorKey: "user.status",
+        accessorKey: "actions",
         header: "Status",
-        maxWidth: 80,
+        size: 300,
         sortable: false,
+        Cell: ({ row }) => {
+          const userId = row?.original?.user?.id;
+          const [anchorEl, setAnchorEl] = useState(null);
+          const [showMessageInput, setShowMessageInput] = useState(false);
+          const [choose, setChoose] = useState(null);
+
+          const closeShowMessage = () => {
+            setShowMessageInput(false);
+          };
+          const { formik: lockFormik, loading: lockLoading } = useLockUserForm({
+            userId,
+            closeShowMessage,
+          });
+          const { formik: unLockFormik, loading: unLockLoading } =
+            useUnLockUserForm({ userId, closeShowMessage });
+
+          const handleOpenMenu = (event) => {
+            setAnchorEl(event.currentTarget);
+          };
+
+          const handleCloseMenu = () => {
+            setAnchorEl(null);
+          };
+
+          const handleMenuItemClick = (status) => {
+            setShowMessageInput(true);
+            handleCloseMenu();
+            setChoose(status);
+          };
+
+          const handleMessageSubmit = () => {
+            if (choose === "LOCK") {
+              lockFormik.handleSubmit();
+            } else {
+              unLockFormik.handleSubmit();
+            }
+          };
+
+          return (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem",
+              }}
+            >
+              <div style={{ display: "flex", gap: "0.5rem" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                  }}
+                >
+                  <Tooltip title="Change Status">
+                    <Chip
+                      label={row?.original?.user?.status}
+                      onClick={handleOpenMenu}
+                      style={{ cursor: "pointer" }}
+                    />
+                  </Tooltip>
+                  {choose && <div>Change to {choose}</div>}
+                </div>
+
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleCloseMenu}
+                >
+                  {row?.original?.user?.status === "ACTIVE" ? (
+                    <MenuItem onClick={() => handleMenuItemClick("LOCK")}>
+                      Lock
+                    </MenuItem>
+                  ) : (
+                    <MenuItem onClick={() => handleMenuItemClick("UNLOCK")}>
+                      UnLock
+                    </MenuItem>
+                  )}
+                </Menu>
+              </div>
+              <Collapse in={showMessageInput}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    marginTop: "0.5rem",
+                  }}
+                >
+                  <TextField
+                    label="Please enter reson"
+                    variant="outlined"
+                    size="small"
+                    value={
+                      lockFormik.values.reason ||
+                      unLockFormik.values.reason ||
+                      ""
+                    }
+                    onChange={(e) => {
+                      const newValue = e.target.value;
+                      if (choose === "LOCK") {
+                        lockFormik.setFieldValue("reason", newValue);
+                      } else if (choose === "UNLOCK") {
+                        unLockFormik.setFieldValue("reason", newValue);
+                      }
+                    }}
+                    fullWidth
+                  />
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleMessageSubmit}
+                  >
+                    Submit
+                  </Button>
+                </div>
+              </Collapse>
+            </div>
+          );
+        },
       },
     ],
     []
@@ -190,7 +316,11 @@ const BranchOwner = () => {
           {filteredData?.content?.map((data, index) => {
             return (
               <Grid item xs={12} md={4} lg={4} sm={12} key={index}>
-                <BranchOwnerCardView data={data} />
+                <BranchOwnerCardView
+                  data={data}
+                  setIsEditModalOpen={setIsEditModalOpen}
+                  setRowData={setRowData}
+                />
               </Grid>
             );
           })}
@@ -273,12 +403,15 @@ const BranchOwner = () => {
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}
-        header={"Edit Cashier Detial"}
+        header={"Edit Branch Owner Detial"}
         formik={formik}
         loading={loading}
         formComponent={
           <>
-            <BranchOwnerForm formik={formik} />
+            <BranchOwnerForm
+              formik={formik}
+              isEditModalOpen={isEditModalOpen}
+            />
           </>
         }
         showButton={true}

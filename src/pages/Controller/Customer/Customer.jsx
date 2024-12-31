@@ -5,8 +5,13 @@ import {
   Button,
   Chip,
   CircularProgress,
+  Collapse,
   Grid,
+  Menu,
+  MenuItem,
   Stack,
+  TextField,
+  Tooltip,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -35,6 +40,10 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import CustomerUnboardForm from "./CustomerUnboardForm";
 import { useCustomerOnBoardForm } from "../../../hooks/customer/Customer/CustomerOnBoard/useCustomerOnBoardForm";
 import CustomerEditForm from "./CustomerEditForm";
+import {
+  useLockUserForm,
+  useUnLockUserForm,
+} from "../../../hooks/user/User/useLockUnlockUserForm";
 
 const Customer = () => {
   const theme = useTheme();
@@ -120,31 +129,39 @@ const Customer = () => {
       },
       {
         id: nanoid(),
-        accessorKey: "user.birthDate",
-        header: "DOB",
-        maxWidth: 80,
+        accessorKey: "user.details",
+        header: "User Details",
+        size: 250,
         sortable: false,
-      },
-      {
-        id: nanoid(),
-        accessorKey: "user.address",
-        header: "Address",
-        maxWidth: 80,
-        sortable: false,
-      },
-      {
-        id: nanoid(),
-        accessorKey: "user.email",
-        header: "Email",
-        maxWidth: 80,
-        sortable: false,
-      },
-      {
-        id: nanoid(),
-        accessorKey: "user.mobileNumber",
-        header: "Mobile Number",
-        maxWidth: 80,
-        sortable: false,
+        Cell: ({ row }) => {
+          const { gender, birthDate, address, email, mobileNumber } =
+            row.original.user;
+          return (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem",
+              }}
+            >
+              <div>
+                <strong>Gender:</strong> {gender}
+              </div>
+              <div>
+                <strong>DOB:</strong> {birthDate}
+              </div>
+              <div>
+                <strong>Address:</strong> {address}
+              </div>
+              <div>
+                <strong>Email:</strong> {email}
+              </div>
+              <div>
+                <strong>Mobile:</strong> {mobileNumber}
+              </div>
+            </div>
+          );
+        },
       },
       {
         id: nanoid(),
@@ -162,6 +179,133 @@ const Customer = () => {
               label={data ? "Verified" : "UnVerified"}
               color={data ? "success" : "error"}
             />
+          );
+        },
+      },
+      {
+        id: nanoid(),
+        accessorKey: "actions",
+        header: "Status",
+        size: 300,
+        sortable: false,
+        Cell: ({ row }) => {
+          const userId = row?.original?.user?.id;
+          const [anchorEl, setAnchorEl] = useState(null);
+          const [showMessageInput, setShowMessageInput] = useState(false);
+          const [choose, setChoose] = useState(null);
+
+          const closeShowMessage = () => {
+            setShowMessageInput(false);
+          };
+          const { formik: lockFormik, loading: lockLoading } = useLockUserForm({
+            userId,
+            closeShowMessage,
+          });
+          const { formik: unLockFormik, loading: unLockLoading } =
+            useUnLockUserForm({ userId, closeShowMessage });
+
+          const handleOpenMenu = (event) => {
+            setAnchorEl(event.currentTarget);
+          };
+
+          const handleCloseMenu = () => {
+            setAnchorEl(null);
+          };
+
+          const handleMenuItemClick = (status) => {
+            setShowMessageInput(true);
+            handleCloseMenu();
+            setChoose(status);
+          };
+
+          const handleMessageSubmit = () => {
+            if (choose === "LOCK") {
+              lockFormik.handleSubmit();
+            } else {
+              unLockFormik.handleSubmit();
+            }
+          };
+
+          return (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem",
+              }}
+            >
+              <div style={{ display: "flex", gap: "0.5rem" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                  }}
+                >
+                  <Tooltip title="Change Status">
+                    <Chip
+                      label={row?.original?.user?.status}
+                      onClick={handleOpenMenu}
+                      style={{ cursor: "pointer" }}
+                    />
+                  </Tooltip>
+                  {choose && <div>Change to {choose}</div>}
+                </div>
+
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleCloseMenu}
+                >
+                  {row?.original?.user?.status === "ACTIVE" ? (
+                    <MenuItem onClick={() => handleMenuItemClick("LOCK")}>
+                      Lock
+                    </MenuItem>
+                  ) : (
+                    <MenuItem onClick={() => handleMenuItemClick("UNLOCK")}>
+                      UnLock
+                    </MenuItem>
+                  )}
+                </Menu>
+              </div>
+              <Collapse in={showMessageInput}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    marginTop: "0.5rem",
+                  }}
+                >
+                  <TextField
+                    label="Please enter reson"
+                    variant="outlined"
+                    size="small"
+                    value={
+                      lockFormik.values.reason ||
+                      unLockFormik.values.reason ||
+                      ""
+                    }
+                    onChange={(e) => {
+                      const newValue = e.target.value;
+                      if (choose === "LOCK") {
+                        lockFormik.setFieldValue("reason", newValue);
+                      } else if (choose === "UNLOCK") {
+                        unLockFormik.setFieldValue("reason", newValue);
+                      }
+                    }}
+                    fullWidth
+                  />
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleMessageSubmit}
+                  >
+                    Submit
+                  </Button>
+                </div>
+              </Collapse>
+            </div>
           );
         },
       },
@@ -211,7 +355,11 @@ const Customer = () => {
         <Grid container spacing={2}>
           {filteredData.content.map((item, index) => (
             <Grid item xs={12} md={4} lg={4} sm={12} key={index}>
-              <CustomerCardView data={item} />
+              <CustomerCardView
+                data={item}
+                setIsEditModalOpen={setIsEditModalOpen}
+                setRowData={setRowData}
+              />
             </Grid>
           ))}
         </Grid>

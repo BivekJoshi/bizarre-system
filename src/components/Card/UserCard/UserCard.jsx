@@ -17,8 +17,9 @@ import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import CalendarMonthRoundedIcon from "@mui/icons-material/CalendarMonthRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import { DOC_URL } from "../../../api/axiosInterceptor";
+import UploadFileRoundedIcon from "@mui/icons-material/UploadFileRounded";
 
-const UserCard = ({ data }) => {
+const UserCard = ({ data, setIsEditModalOpen, setRowData }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -26,10 +27,10 @@ const UserCard = ({ data }) => {
   const imageFinal = data?.user?.profilePictureUrl
     ? DOC_URL + data?.user?.profilePictureUrl
     : data?.user?.gender === "MALE"
-      ? MaleProfile
-      : data?.user?.gender === "FEMALE"
-        ? FemaleProfile
-        : null;
+    ? MaleProfile
+    : data?.user?.gender === "FEMALE"
+    ? FemaleProfile
+    : null;
 
   const avatarSize = isSmallScreen ? 80 : isMediumScreen ? 90 : 100;
   return (
@@ -70,9 +71,25 @@ const UserCard = ({ data }) => {
             >
               {data?.user?.fullName || "User Name"}
             </Typography>
-            <IconButton sx={{ color: theme.palette.primary.main }}>
-              {/* <EditRoundedIcon /> */}
-            </IconButton>
+            <div>
+              <IconButton
+                sx={{ color: theme.palette.primary.main }}
+                onClick={() => {
+                  setIsEditModalOpen(true);
+                  setRowData(data);
+                }}
+              >
+                <EditRoundedIcon />
+              </IconButton>
+              <IconButton
+                onClick={() => {
+                  setIsEditModalOpen(true);
+                  setRowData(data);
+                }}
+              >
+                <UploadFileRoundedIcon/>
+              </IconButton>
+            </div>
           </Box>
 
           <Box sx={{ mt: 2 }}>
@@ -91,7 +108,7 @@ const UserCard = ({ data }) => {
                   fontWeight: "medium",
                 }}
               >
-                {data?.user?.email || "user@example.com"}
+                {data?.user?.email || "No Email Provided"}
               </a>
             </Typography>
 

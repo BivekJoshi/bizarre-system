@@ -59,7 +59,7 @@ export const addIdDocument = async (formData) => {
   imgData.append("idBackImage", formData.idBackImage[0]);
 
   const { data } = await axiosInstance.post(
-    `${MEMBER}/upload-profile-picture`,
+    `${MEMBER}/upload-id-image`,
     imgData,
     {
       headers: {

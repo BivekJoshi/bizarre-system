@@ -1,10 +1,14 @@
-import React from 'react'
-import UserCard from '../../../../components/Card/UserCard/UserCard'
+import React from "react";
+import UserCard from "../../../../components/Card/UserCard/UserCard";
 
-const CashierCardView = ({data}) => {
+const CashierCardView = ({ data, setIsEditModalOpen, setRowData }) => {
   return (
-    <UserCard data={data}/>
-  )
-}
+    <UserCard
+      data={data}
+      setIsEditModalOpen={setIsEditModalOpen}
+      setRowData={setRowData}
+    />
+  );
+};
 
-export default CashierCardView
+export default CashierCardView;

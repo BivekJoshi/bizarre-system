@@ -1,10 +1,14 @@
-import React from 'react'
-import UserCard from '../../../../components/Card/UserCard/UserCard'
+import React from "react";
+import UserCard from "../../../../components/Card/UserCard/UserCard";
 
-const BranchOwnerCardView = ({data}) => {
+const BranchOwnerCardView = ({ data, setIsEditModalOpen, setRowData }) => {
   return (
-    <UserCard data={data}/>
-  )
-}
+    <UserCard
+      data={data}
+      setIsEditModalOpen={setIsEditModalOpen}
+      setRowData={setRowData}
+    />
+  );
+};
 
-export default BranchOwnerCardView
+export default BranchOwnerCardView;

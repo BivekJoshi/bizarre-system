@@ -16,10 +16,18 @@ const Setting = () => {
   const view = useSelector((state) => state?.view?.mode);
   const { data } = useGetSetting();
 
+  const [rowData, setRowData] = useState(null);
+
   const [isAddModalOpen, setIsAddModal] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const onClose = () => setIsAddModal(false);
-  const { formik, loading } = useSettingForm({ onClose });
+  const { formik, loading } = useSettingForm({ onClose, rowData });
+
+  const editRow = (row) => {
+    setIsAddModal(true);
+    setRowData(row?.original);
+  };
 
   const columns = useMemo(
     () => [
@@ -43,9 +51,7 @@ const Setting = () => {
 
   const renderView = () => {
     if (!data?.content || data.content.length === 0) {
-      return (
-        <NoDataFound/>
-      );
+      return <NoDataFound />;
     }
     if (view === "table") {
       return (
@@ -56,6 +62,10 @@ const Setting = () => {
           width={"100%"}
           enablePagination={true}
           enableRowNumbers
+          enableColumnActions
+          enableEditing={true}
+          handleEdit={editRow}
+          edit
         />
       );
     } else {
@@ -90,13 +100,13 @@ const Setting = () => {
         >
           Setting
         </Typography>
-        <Button
+        {/* <Button
           variant="outlined"
           onClick={() => setIsAddModal(true)}
           startIcon={<ControlPointRoundedIcon />}
         >
           Add Setting
-        </Button>
+        </Button> */}
       </Box>
 
       <br />
@@ -116,7 +126,7 @@ const Setting = () => {
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}
-        header={"Add Item"}
+        header={"Edit Setting"}
         formik={formik}
         loading={loading}
         formComponent={

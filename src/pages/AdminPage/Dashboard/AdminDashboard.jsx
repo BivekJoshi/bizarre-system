@@ -110,36 +110,72 @@ const AdminDashboard = () => {
           <Card>
             <CardContent>
               <Typography variant="h6">Sales Overview</Typography>
-              <Box
-                sx={{
-                  height: 300,
-                  backgroundColor: theme.palette.background.alt,
-                }}
-              >
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    width={500}
-                    height={300}
-                    data={salesData}
-                    margin={{
-                      top: 5,
-                      right: 30,
-                      left: 20,
-                      bottom: 5,
-                    }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <RechartsTooltip />
-                    <Legend />
-                    <Bar dataKey="totalSales" fill="#8884d8" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </Box>
+              <Divider sx={{ my: 2 }} />
+              {salesData.length > 1 ? (
+                <Box
+                  sx={{
+                    height: 300,
+                    backgroundColor: theme.palette.background.alt,
+                  }}
+                >
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                      width={500}
+                      height={300}
+                      data={salesData}
+                      margin={{
+                        top: 5,
+                        right: 30,
+                        left: 20,
+                        bottom: 5,
+                      }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" />
+                      <YAxis />
+                      <RechartsTooltip />
+                      <Legend />
+                      <Bar dataKey="totalSales" fill="#8884d8" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </Box>
+              ) : (
+                <List>
+                  {salesData.map((item, index) => (
+                    <ListItem key={index}>
+                      <ListItemText
+                        primary={`Month: ${item.month}`}
+                        secondary={`Total Sales: Rs ${item.totalSales}`}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              )}
             </CardContent>
           </Card>
         </Grid>
+
+        {reportData?.birthDayMembers &&
+          reportData?.birthDayMembers?.map((data, index) => {
+            return (
+              <Grid item xs={12}>
+                <Card>
+                  <CardContent>
+                    <Typography variant="h6" color="primary">
+                      🎉 Celebrate the Joy of Birthdays! 🎂
+                    </Typography>
+                    <Typography variant="body1">
+                      "Today is a special day for{" "}
+                      <span style={{ fontSize: "16px" }}>
+                        <b>{data}</b>
+                      </span>
+                      . Let's make it memorable!"
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            );
+          })}
       </Grid>
     </Box>
   );

@@ -17,6 +17,19 @@ export const changePassword = async (formData) => {
   return data;
 };
 
+/*_____________________________LOCK_USER_______________________________________________ */
+export const lockUser = async (formData) => {
+  const data = await axiosInstance.post(`${USER}/lock`, formData);
+  return data;
+};
+
+/*_____________________________UNLOCK_USER_______________________________________________ */
+export const unLockUser = async (formData) => {
+  const data = await axiosInstance.post(`${USER}/unlock`, formData);
+  return data;
+};
+
+
 /*_____________________________FORGET PASSWORD_______________________________________________ */
 export const forgotPassword = async (formData) => {
   const data = await axiosInstance.post(`${USER}/forgot-password`, formData);

@@ -2,7 +2,7 @@ import React from "react";
 import { nanoid } from "nanoid";
 import RenderInput from "../../../../components/RenderInput/RenderInput";
 
-const BaristaForm = ({ formik }) => {
+const BaristaForm = ({ formik, isEditModalOpen }) => {
   const inputField = [
     {
       id: nanoid(),
@@ -15,17 +15,21 @@ const BaristaForm = ({ formik }) => {
       lg: 12,
       sm: 12,
     },
-    {
-      id: nanoid(),
-      name: "mobileNumber",
-      label: "Mobile Number",
-      type: "number",
-      required: true,
-      xs: 12,
-      md: 6,
-      lg: 6,
-      sm: 12,
-    },
+    ...(!isEditModalOpen
+      ? [
+          {
+            id: nanoid(),
+            name: "mobileNumber",
+            label: "Mobile Number",
+            type: "number",
+            required: true,
+            xs: 12,
+            md: 6,
+            lg: 6,
+            sm: 12,
+          },
+        ]
+      : []),
     {
       id: nanoid(),
       name: "gender",

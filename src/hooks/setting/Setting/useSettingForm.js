@@ -1,14 +1,14 @@
 import { useFormik } from "formik";
 import { useAddSetting } from "../useSetting";
 
-export const useSettingForm = ({ onClose, data }) => {
+export const useSettingForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddSetting({});
   const { mutate: editMutate } = useAddSetting({});
 
   const formik = useFormik({
     initialValues: {
-      setting: "",
-      value: "",
+      setting: rowData?.setting || "",
+      value: rowData?.value || "",
     },
     // validationSchema: branchSchema,
     enableReinitialize: true,

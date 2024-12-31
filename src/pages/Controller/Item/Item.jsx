@@ -2,8 +2,13 @@ import React, { useMemo, useState } from "react";
 import {
   Box,
   Button,
+  Chip,
   CircularProgress,
   Grid,
+  IconButton,
+  Menu,
+  MenuItem,
+  Tooltip,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -25,6 +30,7 @@ import PublishIcon from "@mui/icons-material/Publish";
 import { useFilterItemForm } from "../../../hooks/item/Item/filterItem/useFilterItemForm";
 import { CustomPaginationUpdated } from "../../../components/Pagination/CustomPaginationUpdated";
 import ImportItemCSV from "./ImportItemCSV";
+import PausePresentationIcon from '@mui/icons-material/PausePresentation';
 
 const Item = () => {
   const theme = useTheme();
@@ -61,6 +67,51 @@ const Item = () => {
 
   const columns = useMemo(
     () => [
+      {
+        id: nanoid(),
+        accessorKey: "actions",
+        header: "Status",
+        size: 80,
+        sortable: false,
+        Cell: ({ row }) => {
+          console.log("🚀 ~ Item ~ row:", row?.original)
+          const [anchorEl, setAnchorEl] = useState(null);
+      
+          const handleOpenMenu = (event) => {
+            setAnchorEl(event.currentTarget);
+          };
+      
+          const handleCloseMenu = () => {
+            setAnchorEl(null);
+          };
+      
+          const handleMenuItemClick = (status) => {
+            console.log(`Change status to ${status} for row:`, row.original);
+            handleCloseMenu();
+          };
+      
+          return (
+            <div style={{ display: "flex", gap: "0.5rem" }}>
+              <Tooltip title="Change Status">
+                <Chip
+                  label="Active"
+                  onClick={handleOpenMenu}
+                  style={{ cursor: "pointer" }}
+                />
+              </Tooltip>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleCloseMenu}
+              >
+                <MenuItem onClick={() => handleMenuItemClick("ACTIVE")}>Active</MenuItem>
+                <MenuItem onClick={() => handleMenuItemClick("INACTIVE")}>Inactive</MenuItem>
+                <MenuItem onClick={() => handleMenuItemClick("LOCKED")}>Lock</MenuItem>
+              </Menu>
+            </div>
+          );
+        }
+      },
       {
         id: nanoid(),
         accessorKey: "itemImageUrl",

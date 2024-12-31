@@ -5,6 +5,8 @@ import {
   changePassword,
   forgotPassword,
   getUserData,
+  lockUser,
+  unLockUser,
 } from "../../api/controller/user-api";
 import { useFormik } from "formik";
 import { getErrorMessage } from "../../utils/getErrorMessage";
@@ -15,6 +17,32 @@ export const useGetUserData = () => {
   return useQuery(["getUserData"], () => getUserData(), {
     refetchInterval: false,
     refetchOnWindowFocus: false,
+  });
+};
+
+/*_____________________________LOCK_USER_______________________________________________ */
+export const useLockUser = ({ onSuccess }) => {
+  return useMutation(["lockUser"], (formData) => lockUser(formData), {
+    onSuccess: (data, variables, context) => {
+      toast.success("Successfully locked user");
+      onSuccess && onSuccess(data, variables, context);
+    },
+    onError: (err, _variables, _context) => {
+      toast.error(getErrorMessage(err));
+    },
+  });
+};
+
+/*_____________________________UNLOCK_USER_______________________________________________ */
+export const useUnLockUser = ({ onSuccess }) => {
+  return useMutation(["unLockUser"], (formData) => unLockUser(formData), {
+    onSuccess: (data, variables, context) => {
+      toast.success("Successfully unlocked user");
+      onSuccess && onSuccess(data, variables, context);
+    },
+    onError: (err, _variables, _context) => {
+      toast.error(getErrorMessage(err));
+    },
   });
 };
 

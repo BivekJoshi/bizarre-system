@@ -19,9 +19,9 @@ const DropZoneUploadCsv = ({ onClose }) => {
   const [acceptedFiles, setAcceptedFiles] = useState([]);
 
   const onDrop = (acceptedFiles) => {
-    setAcceptedFiles(acceptedFiles);
-    const file = acceptedFiles[0];
-    if (file) {
+    if (acceptedFiles.length > 0) {
+      const file = acceptedFiles[0];
+      setAcceptedFiles(acceptedFiles);
       setFileName(file.name);
       setIsFileUploaded(true);
     }
@@ -32,10 +32,6 @@ const DropZoneUploadCsv = ({ onClose }) => {
     accept: ".csv, .xls, .xlsx",
     maxFiles: 1,
   });
-
-  const handleChooseFileClick = () => {
-    document.querySelector("input[type='file']").click();
-  };
 
   const handleFileUpload = async () => {
     if (!isFileUploaded) return;
@@ -94,14 +90,6 @@ const DropZoneUploadCsv = ({ onClose }) => {
           <Typography variant="h6">
             Drag & Drop your file here, or click to select a file
           </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ marginTop: "10px" }}
-            onClick={handleChooseFileClick}
-          >
-            Choose File
-          </Button>
         </Paper>
       ) : (
         <Paper

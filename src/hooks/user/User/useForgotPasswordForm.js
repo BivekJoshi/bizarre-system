@@ -19,7 +19,6 @@ export const useForgotPasswordForm = () => {
     enableReinitialize: true,
     onSubmit: (values) => {
       handledAddRequest(values);
-      onSucc;
     },
   });
 

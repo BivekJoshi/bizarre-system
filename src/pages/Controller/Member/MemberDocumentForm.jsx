@@ -35,7 +35,7 @@ const MemberDocumentForm = ({ onClose, rowData }) => {
       maxSize: 10000000,
       multiple: true,
       xs: 12,
-      md: 6,
+      md: 12,
       lg: 6,
       sm: 12,
     },
