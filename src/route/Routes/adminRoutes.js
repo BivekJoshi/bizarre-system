@@ -70,7 +70,14 @@ const ReportBatchOrder = Loadable(
   )
 );
 const ReportItemSales = Loadable(
-  lazy(() => import("../../pages/Controller/Report/ReportSales/ReportItemSales"))
+  lazy(() =>
+    import("../../pages/Controller/Report/ReportSales/ReportItemSales")
+  )
+);
+const BatchReportItemHistory = Loadable(
+  lazy(() =>
+    import("../../pages/Controller/Report/ReportBatchOrder/BatchReportItemHistory")
+  )
 );
 
 const adminRoutes = [
@@ -178,6 +185,13 @@ const adminRoutes = [
     name: "batch-report",
     id: nanoid(),
     component: ReportBatchOrder,
+  },
+
+  {
+    path: "batch-report/:id",
+    name: "batch-report-details",
+    id: nanoid(),
+    component: BatchReportItemHistory,
   },
 
   {

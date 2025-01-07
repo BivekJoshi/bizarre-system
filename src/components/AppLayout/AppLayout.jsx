@@ -47,7 +47,7 @@ const AppLayout = () => {
               boxSizing: "border-box",
             }}
           >
-            <Grid container alignItems="center" sx={{padding:"1rem" }}>
+            <Grid container alignItems="center" sx={{ padding: "1rem" }}>
               <Typography variant="h6">Welcome</Typography>
             </Grid>
             <SideBar handleCloseDrawer={handleCloseDrawer} />
@@ -88,7 +88,11 @@ const AppLayout = () => {
               right: "1rem",
             }}
           >
-            <Button onClick={handleCloseDrawer} color="primary" variant="contained">
+            <Button
+              onClick={handleCloseDrawer}
+              color="primary"
+              variant="contained"
+            >
               <ArrowBack />
             </Button>
           </Box>

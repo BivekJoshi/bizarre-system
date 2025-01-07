@@ -22,9 +22,12 @@ import ReGenerateBillModal from "../../Batch/Bill/ReGenerateBillModal";
 import { DOC_URL } from "../../../../api/axiosInterceptor";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
+import { useNavigate } from "react-router-dom";
 
 const ReportBatchOrder = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
+
   const [reportData, setReportData] = useState(null);
   const [rowData, setRowData] = useState(null);
   const [fileType, setFileType] = useState(null);
@@ -63,8 +66,21 @@ const ReportBatchOrder = () => {
         header: "Customer",
         Cell: ({ cell }) => {
           const data = cell?.row?.original;
+          console.log(data)
           return (
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                whiteSpace: "normal",
+                textDecoration: "underLine",
+              }}
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate(`${data?.id}`);
+              }}
+            >
               <div>
                 Customer Name: <b>{data?.customerName || "NA"}</b>
               </div>
