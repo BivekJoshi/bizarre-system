@@ -43,6 +43,13 @@ const Book = () => {
   };
   const { formik, successFlag, loading } = useBookForm({ onClose, rowData });
 
+  const handleModalClose = () => {
+    formik.resetForm();
+    setRowData(null);
+    setIsAddModal(false);
+    setIsEditModalOpen(false);
+  };
+
   const { formik: filterFormik, loading: isLoading } = useFilterBookForm({
     bookData: (data) => setFilteredData(data),
     successFlag,
@@ -197,7 +204,7 @@ const Book = () => {
 
       <FormModal
         open={isAddModalOpen}
-        onClose={() => setIsAddModal(false)}
+        onClose={handleModalClose}
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}
@@ -213,7 +220,7 @@ const Book = () => {
       />
       <FormModal
         open={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
+        onClose={handleModalClose}
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}

@@ -60,6 +60,13 @@ const Waiter = () => {
     rowData,
   });
 
+  const handleModalClose = () => {
+    formik.resetForm();
+    setRowData(null);
+    setIsAddModal(false);
+    setIsEditModalOpen(false);
+  };
+
   const { formik: filterFormik, loading: isLoading } = useWaiterFilterForm({
     memberData: (data) => setFilteredData(data),
     successFlag,
@@ -388,7 +395,7 @@ const Waiter = () => {
 
       <FormModal
         open={isAddModalOpen}
-        onClose={() => setIsAddModal(false)}
+        onClose={handleModalClose}
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}
@@ -404,7 +411,7 @@ const Waiter = () => {
       />
       <FormModal
         open={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
+        onClose={handleModalClose}
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}

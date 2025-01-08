@@ -32,6 +32,7 @@ export const useAddExpenseForm = ({ onClose, rowData }) => {
       onSuccess: () => {
         setSuccessFlag(true);
         onClose();
+        formik.resetForm();
 
         setTimeout(() => {
           setSuccessFlag(false);
@@ -48,6 +49,7 @@ export const useAddExpenseForm = ({ onClose, rowData }) => {
       onSuccess: () => {
         setSuccessFlag(true);
         onClose();
+        formik.resetForm();
 
         setTimeout(() => {
           setSuccessFlag(false);

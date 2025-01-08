@@ -19,7 +19,6 @@ const Setting = () => {
   const [rowData, setRowData] = useState(null);
 
   const [isAddModalOpen, setIsAddModal] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const onClose = () => setIsAddModal(false);
   const { formik, loading } = useSettingForm({ onClose, rowData });

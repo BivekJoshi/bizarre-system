@@ -37,6 +37,13 @@ const RedeemCode = () => {
   };
   const { formik, loading } = useRedeemCodeForm({ onClose, rowData });
 
+  const handleModalClose = () => {
+    formik.resetForm();
+    setRowData(null);
+    setIsAddModal(false);
+    setIsEditModalOpen(false);
+  };
+
   const editRow = (row) => {
     setIsEditModalOpen(true);
     setRowData(row?.original);
@@ -176,7 +183,7 @@ const RedeemCode = () => {
 
       <FormModal
         open={isAddModalOpen}
-        onClose={() => setIsAddModal(false)}
+        onClose={handleModalClose}
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}
@@ -192,7 +199,7 @@ const RedeemCode = () => {
       />
       <FormModal
         open={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
+        onClose={handleModalClose}
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}

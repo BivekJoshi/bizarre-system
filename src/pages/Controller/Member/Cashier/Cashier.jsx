@@ -59,6 +59,13 @@ const Cashier = () => {
     rowData,
   });
 
+  const handleModalClose = () => {
+    formik.resetForm();
+    setRowData(null);
+    setIsAddModal(false);
+    setIsEditModalOpen(false);
+  };
+
   const { formik: filterFormik, loading: isLoading } = useCashierFilterForm({
     memberData: (data) => setFilteredData(data),
     successFlag,
@@ -391,7 +398,7 @@ const Cashier = () => {
 
       <FormModal
         open={isAddModalOpen}
-        onClose={() => setIsAddModal(false)}
+        onClose={handleModalClose}
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}
@@ -407,7 +414,7 @@ const Cashier = () => {
       />
       <FormModal
         open={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
+        onClose={handleModalClose}
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}

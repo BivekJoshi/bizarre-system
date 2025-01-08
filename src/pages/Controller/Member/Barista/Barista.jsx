@@ -59,6 +59,12 @@ const Barista = () => {
     onClose,
     rowData,
   });
+  const handleModalClose = () => {
+    formik.resetForm();
+    setRowData(null);
+    setIsAddModal(false);
+    setIsEditModalOpen(false);
+  };
 
   const { formik: filterFormik, loading: isLoading } = useBaristaFilterForm({
     memberData: (data) => setFilteredData(data),
@@ -405,7 +411,7 @@ const Barista = () => {
       />
       <FormModal
         open={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
+        onClose={handleModalClose}
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}
@@ -422,7 +428,7 @@ const Barista = () => {
       />
       <FormModal
         open={isDocumentModalOpen}
-        onClose={() => setIsDocumentModalOpen(false)}
+        onClose={handleModalClose}
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}

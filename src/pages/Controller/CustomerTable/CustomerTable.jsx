@@ -35,7 +35,6 @@ const CustomerTable = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  
 
   const [filteredData, setFilteredData] = useState(null);
 
@@ -49,10 +48,16 @@ const CustomerTable = () => {
     rowData,
   });
 
+  const handleModalClose = () => {
+    formik.resetForm();
+    setRowData(null);
+    setIsAddModalOpen(false);
+    setIsEditModalOpen(false);
+  };
   const { formik: filterFormik, loading: isLoading } =
     useFilterCustomerTableForm({
       customerTableData: (data) => setFilteredData(data),
-      successFlag
+      successFlag,
     });
 
   const deleteRow = useCallback((row) => {
@@ -140,7 +145,7 @@ const CustomerTable = () => {
           enableEditing={true}
           handleEdit={editRow}
           handleEnter={handleEnter}
-          enterIcon={<GpsFixedRoundedIcon/>}
+          enterIcon={<GpsFixedRoundedIcon />}
           entertooltip={"Enter"}
           edit
           enter
@@ -226,7 +231,7 @@ const CustomerTable = () => {
 
       <FormModal
         open={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
+        onClose={handleModalClose}
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}
@@ -238,7 +243,7 @@ const CustomerTable = () => {
       />
       <FormModal
         open={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
+        onClose={handleModalClose}
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}

@@ -34,12 +34,19 @@ const Expense = () => {
     setIsAddModal(false);
     setIsEditModalOpen(false);
   };
-  
+
   const { formik, successFlag, loading } = useAddExpenseForm({
     onClose,
     rowData,
   });
 
+  const handleModalClose = () => {
+    formik.resetForm();
+    setRowData(null);
+    setIsAddModal(false);
+    setIsEditModalOpen(false);
+  };
+  
   const { formik: filterFormik, loading: isLoading } = useFilterExpenseForm({
     expenseData: (data) => setFilteredData(data),
     successFlag,
@@ -210,7 +217,7 @@ const Expense = () => {
 
       <FormModal
         open={isAddModalOpen}
-        onClose={() => setIsAddModal(false)}
+        onClose={handleModalClose}
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}
@@ -226,7 +233,7 @@ const Expense = () => {
       />
       <FormModal
         open={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
+        onClose={handleModalClose}
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}

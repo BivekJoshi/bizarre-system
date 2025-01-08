@@ -39,6 +39,13 @@ const Branch = () => {
   const onClose = () => setIsAddModal(false);
   const { formik, successFlag, loading } = useBranchForm({ onClose, rowData });
 
+  const handleModalClose = () => {
+    formik.resetForm();
+    setRowData(null);
+    setIsAddModal(false);
+    setIsEditModalOpen(false);
+  };
+
   const { formik: filterFormik, loading: isLoading } = useFilterBranchForm({
     branchData: (data) => setFilteredData(data),
     successFlag,
@@ -185,7 +192,7 @@ const Branch = () => {
 
       <FormModal
         open={isAddModalOpen}
-        onClose={() => setIsAddModal(false)}
+        onClose={handleModalClose}
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}
@@ -201,7 +208,7 @@ const Branch = () => {
       />
       <FormModal
         open={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
+        onClose={handleModalClose}
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}
