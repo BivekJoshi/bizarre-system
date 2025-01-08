@@ -55,6 +55,8 @@ const AddItem = ({ formik }) => {
       label: "Description",
       type: "text",
       required: true,
+      multiline: true,
+      rows: 3,
       xs: 12,
       md: 6,
       lg: 6,

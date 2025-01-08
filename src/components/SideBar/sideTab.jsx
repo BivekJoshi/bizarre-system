@@ -15,10 +15,12 @@ import TableRowsIcon from "@mui/icons-material/TableRows";
 import FilterFramesIcon from "@mui/icons-material/FilterFrames";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import RedeemRoundedIcon from "@mui/icons-material/RedeemRounded";
-import DnsIcon from '@mui/icons-material/Dns';
-import AspectRatioIcon from '@mui/icons-material/AspectRatio';
-import ReceiptIcon from '@mui/icons-material/Receipt';
-import BatchPredictionIcon from '@mui/icons-material/BatchPrediction';
+import DnsIcon from "@mui/icons-material/Dns";
+import AspectRatioIcon from "@mui/icons-material/AspectRatio";
+import ReceiptIcon from "@mui/icons-material/Receipt";
+import BatchPredictionIcon from "@mui/icons-material/BatchPrediction";
+import Inventory2RoundedIcon from "@mui/icons-material/Inventory2Rounded";
+import GroupWorkRoundedIcon from "@mui/icons-material/GroupWorkRounded";
 
 export const adminTab = [
   {
@@ -143,6 +145,18 @@ export const adminTab = [
       },
     ],
   },
+  {
+    id: nanoid(),
+    label: "Inventory",
+    value: "inventory",
+    icon: <Inventory2RoundedIcon />,
+  },
+  {
+    id: nanoid(),
+    label: "Expense",
+    value: "expense",
+    icon: <GroupWorkRoundedIcon />,
+  },
 ];
 
 export const branchOwnerTab = [
@@ -221,6 +235,18 @@ export const branchOwnerTab = [
         icon: <ReceiptIcon />,
       },
     ],
+  },
+  {
+    id: nanoid(),
+    label: "Inventory",
+    value: "inventory",
+    icon: <Inventory2RoundedIcon />,
+  },
+  {
+    id: nanoid(),
+    label: "Expense",
+    value: "expense",
+    icon: <GroupWorkRoundedIcon />,
   },
 ];
 

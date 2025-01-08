@@ -6,7 +6,6 @@ import { DOC_URL } from "../../../api/axiosInterceptor";
 import { Button } from "@mui/material";
 
 const EditItem = ({ formik, rowData }) => {
-  console.log("🚀 ~ EditItem ~ rowData:", rowData);
 
   // State to toggle between image display and dropzone
   const [showDropzone, setShowDropzone] = useState(false);
@@ -56,6 +55,8 @@ const EditItem = ({ formik, rowData }) => {
       label: "Description",
       type: "text",
       required: true,
+      multiline: true,
+      rows: 3,
       xs: 12,
       md: 6,
       lg: 6,
