@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Chip,
   CircularProgress,
   Grid,
   Typography,
@@ -18,6 +19,14 @@ import CustomTable from "../../../components/CustomTable/CustomTable";
 import FilterExpenseForm from "./ExpenseForm/FilterExpense/FilterExpenseForm";
 import { useSelector } from "react-redux";
 import { CustomPaginationUpdated } from "../../../components/Pagination/CustomPaginationUpdated";
+import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
+import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import {
+  useDeleteExpense,
+  useGetExpenseVerifyById,
+} from "../../../hooks/expense/useExpense";
+import VerfiedIcon from "@mui/icons-material/Verified";
+import ExpenseCard from "./ExpenseForm/ExpenseCard";
 
 const Expense = () => {
   const theme = useTheme();
@@ -27,8 +36,13 @@ const Expense = () => {
 
   const [isAddModalOpen, setIsAddModal] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isVerifyModalOpen, setIsVerifyModalOpen] = useState(false);
 
   const [filteredData, setFilteredData] = useState(null);
+
+  const { mutate } = useDeleteExpense({ rowData });
+  const { mutate: verifyExpense } = useGetExpenseVerifyById(rowData);
 
   const onClose = () => {
     setIsAddModal(false);
@@ -46,7 +60,7 @@ const Expense = () => {
     setIsAddModal(false);
     setIsEditModalOpen(false);
   };
-  
+
   const { formik: filterFormik, loading: isLoading } = useFilterExpenseForm({
     expenseData: (data) => setFilteredData(data),
     successFlag,
@@ -56,65 +70,123 @@ const Expense = () => {
     setIsEditModalOpen(true);
     setRowData(row?.original);
   };
+  const deleteRow = (row) => {
+    setRowData(row?.original?.id);
+    setIsDeleteModalOpen(true);
+  };
+
+  const confimVerify = () => {
+    verifyExpense({
+      onSuccess: () => {
+        setIsVerifyModalOpen(false);
+      },
+    });
+  };
 
   const columns = useMemo(
     () => [
       {
         id: nanoid(),
         accessorKey: "expenseType",
-        header: "expenseType",
-        maxWidth: 80,
-        sortable: false,
-      },
-      {
-        id: nanoid(),
-        accessorKey: "description",
-        header: "description",
+        header: "Expense Type",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
         accessorKey: "paymentType",
-        header: "paymentType",
+        header: "Payment Type",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
         accessorKey: "amount",
-        header: "amount",
+        header: "Amount",
         maxWidth: 80,
         sortable: false,
       },
       {
         id: nanoid(),
-        accessorKey: "createdBy",
-        header: "createdBy",
-        maxWidth: 80,
+        accessorKey: "description",
+        header: "Description",
+        maxWidth: 250,
+        size: 200,
         sortable: false,
+        Cell: ({ cell }) => {
+          const { description } = cell?.row?.original || {};
+          return (
+            <div
+              style={{
+                wordBreak: "break-word",
+                whiteSpace: "normal",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {description || "N/A"}
+            </div>
+          );
+        },
       },
 
       {
         id: nanoid(),
-        accessorKey: "createdDate",
-        header: "createdDate",
-        maxWidth: 80,
+        accessorKey: "createdBy",
+        header: "Created By",
+        maxWidth: 150,
         sortable: false,
+        Cell: ({ cell }) => {
+          const { createdBy, createdDate } = cell?.row?.original || {};
+          return (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "8px",
+              }}
+            >
+              <span>{createdBy || "N/A"}</span>
+              <span>{createdDate || "-"}</span>
+            </div>
+          );
+        },
       },
       {
         id: nanoid(),
-        accessorKey: "verified",
-        header: "verified",
-        maxWidth: 80,
+        header: "Verified By",
+        maxWidth: 150,
         sortable: false,
-      },
-      {
-        id: nanoid(),
-        accessorKey: "verifiedBy",
-        header: "verifiedBy",
-        maxWidth: 80,
-        sortable: false,
+        Cell: ({ cell }) => {
+          const { verified, verifiedBy, id } = cell?.row?.original || {};
+          return (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "8px",
+              }}
+            >
+              <span>{verifiedBy || ""}</span>
+              <span>
+                {verified ? (
+                  <Chip label="Verified" color="success" />
+                ) : (
+                  <Chip
+                    label="Unverified"
+                    color="warning"
+                    onClick={() => {
+                      setIsVerifyModalOpen(true);
+                      setRowData(id);
+                    }}
+                  />
+                )}
+              </span>
+            </div>
+          );
+        },
       },
     ],
     []
@@ -146,20 +218,28 @@ const Expense = () => {
           enablePagination={false}
           enableRowNumbers
           enableColumnActions
-          // enableDelete
+          enableDelete
           enableEditing={true}
-          // handleDeleteRow={deleteRow}
+          handleDeleteRow={deleteRow}
           handleEdit={editRow}
-          // delete
+          delete
           edit
         />
       );
     } else {
       return (
         <Grid container spacing={2}>
-          {filteredData?.content?.map((item, index) => (
-            <Grid item xs={12} md={4} lg={3} sm={12} key={index}>
-              {/* <BookCardView data={item} /> */}
+          {filteredData.content.map((item) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={item.id}>
+              <ExpenseCard
+                data={item}
+                onEdit={editRow}
+                onDelete={deleteRow}
+                onVerify={(id) => {
+                  setIsVerifyModalOpen(true);
+                  setRowData(id);
+                }}
+              />
             </Grid>
           ))}
         </Grid>
@@ -247,6 +327,50 @@ const Expense = () => {
           </>
         }
         showButton={true}
+      />
+      <ConfirmationModal
+        disagreeLabel={"Yes, Delete !"}
+        agreeLabel={"No, Keep It."}
+        alertTitle={"Delete Alert"}
+        header={"You're going to delete this expense data !!"}
+        confirmhead={"Are you sure ?"}
+        handleModalClose={() => setIsDeleteModalOpen(false)}
+        isModalOpen={isDeleteModalOpen}
+        handleSave={() => mutate(rowData)}
+        icon={
+          <DeleteRoundedIcon
+            sx={{
+              backgroundColor: "#FFDDDC",
+              borderRadius: "50%",
+              fontSize: 36,
+              padding: "1rem",
+            }}
+          />
+        }
+      />
+      <ConfirmationModal
+        disagreeLabel={"Yes, Confirm"}
+        agreeLabel={"No, Don't Verify."}
+        alertTitle={"Confirm !!!"}
+        header={"Verify Expense"}
+        confirmhead={"Are you sure ?"}
+        handleModalClose={() => {
+          setIsVerifyModalOpen(false);
+          // close();
+        }}
+        isModalOpen={isVerifyModalOpen}
+        icon={
+          <VerfiedIcon
+            sx={{
+              backgroundColor: "#a3fca1",
+              borderRadius: "50%",
+              fontSize: 36,
+              padding: "1rem",
+              color: "green",
+            }}
+          />
+        }
+        handleSave={confimVerify}
       />
     </>
   );

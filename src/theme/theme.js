@@ -134,7 +134,7 @@ export const themeSettings = (mode) => {
         styleOverrides: {
           root: {
             textTransform: "none",
-            fontWeight:700
+            fontWeight: 700,
           },
         },
       },

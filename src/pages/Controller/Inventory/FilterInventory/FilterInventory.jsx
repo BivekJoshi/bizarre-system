@@ -1,15 +1,13 @@
-import { Box, Button, Typography, useTheme, IconButton } from "@mui/material";
+import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import { nanoid } from "nanoid";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
-import SearchIcon from "@mui/icons-material/Search";
-import RenderInput from "../../../../../components/RenderInput/RenderInput";
+import RenderInput from "../../../../components/RenderInput/RenderInput";
 
-const FilterExpenseForm = ({ filterFormik }) => {
+const FilterInventory = ({ filterFormik }) => {
   const theme = useTheme();
   const [showFields, setShowFields] = useState(false);
-
   const inputField = [
     {
       id: nanoid(),
@@ -62,7 +60,6 @@ const FilterExpenseForm = ({ filterFormik }) => {
       sm: 12,
     },
   ];
-
   return (
     <div
       style={{
@@ -93,20 +90,10 @@ const FilterExpenseForm = ({ filterFormik }) => {
       {showFields && (
         <>
           <RenderInput inputField={inputField} formik={filterFormik} />
-          {/* <div style={{ display: "flex", justifyContent: "end" }}>
-            <Button
-              onClick={() => filterFormik.handleSubmit()}
-              variant="outlined"
-              sx={{ marginTop: "1rem" }}
-              startIcon={<SearchIcon />}
-            >
-              Search
-            </Button>
-          </div> */}
         </>
       )}
     </div>
   );
 };
 
-export default FilterExpenseForm;
+export default FilterInventory;

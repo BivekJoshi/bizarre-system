@@ -1,10 +1,10 @@
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { debounce } from "@mui/material";
-import { useFilterExpenses } from "../../useExpense";
+import { useFilterInventory } from "../useInventory";
 
-export const useFilterExpenseForm = ({ expenseData, successFlag }) => {
-  const { mutate, isLoading } = useFilterExpenses({});
+export const useFilterInventoryForm = ({ inventoryData }) => {
+  const { mutate, isLoading } = useFilterInventory({});
   const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
@@ -28,7 +28,7 @@ export const useFilterExpenseForm = ({ expenseData, successFlag }) => {
     setLoading(true);
     mutate(values, {
       onSuccess: (data) => {
-        expenseData(data?.data?.data);
+        inventoryData(data?.data?.data);
         setLoading(false);
       },
       onError: () => {
@@ -42,10 +42,10 @@ export const useFilterExpenseForm = ({ expenseData, successFlag }) => {
   }, 300);
 
   useEffect(() => {
-    if (formik?.values?.pageNumber > 0 || successFlag) {
+    if (formik?.values?.pageNumber > 0) {
       debouncedSearch();
     }
-  }, [formik.values.search, successFlag]);
+  }, [formik.values.search]);
 
   return {
     formik,

@@ -101,7 +101,6 @@ export const useFilterCustomer = ({ onSuccess }) => {
 
 /*________________________VERIFY CUSTOMER_____________________________________*/
 export const useVerifyCustomer = (id) => {
-  console.log("🚀 ~ useVerifyCustomer ~ id:", id);
   return useMutation(() => verifyCustomer(id), {
     onSuccess: (data) => {
       toast.success("Customer verified successfully");

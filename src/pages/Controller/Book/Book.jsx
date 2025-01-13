@@ -239,7 +239,7 @@ const Book = () => {
         disagreeLabel={"Yes, Delete !"}
         agreeLabel={"No, Keep It."}
         alertTitle={"Delete Alert"}
-        header={"You're going to delete this Id?"}
+        header={"You're going to delete this book data !!"}
         confirmhead={"Are you sure ?"}
         handleModalClose={() => setIsDeleteModalOpen(false)}
         isModalOpen={isDeleteModalOpen}

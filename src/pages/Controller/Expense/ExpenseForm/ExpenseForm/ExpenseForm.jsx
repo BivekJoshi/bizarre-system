@@ -68,7 +68,6 @@ const ExpenseForm = ({ formik }) => {
       name: "description",
       label: "Description",
       type: "text",
-      required: true,
       multiline: true,
       rows: 3,
       xs: 12,

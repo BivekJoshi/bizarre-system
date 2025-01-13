@@ -61,7 +61,7 @@ export const useFilterExpenses = ({ onSuccess }) => {
       onSuccess && onSuccess(data, variables, context);
     },
     onError: (err, _variables, _context) => {
-      toast.error(getErrorMessage(err));
+      // toast.error(getErrorMessage(err));
     },
   });
 };
@@ -77,11 +77,19 @@ export const useGetExpenseById = (id) => {
 
 /*________________________GET_BY_EXPENSE_VERIFY_BY_ID_____________________________________*/
 export const useGetExpenseVerifyById = (id) => {
-  return useQuery(["getExpenseVerifyById"], () => getExpenseVerifyById(id), {
-    cacheTime: 10000,
-    refetchInterval: false,
-    refetchOnWindowFocus: false,
-  });
+  // return useQuery(["getExpenseVerifyById"], () => getExpenseVerifyById(id), {
+  //   cacheTime: 10000,
+  //   refetchInterval: false,
+  //   refetchOnWindowFocus: false,
+  // });
+   return useMutation(() => getExpenseVerifyById(id), {
+      onSuccess: (data) => {
+        toast.success("Expense verified successfully");
+      },
+      onError: (err) => {
+        toast.error(getErrorMessage(err));
+      },
+    });
 };
 
 /*________________________DELETE_____________________________________*/
@@ -91,7 +99,7 @@ export const useDeleteExpense = ({ onSuccess }) => {
     onSuccess: (data, variables, context) => {
       toast.success("Expense record deleted successfully");
       onSuccess && onSuccess(data, variables, context);
-      queryClient.invalidateQueries("getExpense");
+      queryClient.invalidateQueries("filterExpense");
     },
   });
 };
