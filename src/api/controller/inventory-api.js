@@ -12,11 +12,18 @@ export const getInventoryFind = async (pageNumber, pageSize) => {
 };
 
 /*________________________GET_BY_INVENTORY_ID_____________________________________*/
-export const getInventoryByItemId = async (itemId) => {
-  if (itemId) {
-    const { data } = await axiosInstance.get(`${INVENTORY}/add-item/${itemId}`);
-    return data;
-  }
+// export const addInventoryByItemId = async (itemId) => {
+//   if (itemId) {
+//     const { data } = await axiosInstance.get(`${INVENTORY}/add-item/${itemId}`);
+//     return data;
+//   }
+// };
+export const addInventoryByItemId = async (formData) => {
+  const data = await axiosInstance.get(
+    `${INVENTORY}/add-item/${formData?.itemId}`,
+    formData
+  );
+  return data;
 };
 
 /*____________________________FILTER_INVENTORY_ITEM_______________________________________________ */

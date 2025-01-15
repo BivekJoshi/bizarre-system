@@ -30,3 +30,15 @@ export const downloadBatchOrderReport = async (formData) => {
   const data = await axiosInstance.post(`${REPORT}/batch-order-report/download`, formData);
   return data;
 };
+
+/*_____________________________POST AND GET PROFIT LOSS REPORT (GENERATE)_______________________________________________ */
+export const generateProfitLossReport = async (formData) => {
+  const data = await axiosInstance.post(`${REPORT}/profit-loss-report/generate`, formData);
+  return data;
+};
+
+/*_____________________________POST AND GET PROFIT LOSS REPORT (DOWNLOAD)_______________________________________________ */
+export const downloadProfitLossReport = async (formData) => {
+  const data = await axiosInstance.post(`${REPORT}/profit-loss-report/download`, formData);
+  return data;
+};

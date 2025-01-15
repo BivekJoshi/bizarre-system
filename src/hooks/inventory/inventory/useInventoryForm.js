@@ -1,26 +1,15 @@
 import { useFormik } from "formik";
-import { useEffect, useState } from "react";
-import { useFilterItem } from "../../useItem";
-import { debounce } from "@mui/material";
+import { useState } from "react";
+import { useAddStockInventory, useEditStockInventory } from "../useInventory";
 
-export const useInventoryForm = ({ itemData, successFlag }) => {
-  const { mutate, isLoading } = useFilterItem({});
+export const useAddInventoryForm = ({ selectedCardId, inputValue }) => {
+  const { mutate, isLoading } = useAddStockInventory({});
   const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
-      search: [
-        {
-          field: "",
-          value: "",
-          type: "",
-          object: "",
-        },
-      ],
-
-      actionType: "FILTER",
-      pageNumber: "" || 1,
-      noOfRecords: "" || 10,
+      itemId: selectedCardId || "",
+      stockCount: inputValue || "",
     },
     enableReinitialize: true,
     onSubmit: (values) => {
@@ -32,7 +21,6 @@ export const useInventoryForm = ({ itemData, successFlag }) => {
     setLoading(true);
     mutate(values, {
       onSuccess: (data) => {
-        itemData(data?.data?.data);
         setLoading(false);
       },
       onError: () => {
@@ -41,15 +29,38 @@ export const useInventoryForm = ({ itemData, successFlag }) => {
     });
   };
 
-  const debouncedSearch = debounce(() => {
-    handleAddRequest(formik.values);
-  }, 300);
+  return {
+    formik,
+    loading: isLoading || loading,
+  };
+};
 
-  useEffect(() => {
-    if (formik?.values?.pageNumber > 0 || successFlag) {
-      debouncedSearch();
-    }
-  }, [formik.values.search, successFlag]);
+export const useInventoryForm = ({ itemId, inputValue }) => {
+  const { mutate, isLoading } = useEditStockInventory({});
+  const [loading, setLoading] = useState(false);
+
+  const formik = useFormik({
+    initialValues: {
+      itemId: itemId || "",
+      stockCount: inputValue || "",
+    },
+    enableReinitialize: true,
+    onSubmit: (values) => {
+      handleAddRequest(values);
+    },
+  });
+
+  const handleAddRequest = (values) => {
+    setLoading(true);
+    mutate(values, {
+      onSuccess: (data) => {
+        setLoading(false);
+      },
+      onError: () => {
+        setLoading(false);
+      },
+    });
+  };
 
   return {
     formik,

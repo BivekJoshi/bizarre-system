@@ -134,8 +134,6 @@ const StockList = ({ onClose, orderData }) => {
             filteredData={filteredData}
             filterFormik={filterFormik}
             isLoadingItem={isLoadingItem}
-            onClose={onClose}
-            orderData={orderData}
           />
         </Grid>
       </Grid>

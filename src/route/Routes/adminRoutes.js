@@ -81,6 +81,11 @@ const ReportItemSales = Loadable(
     import("../../pages/Controller/Report/ReportSales/ReportItemSales")
   )
 );
+const ReportProfitLoss = Loadable(
+  lazy(() =>
+    import("../../pages/Controller/Report/ReportProfitLoss/ReportProfitLoss")
+  )
+);
 const BatchReportItemHistory = Loadable(
   lazy(() =>
     import(
@@ -194,6 +199,18 @@ const adminRoutes = [
     name: "batch-report",
     id: nanoid(),
     component: ReportBatchOrder,
+  },
+  {
+    path: "sales-report",
+    name: "sales-report",
+    id: nanoid(),
+    component: ReportItemSales,
+  },
+  {
+    path: "profit/loss-report",
+    name: "profit/loss-report",
+    id: nanoid(),
+    component: ReportProfitLoss,
   },
 
   {

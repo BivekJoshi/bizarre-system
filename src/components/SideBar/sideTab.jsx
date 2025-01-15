@@ -21,6 +21,7 @@ import ReceiptIcon from "@mui/icons-material/Receipt";
 import BatchPredictionIcon from "@mui/icons-material/BatchPrediction";
 import Inventory2RoundedIcon from "@mui/icons-material/Inventory2Rounded";
 import GroupWorkRoundedIcon from "@mui/icons-material/GroupWorkRounded";
+import MonetizationOnRoundedIcon from '@mui/icons-material/MonetizationOnRounded';
 
 export const adminTab = [
   {
@@ -110,6 +111,12 @@ export const adminTab = [
         label: "Sales Report",
         value: "sales-report",
         icon: <ReceiptIcon />,
+      },
+      {
+        id: nanoid(),
+        label: "Profit Loss Report",
+        value: "profit/loss-report",
+        icon: <MonetizationOnRoundedIcon />,
       },
     ],
   },
@@ -233,6 +240,12 @@ export const branchOwnerTab = [
         label: "Sales Report",
         value: "sales-report",
         icon: <ReceiptIcon />,
+      },
+      {
+        id: nanoid(),
+        label: "Profit Loss Report",
+        value: "profit/loss-report",
+        icon: <MonetizationOnRoundedIcon />,
       },
     ],
   },

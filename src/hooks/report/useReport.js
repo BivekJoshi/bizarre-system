@@ -2,8 +2,10 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import {
   downloadBatchOrderReport,
   downloadItemSalesReport,
+  downloadProfitLossReport,
   generateBatchOrderReport,
   generateItemSalesReport,
+  generateProfitLossReport,
   getReportDashboard,
 } from "../../api/controller/report-api";
 import { toast } from "react-toastify";
@@ -45,7 +47,7 @@ export const useDownloadItemSalesReport = ({ onSuccess }) => {
     (formData) => downloadItemSalesReport(formData),
     {
       onSuccess: (data, variables, context) => {
-        toast.success("Successfully generated item sales report");
+        toast.success("Successfully dowmloaded item sales report");
         onSuccess && onSuccess(data, variables, context);
         queryClient.invalidateQueries("getReportDashboard");
       },
@@ -64,7 +66,7 @@ export const useGenerateBatchOrderReport = ({ onSuccess }) => {
     (formData) => generateBatchOrderReport(formData),
     {
       onSuccess: (data, variables, context) => {
-        toast.success("Successfully generated item sales report");
+        toast.success("Successfully generated batch report");
         onSuccess && onSuccess(data, variables, context);
         queryClient.invalidateQueries("getReportDashboard");
       },
@@ -83,7 +85,45 @@ export const useDownloadBatchOrderReport = ({ onSuccess }) => {
     (formData) => downloadBatchOrderReport(formData),
     {
       onSuccess: (data, variables, context) => {
-        toast.success("Successfully generated item sales report");
+        toast.success("Successfully download batch report");
+        onSuccess && onSuccess(data, variables, context);
+        queryClient.invalidateQueries("getReportDashboard");
+      },
+      onError: (err, _variables, _context) => {
+        toast.error(getErrorMessage(err));
+      },
+    }
+  );
+};
+
+/*_____________________________POST AND GET PROFIT LOSS REPORT (GENERATE)_______________________________________________ */
+export const useGenerateProfitLossReport = ({ onSuccess }) => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    ["generateProfitLossReport"],
+    (formData) => generateProfitLossReport(formData),
+    {
+      onSuccess: (data, variables, context) => {
+        toast.success("Successfully generated profit loss report");
+        onSuccess && onSuccess(data, variables, context);
+        queryClient.invalidateQueries("getReportDashboard");
+      },
+      onError: (err, _variables, _context) => {
+        toast.error(getErrorMessage(err));
+      },
+    }
+  );
+};
+
+/*_____________________________POST AND GET PROFIT LOSS REPORT (DOWNLOAD)_______________________________________________ */
+export const useDownloadProfitLossReport = ({ onSuccess }) => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    ["downloadProfitLossReport"],
+    (formData) => downloadProfitLossReport(formData),
+    {
+      onSuccess: (data, variables, context) => {
+        toast.success("Successfully downloaded profit loss report");
         onSuccess && onSuccess(data, variables, context);
         queryClient.invalidateQueries("getReportDashboard");
       },

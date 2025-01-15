@@ -294,8 +294,8 @@ const ReportBatchOrder = () => {
                 </Grid>
                 <Grid item xs={12} md={2}>
                   {renderReportCard(
-                    "Grand Total",
-                    `रु ${reportData.total}`,
+                    "Total Bypass",
+                    `रु ${reportData.totalByPassed}`,
                     "calculate"
                   )}
                 </Grid>

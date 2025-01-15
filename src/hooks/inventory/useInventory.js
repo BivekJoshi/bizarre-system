@@ -1,10 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import {
+  addInventoryByItemId,
   editStockInventory,
   filterInventoryItem,
-  getInventoryByItemId,
   getInventoryFind,
 } from "../../api/controller/inventory-api";
+import { getErrorMessage } from "../../utils/getErrorMessage";
+import { toast } from "react-toastify";
 
 /*________________________GET_____________________________________*/
 export const useGetInventory = (pageNumber, pageSize) => {
@@ -20,13 +22,31 @@ export const useGetInventory = (pageNumber, pageSize) => {
 };
 
 /*________________________GET_BY_ID_____________________________________*/
-export const useGetInventoryById = (id) => {
-  return useQuery(["getInventoryByItemId"], () => getInventoryByItemId(id), {
-    cacheTime: 10000,
-    refetchInterval: false,
-    refetchOnWindowFocus: false,
-  });
+// export const useAddInventoryById = (id) => {
+//   return useQuery(["addInventoryByItemId"], () => addInventoryByItemId(id), {
+//     cacheTime: 10000,
+//     refetchInterval: false,
+//     refetchOnWindowFocus: false,
+//   });
+// };
+export const useAddStockInventory = ({ onSuccess }) => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    ["addInventoryByItemId"],
+    (formData) => addInventoryByItemId(formData),
+    {
+      onSuccess: (data, variables, context) => {
+        toast.success("Inventory data added successfully");
+        onSuccess && onSuccess(data, variables, context);
+        queryClient.invalidateQueries("useGetInventory");
+      },
+      onError: (err, _variables, _context) => {
+        toast.error(getErrorMessage(err));
+      },
+    }
+  );
 };
+
 
 /*________________________FILTER INVENTORY_____________________________________*/
 export const useFilterInventory = ({ onSuccess }) => {

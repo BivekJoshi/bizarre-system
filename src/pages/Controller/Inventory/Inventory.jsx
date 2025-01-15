@@ -5,7 +5,9 @@ import {
   Box,
   Button,
   CircularProgress,
+  Collapse,
   Grid,
+  TextField,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -21,6 +23,7 @@ import { DOC_URL } from "../../../api/axiosInterceptor";
 import InventoryCard from "./InventoryCard";
 import FormModal from "../../../components/Modal/FormModal";
 import StockList from "./UpdateStock/StockList";
+import { useInventoryForm } from "../../../hooks/inventory/inventory/useInventoryForm";
 
 const Inventory = () => {
   const theme = useTheme();
@@ -110,6 +113,70 @@ const Inventory = () => {
         header: "Stock Quantity",
         maxWidth: 80,
         sortable: false,
+      },
+      {
+        id: nanoid(),
+        accessorKey: "update stock",
+        header: "Update Stock",
+        Cell: ({ cell }) => {
+          const itemId = cell?.row?.original?.item?.id;
+          const [showMessageInput, setShowMessageInput] = useState(false);
+          const [inputValue, setInputValue] = useState("");
+
+          const handleInputChange = (event) => {
+            setInputValue(event.target.value);
+          };
+
+          const { formik } = useInventoryForm({ itemId, inputValue });
+
+          const handleMessageSubmit = () => {
+            formik.handleSubmit();
+          };
+
+          return (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem",
+              }}
+            >
+              <Button
+                onClick={() => setShowMessageInput(true)}
+                variant="outlined"
+              >
+                Update Stock
+              </Button>
+              <Collapse in={showMessageInput}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    marginTop: "0.5rem",
+                  }}
+                >
+                  <TextField
+                    fullWidth
+                    variant="outlined"
+                    size="small"
+                    placeholder="Enter stock count"
+                    value={inputValue}
+                    type="number"
+                    onChange={handleInputChange}
+                  />
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleMessageSubmit}
+                  >
+                    Update
+                  </Button>
+                </div>
+              </Collapse>
+            </div>
+          );
+        },
       },
     ],
     []
@@ -213,14 +280,14 @@ const Inventory = () => {
 
       <FormModal
         open={isAddModalOpen}
-        onClose={()=>setIsAddModal(false)}
+        onClose={() => setIsAddModal(false)}
         width={"90%"}
         height={"auto"}
         maxHeight={"80vh"}
         header={"Add Book"}
         formComponent={
           <>
-            <StockList/>
+            <StockList />
           </>
         }
         showButton={false}
