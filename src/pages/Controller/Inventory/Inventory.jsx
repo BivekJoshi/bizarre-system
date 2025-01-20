@@ -41,26 +41,6 @@ const Inventory = () => {
     () => [
       {
         id: nanoid(),
-        accessorKey: "branch",
-        header: "Branch",
-        maxWidth: 80,
-        sortable: false,
-        Cell: ({ cell }) => {
-          const data = cell.getValue();
-          console.log("🚀 ~ Inventory ~ data:", data);
-          return (
-            <>
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                <div>{data?.address}</div>
-                <div>{data?.housingCapacity}</div>
-                <div>{data?.phoneNumber}</div>
-              </div>
-            </>
-          );
-        },
-      },
-      {
-        id: nanoid(),
         accessorKey: "item",
         header: "Item",
         maxWidth: 80,
@@ -70,13 +50,31 @@ const Inventory = () => {
           return (
             <>
               <div style={{ display: "flex", flexDirection: "column" }}>
+                <div
+                  style={{
+                    color: "green",
+                    fontWeight: "bold",
+                    fontSize: "14px",
+                  }}
+                >
+                  {data?.name}
+                </div>
+
+                <div>
+                  Cost Price <b>{data?.costPrice}</b>
+                </div>
+                <div>
+                  Marked Price: <b>{data?.markedPrice}</b>
+                </div>
+                <div>
+                  Selling Price: <b>{data?.sellingPrice}</b>
+                </div>
+                <div>
+                  Count: <b>{data?.stockCount}</b>
+                </div>
+
                 <div>Color: {data?.color}</div>
-                <div>Cost Price{data?.costPrice}</div>
-                <div>Description: {data?.description}</div>
-                <div>Marked Price: {data?.markedPrice}</div>
-                <div>Name: {data?.name}</div>
-                <div>Selling Price: {data?.sellingPrice}</div>
-                <div>Count: {data?.stockCount}</div>
+
                 <div>Tags: {data?.tags}</div>
                 <div>Type: {data?.type}</div>
               </div>
@@ -284,7 +282,7 @@ const Inventory = () => {
         width={"90%"}
         height={"auto"}
         maxHeight={"80vh"}
-        header={"Add Book"}
+        header={"Add Inventory"}
         formComponent={
           <>
             <StockList />

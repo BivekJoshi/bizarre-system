@@ -2,13 +2,6 @@ import { nanoid } from "nanoid";
 import { lazy } from "react";
 import Loadable from "../../components/Loader/Loadable";
 
-const Inventory = Loadable(
-  lazy(() => import("../../pages/Controller/Inventory/Inventory"))
-);
-const Expense = Loadable(
-  lazy(() => import("../../pages/Controller/Expense/Expense"))
-);
-
 const AdminDashboard = Loadable(
   lazy(() => import("../../pages/AdminPage/Dashboard/AdminDashboard"))
 );
@@ -218,19 +211,6 @@ const adminRoutes = [
     name: "batch-report-details",
     id: nanoid(),
     component: BatchReportItemHistory,
-  },
-
-  {
-    path: "inventory",
-    name: "inventory",
-    id: nanoid(),
-    component: Inventory,
-  },
-  {
-    path: "expense",
-    name: "expense",
-    id: nanoid(),
-    component: Expense,
   },
 ];
 

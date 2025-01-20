@@ -55,9 +55,6 @@ const InventoryCard = ({ data }) => {
         <Typography variant="body2" color="text.secondary" gutterBottom>
           <strong>Type:</strong> {type}
         </Typography>
-        <Typography variant="body2" color="text.secondary" gutterBottom>
-          <strong>Description:</strong> {description}
-        </Typography>
         <Divider sx={{ my: 1 }} />
         <Box display="flex" flexDirection="column" gap={1}>
           <Typography variant="body2" color="text.secondary">
@@ -77,23 +74,6 @@ const InventoryCard = ({ data }) => {
           </Typography>
           <Typography variant="body2" color="text.secondary">
             <strong>Selling Price:</strong> ${sellingPrice?.toFixed(2)}
-          </Typography>
-        </Box>
-        <Divider sx={{ my: 1 }} />
-
-        {/* Branch Information */}
-        <Typography variant="subtitle2" gutterBottom>
-          <strong>Branch:</strong>
-        </Typography>
-        <Box display="flex" flexDirection="column" gap={0.5}>
-          <Typography variant="body2" color="text.secondary">
-            <strong>Address:</strong> {address}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            <strong>Phone:</strong> {phoneNumber}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            <strong>Housing Capacity:</strong> {housingCapacity}
           </Typography>
         </Box>
         <Divider sx={{ my: 1 }} />

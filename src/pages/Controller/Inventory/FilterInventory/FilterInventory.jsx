@@ -9,56 +9,56 @@ const FilterInventory = ({ filterFormik }) => {
   const theme = useTheme();
   const [showFields, setShowFields] = useState(false);
   const inputField = [
-    {
-      id: nanoid(),
-      name: "value",
-      label: "Expense Type",
-      placeholder: "Filter by expense type",
-      type: "dropDownfilterField",
-      extraField: "expenseType",
-      options: [
-        { value: "DIRECT_OPERATING", label: "Direct Operating", id: nanoid() },
-        {
-          value: "INDIRECT_OPERATING",
-          label: "Indirect Operating",
-          id: nanoid(),
-        },
-        { value: "ADMINISTRATIVE", label: "Administrative", id: nanoid() },
-        {
-          value: "SELLING_DISTRIBUTION",
-          label: "Selling Distribution",
-          id: nanoid(),
-        },
-        { value: "FINANCIAL", label: "Financial", id: nanoid() },
-        {
-          value: "DEPRECIATION_AMORTIZATION",
-          label: "Depreciation Amortization",
-          id: nanoid(),
-        },
-        { value: "MISCELLANEOUS", label: "Miscellaneous", id: nanoid() },
-      ],
-      xs: 12,
-      md: 3,
-      lg: 3,
-      sm: 12,
-    },
-    {
-      id: nanoid(),
-      name: "value",
-      label: "Payment Type",
-      placeholder: "Filter by payment type",
-      type: "dropDownfilterField",
-      extraField: "paymentType",
-      options: [
-        { value: "CASH", label: "Cash", id: nanoid() },
-        { value: "BANK", label: "Bank", id: nanoid() },
-        { value: "LOSS", label: "Loss", id: nanoid() },
-      ],
-      xs: 12,
-      md: 3,
-      lg: 3,
-      sm: 12,
-    },
+    // {
+    //   id: nanoid(),
+    //   name: "value",
+    //   label: "Expense Type",
+    //   placeholder: "Filter by expense type",
+    //   type: "dropDownfilterField",
+    //   extraField: "expenseType",
+    //   options: [
+    //     { value: "DIRECT_OPERATING", label: "Direct Operating", id: nanoid() },
+    //     {
+    //       value: "INDIRECT_OPERATING",
+    //       label: "Indirect Operating",
+    //       id: nanoid(),
+    //     },
+    //     { value: "ADMINISTRATIVE", label: "Administrative", id: nanoid() },
+    //     {
+    //       value: "SELLING_DISTRIBUTION",
+    //       label: "Selling Distribution",
+    //       id: nanoid(),
+    //     },
+    //     { value: "FINANCIAL", label: "Financial", id: nanoid() },
+    //     {
+    //       value: "DEPRECIATION_AMORTIZATION",
+    //       label: "Depreciation Amortization",
+    //       id: nanoid(),
+    //     },
+    //     { value: "MISCELLANEOUS", label: "Miscellaneous", id: nanoid() },
+    //   ],
+    //   xs: 12,
+    //   md: 3,
+    //   lg: 3,
+    //   sm: 12,
+    // },
+    // {
+    //   id: nanoid(),
+    //   name: "value",
+    //   label: "Payment Type",
+    //   placeholder: "Filter by payment type",
+    //   type: "dropDownfilterField",
+    //   extraField: "paymentType",
+    //   options: [
+    //     { value: "CASH", label: "Cash", id: nanoid() },
+    //     { value: "BANK", label: "Bank", id: nanoid() },
+    //     { value: "LOSS", label: "Loss", id: nanoid() },
+    //   ],
+    //   xs: 12,
+    //   md: 3,
+    //   lg: 3,
+    //   sm: 12,
+    // },
   ];
   return (
     <div

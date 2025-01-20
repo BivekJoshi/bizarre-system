@@ -1,8 +1,8 @@
 import { useFormik } from "formik";
 
-// import { branchSchema } from "./branchSchema";
 import { useAddCustomer, useEditCustomer } from "../useCustomer";
 import { useState } from "react";
+import { customerSchema } from "./customerSchema";
 
 export const useCustomerForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddCustomer({});
@@ -13,12 +13,14 @@ export const useCustomerForm = ({ onClose, rowData }) => {
     initialValues: {
       id: rowData?.id || "",
       fullName: rowData?.user?.fullName || "",
+      // mobileNumber:rowData?.user?.mobileNumber ||"",
       gender: rowData?.user?.gender || "",
       birthDate: rowData?.user?.birthDate || "",
       address: rowData?.user?.address || "",
       email: rowData?.user?.email || "",
+      // password:rowData?.user?.password ||""
     },
-    // validationSchema: branchSchema,
+    validationSchema: customerSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
       if (values?.id) {

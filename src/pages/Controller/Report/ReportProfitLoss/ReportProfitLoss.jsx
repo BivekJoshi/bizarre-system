@@ -97,14 +97,27 @@ const ReportProfitLoss = () => {
                     variant="h4"
                     sx={{ color: theme.palette.text.default, fontWeight: 700 }}
                   >
-                    Total Income
+                    Net Profit
                   </Typography>
                   <Typography
                     variant="h4"
                     sx={{ color: "green", fontWeight: 900 }}
                   >
-                    {profitLossData?.totalIncome}
+                    {/* {profitLossData?.totalIncome} */}
+                    {profitLossData?.netProfit || "NA"}
                   </Typography>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography variant="h5">Total Income</Typography>
+                    <Typography variant="h5">
+                      {profitLossData?.totalIncome || "NA"}
+                    </Typography>
+                  </div>
                   <div
                     style={{
                       display: "flex",
@@ -127,18 +140,6 @@ const ReportProfitLoss = () => {
                     <Typography variant="h5">Gross Profit</Typography>
                     <Typography variant="h5">
                       {profitLossData?.grossProfit || "NA"}
-                    </Typography>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Typography variant="h5">Net Profit</Typography>
-                    <Typography variant="h5">
-                      {profitLossData?.netProfit || "NA"}
                     </Typography>
                   </div>
                 </div>

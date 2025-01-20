@@ -79,7 +79,7 @@ const CustomerForm = ({ formik }) => {
     {
       id: nanoid(),
       name: "password",
-      label: "password",
+      label: "Set Password",
       type: "text",
       required: true,
       xs: 12,

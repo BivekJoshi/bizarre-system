@@ -404,7 +404,7 @@ const Customer = () => {
             onClick={() => setIsCustomerOnBoardModalOpen(true)}
             startIcon={<ControlPointRoundedIcon />}
           >
-            Customer Unboard
+            Customer Onboard
           </Button>
         </div>
       </Box>
@@ -469,7 +469,7 @@ const Customer = () => {
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}
-        header={"Customer onboard"}
+        header={"Customer Onboard"}
         formik={onBoardFormik}
         loading={isLoadingOnBoard}
         formComponent={

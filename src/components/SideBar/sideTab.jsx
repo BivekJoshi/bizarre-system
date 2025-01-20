@@ -152,18 +152,6 @@ export const adminTab = [
       },
     ],
   },
-  {
-    id: nanoid(),
-    label: "Inventory",
-    value: "inventory",
-    icon: <Inventory2RoundedIcon />,
-  },
-  {
-    id: nanoid(),
-    label: "Expense",
-    value: "expense",
-    icon: <GroupWorkRoundedIcon />,
-  },
 ];
 
 export const branchOwnerTab = [

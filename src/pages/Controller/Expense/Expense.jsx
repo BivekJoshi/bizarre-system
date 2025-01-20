@@ -301,7 +301,7 @@ const Expense = () => {
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}
-        header={"Add Book"}
+        header={"Add Expense"}
         formik={formik}
         loading={loading}
         formComponent={
@@ -317,7 +317,7 @@ const Expense = () => {
         width={"30%"}
         height={"auto"}
         maxHeight={"80vh"}
-        header={"Add Book"}
+        header={"Edit Expenses"}
         formik={formik}
         loading={loading}
         isEditModalOpen={isEditModalOpen}
