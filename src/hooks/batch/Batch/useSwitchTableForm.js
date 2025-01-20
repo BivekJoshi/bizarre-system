@@ -1,6 +1,13 @@
 import { useFormik } from "formik";
 import { useState } from "react";
 import { useSwitchTableBatch } from "../usebatch";
+import * as Yup from "yup";
+
+const switchTableSchema = Yup.object().shape({
+  targetTableId: Yup.string()
+    .required("Please Select Target Table"),
+});
+
 
 export const useSwitchTableForm = ({ tableId }) => {
   const [loading, setLoading] = useState(false);
@@ -11,7 +18,7 @@ export const useSwitchTableForm = ({ tableId }) => {
       sourceTableId: tableId || "",
       targetTableId: "",
     },
-    // validationSchema: userSchema,
+    validationSchema: switchTableSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
       handledAddRequest(values);

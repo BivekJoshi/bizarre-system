@@ -208,6 +208,11 @@ const Waiter = () => {
                   <Tooltip title="Change Status">
                     <Chip
                       label={row?.original?.user?.status}
+                      color={
+                        row?.original?.user?.status === "ACTIVE"
+                          ? "primary"
+                          : "warning"
+                      }
                       onClick={handleOpenMenu}
                       style={{ cursor: "pointer" }}
                     />
@@ -284,6 +289,13 @@ const Waiter = () => {
             <CustomDocumentView idFrontUrl={idFrontUrl} idBackUrl={idBackUrl} />
           );
         },
+      },
+      {
+        id: nanoid(),
+        accessorKey: "salary",
+        header: "Salary",
+        size: 100,
+        sortable: false,
       },
     ],
     []

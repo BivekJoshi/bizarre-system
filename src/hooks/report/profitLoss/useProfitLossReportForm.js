@@ -5,7 +5,10 @@ import * as Yup from "yup";
 export const useProfitLossReportForm = ({ profitLossReport }) => {
   const { mutate } = useGenerateProfitLossReport({});
 
-  const profitLossReportSchema = Yup.object().shape({});
+  const profitLossReportSchema = Yup.object().shape({
+    month: Yup.string().required("Please Select Month"),
+    year: Yup.string().required("Please Select Year"),
+  });
 
   const formik = useFormik({
     initialValues: {

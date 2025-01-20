@@ -178,7 +178,9 @@ const CustomTable = (props) => {
         }}
         muiTableHeadRowProps={{
           sx: {
-            backgroundColor: theme.palette.primary.main,
+            backgroundColor: props?.headColor
+              ? props?.headColor
+              : theme.palette.primary.main,
             height: props?.filter ? "70px" : "40px",
           },
         }}

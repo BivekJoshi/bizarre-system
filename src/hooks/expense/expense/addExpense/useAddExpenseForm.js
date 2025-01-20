@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import { useState } from "react";
 import { useAddExpense, useEditExpense } from "../../useExpense";
+import { addExpenseSchema } from "./addExpenseSchema";
 
 export const useAddExpenseForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddExpense({});
@@ -15,7 +16,7 @@ export const useAddExpenseForm = ({ onClose, rowData }) => {
       paymentType: rowData?.paymentType || "",
       amount: rowData?.amount || "",
     },
-    // validationSchema: branchSchema,
+    validationSchema: addExpenseSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
       if (values?.id) {

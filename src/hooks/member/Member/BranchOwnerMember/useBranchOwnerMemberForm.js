@@ -2,6 +2,7 @@ import { useFormik } from "formik";
 
 import { useAddBranchOwnerMember, useEditMember } from "../../useMember";
 import { useState } from "react";
+import { branchOwnerMemberSchema } from "./branchOwnerSchema";
 
 export const useBranchOwnerMemberForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddBranchOwnerMember({});
@@ -20,10 +21,10 @@ export const useBranchOwnerMemberForm = ({ onClose, rowData }) => {
       salary: rowData?.salary || 0,
       branchId: "",
     },
-    //   validationSchema: sendMoneyRecipientBankSchema,
+    validationSchema: branchOwnerMemberSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
-      console.log("🚀 ~ useBranchOwnerMemberForm ~ values:", values)
+      console.log("🚀 ~ useBranchOwnerMemberForm ~ values:", values);
       if (values?.id) {
         handledEditRequest(values);
       } else {

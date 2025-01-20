@@ -55,7 +55,7 @@ const AddPromoCode = ({ formik }) => {
     {
       id: nanoid(),
       name: "discountValue",
-      label: "discountValue",
+      label: "Discount Value",
       type: "number",
       required: true,
       xs: 12,

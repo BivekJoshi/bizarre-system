@@ -77,7 +77,7 @@ const Order = () => {
       {
         id: nanoid(),
         accessorKey: "sellingPrice",
-        header: "sellingPrice",
+        header: "Selling Price",
         maxWidth: 80,
         sortable: false,
       },

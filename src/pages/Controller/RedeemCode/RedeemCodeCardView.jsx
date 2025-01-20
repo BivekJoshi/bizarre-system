@@ -10,11 +10,11 @@ import {
 } from "@mui/material";
 import {
   MonetizationOn,
-  Percent,
   AccountBalance,
   EmojiEvents,
   Star,
 } from "@mui/icons-material";
+import HexagonIcon from '@mui/icons-material/Hexagon';
 import { format } from "date-fns";
 
 const getIconAndColor = (league) => {
@@ -26,7 +26,7 @@ const getIconAndColor = (league) => {
     case "PLATINUM":
       return { icon: <AccountBalance />, color: "#E5E4E2" };
     case "BRONZE":
-      return { icon: <Percent />, color: "#CD7F32" };
+      return { icon: <HexagonIcon />, color: "#CD7F32" };
     default:
       return { icon: <MonetizationOn />, color: "#2196f3" };
   }

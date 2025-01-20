@@ -1,5 +1,6 @@
 import { useFormik } from "formik";
 import { useAddRedeemCode, useEditRedeemCode } from "../useRedeemCode";
+import { redeemCodeSchema } from "./redeemCodeSchema";
 
 export const useRedeemCodeForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddRedeemCode({});
@@ -18,7 +19,7 @@ export const useRedeemCodeForm = ({ onClose, rowData }) => {
         ? rowData.terminationDateTime.replace("T", " ")
         : "",
     },
-    // validationSchema: branchSchema,
+    validationSchema: redeemCodeSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
       if (values?.id) {

@@ -69,9 +69,9 @@ const Inventory = () => {
                 <div>
                   Selling Price: <b>{data?.sellingPrice}</b>
                 </div>
-                <div>
+                {/* <div>
                   Count: <b>{data?.stockCount}</b>
-                </div>
+                </div> */}
 
                 <div>Color: {data?.color}</div>
 

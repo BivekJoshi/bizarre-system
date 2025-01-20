@@ -1,5 +1,6 @@
 import { useFormik } from "formik";
 import { useAddPromoCode, useEditPromoCode } from "../usePromoCode";
+import { promoCodeSchema } from "./promoCodeSchema";
 
 export const usePromoCodeForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddPromoCode({});
@@ -19,7 +20,7 @@ export const usePromoCodeForm = ({ onClose, rowData }) => {
         ? rowData.terminationDateTime.replace("T", " ")
         : "",
     },
-    // validationSchema: branchSchema,
+    validationSchema: promoCodeSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
       if (values?.id) {

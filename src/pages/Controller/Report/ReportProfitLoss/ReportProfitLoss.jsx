@@ -156,6 +156,7 @@ const ReportProfitLoss = () => {
                     width="100%"
                     enablePagination={false}
                     enableRowNumbers
+                    headColor={"green"}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -168,6 +169,7 @@ const ReportProfitLoss = () => {
                     width="100%"
                     enablePagination={false}
                     enableRowNumbers
+                    headColor={"red"}
                   />
                 </Grid>
               </Grid>

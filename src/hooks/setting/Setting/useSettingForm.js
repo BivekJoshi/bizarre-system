@@ -1,5 +1,10 @@
 import { useFormik } from "formik";
 import { useAddSetting } from "../useSetting";
+import * as Yup from "yup";
+
+const settingSchema = Yup.object().shape({
+  value: Yup.string().required("Value is required"),
+});
 
 export const useSettingForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddSetting({});
@@ -11,7 +16,7 @@ export const useSettingForm = ({ onClose, rowData }) => {
       value: rowData?.value || "",
       id: rowData?.id,
     },
-    // validationSchema: branchSchema,
+    validationSchema: settingSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
       if (values?.id) {

@@ -2,32 +2,28 @@ import { useFormik } from "formik";
 
 import { useAddCustomer, useEditCustomer } from "../useCustomer";
 import { useState } from "react";
-import { customerSchema } from "./customerSchema";
+import { customerEditSchema, customerSchema } from "./customerSchema";
 
 export const useCustomerForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddCustomer({});
-  const { mutate: editMutate } = useEditCustomer({});
   const [successFlag, setSuccessFlag] = useState(false);
 
   const formik = useFormik({
     initialValues: {
       id: rowData?.id || "",
       fullName: rowData?.user?.fullName || "",
-      // mobileNumber:rowData?.user?.mobileNumber ||"",
+      mobileNumber: rowData?.user?.mobileNumber || "",
       gender: rowData?.user?.gender || "",
       birthDate: rowData?.user?.birthDate || "",
       address: rowData?.user?.address || "",
       email: rowData?.user?.email || "",
-      // password:rowData?.user?.password ||""
+      password: rowData?.user?.password || "",
     },
+
     validationSchema: customerSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
-      if (values?.id) {
-        handledEditRequest(values);
-      } else {
-        handledAddRequest(values);
-      }
+      handledAddRequest(values);
     },
   });
   const handledAddRequest = (values) => {
@@ -46,6 +42,33 @@ export const useCustomerForm = ({ onClose, rowData }) => {
       },
     });
   };
+
+  return {
+    formik,
+    successFlag,
+  };
+};
+
+export const useCustomerEditForm = ({ onClose, rowData }) => {
+  const { mutate: editMutate } = useEditCustomer({});
+  const [successFlag, setSuccessFlag] = useState(false);
+
+  const formik = useFormik({
+    initialValues: {
+      id: rowData?.id || "",
+      fullName: rowData?.user?.fullName || "",
+      gender: rowData?.user?.gender || "",
+      birthDate: rowData?.user?.birthDate || "",
+      address: rowData?.user?.address || "",
+      email: rowData?.user?.email || "",
+    },
+
+    validationSchema: customerEditSchema,
+    enableReinitialize: true,
+    onSubmit: (values) => {
+      handledEditRequest(values);
+    },
+  });
 
   const handledEditRequest = (values) => {
     values = { ...values };

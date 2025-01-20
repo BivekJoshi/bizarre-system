@@ -53,7 +53,9 @@ const BranchOwner = () => {
 
   // const { mutate } = useDeleteBranch({ rowData });
 
-  const onClose = () => {setIsAddModal(false)};
+  const onClose = () => {
+    setIsAddModal(false);
+  };
   const { formik, successFlag, loading } = useBranchOwnerMemberForm({
     onClose,
     rowData,
@@ -65,7 +67,7 @@ const BranchOwner = () => {
     setIsAddModal(false);
     setIsEditModalOpen(false);
   };
-  
+
   const { formik: filterFormik, loading: isLoading } = useBranchOwnerFilterForm(
     {
       memberData: (data) => setFilteredData(data),
@@ -217,6 +219,11 @@ const BranchOwner = () => {
                   <Tooltip title="Change Status">
                     <Chip
                       label={row?.original?.user?.status}
+                      color={
+                        row?.original?.user?.status === "ACTIVE"
+                          ? "primary"
+                          : "warning"
+                      }
                       onClick={handleOpenMenu}
                       style={{ cursor: "pointer" }}
                     />
@@ -293,6 +300,13 @@ const BranchOwner = () => {
             <CustomDocumentView idFrontUrl={idFrontUrl} idBackUrl={idBackUrl} />
           );
         },
+      },
+      {
+        id: nanoid(),
+        accessorKey: "salary",
+        header: "Salary",
+        size: 100,
+        sortable: false,
       },
     ],
     []

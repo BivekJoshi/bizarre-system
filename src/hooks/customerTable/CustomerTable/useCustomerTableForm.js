@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import { useAddCustomerTable, useEditCustomerTable } from "../useCustomerTable";
 import { useState, useEffect } from "react";
+import { customerTableSchema } from "./customerTableSchema";
 
 export const useCustomerTableForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddCustomerTable({});
@@ -13,7 +14,7 @@ export const useCustomerTableForm = ({ onClose, rowData }) => {
       tableNumber: rowData?.tableNumber || "",
       status: rowData?.status || "AVAILABLE",
     },
-    // validationSchema: branchSchema,
+    validationSchema: customerTableSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
       if (values?.id) {

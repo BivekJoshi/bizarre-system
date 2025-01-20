@@ -1,13 +1,3 @@
-// import React from 'react'
-
-// const ReportProfitLossForm = () => {
-//   return (
-//     <div>ReportProfitLossForm</div>
-//   )
-// }
-
-// export default ReportProfitLossForm
-
 import { Box, Button, Typography, useTheme, IconButton } from "@mui/material";
 import React, { useState } from "react";
 import RenderInput from "../../../../components/RenderInput/RenderInput";
@@ -19,6 +9,16 @@ import SearchIcon from "@mui/icons-material/Search";
 const ReportProfitLossForm = ({ formik }) => {
   const theme = useTheme();
   const [showFields, setShowFields] = useState(true);
+
+  const currentYear = new Date().getFullYear();
+  const yearOptions = Array.from(
+    { length: currentYear - 2020 + 1 },
+    (_, index) => ({
+      value: (2020 + index).toString(),
+      label: (2020 + index).toString(),
+      id: nanoid(),
+    })
+  );
 
   const inputField = [
     {
@@ -39,7 +39,9 @@ const ReportProfitLossForm = ({ formik }) => {
       id: nanoid(),
       name: "year",
       label: "Year",
-      type: "number",
+      type: "dropDown",
+      required: true,
+      options: yearOptions,
       xs: 12,
       md: 3,
       lg: 3,
@@ -50,6 +52,7 @@ const ReportProfitLossForm = ({ formik }) => {
       name: "month",
       label: "Month",
       type: "dropDown",
+      required: "true",
       options: [
         { value: "1", label: "January", id: nanoid() },
         { value: "2", label: "February", id: nanoid() },

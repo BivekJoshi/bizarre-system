@@ -21,7 +21,10 @@ import femaleProfile from "../../../assets/FemaleProfile.png";
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import CustomerForm from "./CustomerForm";
-import { useCustomerForm } from "../../../hooks/customer/Customer/useCustomerForm";
+import {
+  useCustomerEditForm,
+  useCustomerForm,
+} from "../../../hooks/customer/Customer/useCustomerForm";
 import FormModal from "../../../components/Modal/FormModal";
 import CustomTable from "../../../components/CustomTable/CustomTable";
 import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
@@ -44,6 +47,13 @@ import {
   useLockUserForm,
   useUnLockUserForm,
 } from "../../../hooks/user/User/useLockUnlockUserForm";
+import {
+  MonetizationOn,
+  AccountBalance,
+  EmojiEvents,
+  Star,
+} from "@mui/icons-material";
+import HexagonIcon from "@mui/icons-material/Hexagon";
 
 const Customer = () => {
   const theme = useTheme();
@@ -72,6 +82,15 @@ const Customer = () => {
     onClose,
     rowData,
   });
+  const {
+    formik: formikEdit,
+    successFlag: editSuccessFlag,
+    loading: editLoading,
+  } = useCustomerEditForm({
+    onClose,
+    rowData,
+  });
+
   const handleModalClose = () => {
     formik.resetForm();
     setRowData(null);
@@ -82,6 +101,7 @@ const Customer = () => {
   const { formik: filterFormik, loading: isLoading } = useFilterCustomerForm({
     customerData: (data) => setFilteredData(data),
     successFlag,
+    editSuccessFlag,
   });
 
   const { formik: onBoardFormik, loading: isLoadingOnBoard } =
@@ -118,6 +138,8 @@ const Customer = () => {
         sortable: false,
         Cell: ({ cell }) => {
           const data = cell.row.original?.user;
+          const coins = cell.row.original?.coins;
+
           const imageFinal = data?.profilePictureUrl
             ? DOC_URL + data?.profilePictureUrl
             : data?.gender === "MALE"
@@ -126,9 +148,61 @@ const Customer = () => {
             ? femaleProfile
             : null;
           return (
-            <div style={{ display: "flex", gap: ".5rem" }}>
+            <div style={{ display: "flex", gap: ".5rem" ,alignItems:"center"}}>
               <Avatar alt="Profile Image" src={imageFinal} />
-              <p>{data?.fullName}</p>
+              <div style={{ display: "flex", flexDirection: "column",gap:"1px" }}>
+                {data?.fullName}
+                <p>Coins: <b style={{color:"purple"}}>{coins}</b></p>
+              </div>
+            </div>
+          );
+        },
+      },
+      {
+        id: nanoid(),
+        accessorKey: "league",
+        header: "League",
+        maxWidth: 80,
+        sortable: false,
+        Cell: ({ cell }) => {
+          const league = cell.getValue();
+          const getIconAndColor = (league) => {
+            switch (league) {
+              case "SILVER":
+                return { icon: <Star />, color: "#C0C0C0" };
+              case "GOLD":
+                return { icon: <EmojiEvents />, color: "#FFD700" };
+              case "PLATINUM":
+                return { icon: <AccountBalance />, color: "#E5E4E2" };
+              case "BRONZE":
+                return { icon: <HexagonIcon />, color: "#CD7F32" };
+              default:
+                return { icon: <MonetizationOn />, color: "#2196f3" };
+            }
+          };
+          const { icon, color } = getIconAndColor(league);
+          return (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem",
+              }}
+            >
+              <Avatar
+                style={{
+                  backgroundColor: color,
+                  width: 46,
+                  height: 46,
+                  color: "#fff",
+                }}
+              >
+                {icon}
+              </Avatar>
+
+              <Typography sx={{ fontWeight: "bold", color: color }}>
+                {league}
+              </Typography>
             </div>
           );
         },
@@ -176,15 +250,28 @@ const Customer = () => {
         maxWidth: 80,
         sortable: false,
         Cell: ({ cell }) => {
-          const data = cell.getValue();
+          const { verified, verifiedBy } = cell?.row?.original;
           return (
-            <Chip
-              avatar={
-                <Avatar>{data ? <CheckCircleIcon /> : <CancelIcon />}</Avatar>
-              }
-              label={data ? "Verified" : "UnVerified"}
-              color={data ? "success" : "error"}
-            />
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem",
+              }}
+            >
+              <Chip
+                avatar={
+                  <Avatar>
+                    {verified ? <CheckCircleIcon /> : <CancelIcon />}
+                  </Avatar>
+                }
+                label={verified ? "Verified" : "UnVerified"}
+                color={verified ? "success" : "error"}
+              />
+              <Typography sx={{ fontWeight: "bold", color: "green" }}>
+                {verifiedBy?.fullName || ""}
+              </Typography>
+            </div>
           );
         },
       },
@@ -250,6 +337,11 @@ const Customer = () => {
                 >
                   <Tooltip title="Change Status">
                     <Chip
+                      color={
+                        row?.original?.user?.status === "ACTIVE"
+                          ? "primary"
+                          : "warning"
+                      }
                       label={row?.original?.user?.status}
                       onClick={handleOpenMenu}
                       style={{ cursor: "pointer" }}
@@ -453,12 +545,12 @@ const Customer = () => {
         height={"auto"}
         maxHeight={"80vh"}
         header={"Edit Customer Detial"}
-        formik={formik}
-        loading={loading}
+        formik={formikEdit}
+        loading={editLoading}
         isEditModalOpen={isEditModalOpen}
         formComponent={
           <>
-            <CustomerEditForm formik={formik} />
+            <CustomerEditForm formik={formikEdit} />
           </>
         }
         showButton={true}

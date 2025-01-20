@@ -2,6 +2,7 @@ import { useFormik } from "formik";
 
 import { useAddWaiterMember, useEditMember } from "../../useMember";
 import { useState } from "react";
+import { waiterMemberSchema } from "./waiterMemberSchema";
 
 export const useWaiterMemberForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddWaiterMember({});
@@ -20,7 +21,7 @@ export const useWaiterMemberForm = ({ onClose, rowData }) => {
       branchId: rowData?.branch?.id || "",
       salary: rowData?.salary || "",
     },
-    //   validationSchema: sendMoneyRecipientBankSchema,
+    validationSchema: waiterMemberSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
       if (values?.id) {

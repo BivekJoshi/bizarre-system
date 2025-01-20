@@ -61,9 +61,6 @@ const InventoryCard = ({ data }) => {
             <strong>Color:</strong> {color}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            <strong>Stock Count:</strong> {stockCount}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
             <strong>Stock Quantity:</strong> {stockQuantity}
           </Typography>
           <Typography variant="body2" color="text.secondary">

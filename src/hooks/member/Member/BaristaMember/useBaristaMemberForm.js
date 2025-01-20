@@ -2,6 +2,7 @@ import { useFormik } from "formik";
 
 import { useAddBaristaMember, useEditMember } from "../../useMember";
 import { useState } from "react";
+import { baristaMemberSchema } from "./baristaMemberSchema";
 
 export const useBaristaMemberForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddBaristaMember({});
@@ -20,7 +21,7 @@ export const useBaristaMemberForm = ({ onClose, rowData }) => {
       branchId: rowData?.branch?.id || "",
       salary: rowData?.salary || "",
     },
-    //   validationSchema: sendMoneyRecipientBankSchema,
+    validationSchema: baristaMemberSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
       if (values?.id) {

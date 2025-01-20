@@ -2,6 +2,7 @@ import { useFormik } from "formik";
 
 import { useAddCashierMember, useEditMember } from "../../useMember";
 import { useState } from "react";
+import { cashierMemberSchema } from "./cashierMemberSchema";
 
 export const useCashierMemberForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddCashierMember({});
@@ -19,7 +20,7 @@ export const useCashierMemberForm = ({ onClose, rowData }) => {
       email: rowData?.user?.email || "",
       salary: rowData?.salary || 0,
     },
-    //   validationSchema: sendMoneyRecipientBankSchema,
+    validationSchema: cashierMemberSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
       if (values?.id) {

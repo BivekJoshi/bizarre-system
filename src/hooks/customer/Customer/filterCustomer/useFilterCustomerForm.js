@@ -7,6 +7,7 @@ export const useFilterCustomerForm = ({
   onClose,
   customerData,
   successFlag,
+  editSuccessFlag,
 }) => {
   const { mutate, isLoading } = useFilterCustomer({});
   const [loading, setLoading] = useState(false);
@@ -47,10 +48,10 @@ export const useFilterCustomerForm = ({
   }, 300);
 
   useEffect(() => {
-    if (formik?.values?.pageNumber > 0 || successFlag) {
+    if (formik?.values?.pageNumber > 0 || successFlag || editSuccessFlag) {
       debouncedSearch();
     }
-  }, [formik.values.search, successFlag]);
+  }, [formik.values.search, successFlag, editSuccessFlag]);
   return {
     formik,
     loading: isLoading || loading,

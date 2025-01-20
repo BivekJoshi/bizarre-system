@@ -3,7 +3,15 @@ import { nanoid } from "nanoid";
 import RenderInput from "../../../../components/RenderInput/RenderInput";
 
 const BranchOwnerForm = ({ formik, isEditModalOpen }) => {
-  console.log("🚀 ~ BranchOwnerForm ~ isEditModalOpen:", isEditModalOpen);
+  const currentDate = new Date();
+  const minAge = new Date(
+    currentDate.getFullYear() - 18,
+    currentDate.getMonth(),
+    currentDate.getDate()
+  )
+    .toISOString()
+    .split("T")[0];
+
   const inputField = [
     {
       id: nanoid(),
@@ -54,6 +62,8 @@ const BranchOwnerForm = ({ formik, isEditModalOpen }) => {
       label: "Date of Birth",
       type: "date",
       required: true,
+      maxDate: true,
+      max: minAge,
       xs: 12,
       md: 6,
       lg: 6,
