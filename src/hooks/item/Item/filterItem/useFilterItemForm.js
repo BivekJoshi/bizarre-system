@@ -1,10 +1,10 @@
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
-import { useFilterItem } from "../../useItem";
+import { useFilterItem, useRevealItem } from "../../useItem";
 import { debounce } from "@mui/material";
 
 export const useFilterItemForm = ({ onClose, itemData, type, successFlag }) => {
-  const { mutate, isLoading } = useFilterItem({});
+  const { mutate, isLoading } = useRevealItem({});
   const [loading, setLoading] = useState(false);
 
   const formik = useFormik({

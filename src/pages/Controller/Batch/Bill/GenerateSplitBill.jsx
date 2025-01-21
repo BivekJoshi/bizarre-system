@@ -35,8 +35,8 @@ const MobileNumberInput = ({ index, mobileNumber, formik, arrayHelpers }) => {
           {
             id: nanoid(),
             type: "showData",
-            data1: customerDetail?.data?.user?.fullName,
-            data2: customerDetail?.data?.user?.email,
+            userData: customerDetail?.data?.user,
+            otherData: customerDetail?.data,
             xs: 12,
             md: 12,
             lg: 12,

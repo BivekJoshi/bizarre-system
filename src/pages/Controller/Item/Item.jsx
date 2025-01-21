@@ -165,17 +165,20 @@ const Item = () => {
       },
       {
         id: nanoid(),
-        accessorKey: "markedPrice",
-        header: "Marked Price",
+        accessorKey: "price",
+        header: "Price",
         maxWidth: 80,
         sortable: false,
-      },
-      {
-        id: nanoid(),
-        accessorKey: "sellingPrice",
-        header: "Selling Price",
-        maxWidth: 80,
-        sortable: false,
+        Cell: ({ cell }) => {
+          const data = cell.row.original;
+          return (
+            <div>
+              <div>Cost Price: <b>{data?.costPrice}</b></div>
+              <div>Marked Price: <b>{data?.markedPrice}</b></div>
+              <div>Selling Price: <b>{data?.sellingPrice}</b></div>
+            </div>
+          );
+        },
       },
       {
         id: nanoid(),

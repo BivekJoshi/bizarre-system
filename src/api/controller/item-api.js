@@ -46,6 +46,21 @@ export const filterItem = async (formData) => {
   return data;
 };
 
+/*____________________________REVEALS_ITEM_______________________________________________ */
+export const revealItem = async (formData) => {
+  const { field, value, ...rest } = formData;
+
+  const updatedFormData = {
+    ...rest,
+    search: [...(formData.search || []), { field, value }],
+    pageNumber: formData?.pageNumber,
+    noOfRecords: formData?.noOfRecords,
+  };
+
+  const data = await axiosInstance.post(`${ITEM}/reveal`, updatedFormData);
+  return data;
+};
+
 /*_____________________________POST CHANGE STATUS______________________________________________ */
 export const addItemChangeStatus = async (formData) => {
   const data = await axiosInstance.post(`${ITEM}/change-status`, formData);

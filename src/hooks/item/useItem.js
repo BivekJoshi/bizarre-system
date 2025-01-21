@@ -8,6 +8,7 @@ import {
   filterItem,
   getItem,
   getItemById,
+  revealItem,
 } from "../../api/controller/item-api";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import { useFormik } from "formik";
@@ -86,6 +87,18 @@ export const useChangeStatus = ({ onSuccess }) => {
 /*________________________FILTER ITEM_____________________________________*/
 export const useFilterItem = ({ onSuccess }) => {
   return useMutation(["filterItem"], (formData) => filterItem(formData), {
+    onSuccess: (data, variables, context) => {
+      onSuccess && onSuccess(data, variables, context);
+    },
+    onError: (err, _variables, _context) => {
+      toast.error(getErrorMessage(err));
+    },
+  });
+};
+
+/*________________________REVEAL ITEM_____________________________________*/
+export const useRevealItem = ({ onSuccess }) => {
+  return useMutation(["revealItem"], (formData) => revealItem(formData), {
     onSuccess: (data, variables, context) => {
       onSuccess && onSuccess(data, variables, context);
     },

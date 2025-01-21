@@ -14,12 +14,23 @@ import {
   FormControl,
   useTheme,
   Paper,
+  Avatar,
 } from "@mui/material";
+import {
+  MonetizationOn,
+  AccountBalance,
+  EmojiEvents,
+  Star,
+} from "@mui/icons-material";
+import HexagonIcon from "@mui/icons-material/Hexagon";
 import { getIn } from "formik";
 import React, { useEffect } from "react";
 import AsyncDropDownOption from "./AsyncDropDownOption";
 import AsyncDropDown from "./AsyncDropDown";
 import DropZoneUploadFileDynamic from "./DropZoneUploadFileDynamic";
+import { DOC_URL } from "../../api/axiosInterceptor";
+import SavingsTwoToneIcon from "@mui/icons-material/SavingsTwoTone";
+import MailTwoToneIcon from "@mui/icons-material/MailTwoTone";
 
 const RenderInput = ({
   inputField,
@@ -359,7 +370,6 @@ const RenderInput = ({
             >
               {element?.label}{" "}
               {element.required && <span style={{ color: "#EC4034" }}>*</span>}
-
             </Typography>
             <TextField
               name={element?.name}
@@ -980,19 +990,95 @@ const RenderInput = ({
         );
 
       case "showData":
+        const league = element?.otherData?.league;
+        const getIconAndColor = (league) => {
+          switch (league) {
+            case "SILVER":
+              return { icon: <Star />, color: "#C0C0C0" };
+            case "GOLD":
+              return { icon: <EmojiEvents />, color: "#FFD700" };
+            case "PLATINUM":
+              return { icon: <AccountBalance />, color: "#E5E4E2" };
+            case "BRONZE":
+              return { icon: <HexagonIcon />, color: "#CD7F32" };
+            default:
+              return { icon: <MonetizationOn />, color: "#2196f3" };
+          }
+        };
+        const { icon, color } = getIconAndColor(league);
         return (
           <>
-            {element?.data1 && (
+            {element?.userData && (
               <Paper
                 sx={{
                   padding: "1rem",
-                  backgroundColor: theme.palette.text.default,
-                  display:"flex",
-                  flexDirection:'column'
+                  backgroundColor: theme.palette.background.alt,
+                  color: theme.palette.text.default,
+                  display: "flex",
+                  flexDirection: "column",
                 }}
               >
-                <div> Customer Name : {element?.data1}</div>
-                <div> Email : {element?.data2}</div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                  }}
+                >
+                  <Avatar
+                    src={DOC_URL + element?.userData?.profilePictureUrl}
+                    alt={element?.userData?.gender || ""}
+                    sx={{ width: 24, height: 24 }}
+                  />
+                  <b>{element?.userData?.fullName}</b>{" "}
+                </div>
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "5px" }}
+                >
+                  {" "}
+                  <MailTwoToneIcon /> :{" "}
+                  <div style={{ color: "blue", textDecoration: "underline" }}>
+                    {element?.userData?.email || "-"}
+                  </div>
+                </div>
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "5px" }}
+                >
+                  {" "}
+                  <SavingsTwoToneIcon /> : <b>
+                    {element?.otherData?.coins}{" "}
+                  </b>{" "}
+                  Coins
+                </div>
+                <div
+                  style={{
+                    position: "absolute",
+                    right: 50,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <Avatar
+                    style={{
+                      backgroundColor: color,
+                      width: 26,
+                      height: 26,
+                      color: "#fff",
+                    }}
+                  >
+                    {icon}
+                  </Avatar>
+                  {element?.otherData?.verified ? (
+                    <div style={{ color: "green", fontWeight: "bold" }}>
+                      Verified
+                    </div>
+                  ) : (
+                    <div style={{ color: "red", fontWeight: "bold" }}>
+                      UnVerified
+                    </div>
+                  )}
+                </div>
               </Paper>
             )}
           </>

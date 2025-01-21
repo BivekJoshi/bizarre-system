@@ -1,6 +1,6 @@
 export const getBaseUrl = () => {
-  return "https://cafebizarre.com.np/test/v1"
-  // return "https://cafebizarre.com.np/prod/v1"
+  // return "https://cafebizarre.com.np/test/v1"
+  return "https://cafebizarre.com.np/prod/v1"
 
 };
 export const getDocUrl = () => {
