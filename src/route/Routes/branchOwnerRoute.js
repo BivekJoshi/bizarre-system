@@ -1,7 +1,10 @@
 import { nanoid } from "nanoid";
 import Loadable from "../../components/Loader/Loadable";
 import { lazy } from "react";
-import PromoCode from "../../pages/Controller/PromoCode/PromoCode";
+
+const PromoCode = Loadable(
+  lazy(() => import("../../pages/Controller/PromoCode/PromoCode"))
+);
 
 const AdminDashboard = Loadable(
   lazy(() => import("../../pages/AdminPage/Dashboard/AdminDashboard"))

@@ -112,6 +112,13 @@ const Item = () => {
                   label={row?.original?.status}
                   onClick={handleOpenMenu}
                   style={{ cursor: "pointer" }}
+                  color={
+                    row?.original?.status === "ACTIVE"
+                      ? "primary"
+                      : row?.original?.status === "INACTIVE"
+                      ? "warning"
+                      : "error"
+                  }
                 />
               </Tooltip>
               <Menu
@@ -173,9 +180,15 @@ const Item = () => {
           const data = cell.row.original;
           return (
             <div>
-              <div>Cost Price: <b>{data?.costPrice}</b></div>
-              <div>Marked Price: <b>{data?.markedPrice}</b></div>
-              <div>Selling Price: <b>{data?.sellingPrice}</b></div>
+              <div>
+                Cost Price: <b>{data?.costPrice}</b>
+              </div>
+              <div>
+                Marked Price: <b>{data?.markedPrice}</b>
+              </div>
+              <div>
+                Selling Price: <b>{data?.sellingPrice}</b>
+              </div>
             </div>
           );
         },
@@ -207,7 +220,7 @@ const Item = () => {
       {
         id: nanoid(),
         accessorKey: "type",
-        header: "type",
+        header: "Type",
         maxWidth: 80,
         sortable: false,
       },

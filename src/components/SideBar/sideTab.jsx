@@ -276,6 +276,18 @@ export const cashierTab = [
     value: "customer",
     icon: <FaceRetouchingNaturalRoundedIcon />,
   },
+  {
+    id: nanoid(),
+    label: "Inventory",
+    value: "inventory",
+    icon: <Inventory2RoundedIcon />,
+  },
+  {
+    id: nanoid(),
+    label: "Expense",
+    value: "expense",
+    icon: <GroupWorkRoundedIcon />,
+  },
 ];
 
 export const waiterTab = [

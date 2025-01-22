@@ -1,18 +1,34 @@
 import { nanoid } from "nanoid";
 
-import AdminDashboard from "../../pages/AdminPage/Dashboard/AdminDashboard";
 import Item from "../../pages/Controller/Item/Item";
 import Cart from "../../pages/Cart/Cart";
-import OrderProcessTab from "../../pages/Controller/Order/OrderProcess/OrderProcessTab";
-import CustomerTable from "../../pages/Controller/CustomerTable/CustomerTable";
 import { lazy } from "react";
 import Loadable from "../../components/Loader/Loadable";
+
+const AdminDashboard = Loadable(
+  lazy(() => import("../../pages/AdminPage/Dashboard/AdminDashboard"))
+);
+const CustomerTable = Loadable(
+  lazy(() => import("../../pages/Controller/CustomerTable/CustomerTable"))
+);
+const OrderProcessTab = Loadable(
+  lazy(() =>
+    import("../../pages/Controller/Order/OrderProcess/OrderProcessTab")
+  )
+);
 const Order = Loadable(
   lazy(() => import("../../pages/Controller/Order/Order"))
 );
 const Customer = Loadable(
   lazy(() => import("../../pages/Controller/Customer/Customer"))
 );
+const Inventory = Loadable(
+  lazy(() => import("../../pages/Controller/Inventory/Inventory"))
+);
+const Expense = Loadable(
+  lazy(() => import("../../pages/Controller/Expense/Expense"))
+);
+
 const cashierRoute = [
   {
     path: "dashboard",
@@ -44,6 +60,18 @@ const cashierRoute = [
     name: "customer",
     id: nanoid(),
     component: Customer,
+  },
+  {
+    path: "inventory",
+    name: "inventory",
+    id: nanoid(),
+    component: Inventory,
+  },
+  {
+    path: "expense",
+    name: "expense",
+    id: nanoid(),
+    component: Expense,
   },
 ];
 
