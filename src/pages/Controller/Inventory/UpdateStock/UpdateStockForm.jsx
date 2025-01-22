@@ -78,7 +78,7 @@ const UpdateStockForm = ({
               alt={item.name}
             />
 
-            {/* {item.stockCount <= 0 && (
+            {item.stockCount === 0 && (
               <div
                 style={{
                   backgroundColor: "red",
@@ -93,7 +93,7 @@ const UpdateStockForm = ({
               >
                 Out of Stock
               </div>
-            )} */}
+            )}
             {item.status !== "ACTIVE" && (
               <div
                 style={{

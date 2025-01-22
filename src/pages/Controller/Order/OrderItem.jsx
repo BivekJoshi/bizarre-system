@@ -148,7 +148,7 @@ const OrderItem = ({
               alt={item.name}
             />
 
-            {/* {item.stockCount <= 0 && (
+            {item.stockCount === 0 && (
               <div
                 style={{
                   backgroundColor: "red",
@@ -163,7 +163,7 @@ const OrderItem = ({
               >
                 Out of Stock
               </div>
-            )} */}
+            )}
             {item.status !== "ACTIVE" && (
               <div
                 style={{
