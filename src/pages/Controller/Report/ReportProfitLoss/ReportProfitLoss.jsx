@@ -1,8 +1,16 @@
-import React, { useMemo, useState } from "react";
-import { Box, Grid, Paper, Tooltip, Typography, useTheme } from "@mui/material";
-import { nanoid } from "nanoid";
-import CustomTable from "../../../../components/CustomTable/CustomTable";
-import NoDataFound from "../../../PageNotFound/NoDataFound";
+import React, { useState } from "react";
+import {
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Tooltip,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import ReportProfitLossForm from "./ReportProfitLossForm";
@@ -23,23 +31,6 @@ const ReportProfitLoss = () => {
     fileType: fileType,
   });
 
-  const columns = useMemo(
-    () => [
-      {
-        id: nanoid(),
-        accessorKey: "title",
-        header: "Title",
-      },
-      {
-        id: nanoid(),
-        accessorKey: "amount",
-        header: "Amount",
-        maxWidth: 80,
-      },
-    ],
-    []
-  );
-
   const handleClickExport = (fileType) => {
     if (fileType) {
       setFileType(fileType);
@@ -51,134 +42,100 @@ const ReportProfitLoss = () => {
     <div>
       <ReportProfitLossForm formik={formik} />
       <br />
-
-      {profitLossData && (
-        <Box
-          sx={{
-            backgroundColor: theme.palette.background.default,
-            padding: "1rem",
-            marginTop: ".1rem",
-          }}
-        >
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography
-              variant="h3"
-              sx={{ color: theme.palette.text.default, fontWeight: 700 }}
-            >
-              Profit Loss Report
-            </Typography>
-            <div style={{ display: "flex", gap: "1rem" }}>
-              <Tooltip
-                title="Export as PDF"
-                onClick={() => handleClickExport("pdf")}
-              >
-                <PictureAsPdfIcon sx={{ fontSize: "30px" }} />
-              </Tooltip>
-              <Tooltip
-                title="Export as Excel"
-                onClick={() => handleClickExport("excel")}
-              >
-                <AnalyticsIcon sx={{ fontSize: "30px" }} />
-              </Tooltip>
-            </div>
+      <Box sx={{ backgroundColor: theme.palette.background.default, padding: "1rem", marginTop: ".1rem" }}>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography variant="h3" sx={{ color: theme.palette.text.default, fontWeight: 700 }}>
+            Profit Loss Report
+          </Typography>
+          <div style={{ display: "flex", gap: "1rem" }}>
+            <Tooltip title="Export as PDF" onClick={() => handleClickExport("pdf")}>
+              <PictureAsPdfIcon sx={{ fontSize: "30px" }} />
+            </Tooltip>
+            <Tooltip title="Export as Excel" onClick={() => handleClickExport("excel")}>
+              <AnalyticsIcon sx={{ fontSize: "30px" }} />
+            </Tooltip>
           </div>
-          <br />
-
-          {profitLossData ? (
-            <>
-              <Paper
+        </div>
+        <br />
+        <TableContainer sx={{ maxWidth: 600, margin: "auto", mt: 3, p: 2 }}>
+          <Typography variant="h6" align="center" sx={{ mb: 2 }}>
+            Profit & Loss Account
+          </Typography>
+          <Table>
+            <TableHead>
+              <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
+                <TableCell><strong>Category</strong></TableCell>
+                <TableCell align="right"><strong>Amount (रु)</strong></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell colSpan={2} sx={{ fontWeight: "bold", backgroundColor: "#c8e6c9" }}>
+                  REVENUE
+                </TableCell>
+              </TableRow>
+              {profitLossData?.incomes.length > 0 ? (
+                profitLossData?.incomes.map((income, index) => (
+                  <TableRow key={`income-${index}`} sx={{ backgroundColor: "#d0f0d0" }}>
+                    <TableCell>{income.title}</TableCell>
+                    <TableCell align="right">{income.amount.toLocaleString()}</TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={2}>No Income Data</TableCell>
+                </TableRow>
+              )}
+              <TableRow sx={{ backgroundColor: "#a5d6a7", fontWeight: "bold" }}>
+                <TableCell>Total Income</TableCell>
+                <TableCell align="right">{profitLossData?.totalIncome.toLocaleString()}</TableCell>
+              </TableRow>
+              <br/>
+              <br/>
+              <TableRow>
+                <TableCell colSpan={2} sx={{ fontWeight: "bold", backgroundColor: "#ffcdd2" }}>
+                  EXPENSES
+                </TableCell>
+              </TableRow>
+              {profitLossData?.expenses.length > 0 ? (
+                profitLossData?.expenses.map((expense, index) => (
+                  <TableRow key={`expense-${index}`} sx={{ backgroundColor: "#ffebee" }}>
+                    <TableCell>{expense.title}</TableCell>
+                    <TableCell align="right">-{expense.amount.toLocaleString()}</TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={2}>No Expense Data</TableCell>
+                </TableRow>
+              )}
+              <TableRow sx={{ backgroundColor: "#ef9a9a", fontWeight: "bold" }}>
+                <TableCell>Total Expenses</TableCell>
+                <TableCell align="right">-{profitLossData?.totalExpense.toLocaleString()}</TableCell>
+              </TableRow>
+              <br/>
+              <br/>
+              <TableRow sx={{ backgroundColor: "#f5f5f5", fontWeight: "bold" }}>
+                <TableCell>Cost of Goods Sold</TableCell>
+                <TableCell align="right">{profitLossData?.cogs.toLocaleString()}</TableCell>
+              </TableRow>
+              <TableRow sx={{ backgroundColor: "#f5f5f5", fontWeight: "bold" }}>
+                <TableCell>Gross Profit</TableCell>
+                <TableCell align="right">{profitLossData?.grossProfit.toLocaleString()}</TableCell>
+              </TableRow>
+              <TableRow
                 sx={{
-                  padding: "2rem",
-                  backgroundColor: theme.palette.background.alt,
+                  backgroundColor: profitLossData?.netProfit >= 0 ? "#00a000" : "#f74040",
+                  fontWeight: "bold",
                 }}
               >
-                <div style={{ display: "flex", gap: "2rem" }}>
-                  <Typography
-                    variant="h4"
-                    sx={{ color: theme.palette.text.default, fontWeight: 700 }}
-                  >
-                    Net Profit
-                  </Typography>
-                  <Typography
-                    variant="h4"
-                    sx={{ color: "green", fontWeight: 900 }}
-                  >
-                    {/* {profitLossData?.totalIncome} */}
-                    {profitLossData?.netProfit || "NA"}
-                  </Typography>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Typography variant="h5">Total Income</Typography>
-                    <Typography variant="h5">
-                      {profitLossData?.totalIncome || "NA"}
-                    </Typography>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Typography variant="h5">Total Expense</Typography>
-                    <Typography variant="h5">
-                      {profitLossData?.totalExpense || "NA"}
-                    </Typography>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Typography variant="h5">Gross Profit</Typography>
-                    <Typography variant="h5">
-                      {profitLossData?.grossProfit || "NA"}
-                    </Typography>
-                  </div>
-                </div>
-              </Paper>
-              <br />
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  Incomes
-                  <CustomTable
-                    columns={columns}
-                    title="Income"
-                    data={profitLossData?.incomes}
-                    overFlow="scroll"
-                    width="100%"
-                    enablePagination={false}
-                    enableRowNumbers
-                    headColor={"green"}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  Expenses
-                  <CustomTable
-                    columns={columns}
-                    title="Income"
-                    data={profitLossData?.expenses}
-                    overFlow="scroll"
-                    width="100%"
-                    enablePagination={false}
-                    enableRowNumbers
-                    headColor={"red"}
-                  />
-                </Grid>
-              </Grid>
-            </>
-          ) : (
-            <NoDataFound />
-          )}
-        </Box>
-      )}
+                <TableCell sx={{ fontWeight: "bold" }}>NET PROFIT</TableCell>
+                <TableCell align="right">{profitLossData?.netProfit.toLocaleString()}</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
     </div>
   );
 };

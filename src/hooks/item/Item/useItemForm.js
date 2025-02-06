@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import { useAddItem, useEditItem } from "../useItem";
 import { useState } from "react";
+import { itemSchema } from "./ItemSchema/ItemSchame";
 
 export const useItemForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddItem({});
@@ -9,18 +10,18 @@ export const useItemForm = ({ onClose, rowData }) => {
 
   const formik = useFormik({
     initialValues: {
-      id:  "",
-      name:  "",
-      costPrice:  "",
-      markedPrice:  "",
+      id: "",
+      name: "",
+      costPrice: "",
+      markedPrice: "",
       sellingPrice: "",
       description: "",
-      type:  "",
-      stockCount:  "",
-      tags:  "",
-      color:  "",
+      type: "",
+      stockCount: "",
+      tags: "",
+      color: "",
     },
-    // validationSchema: branchSchema,
+    validationSchema: itemSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
       if (values?.id) {
@@ -71,7 +72,6 @@ export const useItemForm = ({ onClose, rowData }) => {
   };
 };
 
-
 export const useItemEditForm = ({ onClose, rowData }) => {
   const { mutate: addMutate } = useAddItem({});
   const { mutate: editMutate } = useEditItem({});
@@ -90,7 +90,8 @@ export const useItemEditForm = ({ onClose, rowData }) => {
       tags: rowData?.tags || "",
       color: rowData?.color || "",
     },
-    // validationSchema: branchSchema,
+    validationSchema: itemSchema,
+
     enableReinitialize: true,
     onSubmit: (values) => {
       if (values?.id) {
