@@ -25,6 +25,7 @@ import {
 } from "../../../hooks/customer/Customer/useCustomerForm";
 import FormModal from "../../../components/Modal/FormModal";
 import CustomTable from "../../../components/CustomTable/CustomTable";
+import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
 import { useSelector } from "react-redux";
 import { DOC_URL } from "../../../api/axiosInterceptor";
 import CustomerCardView from "./CustomerCardView";
@@ -593,6 +594,30 @@ const Customer = () => {
           </>
         }
         showButton={true}
+      />
+      <ConfirmationModal
+        disagreeLabel={"Yes, Confirm"}
+        agreeLabel={"No, Don't Verify."}
+        alertTitle={"Confirm !!!"}
+        header={"Verify Customer"}
+        confirmhead={"Are you sure ?"}
+        handleModalClose={() => {
+          setIsVerifyModalOpen(false);
+          close();
+        }}
+        isModalOpen={isVerifyModalOpen}
+        icon={
+          <VerfiedIcon
+            sx={{
+              backgroundColor: "#a3fca1",
+              borderRadius: "50%",
+              fontSize: 36,
+              padding: "1rem",
+              color: "green",
+            }}
+          />
+        }
+        handleSave={confimVerify}
       />
     </>
   );
