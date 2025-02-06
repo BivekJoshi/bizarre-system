@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 
 import { useChangeStatus } from "../../useItem";
 
-export const useChangeItemStatusForm = ({ itemId, status }) => {
+export const useChangeItemStatusForm = ({ itemId, status, filterFormik }) => {
   const { mutate, isLoading: loading } = useChangeStatus({});
 
   const formik = useFormik({
@@ -22,6 +22,7 @@ export const useChangeItemStatusForm = ({ itemId, status }) => {
     mutate(values, {
       onSuccess: () => {
         // closeShowMessage();
+        filterFormik.handleSubmit();
       },
     });
   };

@@ -9,6 +9,76 @@ export const useItemForm = ({ onClose, rowData }) => {
 
   const formik = useFormik({
     initialValues: {
+      id:  "",
+      name:  "",
+      costPrice:  "",
+      markedPrice:  "",
+      sellingPrice: "",
+      description: "",
+      type:  "",
+      stockCount:  "",
+      tags:  "",
+      color:  "",
+    },
+    // validationSchema: branchSchema,
+    enableReinitialize: true,
+    onSubmit: (values) => {
+      if (values?.id) {
+        handledEditRequest(values);
+      } else {
+        handledAddRequest(values);
+      }
+    },
+  });
+
+  const handledAddRequest = (values) => {
+    values = { ...values };
+    addMutate(values, {
+      onSuccess: () => {
+        setSuccessFlag(true);
+        onClose();
+
+        setTimeout(() => {
+          setSuccessFlag(false);
+        }, 1000);
+      },
+      onError: () => {
+        setSuccessFlag(false);
+      },
+    });
+  };
+
+  const handledEditRequest = (values) => {
+    values = { ...values };
+    editMutate(values, {
+      onSuccess: () => {
+        setSuccessFlag(true);
+        onClose();
+
+        setTimeout(() => {
+          setSuccessFlag(false);
+        }, 1000);
+      },
+      onError: () => {
+        setSuccessFlag(false);
+      },
+    });
+  };
+
+  return {
+    formik,
+    successFlag,
+  };
+};
+
+
+export const useItemEditForm = ({ onClose, rowData }) => {
+  const { mutate: addMutate } = useAddItem({});
+  const { mutate: editMutate } = useEditItem({});
+  const [successFlag, setSuccessFlag] = useState(false);
+
+  const formik = useFormik({
+    initialValues: {
       id: rowData?.id || "",
       name: rowData?.name || "",
       costPrice: rowData?.costPrice || "",

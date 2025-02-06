@@ -492,6 +492,7 @@ const BranchOwner = () => {
             <MemberDocumentForm
               onClose={() => setIsDocumentModalOpen(false)}
               rowData={rowData?.id}
+              filterFormik={filterFormik}
             />
           </>
         }

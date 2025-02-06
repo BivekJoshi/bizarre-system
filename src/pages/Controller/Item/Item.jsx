@@ -19,7 +19,7 @@ import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import AddItem from "./AddItem";
-import { useItemForm } from "../../../hooks/item/Item/useItemForm";
+import { useItemEditForm, useItemForm } from "../../../hooks/item/Item/useItemForm";
 import { useSelector } from "react-redux";
 import ItemCardView from "./ItemCardView";
 import EditItem from "./EditItem";
@@ -50,10 +50,19 @@ const Item = () => {
     setIsEditModalOpen(false);
   };
   const { formik, successFlag, loading } = useItemForm({ onClose, rowData });
+  const {
+    formik: formikEdit,
+    successFlag: editSuccessFlag,
+    loading: editLoading,
+  } = useItemEditForm({
+    onClose,
+    rowData,
+  });
 
   const { formik: filterFormik, loading: isLoading } = useFilterItemForm({
     itemData: (data) => setFilteredData(data),
     successFlag,
+    editSuccessFlag
   });
 
   const handleModalClose = () => {
@@ -89,6 +98,7 @@ const Item = () => {
           const { formik: changeStatusFormik } = useChangeItemStatusForm({
             itemId,
             status,
+            filterFormik
           });
 
           const handleOpenMenu = (event) => {
@@ -274,7 +284,7 @@ const Item = () => {
           handleDeleteRow={deleteRow}
           enableEditing={true}
           handleEdit={editRow}
-          delete
+          // delete
           edit
         />
       );
@@ -385,13 +395,13 @@ const Item = () => {
           height={"auto"}
           maxHeight={"80vh"}
           header={"Edit Item"}
-          formik={formik}
-          loading={loading}
+          formik={formikEdit}
+          loading={editLoading}
           enableAddPhoto={true}
           isEditModalOpen={isEditModalOpen}
           formComponent={
             <>
-              <EditItem formik={formik} rowData={rowData} />
+              <EditItem formik={formikEdit} rowData={rowData} />
             </>
           }
           showButton={true}

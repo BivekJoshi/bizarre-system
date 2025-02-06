@@ -3,7 +3,13 @@ import { useEffect, useState } from "react";
 import { useFilterItem, useRevealItem } from "../../useItem";
 import { debounce } from "@mui/material";
 
-export const useFilterItemForm = ({ onClose, itemData, type, successFlag }) => {
+export const useFilterItemForm = ({
+  onClose,
+  itemData,
+  type,
+  successFlag,
+  editSuccessFlag,
+}) => {
   const { mutate, isLoading } = useRevealItem({});
   const [loading, setLoading] = useState(false);
 
@@ -50,10 +56,10 @@ export const useFilterItemForm = ({ onClose, itemData, type, successFlag }) => {
   }, 300);
 
   useEffect(() => {
-    if (formik?.values?.pageNumber > 0 || successFlag) {
+    if (formik?.values?.pageNumber > 0 || successFlag || editSuccessFlag) {
       debouncedSearch();
     }
-  }, [formik.values.search, successFlag]);
+  }, [formik.values.search, successFlag, editSuccessFlag]);
 
   return {
     formik,

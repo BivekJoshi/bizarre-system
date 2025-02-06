@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import { useAddIdDocument } from "../../useMember";
 
-export const useMemberDocumentForm = ({ onClose, rowData }) => {
+export const useMemberDocumentForm = ({ onClose, rowData, filterFormik }) => {
   const { mutate } = useAddIdDocument({ onSuccess: onClose });
 
   const formik = useFormik({
@@ -17,7 +17,11 @@ export const useMemberDocumentForm = ({ onClose, rowData }) => {
 
   const handleAddDocumentImage = (values) => {
     const formData = { ...values };
-    mutate(formData);
+    mutate(formData, {
+      onSuccess: () => {
+        filterFormik.handleSubmit();
+      },
+    });
   };
 
   return {

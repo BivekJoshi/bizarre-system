@@ -7,8 +7,8 @@ import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 import useMemberDocumentForm from "../../../hooks/member/Member/MemberDocument/useMemberDocumentForm";
 import RenderInput from "../../../components/RenderInput/RenderInput";
 
-const MemberDocumentForm = ({ onClose, rowData }) => {
-  const { formik, loading } = useMemberDocumentForm({ onClose, rowData });
+const MemberDocumentForm = ({ onClose, rowData,filterFormik }) => {
+  const { formik, loading } = useMemberDocumentForm({ onClose, rowData,filterFormik });
 
   const inputField = [
     {

@@ -483,6 +483,7 @@ const Waiter = () => {
             <MemberDocumentForm
               onClose={() => setIsDocumentModalOpen(false)}
               rowData={rowData?.id}
+              filterFormik={filterFormik}
             />
           </>
         }
