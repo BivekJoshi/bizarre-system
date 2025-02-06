@@ -163,9 +163,10 @@ const Barista = () => {
           const { formik: lockFormik, loading: lockLoading } = useLockUserForm({
             userId,
             closeShowMessage,
+            filterFormik,
           });
           const { formik: unLockFormik, loading: unLockLoading } =
-            useUnLockUserForm({ userId, closeShowMessage });
+            useUnLockUserForm({ userId, closeShowMessage, filterFormik });
 
           const handleOpenMenu = (event) => {
             setAnchorEl(event.currentTarget);
@@ -273,6 +274,32 @@ const Barista = () => {
                   </Button>
                 </div>
               </Collapse>
+            </div>
+          );
+        },
+      },
+      {
+        id: nanoid(),
+        header: "Remarks",
+        sortable: false,
+        Cell: ({ cell }) => {
+          const remark = cell.row.original?.user;
+          const { unlockedReason, lockedReason, status } = remark;
+          return (
+            <div>
+              {status === "LOCKED" ? (
+                <>
+                  Locked Reason:{" "}
+                  <span style={{ color: "orange" }}>{lockedReason}</span>
+                </>
+              ) : (
+                unlockedReason && (
+                  <>
+                    UnLock Reason:{" "}
+                    <span style={{ color: "green" }}>{unlockedReason}</span>
+                  </>
+                )
+              )}
             </div>
           );
         },

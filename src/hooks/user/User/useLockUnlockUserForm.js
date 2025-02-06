@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 
 import { useLockUser, useUnLockUser } from "../useUser";
 
-export const useLockUserForm = ({ userId, closeShowMessage }) => {
+export const useLockUserForm = ({ userId, closeShowMessage, filterFormik }) => {
   const { mutate, isLoading: loading } = useLockUser({});
 
   const formik = useFormik({
@@ -22,6 +22,7 @@ export const useLockUserForm = ({ userId, closeShowMessage }) => {
     mutate(values, {
       onSuccess: () => {
         closeShowMessage();
+        filterFormik.handleSubmit();
       },
     });
   };
@@ -32,7 +33,11 @@ export const useLockUserForm = ({ userId, closeShowMessage }) => {
   };
 };
 
-export const useUnLockUserForm = ({ userId, closeShowMessage }) => {
+export const useUnLockUserForm = ({
+  userId,
+  closeShowMessage,
+  filterFormik,
+}) => {
   const { mutate, isLoading: loading } = useUnLockUser({});
 
   const formik = useFormik({
@@ -52,6 +57,7 @@ export const useUnLockUserForm = ({ userId, closeShowMessage }) => {
     mutate(values, {
       onSuccess: () => {
         closeShowMessage();
+        filterFormik.handleSubmit();
       },
     });
   };

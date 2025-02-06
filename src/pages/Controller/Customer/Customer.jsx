@@ -9,7 +9,6 @@ import {
   Grid,
   Menu,
   MenuItem,
-  Stack,
   TextField,
   Tooltip,
   Typography,
@@ -19,7 +18,6 @@ import { nanoid } from "nanoid";
 import maleProfile from "../../../assets/MaleProfile.png";
 import femaleProfile from "../../../assets/FemaleProfile.png";
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import CustomerForm from "./CustomerForm";
 import {
   useCustomerEditForm,
@@ -29,7 +27,6 @@ import FormModal from "../../../components/Modal/FormModal";
 import CustomTable from "../../../components/CustomTable/CustomTable";
 import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
 import { useSelector } from "react-redux";
-import { CustomPagination } from "../../../components/Pagination/CustomPagination";
 import { DOC_URL } from "../../../api/axiosInterceptor";
 import CustomerCardView from "./CustomerCardView";
 import NoDataFound from "../../PageNotFound/NoDataFound";
@@ -63,7 +60,6 @@ const Customer = () => {
   const rowId = rowData?.id;
   const [isAddModalOpen, setIsAddModal] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isCustomerOnBoardModalOpen, setIsCustomerOnBoardModalOpen] =
     useState(false);
 
@@ -107,11 +103,6 @@ const Customer = () => {
   const { formik: onBoardFormik, loading: isLoadingOnBoard } =
     useCustomerOnBoardForm({ onClose });
 
-  const deleteRow = (row) => {
-    setRowData(row?.original?.id);
-    setIsDeleteModalOpen(true);
-  };
-
   const handleEnter = (row) => {
     setRowData(row?.original);
     setIsVerifyModalOpen(true);
@@ -148,11 +139,17 @@ const Customer = () => {
             ? femaleProfile
             : null;
           return (
-            <div style={{ display: "flex", gap: ".5rem" ,alignItems:"center"}}>
+            <div
+              style={{ display: "flex", gap: ".5rem", alignItems: "center" }}
+            >
               <Avatar alt="Profile Image" src={imageFinal} />
-              <div style={{ display: "flex", flexDirection: "column",gap:"1px" }}>
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "1px" }}
+              >
                 {data?.fullName}
-                <p>Coins: <b style={{color:"purple"}}>{coins}</b></p>
+                <p>
+                  Coins: <b style={{ color: "purple" }}>{coins}</b>
+                </p>
               </div>
             </div>
           );
@@ -293,9 +290,10 @@ const Customer = () => {
           const { formik: lockFormik, loading: lockLoading } = useLockUserForm({
             userId,
             closeShowMessage,
+            filterFormik,
           });
           const { formik: unLockFormik, loading: unLockLoading } =
-            useUnLockUserForm({ userId, closeShowMessage });
+            useUnLockUserForm({ userId, closeShowMessage, filterFormik });
 
           const handleOpenMenu = (event) => {
             setAnchorEl(event.currentTarget);
@@ -314,6 +312,7 @@ const Customer = () => {
           const handleMessageSubmit = () => {
             if (choose === "LOCK") {
               lockFormik.handleSubmit();
+              //
             } else {
               unLockFormik.handleSubmit();
             }
@@ -407,6 +406,32 @@ const Customer = () => {
           );
         },
       },
+      {
+        id: nanoid(),
+        header: "Remarks",
+        sortable: false,
+        Cell: ({ cell }) => {
+          const remark = cell.row.original?.user;
+          const { unlockedReason, lockedReason, status } = remark;
+          return (
+            <div>
+              {status === "LOCKED" ? (
+                <>
+                  Locked Reason:{" "}
+                  <span style={{ color: "orange" }}>{lockedReason}</span>
+                </>
+              ) : (
+                unlockedReason && (
+                  <>
+                    UnLock Reason:{" "}
+                    <span style={{ color: "green" }}>{unlockedReason}</span>
+                  </>
+                )
+              )}
+            </div>
+          );
+        },
+      },
     ],
     []
   );
@@ -439,7 +464,6 @@ const Customer = () => {
           enableRowNumbers
           enableColumnActions
           enableEditing={true}
-          // handleDeleteRow={deleteRow}
           handleEdit={editRow}
           handleEnter={handleEnter}
           enterIcon={<VerfiedIcon />}
@@ -570,26 +594,6 @@ const Customer = () => {
           </>
         }
         showButton={true}
-      />
-      <ConfirmationModal
-        disagreeLabel={"Yes, Delete !"}
-        agreeLabel={"No, Keep It."}
-        alertTitle={"Delete Alert"}
-        header={"You're going to delete this Id?"}
-        confirmhead={"Are you sure ?"}
-        handleModalClose={() => setIsDeleteModalOpen(false)}
-        isModalOpen={isDeleteModalOpen}
-        // handleSave={() => mutate(rowData)}
-        icon={
-          <DeleteRoundedIcon
-            sx={{
-              backgroundColor: "#FFDDDC",
-              borderRadius: "50%",
-              fontSize: 36,
-              padding: "1rem",
-            }}
-          />
-        }
       />
       <ConfirmationModal
         disagreeLabel={"Yes, Confirm"}
