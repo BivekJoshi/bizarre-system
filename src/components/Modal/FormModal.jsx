@@ -13,6 +13,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import HighlightOffRoundedIcon from "@mui/icons-material/HighlightOffRounded";
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 import { LoadingButton } from "@mui/lab";
+import CustomButton from "../Button/CustomButton";
 
 const FormModal = ({
   open,
@@ -26,7 +27,7 @@ const FormModal = ({
   formik,
   loading,
   showButton,
-  isEditModalOpen
+  isEditModalOpen,
 }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -104,7 +105,7 @@ const FormModal = ({
             >
               <Grid item>
                 <Button
-                  variant="outlined"
+                  variant="contained"
                   color="error"
                   onClick={() => {
                     onClose();
@@ -115,7 +116,7 @@ const FormModal = ({
                 </Button>
               </Grid>
               <Grid>
-                <LoadingButton
+                {/* <LoadingButton
                   loading={loading}
                   onClick={() => formik.handleSubmit()}
                   variant={"outlined"}
@@ -123,7 +124,14 @@ const FormModal = ({
                   startIcon={<ControlPointRoundedIcon />}
                 >
                   {isEditModalOpen ? "Update" : "Add"}
-                </LoadingButton>
+                </LoadingButton> */}
+                <CustomButton
+                  color="success"
+                  title={isEditModalOpen ? "Update" : "Add"}
+                  loading={loading}
+                  startIcon={<ControlPointRoundedIcon />}
+                  onClick={() => formik.handleSubmit()}
+                />
               </Grid>
             </Grid>
           </>

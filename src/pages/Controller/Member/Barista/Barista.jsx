@@ -22,7 +22,6 @@ import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import FormModal from "../../../../components/Modal/FormModal";
 import CustomTable from "../../../../components/CustomTable/CustomTable";
 import { useGetMember } from "../../../../hooks/member/useMember";
-import ConfirmationModal from "../../../../components/Modal/ConfirmationModal";
 import { useSelector } from "react-redux";
 import BaristaForm from "./BaristaForm";
 import BaristaCardView from "./BaristaCardView";
@@ -484,26 +483,6 @@ const Barista = () => {
           </>
         }
         showButton={false}
-      />
-      <ConfirmationModal
-        disagreeLabel={"Yes, Delete !"}
-        agreeLabel={"No, Keep It."}
-        alertTitle={"Delete Alert"}
-        header={"You're going to delete this Id?"}
-        confirmhead={"Are you sure ?"}
-        handleModalClose={() => setIsDeleteModalOpen(false)}
-        isModalOpen={isDeleteModalOpen}
-        // handleSave={() => mutate(rowData)}
-        icon={
-          <DeleteRoundedIcon
-            sx={{
-              backgroundColor: "#FFDDDC",
-              borderRadius: "50%",
-              fontSize: 36,
-              padding: "1rem",
-            }}
-          />
-        }
       />
     </>
   );

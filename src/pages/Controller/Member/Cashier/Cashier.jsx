@@ -21,7 +21,6 @@ import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import FormModal from "../../../../components/Modal/FormModal";
 import CustomTable from "../../../../components/CustomTable/CustomTable";
-import ConfirmationModal from "../../../../components/Modal/ConfirmationModal";
 import CashierForm from "./CashierForm";
 import { useCashierMemberForm } from "../../../../hooks/member/Member/CashierMemeber/useCashierMemberForm";
 import { useSelector } from "react-redux";
@@ -491,26 +490,6 @@ const Cashier = () => {
           </>
         }
         showButton={false}
-      />
-      <ConfirmationModal
-        disagreeLabel={"Yes, Delete !"}
-        agreeLabel={"No, Keep It."}
-        alertTitle={"Delete Alert"}
-        header={"You're going to delete this Id?"}
-        confirmhead={"Are you sure ?"}
-        handleModalClose={() => setIsDeleteModalOpen(false)}
-        isModalOpen={isDeleteModalOpen}
-        // handleSave={() => mutate(rowData)}
-        icon={
-          <DeleteRoundedIcon
-            sx={{
-              backgroundColor: "#FFDDDC",
-              borderRadius: "50%",
-              fontSize: 36,
-              padding: "1rem",
-            }}
-          />
-        }
       />
     </>
   );

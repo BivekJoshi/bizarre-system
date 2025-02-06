@@ -83,7 +83,7 @@ const ConfirmationModal = (props) => {
       >
         <Button
           onClick={handleModalClose}
-          color="success"
+          color="error"
           variant="contained"
           sx={{ textTransform: "none" }}
         >
@@ -91,7 +91,7 @@ const ConfirmationModal = (props) => {
         </Button>
         <Button
           onClick={handleSave}
-          color="error"
+          color="success"
           variant="contained"
           sx={{ textTransform: "none" }}
         >
