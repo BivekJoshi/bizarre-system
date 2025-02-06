@@ -86,6 +86,9 @@ const BatchReportItemHistory = Loadable(
     )
   )
 );
+const Expense = Loadable(
+  lazy(() => import("../../pages/Controller/Expense/Expense"))
+);
 
 const adminRoutes = [
   {
@@ -204,6 +207,12 @@ const adminRoutes = [
     name: "profit/loss-report",
     id: nanoid(),
     component: ReportProfitLoss,
+  },
+  {
+    path: "profit/loss-report/expense/:status",
+    name: "profit/loss-report/expense/verified",
+    id: nanoid(),
+    component: Expense,
   },
 
   {

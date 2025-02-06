@@ -2,14 +2,19 @@ import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { debounce } from "@mui/material";
 import { useFilterExpenses } from "../../useExpense";
+import { useParams } from "react-router-dom";
 
 export const useFilterExpenseForm = ({ expenseData, successFlag }) => {
   const { mutate, isLoading } = useFilterExpenses({});
   const [loading, setLoading] = useState(false);
+  const { status } = useParams();
+  console.log("🚀 ~ useFilterExpenseForm ~ status:", status);
 
   const formik = useFormik({
     initialValues: {
-      search: [],
+      search: [
+        { field: "verified", value: status === "verified" ? true : false },
+      ],
       // pageable: {
       //   pageNumber: "" || 1,
       //   pageSize: "" || 10,

@@ -246,7 +246,7 @@ export const branchOwnerTab = [
   {
     id: nanoid(),
     label: "Expense",
-    value: "expense",
+    value: "expense/unverified",
     icon: <GroupWorkRoundedIcon />,
   },
 ];
@@ -285,7 +285,7 @@ export const cashierTab = [
   {
     id: nanoid(),
     label: "Expense",
-    value: "expense",
+    value: "expense/unverified",
     icon: <GroupWorkRoundedIcon />,
   },
 ];

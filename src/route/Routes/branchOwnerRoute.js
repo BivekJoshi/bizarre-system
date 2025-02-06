@@ -150,14 +150,26 @@ const branchOwnerRoute = [
     component: ReportProfitLoss,
   },
   {
+    path: "profit/loss-report/expense/:status",
+    name: "profit/loss-report/expense/verified",
+    id: nanoid(),
+    component: Expense,
+  },
+  {
     path: "inventory",
     name: "inventory",
     id: nanoid(),
     component: Inventory,
   },
+  // {
+  //   path: "expense/unverified",
+  //   name: "expense/unverified",
+  //   id: nanoid(),
+  //   component: Expense,
+  // },
   {
-    path: "expense",
-    name: "expense",
+    path: "expense/:status",
+    name: "expense/verified",
     id: nanoid(),
     component: Expense,
   },

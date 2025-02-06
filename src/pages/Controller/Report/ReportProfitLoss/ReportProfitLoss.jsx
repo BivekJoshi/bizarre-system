@@ -16,9 +16,11 @@ import AnalyticsIcon from "@mui/icons-material/Analytics";
 import ReportProfitLossForm from "./ReportProfitLossForm";
 import { useProfitLossReportDownloadForm } from "../../../../hooks/report/profitLoss/useProfitLossReportDownloadForm";
 import { useProfitLossReportForm } from "../../../../hooks/report/profitLoss/useProfitLossReportForm";
+import { useNavigate } from "react-router-dom";
 
 const ReportProfitLoss = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const [profitLossData, setProfitLossData] = useState(null);
   const [fileType, setFileType] = useState(null);
 
@@ -36,6 +38,9 @@ const ReportProfitLoss = () => {
       setFileType(fileType);
       downloadFormik.handleSubmit();
     }
+  };
+  const handleClickExpence = () => {
+    navigate("expense/verified")
   };
 
   return (
@@ -129,6 +134,7 @@ const ReportProfitLoss = () => {
                   <TableCell
                     colSpan={2}
                     sx={{ fontWeight: "bold", backgroundColor: "#ffcdd2" }}
+                    onClick={handleClickExpence}
                   >
                     EXPENSES
                   </TableCell>
