@@ -76,7 +76,7 @@ export const useGetExpenseById = (id) => {
 };
 
 /*________________________GET_BY_EXPENSE_VERIFY_BY_ID_____________________________________*/
-export const useGetExpenseVerifyById = (id) => {
+export const useGetExpenseVerifyById = (id,setIsVerifyModalOpen,filterFormik) => {
   // return useQuery(["getExpenseVerifyById"], () => getExpenseVerifyById(id), {
   //   cacheTime: 10000,
   //   refetchInterval: false,
@@ -85,6 +85,8 @@ export const useGetExpenseVerifyById = (id) => {
    return useMutation(() => getExpenseVerifyById(id), {
       onSuccess: (data) => {
         toast.success("Expense verified successfully");
+        filterFormik.handleSubmit();
+        setIsVerifyModalOpen(false)
       },
       onError: (err) => {
         toast.error(getErrorMessage(err));
@@ -100,6 +102,9 @@ export const useDeleteExpense = ({ onSuccess }) => {
       toast.success("Expense record deleted successfully");
       onSuccess && onSuccess(data, variables, context);
       queryClient.invalidateQueries("filterExpense");
+    },
+    onError: (err) => {
+      toast.error(getErrorMessage(err));
     },
   });
 };

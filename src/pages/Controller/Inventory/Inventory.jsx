@@ -125,7 +125,7 @@ const Inventory = () => {
             setInputValue(event.target.value);
           };
 
-          const { formik } = useInventoryForm({ itemId, inputValue });
+          const { formik } = useInventoryForm({ itemId, inputValue,filterFormik });
 
           const handleMessageSubmit = () => {
             formik.handleSubmit();

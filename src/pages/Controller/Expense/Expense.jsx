@@ -41,9 +41,6 @@ const Expense = () => {
 
   const [filteredData, setFilteredData] = useState(null);
 
-  const { mutate } = useDeleteExpense({ rowData });
-  const { mutate: verifyExpense } = useGetExpenseVerifyById(rowData);
-
   const onClose = () => {
     setIsAddModal(false);
     setIsEditModalOpen(false);
@@ -65,6 +62,17 @@ const Expense = () => {
     expenseData: (data) => setFilteredData(data),
     successFlag,
   });
+  const { mutate } = useDeleteExpense({
+    onSuccess: () => {
+      filterFormik.handleSubmit();
+      setIsDeleteModalOpen(false);
+    },
+  });
+  const { mutate: verifyExpense } = useGetExpenseVerifyById(
+    rowData,
+    setIsVerifyModalOpen,
+    filterFormik
+  );
 
   const editRow = (row) => {
     setIsEditModalOpen(true);
@@ -79,6 +87,7 @@ const Expense = () => {
     verifyExpense({
       onSuccess: () => {
         setIsVerifyModalOpen(false);
+        filterFormik.handleSubmit();
       },
     });
   };

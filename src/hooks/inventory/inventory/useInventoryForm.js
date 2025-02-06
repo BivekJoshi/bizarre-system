@@ -35,7 +35,7 @@ export const useAddInventoryForm = ({ selectedCardId, inputValue }) => {
   };
 };
 
-export const useInventoryForm = ({ itemId, inputValue }) => {
+export const useInventoryForm = ({ itemId, inputValue, filterFormik }) => {
   const { mutate, isLoading } = useEditStockInventory({});
   const [loading, setLoading] = useState(false);
 
@@ -55,6 +55,7 @@ export const useInventoryForm = ({ itemId, inputValue }) => {
     mutate(values, {
       onSuccess: (data) => {
         setLoading(false);
+        filterFormik.handleSubmit();
       },
       onError: () => {
         setLoading(false);
