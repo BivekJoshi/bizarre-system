@@ -174,11 +174,19 @@ const OpenProcessModal = ({ rowId, refetch, onClose }) => {
                   boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)",
                 },
               }}
-              onClick={
-                orderData?.data?.status === "WAITING"
-                  ? () => handleCardClick("delete", deleteOrder)
-                  : () => handleClick("cancelled", fetchCancelledOrder)
-              }
+              // onClick={
+              //   orderData?.data?.status === "WAITING"
+              //     ? () => handleCardClick("delete", deleteOrder)
+              //     : () => handleClick("cancelled", fetchCancelledOrder)
+              // }
+              onClick={() => {
+                if (userType === "BRANCH_OWNER") {
+                  return handleCardClick("delete", deleteOrder);
+                }
+                return orderData?.data?.status === "WAITING"
+                  ? handleCardClick("delete", deleteOrder)
+                  : handleClick("cancelled", fetchCancelledOrder);
+              }}
             >
               {orderData?.data?.status === "WAITING" ? (
                 <>
@@ -191,18 +199,12 @@ const OpenProcessModal = ({ rowId, refetch, onClose }) => {
                 <>
                   <CancelIcon style={{ color: "red" }} />
                   <Typography variant="h6" gutterBottom>
-                    Cancel Order
+                    {userType === "BRANCH_OWNER"
+                      ? "DeleteOrder"
+                      : "Cancel Order"}
                   </Typography>
                 </>
               )}
-              {/* {userType === "BRANCH_OWNER" && (
-                <>
-                  <DeleteForeverIcon style={{ color: "red" }} />
-                  <Typography variant="h6" gutterBottom>
-                    Delete Order
-                  </Typography>
-                </>
-              )} */}
             </Card>
           </div>
           <Grid container spacing={3}>
