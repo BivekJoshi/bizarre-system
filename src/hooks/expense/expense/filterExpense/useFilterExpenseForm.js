@@ -8,18 +8,25 @@ export const useFilterExpenseForm = ({ expenseData, successFlag }) => {
   const { mutate, isLoading } = useFilterExpenses({});
   const [loading, setLoading] = useState(false);
   const { status } = useParams();
-  console.log("🚀 ~ useFilterExpenseForm ~ status:", status);
+
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth() + 1;
+  const currentYear = currentDate.getFullYear();
 
   const formik = useFormik({
     initialValues: {
-      search: [
-        { field: "verified", value: status === "verified" ? true : false },
-      ],
-      // pageable: {
-      //   pageNumber: "" || 1,
-      //   pageSize: "" || 10,
-      // },
-      actionType: "FILTER",
+      month: String(currentMonth),
+      year: String(currentYear),
+      pagination: {
+        search: [
+          {
+            field: status === "unverified" ? "verified" : "expenseType",
+            value: status === "unverified" ? false : status,
+          },
+          status !== "unverified" && { field: "verified", value: true },
+        ].filter(Boolean),
+        actionType: "FILTER",
+      },
       pageNumber: "" || 1,
       noOfRecords: "" || 10,
     },
@@ -50,7 +57,7 @@ export const useFilterExpenseForm = ({ expenseData, successFlag }) => {
     if (formik?.values?.pageNumber > 0 || successFlag) {
       debouncedSearch();
     }
-  }, [formik.values.search, successFlag]);
+  }, [formik.values.search, successFlag, formik.values]);
 
   return {
     formik,

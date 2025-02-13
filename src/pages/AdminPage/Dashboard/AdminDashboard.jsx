@@ -22,6 +22,7 @@ import {
   Tooltip as RechartsTooltip,
 } from "recharts";
 import { useGetReportDashboard } from "../../../hooks/report/useReport";
+import AIGenerate from "../AI/AIGenerate/AIGenerate";
 
 const AdminDashboard = () => {
   const theme = useTheme();
@@ -153,6 +154,9 @@ const AdminDashboard = () => {
               )}
             </CardContent>
           </Card>
+        </Grid>
+        <Grid item xs={12} md={12}>
+          <AIGenerate/>
         </Grid>
 
         {reportData?.birthDayMembers &&

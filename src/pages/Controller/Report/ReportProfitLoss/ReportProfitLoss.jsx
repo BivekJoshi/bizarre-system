@@ -40,9 +40,13 @@ const ReportProfitLoss = () => {
     }
   };
   const handleClickExpence = () => {
-    navigate("expense/verified")
+    navigate("expense/verified");
   };
 
+  const handleClickCell = (title) => {
+    // console.log(title,"dcsdc");
+    navigate(`expense/${title}`);
+  };
   return (
     <div>
       <ReportProfitLossForm formik={formik} />
@@ -134,7 +138,7 @@ const ReportProfitLoss = () => {
                   <TableCell
                     colSpan={2}
                     sx={{ fontWeight: "bold", backgroundColor: "#ffcdd2" }}
-                    onClick={handleClickExpence}
+                    // onClick={handleClickExpence}
                   >
                     EXPENSES
                   </TableCell>
@@ -145,7 +149,9 @@ const ReportProfitLoss = () => {
                       key={`expense-${index}`}
                       sx={{ backgroundColor: "#ffebee" }}
                     >
-                      <TableCell>{expense.title}</TableCell>
+                      <TableCell onClick={() => handleClickCell(expense.title)}>
+                        {expense.title}
+                      </TableCell>
                       <TableCell align="right">
                         -{expense.amount.toLocaleString()}
                       </TableCell>

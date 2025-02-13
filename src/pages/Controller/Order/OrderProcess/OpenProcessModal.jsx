@@ -23,12 +23,13 @@ import { DOC_URL } from "../../../../api/axiosInterceptor";
 import { nanoid } from "nanoid";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { getUserType } from "../../../../utils/cookieHelper";
 
 const OpenProcessModal = ({ rowId, refetch, onClose }) => {
   const [selectedCard, setSelectedCard] = useState(null);
 
+  const userType = getUserType();
   const { data: orderData, isLoading: isOrderLoading } = useGetOrderById(rowId);
-  console.log("🚀 ~ OpenProcessModal ~ orderData:", orderData);
 
   const { mutate: fetchPreparingOrder, isLoading: isPreparingLoading } =
     useGetOrderPreparing();
@@ -194,6 +195,14 @@ const OpenProcessModal = ({ rowId, refetch, onClose }) => {
                   </Typography>
                 </>
               )}
+              {/* {userType === "BRANCH_OWNER" && (
+                <>
+                  <DeleteForeverIcon style={{ color: "red" }} />
+                  <Typography variant="h6" gutterBottom>
+                    Delete Order
+                  </Typography>
+                </>
+              )} */}
             </Card>
           </div>
           <Grid container spacing={3}>
