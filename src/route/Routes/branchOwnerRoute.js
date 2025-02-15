@@ -1,6 +1,7 @@
 import { nanoid } from "nanoid";
 import Loadable from "../../components/Loader/Loadable";
 import { lazy } from "react";
+import ExpenseRedirectProfitLoss from "../../pages/Controller/Expense/ExpenseRedirectProfitLoss";
 
 const PromoCode = Loadable(
   lazy(() => import("../../pages/Controller/PromoCode/PromoCode"))
@@ -150,10 +151,10 @@ const branchOwnerRoute = [
     component: ReportProfitLoss,
   },
   {
-    path: "profit/loss-report/expense/:status",
+    path: "profit/loss-report/expense/:status/:year/:month",
     name: "profit/loss-report/expense/verified",
     id: nanoid(),
-    component: Expense,
+    component: ExpenseRedirectProfitLoss,
   },
   {
     path: "inventory",

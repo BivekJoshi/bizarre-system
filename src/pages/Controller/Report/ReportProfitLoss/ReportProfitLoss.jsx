@@ -28,6 +28,9 @@ const ReportProfitLoss = () => {
     profitLossReport: (data) => setProfitLossData(data),
   });
 
+  const year = formik?.values?.year || "";
+  const month = formik?.values?.month || "";
+
   const { formik: downloadFormik } = useProfitLossReportDownloadForm({
     setData: formik?.values,
     fileType: fileType,
@@ -39,13 +42,10 @@ const ReportProfitLoss = () => {
       downloadFormik.handleSubmit();
     }
   };
-  const handleClickExpence = () => {
-    navigate("expense/verified");
-  };
 
   const handleClickCell = (title) => {
     // console.log(title,"dcsdc");
-    navigate(`expense/${title}`);
+    navigate(`expense/${title}/${year}/${month}`);
   };
   return (
     <div>

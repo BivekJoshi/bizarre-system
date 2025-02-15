@@ -23,6 +23,7 @@ import {
 } from "recharts";
 import { useGetReportDashboard } from "../../../hooks/report/useReport";
 import AIGenerate from "../AI/AIGenerate/AIGenerate";
+import AIGenerateItem from "../AI/AIGenerateItem/AIGenerateItem";
 
 const AdminDashboard = () => {
   const theme = useTheme();
@@ -155,8 +156,11 @@ const AdminDashboard = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} md={12}>
+        <Grid item xs={12} md={6}>
           <AIGenerate/>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <AIGenerateItem/>
         </Grid>
 
         {reportData?.birthDayMembers &&

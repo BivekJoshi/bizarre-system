@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 export const useFilterExpenseForm = ({ expenseData, successFlag }) => {
   const { mutate, isLoading } = useFilterExpenses({});
   const [loading, setLoading] = useState(false);
-  const { status } = useParams();
+  const { status, year, month } = useParams();
 
   const currentDate = new Date();
   const currentMonth = currentDate.getMonth() + 1;
@@ -15,8 +15,8 @@ export const useFilterExpenseForm = ({ expenseData, successFlag }) => {
 
   const formik = useFormik({
     initialValues: {
-      month: String(currentMonth),
-      year: String(currentYear),
+      month: month ? month : String(currentMonth),
+      year: year ? year : String(currentYear),
       pagination: {
         search: [
           {

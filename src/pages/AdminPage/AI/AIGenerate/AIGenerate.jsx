@@ -1,72 +1,71 @@
 import React, { useEffect, useState } from "react";
-import "./TypeWriter.css";
 import RenderInput from "../../../../components/RenderInput/RenderInput";
 import { useAIgenerateForm } from "../../../../hooks/chat/AIGenerate/useAIgenerateForm";
-import { Button, CircularProgress } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  Grid,
+} from "@mui/material";
 import { nanoid } from "nanoid";
+import Typewriter from "../../../../components/Typewriter/Typewriter";
 
-const Typewriter = ({ text, speed = 50 }) => {
-  const [displayText, setDisplayText] = useState(""); // Start with empty string
-
-  useEffect(() => {
-    let i = 0; // Start from the first character
-    setDisplayText(""); // Reset displayText on new text input
-
-    const interval = setInterval(() => {
-      if (i <= text.length) {
-        setDisplayText((prev) => prev + text.charAt(i));
-        i++;
-      } else {
-        clearInterval(interval);
-      }
-    }, speed);
-
-    return () => clearInterval(interval);
-  }, [text, speed]);
-  return (
-    <div className="wrapper">
-      <div className="typing-demo">{displayText}</div>
-    </div>
-  );
-}
 const AIGenerate = () => {
   const { formik, generateData, isLoading } = useAIgenerateForm({});
-  console.log("🚀 ~ AIGenerate ~ isLoading:", isLoading);
 
   const inputField = [
     {
       id: nanoid(),
       name: "message",
-      label: "Message",
+      label: "Ask any thing",
       type: "text",
-      required: true,
       xs: 12,
-      md: 6,
-      lg: 6,
+      md: 12,
+      lg: 12,
       sm: 12,
     },
   ];
 
   return (
-    <>
-      {isLoading ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
+    <Grid container spacing={3} justifyContent="center">
+      <Grid item xs={12} md={8}>
+        <RenderInput inputField={inputField} formik={formik} />
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          onClick={() => formik.handleSubmit()}
+          style={{ marginTop: "16px" }}
         >
-          <CircularProgress />
-        </div>
-      ) : (
-        <>
-          <RenderInput inputField={inputField} formik={formik} />
-          <Button onClick={() => formik.handleSubmit()}>Submit</Button>
-          <Typewriter text={generateData?.generation} speed={50} />
-        </>
-      )}
-    </>
+          Submit
+        </Button>
+
+        {isLoading ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: "20px",
+            }}
+          >
+            <CircularProgress />
+          </div>
+        ) : (
+          <div
+            style={{
+              marginTop: "20px",
+              border: "1px solid lightgrey",
+              padding: "16px",
+              borderRadius: "8px",
+              boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+              backgroundColor: "#f9f9f9",
+            }}
+          >
+            <Typewriter text={generateData?.generation} speed={50} />
+          </div>
+        )}
+      </Grid>
+    </Grid>
   );
 };
 

@@ -1,6 +1,7 @@
 import { nanoid } from "nanoid";
 import { lazy } from "react";
 import Loadable from "../../components/Loader/Loadable";
+import ExpenseRedirectProfitLoss from "../../pages/Controller/Expense/ExpenseRedirectProfitLoss";
 
 const AdminDashboard = Loadable(
   lazy(() => import("../../pages/AdminPage/Dashboard/AdminDashboard"))
@@ -209,10 +210,10 @@ const adminRoutes = [
     component: ReportProfitLoss,
   },
   {
-    path: "profit/loss-report/expense/:status",
+    path: "profit/loss-report/expense/:status/:year/:month",
     name: "profit/loss-report/expense/verified",
     id: nanoid(),
-    component: Expense,
+    component: ExpenseRedirectProfitLoss,
   },
 
   {
