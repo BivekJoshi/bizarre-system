@@ -91,7 +91,21 @@ const ItemCardView = ({ data }) => {
               color="primary"
               sx={{ fontWeight: "bold" }}
             >
-              Rs {data?.sellingPrice}
+              Cost Price: Rs {data?.costPrice}
+            </Typography>
+            <Typography
+              variant="h6"
+              color="primary"
+              sx={{ fontWeight: "bold" }}
+            >
+             Marked Price Rs {data?.markedPrice}
+            </Typography>
+            <Typography
+              variant="h6"
+              color="primary"
+              sx={{ fontWeight: "bold" }}
+            >
+              Selling Price Rs {data?.sellingPrice}
             </Typography>
           </Grid>
         </Box>
