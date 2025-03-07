@@ -68,8 +68,8 @@ const cashierRoute = [
     component: Inventory,
   },
   {
-    path: "expense",
-    name: "expense",
+    path: "expense/:status",
+    name: "expense/verified",
     id: nanoid(),
     component: Expense,
   },
