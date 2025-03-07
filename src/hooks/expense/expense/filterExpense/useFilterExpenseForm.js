@@ -18,6 +18,8 @@ export const useFilterExpenseForm = ({ expenseData, successFlag }) => {
       month: month ? month : String(currentMonth),
       year: year ? year : String(currentYear),
       pagination: {
+        pageNumber: "" || 1,
+        noOfRecords: "" || 10,
         search: [
           {
             field: status === "unverified" ? "verified" : "expenseType",

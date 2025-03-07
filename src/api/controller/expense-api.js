@@ -25,13 +25,14 @@ export const getExpense = async (pageNumber, pageSize) => {
 
 /*____________________________FILTER_EXPENSE____________________________________ */
 export const filterExpense = async (formData) => {
-  
   const { search, pagination, ...rest } = formData;
 
   const updatedFormData = {
     ...rest,
     pagination: {
-      ...pagination,
+      ...pagination, 
+      noOfRecords: rest.noOfRecords, 
+      pageNumber: rest.pageNumber,
       search: [...(pagination?.search || []), ...(search || [])],
     },
   };
@@ -39,6 +40,7 @@ export const filterExpense = async (formData) => {
   const data = await axiosInstance.post(`${EXPENSE}/find`, updatedFormData);
   return data;
 };
+
 
 
 /*________________________GET_BY_EXPENSE_ID_____________________________________*/

@@ -13,9 +13,12 @@ import { nanoid } from "nanoid";
 import NoDataFound from "../../PageNotFound/NoDataFound";
 import CustomTable from "../../../components/CustomTable/CustomTable";
 import { CustomPaginationUpdated } from "../../../components/Pagination/CustomPaginationUpdated";
+import { useSelector } from "react-redux";
+import ExpenseCard from "./ExpenseForm/ExpenseCard";
 
 const ExpenseRedirectProfitLoss = () => {
   const theme = useTheme();
+  const view = useSelector((state) => state?.view?.mode);
 
   const [filteredData, setFilteredData] = useState(null);
 
@@ -141,15 +144,27 @@ const ExpenseRedirectProfitLoss = () => {
     if (!filteredData?.content || filteredData.content.length === 0) {
       return <NoDataFound />;
     }
-
-    <CustomTable
-      columns={columns}
-      data={filteredData?.content}
-      overFlow={"scroll"}
-      width={"100%"}
-      enablePagination={false}
-      enableRowNumbers
-    />;
+    if (view === "table") {
+      return (
+        <CustomTable
+          columns={columns}
+          data={filteredData?.content}
+          overFlow={"scroll"}
+          width={"100%"}
+          enablePagination={false}
+          enableRowNumbers
+        />
+      );
+    } else {
+      <CustomTable
+        columns={columns}
+        data={filteredData?.content}
+        overFlow={"scroll"}
+        width={"100%"}
+        enablePagination={false}
+        enableRowNumbers
+      />;
+    }
   };
 
   return (

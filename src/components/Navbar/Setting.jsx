@@ -31,7 +31,6 @@ const Setting = ({ close }) => {
   const [settings, setSettings] = useState({ mode: "light", view: "grid" });
   const [openLogoutModal, setOpenLogoutModal] = useState(false);
 
-
   const { mutate: logout } = useLogout();
 
   useEffect(() => {
@@ -51,8 +50,8 @@ const Setting = ({ close }) => {
   };
 
   const handleLogout = () => {
-    logout()
-    // localStorage.clear();
+    logout();
+    localStorage.clear();
     navigate("/");
     close();
   };
