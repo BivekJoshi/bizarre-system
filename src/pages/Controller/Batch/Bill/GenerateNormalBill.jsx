@@ -25,10 +25,6 @@ const GenerateNormalBill = ({ batchId, onClose }) => {
   const mobileNumber = formik.values.mobileNumber || "";
 
   const { data: customerDetail } = useGetCustomerByMobileNumber(mobileNumber);
-  console.log(
-    "🚀 ~ GenerateNormalBill ~ customerDetail:",
-    customerDetail?.data
-  );
 
   const inputField = [
     {

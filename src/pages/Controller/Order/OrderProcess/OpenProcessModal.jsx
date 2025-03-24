@@ -26,6 +26,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { getUserType } from "../../../../utils/cookieHelper";
 
 const OpenProcessModal = ({ rowId, refetch, onClose }) => {
+  console.log("🚀 ~ OpenProcessModal ~ rowId:", rowId)
   const [selectedCard, setSelectedCard] = useState(null);
 
   const userType = getUserType();

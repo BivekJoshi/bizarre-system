@@ -1,7 +1,8 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import {
   Box,
   Button,
+  Chip,
   CircularProgress,
   Grid,
   Stack,
@@ -30,6 +31,7 @@ import { useGetCustomerTableById } from "../../../hooks/customerTable/useCustome
 import ReGenerateBillModal from "../Batch/Bill/ReGenerateBillModal";
 import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
 import CardMembershipIcon from "@mui/icons-material/CardMembership";
+import OpenProcessModal from "./OrderProcess/OpenProcessModal";
 
 const Order = () => {
   const theme = useTheme();
@@ -49,8 +51,14 @@ const Order = () => {
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
   const [openBillLayout, setOpenLayout] = useState(false);
+  const [rowId, setRowId] = useState(null);
+  const [openProcessModal, setOpenProcessModal] = useState(false);
 
-  const { data: orderData, isLoading: loadingOrder } = useGetBatchById(tableId);
+  const {
+    data: orderData,
+    refetch,
+    isLoading: loadingOrder,
+  } = useGetBatchById(tableId);
   const { data: coustomerTableData, isLoading: loadingCustomerTable } =
     useGetCustomerTableById(tableId);
 
@@ -71,8 +79,27 @@ const Order = () => {
         id: nanoid(),
         accessorKey: "orderStatus",
         header: "Status",
-        maxWidth: 80,
         sortable: false,
+        Cell: ({ cell }) => {
+          const data = cell.getValue();
+          const getColor = (status) => {
+            switch (status) {
+              case "PREPARING":
+                return "warning";
+              case "READY":
+                return "success"
+              case "WAITING":
+                return "error";
+              case "SERVED":
+                return "primary";
+              case "CANCELLED":
+                return "error";
+              default:
+                return "default";
+            }
+          };
+          return <Chip label={data} color={getColor(data)} />;
+        },
       },
       {
         id: nanoid(),
@@ -84,6 +111,11 @@ const Order = () => {
     ],
     []
   );
+
+  const editRow = (row) => {
+    setOpenProcessModal(true);
+    setRowId(row?.original?.orderId);
+  };
 
   const renderView = () => {
     if (loadingOrder && loadingCustomerTable) {
@@ -113,7 +145,9 @@ const Order = () => {
           enablePagination={false}
           enableRowNumbers
           enableColumnActions
+          enableDelete
           enableEditing={true}
+          handleEdit={editRow}
           edit
         />
       );
@@ -121,7 +155,18 @@ const Order = () => {
       return (
         <Grid container spacing={2}>
           {orderData?.data?.orders?.map((item, index) => (
-            <Grid item xs={12} md={4} lg={3} sm={6} key={index}>
+            <Grid
+              item
+              xs={12}
+              md={4}
+              lg={3}
+              sm={6}
+              key={index}
+              onClick={() => {
+                setRowId(item?.orderId);
+                setOpenProcessModal(true);
+              }}
+            >
               <OrderByTableIdCardView data={item} />
             </Grid>
           ))}
@@ -129,6 +174,13 @@ const Order = () => {
       );
     }
   };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      refetch();
+    }, 10000);
+    return () => clearInterval(intervalId);
+  }, [refetch]);
 
   return (
     <>
@@ -166,7 +218,6 @@ const Order = () => {
         </div>
       </Box>
 
-      <br />
       <OrderReport orderReport={orderData?.data} />
       <br />
       <Box
@@ -316,7 +367,7 @@ const Order = () => {
       <FormModal
         open={openBillLayout}
         onClose={() => setOpenLayout(false)}
-        width={"30%"}
+        width={"20%"}
         height={"auto"}
         maxHeight={"80vh"}
         header={"Regenerate Bill"}
@@ -326,6 +377,29 @@ const Order = () => {
             onClose={() => {
               setOpenLayout(false);
               setIsReGenerateBillModalOpen(false);
+            }}
+          />
+        }
+        showButton={false}
+      />
+
+      <FormModal
+        open={openProcessModal || rowId}
+        onClose={() => {
+          setOpenProcessModal(false);
+          setRowId(null);
+        }}
+        width={"40%"}
+        height={"auto"}
+        maxHeight={"80vh"}
+        header={"Order Process"}
+        formComponent={
+          <OpenProcessModal
+            rowId={rowId}
+            refetch={refetch}
+            onClose={() => {
+              setOpenProcessModal(false);
+              setRowId(null);
             }}
           />
         }

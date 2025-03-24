@@ -66,7 +66,6 @@ const ReportBatchOrder = () => {
         header: "Customer",
         Cell: ({ cell }) => {
           const data = cell?.row?.original;
-          console.log(data)
           return (
             <div
               style={{
