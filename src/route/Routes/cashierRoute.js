@@ -4,6 +4,7 @@ import Item from "../../pages/Controller/Item/Item";
 import Cart from "../../pages/Cart/Cart";
 import { lazy } from "react";
 import Loadable from "../../components/Loader/Loadable";
+import ExpenseRedirectProfitLoss from "../../pages/Controller/Expense/ExpenseRedirectProfitLoss";
 
 const AdminDashboard = Loadable(
   lazy(() => import("../../pages/AdminPage/Dashboard/AdminDashboard"))
@@ -72,6 +73,12 @@ const cashierRoute = [
     name: "expense/verified",
     id: nanoid(),
     component: Expense,
+  },
+  {
+    path: "profit/loss-report/expense/:status/:year/:month",
+    name: "profit/loss-report/expense/verified",
+    id: nanoid(),
+    component: ExpenseRedirectProfitLoss,
   },
 ];
 

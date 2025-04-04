@@ -49,3 +49,10 @@ export const editStockInventory = async (formData) => {
   const data = await axiosInstance.put(`${INVENTORY}/update-stock`, formData);
   return data;
 };
+
+
+/*________________________DELETE_____________________________________*/
+export const deleteStockInventory = async (id) => {
+  const data = await axiosInstance.get(`${INVENTORY}/delete-item/${id}`);
+  return data;
+};

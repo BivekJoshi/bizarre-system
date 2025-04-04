@@ -31,6 +31,7 @@ import DropZoneUploadFileDynamic from "./DropZoneUploadFileDynamic";
 import { DOC_URL } from "../../api/axiosInterceptor";
 import SavingsTwoToneIcon from "@mui/icons-material/SavingsTwoTone";
 import MailTwoToneIcon from "@mui/icons-material/MailTwoTone";
+import RichTextEditor from "./RichTextEditor";
 
 const RenderInput = ({
   inputField,
@@ -76,6 +77,8 @@ const RenderInput = ({
       : formik.touched[element.name];
 
     switch (element.type) {
+      case "richText":
+        return <RichTextEditor element={element} formik={formik} />;
       case "text":
         return (
           <div>

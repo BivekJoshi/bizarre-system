@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import {
   addInventoryByItemId,
+  deleteStockInventory,
   editStockInventory,
   filterInventoryItem,
   getInventoryFind,
@@ -81,4 +82,20 @@ export const useEditStockInventory = ({ onSuccess }) => {
       },
     }
   );
+};
+
+
+/*________________________DELETE_____________________________________*/
+export const useDeleteStockInventory = ({ onSuccess }) => {
+  const queryClient = useQueryClient();
+  return useMutation(["deleteStockInventory"], (id) => deleteStockInventory(id), {
+    onSuccess: (data, variables, context) => {
+      toast.success("Deleted Item successfully");
+      onSuccess && onSuccess(data, variables, context);
+      // queryClient.invalidateQueries("getRelation");
+    },
+    onError: (err, _variables, _context) => {
+      toast.error(getErrorMessage(err));
+    },
+  });
 };

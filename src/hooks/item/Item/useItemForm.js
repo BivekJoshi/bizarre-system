@@ -90,34 +90,13 @@ export const useItemEditForm = ({ onClose, rowData }) => {
       tags: rowData?.tags || "",
       color: rowData?.color || "",
     },
-    validationSchema: itemSchema,
+    // validationSchema: itemSchema,
 
     enableReinitialize: true,
     onSubmit: (values) => {
-      if (values?.id) {
-        handledEditRequest(values);
-      } else {
-        handledAddRequest(values);
-      }
+      handledEditRequest(values);
     },
   });
-
-  const handledAddRequest = (values) => {
-    values = { ...values };
-    addMutate(values, {
-      onSuccess: () => {
-        setSuccessFlag(true);
-        onClose();
-
-        setTimeout(() => {
-          setSuccessFlag(false);
-        }, 1000);
-      },
-      onError: () => {
-        setSuccessFlag(false);
-      },
-    });
-  };
 
   const handledEditRequest = (values) => {
     values = { ...values };

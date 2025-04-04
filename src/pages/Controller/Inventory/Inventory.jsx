@@ -1,5 +1,8 @@
 import React, { useMemo, useState } from "react";
-import { useGetInventory } from "../../../hooks/inventory/useInventory";
+import {
+  useDeleteStockInventory,
+  useGetInventory,
+} from "../../../hooks/inventory/useInventory";
 import { nanoid } from "nanoid";
 import {
   Box,
@@ -11,6 +14,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 import { useFilterExpenseForm } from "../../../hooks/expense/expense/filterExpense/useFilterExpenseForm";
 import FilterInventory from "./FilterInventory/FilterInventory";
@@ -24,17 +28,32 @@ import InventoryCard from "./InventoryCard";
 import FormModal from "../../../components/Modal/FormModal";
 import StockList from "./UpdateStock/StockList";
 import { useInventoryForm } from "../../../hooks/inventory/inventory/useInventoryForm";
+import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
 
 const Inventory = () => {
   const theme = useTheme();
   const view = useSelector((state) => state?.view?.mode);
 
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [rowId, setIsRowId] = useState();
   const [filteredData, setFilteredData] = useState(null);
   const [isAddModalOpen, setIsAddModal] = useState(false);
 
-  const { formik: filterFormik, loading: isLoading } = useFilterInventoryForm({
+  const {
+    formik: filterFormik,
+    loading: isLoading,
+    refetch,
+  } = useFilterInventoryForm({
     inventoryData: (data) => setFilteredData(data),
     // successFlag,
+  });
+
+  const { mutate } = useDeleteStockInventory({
+    rowId,
+    onSuccess: () => {
+      setIsDeleteModalOpen(false);
+      filterFormik.handleSubmit();
+    },
   });
 
   const columns = useMemo(
@@ -125,7 +144,11 @@ const Inventory = () => {
             setInputValue(event.target.value);
           };
 
-          const { formik } = useInventoryForm({ itemId, inputValue,filterFormik });
+          const { formik } = useInventoryForm({
+            itemId,
+            inputValue,
+            filterFormik,
+          });
 
           const handleMessageSubmit = () => {
             formik.handleSubmit();
@@ -180,6 +203,11 @@ const Inventory = () => {
     []
   );
 
+  const deleteRow = (row) => {
+    setIsRowId(row?.original?.id);
+    setIsDeleteModalOpen(true);
+  };
+
   const renderView = () => {
     if (isLoading) {
       return (
@@ -205,13 +233,11 @@ const Inventory = () => {
           width={"100%"}
           enablePagination={false}
           enableRowNumbers
-          // enableColumnActions
-          // enableDelete
-          // enableEditing={true}
-          // handleDeleteRow={deleteRow}
-          // handleEdit={editRow}
-          // delete
-          // edit
+          enableColumnActions
+          enableDelete
+          handleDeleteRow={deleteRow}
+          delete
+          enableEditing={true}
         />
       );
     } else {
@@ -289,6 +315,26 @@ const Inventory = () => {
           </>
         }
         showButton={false}
+      />
+      <ConfirmationModal
+        disagreeLabel={"Yes, Delete !"}
+        agreeLabel={"No, Keep It."}
+        alertTitle={"Delete Alert"}
+        header={"You're going to delete this inventory data !!"}
+        confirmhead={"Are you sure ?"}
+        handleModalClose={() => setIsDeleteModalOpen(false)}
+        isModalOpen={isDeleteModalOpen}
+        handleSave={() => mutate(rowId)}
+        icon={
+          <DeleteRoundedIcon
+            sx={{
+              backgroundColor: "#FFDDDC",
+              borderRadius: "50%",
+              fontSize: 36,
+              padding: "1rem",
+            }}
+          />
+        }
       />
     </>
   );

@@ -311,7 +311,7 @@ const ReportBatchOrder = () => {
                 generate
                 enableEditing={true}
                 generateTitle="Regenerate Bill"
-                generateButton="Regenerate Bill"
+                generateButton="Bill"
                 handleGenerate={handleGenerate}
               />
             </>
@@ -322,14 +322,14 @@ const ReportBatchOrder = () => {
       )}
 
       <ConfirmationModal
-        disagreeLabel={"No, Close !"}
-        agreeLabel={"Yes, Procced"}
+        disagreeLabel={"Yes, Procced"}
+        agreeLabel={"No, Close !"}
         alertTitle={"Regerate Bill"}
         header={"You are going to regenerate bill!"}
         confirmhead={"Are you sure ?"}
         isModalOpen={isReGenerateBillModalOpen}
-        handleModalClose={handleReGenerateBill}
-        handleSave={() => setIsReGenerateBillModalOpen(false)}
+        handleModalClose={() => setIsReGenerateBillModalOpen(false)}
+        handleSave={handleReGenerateBill}
         icon={
           <CardMembershipIcon
             sx={{
