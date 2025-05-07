@@ -21,6 +21,7 @@ const ExpenseRedirectProfitLoss = () => {
   const view = useSelector((state) => state?.view?.mode);
 
   const [filteredData, setFilteredData] = useState(null);
+  console.log("🚀 ~ ExpenseRedirectProfitLoss ~ filteredData:", filteredData)
 
   const { formik: filterFormik, loading: isLoading } = useFilterExpenseForm({
     expenseData: (data) => setFilteredData(data),
@@ -157,13 +158,13 @@ const ExpenseRedirectProfitLoss = () => {
       );
     } else {
       <CustomTable
-        columns={columns}
-        data={filteredData?.content}
-        overFlow={"scroll"}
-        width={"100%"}
-        enablePagination={false}
-        enableRowNumbers
-      />;
+      columns={columns}
+      data={filteredData?.content}
+      overFlow={"scroll"}
+      width={"100%"}
+      enablePagination={false}
+      enableRowNumbers
+    />
     }
   };
 
@@ -194,7 +195,15 @@ const ExpenseRedirectProfitLoss = () => {
           marginTop: ".1rem",
         }}
       >
-        {renderView()}
+        {/* {renderView()} */}
+        <CustomTable
+          columns={columns}
+          data={filteredData?.content}
+          overFlow={"scroll"}
+          width={"100%"}
+          enablePagination={false}
+          enableRowNumbers
+        />
       </Box>
       <CustomPaginationUpdated
         totalPages={filteredData?.totalPages || 1}
