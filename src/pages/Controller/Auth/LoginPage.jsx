@@ -9,6 +9,8 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from "react";
 
 const LoginPage = () => {
+  const VITE_STATUS = import.meta.env.VITE_STATUS || "";
+
   const theme = useTheme();
   const {
     loading,
@@ -18,7 +20,9 @@ const LoginPage = () => {
     handleMouseDownPassword,
   } = useAuthForm();
 
-  const [recapchaVal, setRecapchaVal] = useState(false);
+  const [recapchaVal, setRecapchaVal] = useState(
+    VITE_STATUS === "dev" ? true : false,
+  );
   const handleRecaptcha = (val) => {
     if (val) {
       setRecapchaVal(true);
