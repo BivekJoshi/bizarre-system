@@ -4,17 +4,22 @@ import { jwtDecode } from "jwt-decode";
 import { getUser, removeUser } from "../utils/cookieHelper";
 
 const BASEURL = getBaseUrl();
-export const DOC_URL = getDocUrl();
+
+const VITE_BASE_URL = import.meta.env.VITE_BASE_URL || "";
+const VITE_DOC_URL = import.meta.env.VITE_DOC_URL || "";
+
+export const DOC_URL = VITE_DOC_URL || getDocUrl();
 
 export const axiosInstance = Axios.create({
-  baseURL: BASEURL,
+  baseURL: VITE_BASE_URL || BASEURL,
   timeout: 20000,
 });
 
 axiosInstance.defaults.headers["Access-Control-Allow-Origin"] = "*";
 axiosInstance.defaults.headers["Accept"] = "*";
 axiosInstance.defaults.headers["Access-Control-Allow-Headers"] = "Origin";
-axiosInstance.defaults.headers["Access-Control-Allow-Method"] = "PUT,POST,GET,DELETE";
+axiosInstance.defaults.headers["Access-Control-Allow-Method"] =
+  "PUT,POST,GET,DELETE";
 
 const checkIfExpired = (token) => {
   if (token) {
@@ -65,5 +70,5 @@ axiosInstance.interceptors.request.use(
   },
   (err) => {
     return Promise.reject(err);
-  }
+  },
 );
