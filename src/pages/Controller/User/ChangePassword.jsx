@@ -50,22 +50,6 @@ const ChangePassword = () => {
 
   return (
     <>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Typography
-            variant="h3"
-            sx={{
-              color: theme.palette.text.default,
-              fontWeight: 700,
-              marginBottom: "1rem",
-            }}
-          >
-            Change Password <LockPersonRoundedIcon />
-          </Typography>
-        </Grid>
-      </Grid>
-      <br />
-
       <Grid
         container
         spacing={2}
