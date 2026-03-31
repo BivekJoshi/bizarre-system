@@ -57,7 +57,7 @@ const FilterBookForm = ({ filterFormik, setIsAddModal }) => {
     <div
       style={{
         backgroundColor: theme.palette.background.default,
-        padding: "1rem",
+        padding: "9px",
       }}
     >
       <Box
