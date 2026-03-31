@@ -52,10 +52,10 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
   const imageFinal = loggedInUserData?.data?.profilePictureUrl
     ? DOC_URL + loggedInUserData?.data?.profilePictureUrl
     : loggedInUserData?.data?.gender === "MALE"
-    ? maleProfile
-    : loggedInUserData?.data?.gender === "FEMALE"
-    ? femaleProfile
-    : null;
+      ? maleProfile
+      : loggedInUserData?.data?.gender === "FEMALE"
+        ? femaleProfile
+        : null;
 
   useEffect(() => {
     if (loggedInUserData?.data?.id && loggedInUserData?.data?.userType) {
@@ -63,7 +63,7 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
         setUserId({
           userId: loggedInUserData?.data?.id,
           userType: loggedInUserData?.data?.userType,
-        })
+        }),
       );
     }
   }, [loggedInUserData, dispatch]);
@@ -95,8 +95,6 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
   return (
     <Box
       sx={{
-        background: theme.palette.background.default,
-        boxShadow: `0 2px 2px rgba(0, 0, 0, 0.1)`,
         zIndex: 900,
       }}
     >
@@ -122,13 +120,6 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
           </IconButton>
         )}
 
-        <div style={{ width: "100px", height: "60px" }}>
-          <img
-            src={BizarreBrosLogo}
-            alt="Bizarre Bros Logo"
-            style={{ width: "100%", height: "100%" }}
-          />
-        </div>
 
         {!isXsScreen && (
           <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
@@ -163,7 +154,7 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
             </Tooltip> */}
 
             {/* <NotificationMenu /> */}
-            
+
             <Tooltip title="Setting">
               <IconButton onClick={handleSetting}>
                 <SettingsIcon />

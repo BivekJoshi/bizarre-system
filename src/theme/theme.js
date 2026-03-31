@@ -135,6 +135,16 @@ export const themeSettings = (mode) => {
           root: {
             textTransform: "none",
             fontWeight: 700,
+            borderRadius: "12px",
+            // paddingTop:"1rem",
+            // paddingBottom:"1rem",
+          },
+        },
+      },
+      MuiOutlinedInput: {
+        styleOverrides: {
+          root: {
+            borderRadius: "12px",
           },
         },
       },

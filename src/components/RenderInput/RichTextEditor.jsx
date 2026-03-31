@@ -23,7 +23,7 @@ const RichTextEditor = ({ element, formik }) => {
   return (
     <div>
       <Typography
-        variant="h5"
+        variant="h6"
         sx={{
           color: theme.palette.text.default,
           fontWeight: 700,

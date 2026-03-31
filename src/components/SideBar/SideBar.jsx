@@ -1,6 +1,13 @@
 import React from "react";
-import { Box, Tab, useTheme, Collapse } from "@mui/material";
-import { TabContext, TabList, TabPanel } from "@mui/lab";
+import {
+  Box,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Collapse,
+  alpha,
+} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { useNavigate } from "react-router-dom";
@@ -16,50 +23,12 @@ import {
 import { getUserType } from "../../utils/cookieHelper";
 
 const SideBar = ({ handleCloseDrawer }) => {
-  const theme = useTheme();
-  const [mainTab, setMainTab] = React.useState("dashboard");
-  const [subTab, setSubTab] = React.useState("");
-  const [openSubTabs, setOpenSubTabs] = React.useState("");
   const navigate = useNavigate();
   const user = getUserType();
 
-  const handleMainTabChange = (event, newValue) => {
-    setMainTab(newValue);
-    setSubTab("");
-    setOpenSubTabs((prev) => (prev === newValue ? "" : newValue));
-    navigate(newValue);
-    window.scrollTo(0, 0);
-    // handleCloseDrawer();
-  };
-
-  const handleSubTabChange = (event, newValue) => {
-    setSubTab(newValue);
-    navigate(newValue);
-    window.scrollTo(0, 0);
-    handleCloseDrawer();
-  };
-
-  const labelStyle = {
-    textTransform: "none",
-    justifyContent: "flex-start",
-    minHeight: "50px",
-    fontSize: "15px",
-    fontWeight: 700,
-    display: "flex",
-    alignItems: "center",
-    width: "100%",
-    "&:hover": {
-      color: theme.palette.primary.main,
-      borderLeft: `6px solid ${theme.palette.primary.main}`,
-    },
-  };
-
-  const activeLabelStyle = {
-    ...labelStyle,
-    backgroundColor: theme.palette.background.alt,
-    color: theme.palette.primary.main,
-    borderLeft: `6px solid ${theme.palette.primary.main}`,
-  };
+  const [mainTab, setMainTab] = React.useState("dashboard");
+  const [subTab, setSubTab] = React.useState("");
+  const [openSubTabs, setOpenSubTabs] = React.useState("");
 
   const roleTabsMap = {
     ADMIN: adminTab,
@@ -73,74 +42,128 @@ const SideBar = ({ handleCloseDrawer }) => {
 
   const userTabs = roleTabsMap[user] || [];
 
-  const selectedTab = userTabs.find((tab) => tab.value === mainTab);
-  const subTabs = selectedTab?.subTabs || [];
+  const handleMainTabChange = (newValue) => {
+    setMainTab(newValue);
+    setSubTab("");
+    setOpenSubTabs((prev) => (prev === newValue ? "" : newValue));
+    navigate(newValue);
+    window.scrollTo(0, 0);
+  };
+
+  const handleSubTabChange = (newValue) => {
+    setSubTab(newValue);
+    navigate(newValue);
+    window.scrollTo(0, 0);
+    handleCloseDrawer();
+  };
+
+  const itemStyle = {
+    mx: 1.2,
+    mb: 0.8,
+    borderRadius: "10px",
+    transition: "all 0.2s ease-in-out",
+    color: "rgba(255, 255, 255, 0.65)", // Muted text for inactive
+    "& .MuiListItemIcon-root": {
+      minWidth: "38px",
+      color: "inherit",
+      fontSize: "20px",
+    },
+    "&:hover": {
+      backgroundColor: "rgba(255, 255, 255, 0.05)",
+      color: "#fff",
+    },
+    "&.Mui-selected": {
+      backgroundColor: "rgba(0, 194, 203, 0.12)", // Subdued teal tint
+      color: "#4fd1d9", // Softer teal for the text
+      "& .MuiTypography-root": {
+        fontWeight: 600,
+        color: "#4fd1d9",
+      },
+      "& .MuiListItemIcon-root": {
+        color: "#4fd1d9",
+      },
+      "&:hover": {
+        backgroundColor: "rgba(0, 194, 203, 0.18)",
+      },
+      // Subtle vertical indicator
+      "&::before": {
+        content: '""',
+        position: "absolute",
+        left: -6,
+        height: "20px",
+        width: "3px",
+        borderRadius: "0 4px 4px 0",
+        backgroundColor: "#00c2cb",
+        boxShadow: "0 0 10px rgba(0, 194, 203, 0.5)", // Soft glow
+      },
+    },
+  };
+
+  const subItemStyle = {
+    ...itemStyle,
+    ml: 4.5,
+    mr: 1.2,
+    py: 0.5,
+    "& .MuiTypography-root": { fontSize: "0.85rem" },
+    "&.Mui-selected::before": { left: -36 },
+  };
 
   return (
-    <Box>
-      <TabContext value={mainTab}>
-        <TabPanel value={mainTab} sx={{ padding: "0" }}>
-          <TabList
-            onChange={handleMainTabChange}
-            orientation="vertical"
-            indicatorColor="none"
-          >
-            {userTabs?.map((tab) => (
-              <React.Fragment key={tab?.value}>
-                <Tab
-                  label={
-                    <Box display="flex" alignItems="center" width="100%">
-                      {tab?.label}
-                      {tab?.subTabs?.length > 0 && (
-                        <Box ml="auto">
-                          {openSubTabs === tab.value ? (
-                            <ExpandLessIcon />
-                          ) : (
-                            <ExpandMoreIcon />
-                          )}
-                        </Box>
-                      )}
-                    </Box>
-                  }
-                  icon={tab?.icon}
-                  value={tab?.value}
-                  sx={mainTab === tab.value ? activeLabelStyle : labelStyle}
-                  iconPosition="start"
-                  onClick={() => handleMainTabChange(null, tab.value)}
+    <Box sx={{ width: "100%", pt: 1 }}>
+      <List disablePadding>
+        {userTabs?.map((tab) => {
+          const isMainSelected = mainTab === tab.value;
+          const hasSubTabs = tab?.subTabs?.length > 0;
+          const isExpanded = openSubTabs === tab.value;
+
+          return (
+            <React.Fragment key={tab.value}>
+              <ListItemButton
+                selected={isMainSelected}
+                onClick={() => handleMainTabChange(tab.value)}
+                sx={itemStyle}
+              >
+                {tab.icon && <ListItemIcon>{tab.icon}</ListItemIcon>}
+                <ListItemText
+                  primary={tab.label}
+                  primaryTypographyProps={{
+                    fontSize: "0.9rem",
+                    fontWeight: isMainSelected ? 600 : 400,
+                  }}
                 />
-                {tab?.subTabs?.length > 0 && (
-                  <Collapse in={openSubTabs === tab.value}>
-                    <TabContext value={subTab}>
-                      <TabPanel value={subTab} sx={{ padding: "0" }}>
-                        <TabList
-                          onChange={handleSubTabChange}
-                          orientation="vertical"
-                          indicatorColor="none"
-                        >
-                          {tab?.subTabs?.map((subTab) => (
-                            <Tab
-                              key={subTab?.value}
-                              label={subTab?.label}
-                              icon={subTab?.icon}
-                              value={subTab?.value}
-                              sx={
-                                subTab === subTab?.value
-                                  ? activeLabelStyle
-                                  : { ...labelStyle, ml: 2, fontSize: "14px" }
-                              }
-                              iconPosition="start"
-                            />
-                          ))}
-                        </TabList>
-                      </TabPanel>
-                    </TabContext>
-                  </Collapse>
-                )}
-              </React.Fragment>
-            ))}
-          </TabList>
-        </TabPanel>
-      </TabContext>
+                {hasSubTabs &&
+                  (isExpanded ? (
+                    <ExpandLessIcon sx={{ fontSize: "1.1rem", opacity: 0.7 }} />
+                  ) : (
+                    <ExpandMoreIcon sx={{ fontSize: "1.1rem", opacity: 0.7 }} />
+                  ))}
+              </ListItemButton>
+
+              {hasSubTabs && (
+                <Collapse in={isExpanded} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    {tab.subTabs.map((sub) => (
+                      <ListItemButton
+                        key={sub.value}
+                        selected={subTab === sub.value}
+                        onClick={() => handleSubTabChange(sub.value)}
+                        sx={subItemStyle}
+                      >
+                        {sub.icon && (
+                          <ListItemIcon sx={{ minWidth: "28px !important" }}>
+                            {sub.icon}
+                          </ListItemIcon>
+                        )}
+                        <ListItemText primary={sub.label} />
+                      </ListItemButton>
+                    ))}
+                  </List>
+                </Collapse>
+              )}
+            </React.Fragment>
+          );
+        })}
+      </List>
     </Box>
   );
 };

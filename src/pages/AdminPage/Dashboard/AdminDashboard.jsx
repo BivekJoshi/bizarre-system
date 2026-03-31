@@ -33,7 +33,7 @@ const AdminDashboard = () => {
   const salesData = reportData?.salesOverview || [];
 
   return (
-    <Box p={3}>
+    <Box >
       <Typography
         variant="h3"
         sx={{
