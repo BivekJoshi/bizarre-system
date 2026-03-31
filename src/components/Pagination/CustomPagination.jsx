@@ -43,7 +43,6 @@ export const CustomPagination = ({
       flexWrap="wrap"
       justifyContent={isMobile ? "center" : "space-between"}
       alignItems="center"
-      mt={3}
       sx={{
         backgroundColor: theme.palette.background.default,
         padding: "1rem",

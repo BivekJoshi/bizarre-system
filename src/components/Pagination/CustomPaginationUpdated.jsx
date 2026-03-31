@@ -36,12 +36,11 @@ export const CustomPaginationUpdated = ({
 
   const normalizedCurrentPage = Math.min(
     Math.max(currentPage, 1),
-    totalPages || 1
+    totalPages || 1,
   );
 
   return (
     <Box
-      mt={3}
       sx={{
         backgroundColor: backgroundColor
           ? backgroundColor

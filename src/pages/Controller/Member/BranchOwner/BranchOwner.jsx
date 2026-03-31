@@ -26,7 +26,6 @@ import { useBranchOwnerMemberForm } from "../../../../hooks/member/Member/Branch
 import BranchOwnerCardView from "./BranchOwnerCardView";
 import { useSelector } from "react-redux";
 import { DOC_URL } from "../../../../api/axiosInterceptor";
-import PermissionButton from "../../../../components/Button/PermissionButton";
 import MemberDocumentForm from "../MemberDocumentForm";
 import NoDataFound from "../../../PageNotFound/NoDataFound";
 import { useBranchOwnerFilterForm } from "../../../../hooks/member/MemberFilter/useBranchOwnerFilterForm";
@@ -392,12 +391,11 @@ const BranchOwner = () => {
   };
 
   return (
-    <>
+    <Box sx={{ display: "flex", flexDirection: "column" }} gap={1}>
       <FilterBranchOwnerForm
         filterFormik={filterFormik}
         setIsAddModal={setIsAddModal}
       />
-      <br />
       <Box
         sx={{
           backgroundColor: theme.palette.background.default,
@@ -470,7 +468,7 @@ const BranchOwner = () => {
         }
         showButton={false}
       />
-    </>
+    </Box>
   );
 };
 

@@ -111,7 +111,7 @@ const CustomerTable = () => {
         },
       },
     ],
-    []
+    [],
   );
 
   const renderView = () => {
@@ -164,57 +164,16 @@ const CustomerTable = () => {
   };
 
   return (
-    <>
-      {/* <NewFilter
-        inputField={filterMenuItem}
-        searchCallBack={handleSearch}
-        validate={adminUsersViewSchema}
-        showfilter={false}
-        submitButtonText="Search"
-        extraFilter={true}
-        handleSearch={handleSearch}
-      /> */}
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Typography
-          variant="h3"
-          sx={{
-            color: theme.palette.text.default,
-            fontWeight: 700,
-          }}
-        >
-          Customer Table
-        </Typography>
-        <Button
-          variant="outlined"
-          onClick={() => setIsAddModalOpen(true)}
-          startIcon={<ControlPointRoundedIcon />}
-        >
-          Add Customer Table
-        </Button>
-      </Box>
-
-      <br />
-      <FilterCustomerTableForm filterFormik={filterFormik} />
-      <br />
-
-      {/* <Filter
-        inputField={[]}
-        showfilter={false}
-        submitButtonText="Search"
-        extraFilter={true}
-      /> */}
+    <Box sx={{ display: "flex", flexDirection: "column" }} gap={1}>
+      <FilterCustomerTableForm
+        filterFormik={filterFormik}
+        setIsAddModalOpen={setIsAddModalOpen}
+      />
 
       <Box
         sx={{
           backgroundColor: theme.palette.background.default,
           padding: "1rem",
-          marginTop: "1rem",
         }}
       >
         {renderView()}
@@ -253,7 +212,7 @@ const CustomerTable = () => {
         formComponent={<CustomerTableForm formik={formik} />}
         showButton={true}
       />
-    </>
+    </Box>
   );
 };
 

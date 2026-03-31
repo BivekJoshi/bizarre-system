@@ -200,7 +200,7 @@ const Inventory = () => {
         },
       },
     ],
-    []
+    [],
   );
 
   const deleteRow = (row) => {
@@ -254,41 +254,16 @@ const Inventory = () => {
   };
 
   return (
-    <>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Typography
-          variant="h3"
-          sx={{
-            color: theme.palette.text.default,
-            fontWeight: 700,
-          }}
-        >
-          Inventory
-        </Typography>
-        <Button
-          variant="outlined"
-          onClick={() => setIsAddModal(true)}
-          startIcon={<ControlPointRoundedIcon />}
-        >
-          Add Inventory
-        </Button>
-      </Box>
-
-      <br />
-      <FilterInventory filterFormik={filterFormik} />
-      <br />
+    <Box sx={{ display: "flex", flexDirection: "column" }} gap={1}>
+      <FilterInventory
+        filterFormik={filterFormik}
+        setIsAddModal={setIsAddModal}
+      />
 
       <Box
         sx={{
           backgroundColor: theme.palette.background.default,
           padding: "1rem",
-          marginTop: ".1rem",
         }}
       >
         {renderView()}
@@ -336,7 +311,7 @@ const Inventory = () => {
           />
         }
       />
-    </>
+    </Box>
   );
 };
 

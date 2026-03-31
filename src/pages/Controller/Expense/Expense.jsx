@@ -71,7 +71,7 @@ const Expense = () => {
   const { mutate: verifyExpense } = useGetExpenseVerifyById(
     rowData,
     setIsVerifyModalOpen,
-    filterFormik
+    filterFormik,
   );
 
   const editRow = (row) => {
@@ -198,7 +198,7 @@ const Expense = () => {
         },
       },
     ],
-    []
+    [],
   );
 
   const renderView = () => {
@@ -257,35 +257,11 @@ const Expense = () => {
   };
 
   return (
-    <>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Typography
-          variant="h3"
-          sx={{
-            color: theme.palette.text.default,
-            fontWeight: 700,
-          }}
-        >
-          Expense
-        </Typography>
-        <Button
-          variant="outlined"
-          onClick={() => setIsAddModal(true)}
-          startIcon={<ControlPointRoundedIcon />}
-        >
-          Add Expense
-        </Button>
-      </Box>
-
-      <br />
-      <FilterExpenseForm filterFormik={filterFormik} />
-      <br />
+    <Box sx={{ display: "flex", flexDirection: "column" }} gap={1}>
+      <FilterExpenseForm
+        filterFormik={filterFormik}
+        setIsAddModal={setIsAddModal}
+      />
 
       <Box
         sx={{
@@ -381,7 +357,7 @@ const Expense = () => {
         }
         handleSave={confimVerify}
       />
-    </>
+    </Box>
   );
 };
 

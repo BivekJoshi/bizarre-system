@@ -5,8 +5,9 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
 import SearchIcon from "@mui/icons-material/Search";
 import RenderInput from "../../../../../components/RenderInput/RenderInput";
+import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 
-const FilterExpenseForm = ({ filterFormik }) => {
+const FilterExpenseForm = ({ filterFormik, setIsAddModal }) => {
   const theme = useTheme();
   const [showFields, setShowFields] = useState(false);
 
@@ -17,7 +18,7 @@ const FilterExpenseForm = ({ filterFormik }) => {
       value: (2020 + index).toString(),
       label: (2020 + index).toString(),
       id: nanoid(),
-    })
+    }),
   );
 
   const inputField = [
@@ -114,7 +115,7 @@ const FilterExpenseForm = ({ filterFormik }) => {
     <div
       style={{
         backgroundColor: theme.palette.background.default,
-        padding: "1rem",
+        padding: "9px",
       }}
     >
       <Box
@@ -132,11 +133,27 @@ const FilterExpenseForm = ({ filterFormik }) => {
         >
           Filter
         </Typography>
-        <IconButton onClick={() => setShowFields((prev) => !prev)}>
-          {showFields ? <FilterListOffIcon /> : <FilterListIcon />}
-        </IconButton>
+        <Box sx={{ display: "flex" }} gap={1}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "end",
+              alignItems: "center",
+            }}
+          >
+            <Button
+              variant="outlined"
+              onClick={() => setIsAddModal(true)}
+              startIcon={<ControlPointRoundedIcon />}
+            >
+              Add Expense
+            </Button>
+          </Box>
+          <IconButton onClick={() => setShowFields((prev) => !prev)}>
+            {showFields ? <FilterListOffIcon /> : <FilterListIcon />}
+          </IconButton>
+        </Box>
       </Box>
-      <br />
       {showFields && (
         <>
           <RenderInput inputField={inputField} formik={filterFormik} />

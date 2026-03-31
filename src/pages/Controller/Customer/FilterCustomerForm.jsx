@@ -5,8 +5,13 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
 import SearchIcon from "@mui/icons-material/Search";
 import RenderInput from "../../../components/RenderInput/RenderInput";
+import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 
-const FilterCustomerForm = ({ filterFormik }) => {
+const FilterCustomerForm = ({
+  filterFormik,
+  setIsAddModal,
+  setIsCustomerOnBoardModalOpen,
+}) => {
   const theme = useTheme();
   const [showFields, setShowFields] = useState(false);
 
@@ -82,7 +87,7 @@ const FilterCustomerForm = ({ filterFormik }) => {
     <div
       style={{
         backgroundColor: theme.palette.background.default,
-        padding: "1rem",
+        padding: "9px",
       }}
     >
       <Box
@@ -100,11 +105,34 @@ const FilterCustomerForm = ({ filterFormik }) => {
         >
           Filter
         </Typography>
-        <IconButton onClick={() => setShowFields((prev) => !prev)}>
-          {showFields ? <FilterListOffIcon /> : <FilterListIcon />}
-        </IconButton>
+        <Box sx={{ display: "flex" }} gap={1}>
+          <Button
+            variant="outlined"
+            onClick={() => setIsAddModal(true)}
+            startIcon={<ControlPointRoundedIcon />}
+          >
+            Add Customer
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => setIsCustomerOnBoardModalOpen(true)}
+            startIcon={<ControlPointRoundedIcon />}
+          >
+            Customer Onboard
+          </Button>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "end",
+              alignItems: "center",
+            }}
+          >
+            <IconButton onClick={() => setShowFields((prev) => !prev)}>
+              {showFields ? <FilterListOffIcon /> : <FilterListIcon />}
+            </IconButton>
+          </Box>
+        </Box>
       </Box>
-      <br />
       {showFields && (
         <>
           <RenderInput inputField={inputField} formik={filterFormik} />

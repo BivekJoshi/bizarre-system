@@ -1,13 +1,11 @@
 import { useFormik } from "formik";
 
 import { useForgotPassword } from "../useUser";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const useForgotPasswordForm = () => {
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { mutate } = useForgotPassword({});
+  const { mutate, isLoading } = useForgotPassword({});
 
   const formik = useFormik({
     initialValues: {
@@ -23,7 +21,6 @@ export const useForgotPasswordForm = () => {
   });
 
   const handledAddRequest = (values) => {
-    setLoading(true);
     values = { ...values };
     mutate(values, {
       onSuccess: () => {
@@ -35,6 +32,6 @@ export const useForgotPasswordForm = () => {
 
   return {
     formik,
-    loading,
+    loading: isLoading,
   };
 };

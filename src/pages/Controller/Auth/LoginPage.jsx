@@ -202,7 +202,6 @@ const LoginPage = () => {
                 sx={{
                   display: "flex",
                   justifyContent: "center",
-                  py: 1,
                   overflow: "hidden",
                   transform: { xs: "scale(0.85)", sm: "scale(1)" },
                 }}

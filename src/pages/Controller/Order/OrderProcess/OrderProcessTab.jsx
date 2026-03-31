@@ -61,33 +61,12 @@ const OrderProcessTab = () => {
   }, [refetch]);
 
   return (
-    <>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexDirection: isMobile ? "column" : "row",
-        }}
-      >
-        <Typography
-          variant={isMobile ? "h5" : "h3"}
-          sx={{
-            color: theme.palette.text.default,
-            fontWeight: 700,
-            textAlign: isMobile ? "center" : "left",
-          }}
-        >
-          Order
-        </Typography>
-      </Box>
-      <br />
+    <Box sx={{ display: "flex", flexDirection: "column" }} gap={1}>
       <TabContext value={status}>
         <Box
           sx={{
             backgroundColor: theme.palette.background.default,
-            padding: isMobile ? "0" : "1rem",
-            marginTop: ".1rem",
+            padding: "9px",
           }}
         >
           <TabList
@@ -141,7 +120,7 @@ const OrderProcessTab = () => {
             <TabPanel
               key={value}
               value={value}
-              sx={{ padding: "0", marginTop: ".4rem" }}
+              sx={{ padding: "0"}}
             >
               <OrderProcess orderData={orderData} refetch={refetch} />
             </TabPanel>
@@ -157,7 +136,7 @@ const OrderProcessTab = () => {
         onRowsPerPageChange={setPageSize}
         totalElements={orderData?.totalElements || 0}
       />
-    </>
+    </Box>
   );
 };
 

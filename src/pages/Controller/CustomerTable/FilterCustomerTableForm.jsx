@@ -5,8 +5,9 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
 import SearchIcon from "@mui/icons-material/Search";
 import RenderInput from "../../../components/RenderInput/RenderInput";
+import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 
-const FilterCustomerTableForm = ({ filterFormik }) => {
+const FilterCustomerTableForm = ({ filterFormik, setIsAddModalOpen }) => {
   const theme = useTheme();
   const [showFields, setShowFields] = useState(false);
 
@@ -48,7 +49,7 @@ const FilterCustomerTableForm = ({ filterFormik }) => {
     <div
       style={{
         backgroundColor: theme.palette.background.default,
-        padding: "1rem",
+        padding: "9px",
       }}
     >
       <Box
@@ -66,11 +67,27 @@ const FilterCustomerTableForm = ({ filterFormik }) => {
         >
           Filter
         </Typography>
-        <IconButton onClick={() => setShowFields((prev) => !prev)}>
-          {showFields ? <FilterListOffIcon /> : <FilterListIcon />}
-        </IconButton>
+        <Box sx={{ display: "flex" }} gap={1}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "end",
+              alignItems: "center",
+            }}
+          >
+            <Button
+              variant="outlined"
+              onClick={() => setIsAddModalOpen(true)}
+              startIcon={<ControlPointRoundedIcon />}
+            >
+              Add Customer Table
+            </Button>
+            <IconButton onClick={() => setShowFields((prev) => !prev)}>
+              {showFields ? <FilterListOffIcon /> : <FilterListIcon />}
+            </IconButton>
+          </Box>
+        </Box>
       </Box>
-      <br />
       {showFields && (
         <>
           <RenderInput inputField={inputField} formik={filterFormik} />
