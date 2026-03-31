@@ -5,8 +5,9 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
 import SearchIcon from "@mui/icons-material/Search";
 import RenderInput from "../../../components/RenderInput/RenderInput";
+import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 
-const FilterBookForm = ({ filterFormik }) => {
+const FilterBookForm = ({ filterFormik, setIsAddModal }) => {
   const theme = useTheme();
   const [showFields, setShowFields] = useState(false);
 
@@ -74,11 +75,27 @@ const FilterBookForm = ({ filterFormik }) => {
         >
           Filter
         </Typography>
-        <IconButton onClick={() => setShowFields((prev) => !prev)}>
-          {showFields ? <FilterListOffIcon /> : <FilterListIcon />}
-        </IconButton>
+        <Box sx={{ display: "flex" }} gap={1}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "end",
+              alignItems: "center",
+            }}
+          >
+            <Button
+              variant="outlined"
+              onClick={() => setIsAddModal(true)}
+              startIcon={<ControlPointRoundedIcon />}
+            >
+              Add Book
+            </Button>
+          </Box>
+          <IconButton onClick={() => setShowFields((prev) => !prev)}>
+            {showFields ? <FilterListOffIcon /> : <FilterListIcon />}
+          </IconButton>
+        </Box>
       </Box>
-      <br />
       {showFields && (
         <>
           <RenderInput inputField={inputField} formik={filterFormik} />

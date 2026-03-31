@@ -103,7 +103,7 @@ const Book = () => {
         sortable: false,
       },
     ],
-    []
+    [],
   );
 
   const renderView = () => {
@@ -154,35 +154,11 @@ const Book = () => {
   };
 
   return (
-    <>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Typography
-          variant="h3"
-          sx={{
-            color: theme.palette.text.default,
-            fontWeight: 700,
-          }}
-        >
-          Book
-        </Typography>
-        <Button
-          variant="outlined"
-          onClick={() => setIsAddModal(true)}
-          startIcon={<ControlPointRoundedIcon />}
-        >
-          Add Book
-        </Button>
-      </Box>
-
-      <br />
-      <FilterBookForm filterFormik={filterFormik} />
-      <br />
+    <Box sx={{ display: "flex", flexDirection: "column" }} gap={1}>
+      <FilterBookForm
+        filterFormik={filterFormik}
+        setIsAddModal={setIsAddModal}
+      />
 
       <Box
         sx={{
@@ -255,7 +231,7 @@ const Book = () => {
           />
         }
       />
-    </>
+    </Box>
   );
 };
 

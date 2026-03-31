@@ -17,8 +17,6 @@ import {
 import { nanoid } from "nanoid";
 import maleProfile from "../../../../assets/MaleProfile.png";
 import femaleProfile from "../../../../assets/FemaleProfile.png";
-import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import FormModal from "../../../../components/Modal/FormModal";
 import CustomTable from "../../../../components/CustomTable/CustomTable";
 import BranchOwnerForm from "./BranchOwnerForm";
@@ -400,7 +398,6 @@ const BranchOwner = () => {
         sx={{
           backgroundColor: theme.palette.background.default,
           padding: "1rem",
-          marginTop: ".1rem",
         }}
       >
         {renderView()}

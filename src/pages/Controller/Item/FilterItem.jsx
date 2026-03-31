@@ -5,19 +5,25 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
 import SearchIcon from "@mui/icons-material/Search";
 import RenderInput from "../../../components/RenderInput/RenderInput";
+import PublishIcon from "@mui/icons-material/Publish";
+import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 
-const FilterItem = ({ filterFormik }) => {
+const FilterItem = ({
+  filterFormik,
+  setIsImportCsvModalOpen,
+  setIsAddModal,
+}) => {
   const theme = useTheme();
   const [showFields, setShowFields] = useState(false);
 
   const inputField = [
     {
       id: nanoid(),
-      name: "value", 
+      name: "value",
       label: "Item Name",
-      placeholder:"Search by item name",
+      placeholder: "Search by item name",
       type: "textfilterField",
-      extraField: "name", 
+      extraField: "name",
       required: true,
       xs: 12,
       md: 3,
@@ -48,10 +54,15 @@ const FilterItem = ({ filterFormik }) => {
     <div
       style={{
         backgroundColor: theme.palette.background.default,
-        padding: "1rem",
+        padding: "9px",
       }}
     >
-      <Box display="flex" flexWrap="wrap" justifyContent="space-between" alignItems="center">
+      <Box
+        display="flex"
+        flexWrap="wrap"
+        justifyContent="space-between"
+        alignItems="center"
+      >
         <Typography
           variant="h5"
           sx={{
@@ -61,11 +72,35 @@ const FilterItem = ({ filterFormik }) => {
         >
           Filter
         </Typography>
-        <IconButton onClick={() => setShowFields((prev) => !prev)}>
-          {showFields ? <FilterListOffIcon /> : <FilterListIcon />}
-        </IconButton>
+        <Box sx={{ display: "flex" }} gap={1}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "end",
+              alignItems: "center",
+            }}
+            gap={1}
+          >
+            <Button
+              variant="contained"
+              onClick={() => setIsImportCsvModalOpen(true)}
+              startIcon={<PublishIcon />}
+            >
+              Import CSV
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={() => setIsAddModal(true)}
+              startIcon={<ControlPointRoundedIcon />}
+            >
+              Add Item
+            </Button>
+          </Box>
+          <IconButton onClick={() => setShowFields((prev) => !prev)}>
+            {showFields ? <FilterListOffIcon /> : <FilterListIcon />}
+          </IconButton>
+        </Box>
       </Box>
-      <br />
       {showFields && (
         <>
           <RenderInput inputField={inputField} formik={filterFormik} />

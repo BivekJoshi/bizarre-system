@@ -17,7 +17,10 @@ import CustomTable from "../../../components/CustomTable/CustomTable";
 import { nanoid } from "nanoid";
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 import AddItem from "./AddItem";
-import { useItemEditForm, useItemForm } from "../../../hooks/item/Item/useItemForm";
+import {
+  useItemEditForm,
+  useItemForm,
+} from "../../../hooks/item/Item/useItemForm";
 import { useSelector } from "react-redux";
 import ItemCardView from "./ItemCardView";
 import EditItem from "./EditItem";
@@ -60,7 +63,7 @@ const Item = () => {
   const { formik: filterFormik, loading: isLoading } = useFilterItemForm({
     itemData: (data) => setFilteredData(data),
     successFlag,
-    editSuccessFlag
+    editSuccessFlag,
   });
 
   const handleModalClose = () => {
@@ -96,7 +99,7 @@ const Item = () => {
           const { formik: changeStatusFormik } = useChangeItemStatusForm({
             itemId,
             status,
-            filterFormik
+            filterFormik,
           });
 
           const handleOpenMenu = (event) => {
@@ -124,8 +127,8 @@ const Item = () => {
                     row?.original?.status === "ACTIVE"
                       ? "primary"
                       : row?.original?.status === "INACTIVE"
-                      ? "warning"
-                      : "error"
+                        ? "warning"
+                        : "error"
                   }
                 />
               </Tooltip>
@@ -247,7 +250,7 @@ const Item = () => {
         sortable: false,
       },
     ],
-    []
+    [],
   );
 
   const renderView = () => {
@@ -302,44 +305,12 @@ const Item = () => {
   };
 
   return (
-    <>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Typography
-          variant="h3"
-          sx={{
-            color: theme.palette.text.default,
-            fontWeight: 700,
-          }}
-        >
-          Item
-        </Typography>
-        <div style={{ display: "flex", gap: "1rem" }}>
-          <Button
-            variant="contained"
-            onClick={() => setIsImportCsvModalOpen(true)}
-            startIcon={<PublishIcon />}
-          >
-            Import CSV
-          </Button>
-          <Button
-            variant="outlined"
-            onClick={() => setIsAddModal(true)}
-            startIcon={<ControlPointRoundedIcon />}
-          >
-            Add Item
-          </Button>
-        </div>
-      </Box>
-
-      <br />
-      <FilterItem filterFormik={filterFormik} />
-      <br />
+    <Box sx={{ display: "flex", flexDirection: "column" }} gap={1}>
+      <FilterItem
+        filterFormik={filterFormik}
+        setIsImportCsvModalOpen={setIsImportCsvModalOpen}
+        setIsAddModal={setIsAddModal}
+      />
       <Box
         sx={{
           backgroundColor: theme.palette.background.default,
@@ -425,7 +396,7 @@ const Item = () => {
           showButton={false}
         />
       )}
-    </>
+    </Box>
   );
 };
 
