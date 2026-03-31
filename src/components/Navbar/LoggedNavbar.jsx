@@ -8,12 +8,15 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
+  InputBase,
+  alpha,
 } from "@mui/material";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import NepaliDate from "nepali-date";
 import SettingsIcon from "@mui/icons-material/Settings";
+import SearchIcon from "@mui/icons-material/Search";
 import Setting from "./Setting";
 import maleProfile from "../../assets/MaleProfile.png";
 import femaleProfile from "../../assets/FemaleProfile.png";
@@ -23,7 +26,6 @@ import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserId } from "../../redux/Slice/userIdSlice";
 import { DOC_URL } from "../../api/axiosInterceptor";
-import NotificationMenu from "../Menu/NotificationMenu";
 import BreadCrumpCustom from "./BreadCrumpCustom";
 
 const LoggedNavbar = ({ handleOpenDrawer }) => {
@@ -31,6 +33,7 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
   const dispatch = useDispatch();
 
   const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
   const cart = useSelector((state) => state.cart.cart);
 
   const isXsScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -43,10 +46,6 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
   const formattedNepaliDate = currentNepaliDate.format("YYYY-MM-DD");
 
   const handleSetting = () => setOpenSettingDrawer(true);
-
-  const handleCartClick = () => {
-    navigate("cart");
-  };
 
   const { data: loggedInUserData } = useGetUserData();
 
@@ -97,6 +96,8 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
     <Box
       sx={{
         zIndex: 900,
+        px: 2,
+        py: 1,
       }}
     >
       <Box
@@ -104,23 +105,25 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          height: "50px",
+          height: "60px",
         }}
       >
-        {isXsScreen && (
-          <IconButton
-            size="large"
-            aria-label="menu"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            onClick={handleOpenDrawer}
-            color="inherit"
-          >
-            <MenuIcon />
-          </IconButton>
-        )}
-
-        <BreadCrumpCustom />
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          {isXsScreen && (
+            <IconButton
+              size="large"
+              onClick={handleOpenDrawer}
+              color="inherit"
+              sx={{
+                bgcolor: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)",
+                borderRadius: "12px",
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
+          <BreadCrumpCustom />
+        </Box>
 
         {!isXsScreen && (
           <Box
@@ -128,24 +131,17 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
               display: "flex",
               alignItems: "center",
               gap: 3,
+              bgcolor: isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)",
+              px: 3,
+              py: 0.8,
+              borderRadius: "20px",
+              border: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.03)"}`,
             }}
           >
             {/* Global */}
             <Tooltip title="Global Date">
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                  cursor: "default",
-                  transition: "0.2s",
-                  "&:hover": {
-                    opacity: 0.8,
-                  },
-                }}
-              >
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <Typography fontSize="18px">🌎</Typography>
-
                 <Box>
                   <Typography
                     variant="caption"
@@ -154,44 +150,19 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
                   >
                     Global
                   </Typography>
-
-                  <Typography
-                    variant="body2"
-                    fontWeight={600}
-                    sx={{ letterSpacing: "0.3px" }}
-                  >
+                  <Typography variant="body2" fontWeight={600}>
                     {formattedDateTime}
                   </Typography>
                 </Box>
               </Box>
             </Tooltip>
 
-            {/* Divider line */}
-            <Box
-              sx={{
-                width: "1px",
-                height: "28px",
-                backgroundColor: "divider",
-                opacity: 0.5,
-              }}
-            />
+            <Box sx={{ width: "1px", height: "24px", bgcolor: "divider", opacity: 0.5 }} />
 
             {/* Nepal */}
             <Tooltip title="Nepal Date">
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                  cursor: "default",
-                  transition: "0.2s",
-                  "&:hover": {
-                    opacity: 0.8,
-                  },
-                }}
-              >
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <Typography fontSize="18px">🇳🇵</Typography>
-
                 <Box>
                   <Typography
                     variant="caption"
@@ -200,12 +171,7 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
                   >
                     Nepal
                   </Typography>
-
-                  <Typography
-                    variant="body2"
-                    fontWeight={600}
-                    sx={{ letterSpacing: "0.3px" }}
-                  >
+                  <Typography variant="body2" fontWeight={600}>
                     {formattedNepaliDate}
                   </Typography>
                 </Box>
@@ -214,35 +180,56 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
           </Box>
         )}
 
-        {!isXsScreen && (
-          <Box sx={{ display: "flex", gap: "1rem" }}>
-            {/* <Tooltip title="Cart">
-              <IconButton onClick={handleCartClick}>
-                <Badge badgeContent={cart.length} color="primary">
-                  <ShoppingCartRoundedIcon />
-                </Badge>
-              </IconButton>
-            </Tooltip> */}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+          {!isXsScreen && (
+            <>
+              <Tooltip title="Setting">
+                <IconButton onClick={handleSetting} sx={{ bgcolor: "transparent" }}>
+                  <SettingsIcon />
+                </IconButton>
+              </Tooltip>
 
-            {/* <NotificationMenu /> */}
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1.5,
+                  cursor: "pointer",
+                }}
+                onClick={handleSetting}
+              >
+                <Box sx={{ textAlign: "right" }}>
+                  <Typography variant="body2" fontWeight={700} color="text.primary">
+                    {greeting}
+                  </Typography>
+                </Box>
+                <Avatar
+                  alt="Profile Image"
+                  src={imageFinal}
+                  sx={{
+                    width: 36,
+                    height: 36,
+                    border: `2px solid ${theme.palette.primary.main}`,
+                  }}
+                />
+              </Box>
+            </>
+          )}
 
-            <Tooltip title="Setting">
-              <IconButton onClick={handleSetting}>
-                <SettingsIcon />
-              </IconButton>
-            </Tooltip>
-            <Box sx={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-              <Typography variant="body1">{greeting}</Typography>
-              <Avatar alt="Profile Image" src={imageFinal} />
-            </Box>
-          </Box>
-        )}
-
-        {isXsScreen && (
-          <IconButton onClick={handleSetting}>
-            <Avatar alt="Profile Image" src={maleProfile} />
-          </IconButton>
-        )}
+          {isXsScreen && (
+            <IconButton onClick={handleSetting}>
+              <Avatar
+                alt="Profile Image"
+                src={imageFinal}
+                sx={{
+                  width: 40,
+                  height: 40,
+                  border: `2px solid ${theme.palette.primary.main}`,
+                }}
+              />
+            </IconButton>
+          )}
+        </Box>
 
         <Drawer
           open={openSettingDrawer}
