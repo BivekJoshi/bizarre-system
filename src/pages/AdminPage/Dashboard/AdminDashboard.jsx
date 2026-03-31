@@ -34,16 +34,6 @@ const AdminDashboard = () => {
 
   return (
     <Box >
-      <Typography
-        variant="h3"
-        sx={{
-          color: theme.palette.text.default,
-          fontWeight: 700,
-          marginBottom: "1rem",
-        }}
-      >
-        Dashboard
-      </Typography>
 
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>

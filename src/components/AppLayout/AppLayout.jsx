@@ -139,6 +139,7 @@ const AppLayout = () => {
           height: "100vh",
           overflow: "hidden",
         }}
+        p={1}
       >
         <LoggedNavbar handleOpenDrawer={handleOpenDrawer} />
 
@@ -146,11 +147,21 @@ const AppLayout = () => {
         <Box
           sx={{
             flexGrow: 1,
-            overflowY: "auto", // This makes ONLY the content scroll
-            p: { xs: 2 },
+            margin: "6px auto",
+            height: "100%",
+            overflowY: "auto",
+            width:"100%",
+
+            "&::-webkit-scrollbar": {
+              display: "none",
+            },
+
+            scrollbarWidth: "none",
+
+            msOverflowStyle: "none",
           }}
         >
-          <Box sx={{ margin: "0 auto" }}>
+          <Box sx={{ margin: "6px auto" }}>
             <Outlet />
           </Box>
         </Box>

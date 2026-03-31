@@ -71,7 +71,7 @@ const BranchOwner = () => {
     {
       memberData: (data) => setFilteredData(data),
       successFlag,
-    }
+    },
   );
 
   const deleteRow = (row) => {
@@ -100,10 +100,10 @@ const BranchOwner = () => {
           const imageFinal = data?.profilePictureUrl
             ? DOC_URL + data?.profilePictureUrl
             : data?.gender === "MALE"
-            ? maleProfile
-            : data?.gender === "FEMALE"
-            ? femaleProfile
-            : null;
+              ? maleProfile
+              : data?.gender === "FEMALE"
+                ? femaleProfile
+                : null;
           return (
             <div style={{ display: "flex", gap: ".5rem" }}>
               <Avatar alt="Profile Image" src={imageFinal} />
@@ -335,7 +335,7 @@ const BranchOwner = () => {
         sortable: false,
       },
     ],
-    []
+    [],
   );
 
   const renderView = () => {
@@ -393,37 +393,10 @@ const BranchOwner = () => {
 
   return (
     <>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Typography
-          variant="h3"
-          sx={{
-            color: theme.palette.text.default,
-            fontWeight: 700,
-          }}
-        >
-          Branch Owner
-        </Typography>
-
-        <PermissionButton
-          label="Add Branch Owner"
-          variant="outlined"
-          onClick={() => setIsAddModal(true)}
-          startIcon={<ControlPointRoundedIcon />}
-          allowedUserTypes={["ADMIN"]}
-          disabledUserTypes={[]}
-        />
-      </Box>
-
-      <br />
-      <FilterBranchOwnerForm filterFormik={filterFormik} />
-      <br />
-
+      <FilterBranchOwnerForm
+        filterFormik={filterFormik}
+        setIsAddModal={setIsAddModal}
+      />
       <br />
       <Box
         sx={{

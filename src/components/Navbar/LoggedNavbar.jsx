@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUserId } from "../../redux/Slice/userIdSlice";
 import { DOC_URL } from "../../api/axiosInterceptor";
 import NotificationMenu from "../Menu/NotificationMenu";
+import BreadCrumpCustom from "./BreadCrumpCustom";
 
 const LoggedNavbar = ({ handleOpenDrawer }) => {
   const navigate = useNavigate();
@@ -103,8 +104,7 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          height: "70px",
-          padding: "0 2rem",
+          height: "50px",
         }}
       >
         {isXsScreen && (
@@ -120,27 +120,98 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
           </IconButton>
         )}
 
+        <BreadCrumpCustom />
 
         {!isXsScreen && (
-          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 3,
+            }}
+          >
+            {/* Global */}
             <Tooltip title="Global Date">
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "1rem" }}
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  cursor: "default",
+                  transition: "0.2s",
+                  "&:hover": {
+                    opacity: 0.8,
+                  },
+                }}
               >
-                <Typography variant="h6">🌎</Typography>
-                <Typography variant="body2">{formattedDateTime}</Typography>
-              </div>
+                <Typography fontSize="18px">🌎</Typography>
+
+                <Box>
+                  <Typography
+                    variant="caption"
+                    sx={{ display: "block", lineHeight: 1 }}
+                    color="text.secondary"
+                  >
+                    Global
+                  </Typography>
+
+                  <Typography
+                    variant="body2"
+                    fontWeight={600}
+                    sx={{ letterSpacing: "0.3px" }}
+                  >
+                    {formattedDateTime}
+                  </Typography>
+                </Box>
+              </Box>
             </Tooltip>
 
+            {/* Divider line */}
+            <Box
+              sx={{
+                width: "1px",
+                height: "28px",
+                backgroundColor: "divider",
+                opacity: 0.5,
+              }}
+            />
+
+            {/* Nepal */}
             <Tooltip title="Nepal Date">
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "1rem" }}
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  cursor: "default",
+                  transition: "0.2s",
+                  "&:hover": {
+                    opacity: 0.8,
+                  },
+                }}
               >
-                <Typography variant="h6">🇳🇵</Typography>
-                <Typography variant="body2">{formattedNepaliDate}</Typography>
-              </div>
+                <Typography fontSize="18px">🇳🇵</Typography>
+
+                <Box>
+                  <Typography
+                    variant="caption"
+                    sx={{ display: "block", lineHeight: 1 }}
+                    color="text.secondary"
+                  >
+                    Nepal
+                  </Typography>
+
+                  <Typography
+                    variant="body2"
+                    fontWeight={600}
+                    sx={{ letterSpacing: "0.3px" }}
+                  >
+                    {formattedNepaliDate}
+                  </Typography>
+                </Box>
+              </Box>
             </Tooltip>
-          </div>
+          </Box>
         )}
 
         {!isXsScreen && (
