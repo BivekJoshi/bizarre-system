@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host --port 8000",
-    "prod": "vite --host --port 8010 --mode prod",
+    "dev": "vite --host --port 7000",
+    "prod": "vite --host --port 7010 --mode prod",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
