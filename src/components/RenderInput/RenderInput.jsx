@@ -83,7 +83,7 @@ const RenderInput = ({
         return (
           <div>
             <Typography
-              variant="h5"
+              variant="h6"
               sx={{
                 color: theme.palette.text.default,
                 fontWeight: 700,
@@ -157,7 +157,7 @@ const RenderInput = ({
         return (
           <div>
             <Typography
-              variant="h5"
+              variant="h6"
               sx={{
                 color: theme.palette.text.default,
                 fontWeight: 700,
@@ -281,7 +281,7 @@ const RenderInput = ({
         return (
           <div>
             <Typography
-              variant="h5"
+              variant="h6"
               sx={{
                 color: theme.palette.text.default,
                 fontWeight: 700,
@@ -364,7 +364,7 @@ const RenderInput = ({
         return (
           <>
             <Typography
-              variant="h5"
+              variant="h6"
               sx={{
                 color: theme.palette.text.default,
                 fontWeight: 700,
@@ -609,7 +609,7 @@ const RenderInput = ({
         return (
           <>
             <Typography
-              variant="h5"
+              variant="h6"
               sx={{
                 color: theme.palette.text.default,
                 fontWeight: 700,
@@ -681,7 +681,7 @@ const RenderInput = ({
         return (
           <>
             <Typography
-              variant="h5"
+              variant="h6"
               sx={{
                 color: theme.palette.text.default,
                 fontWeight: 700,
@@ -737,7 +737,7 @@ const RenderInput = ({
         return (
           <div>
             <Typography
-              variant="h5"
+              variant="h6"
               sx={{
                 color: theme.palette.text.default,
                 fontWeight: 700,
@@ -778,7 +778,7 @@ const RenderInput = ({
         return (
           <div>
             <Typography
-              variant="h5"
+              variant="h6"
               sx={{
                 color: theme.palette.text.default,
                 fontWeight: 700,
@@ -843,7 +843,7 @@ const RenderInput = ({
         return (
           <>
             <Typography
-              variant="h5"
+              variant="h6"
               sx={{
                 color: theme.palette.text.default,
                 fontWeight: 700,
@@ -905,7 +905,7 @@ const RenderInput = ({
         return (
           <div>
             <Typography
-              variant="h5"
+              variant="h6"
               sx={{
                 color: theme.palette.text.default,
                 fontWeight: 700,

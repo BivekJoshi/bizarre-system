@@ -5,8 +5,10 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
 import SearchIcon from "@mui/icons-material/Search";
 import RenderInput from "../../../../components/RenderInput/RenderInput";
+import PermissionButton from "../../../../components/Button/PermissionButton";
+import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 
-const FilterBaristaForm = ({ filterFormik }) => {
+const FilterBaristaForm = ({ filterFormik, setIsAddModal }) => {
   const theme = useTheme();
   const [showFields, setShowFields] = useState(false);
   const inputField = [
@@ -81,7 +83,7 @@ const FilterBaristaForm = ({ filterFormik }) => {
     <div
       style={{
         backgroundColor: theme.palette.background.default,
-        padding: "1rem",
+        padding: "9px",
       }}
     >
       <Box
@@ -99,11 +101,29 @@ const FilterBaristaForm = ({ filterFormik }) => {
         >
           Filter
         </Typography>
-        <IconButton onClick={() => setShowFields((prev) => !prev)}>
-          {showFields ? <FilterListOffIcon /> : <FilterListIcon />}
-        </IconButton>
+
+        <Box sx={{ display: "flex" }} gap={1}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "end",
+              alignItems: "center",
+            }}
+          >
+            <PermissionButton
+              label="Add Barista"
+              variant="outlined"
+              onClick={() => setIsAddModal(true)}
+              startIcon={<ControlPointRoundedIcon />}
+              allowedUserTypes={["BRANCH_OWNER"]}
+              disabledUserTypes={["ADMIN"]}
+            />
+            <IconButton onClick={() => setShowFields((prev) => !prev)}>
+              {showFields ? <FilterListOffIcon /> : <FilterListIcon />}
+            </IconButton>
+          </Box>
+        </Box>
       </Box>
-      <br />
       {showFields && (
         <>
           <RenderInput inputField={inputField} formik={filterFormik} />

@@ -42,7 +42,7 @@ const Order = () => {
   const userType = useSelector((state) => state?.user?.userType);
 
   const [isAddModalOpen, setIsAddModal] = useState(
-    userType == "WAITER" ? true : false
+    userType == "WAITER" ? true : false,
   );
   const [isSwitchTableModalOpen, setIsSwitchTableModalOpen] = useState(false);
   const [isGenerateBillModalOpen, setIsGenerateBillModalOpen] = useState(false);
@@ -87,7 +87,7 @@ const Order = () => {
               case "PREPARING":
                 return "warning";
               case "READY":
-                return "success"
+                return "success";
               case "WAITING":
                 return "error";
               case "SERVED":
@@ -109,7 +109,7 @@ const Order = () => {
         sortable: false,
       },
     ],
-    []
+    [],
   );
 
   const editRow = (row) => {
@@ -343,14 +343,14 @@ const Order = () => {
       />
 
       <ConfirmationModal
-        disagreeLabel={"No, Close !"}
-        agreeLabel={"Yes, Procced"}
+        disagreeLabel={"Yes, Procced"}
+        agreeLabel={"No, Close !"}
         alertTitle={"Regerate Bill"}
         header={"You are going to regenerate bill!"}
         confirmhead={"Are you sure ?"}
         isModalOpen={isReGenerateBillModalOpen}
-        handleModalClose={handleReGenerateBill}
-        handleSave={() => setIsReGenerateBillModalOpen(false)}
+        handleSave={handleReGenerateBill}
+        handleModalClose={() => setIsReGenerateBillModalOpen(false)}
         icon={
           <CardMembershipIcon
             sx={{

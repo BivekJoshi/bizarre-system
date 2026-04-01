@@ -134,10 +134,10 @@ const Customer = () => {
           const imageFinal = data?.profilePictureUrl
             ? DOC_URL + data?.profilePictureUrl
             : data?.gender === "MALE"
-            ? maleProfile
-            : data?.gender === "FEMALE"
-            ? femaleProfile
-            : null;
+              ? maleProfile
+              : data?.gender === "FEMALE"
+                ? femaleProfile
+                : null;
           return (
             <div
               style={{ display: "flex", gap: ".5rem", alignItems: "center" }}
@@ -433,7 +433,7 @@ const Customer = () => {
         },
       },
     ],
-    []
+    [],
   );
 
   const renderView = () => {
@@ -490,44 +490,12 @@ const Customer = () => {
   };
 
   return (
-    <>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Typography
-          variant="h3"
-          sx={{
-            color: theme.palette.text.default,
-            fontWeight: 700,
-          }}
-        >
-          Customer
-        </Typography>
-        <div style={{ display: "flex", gap: "1rem" }}>
-          <Button
-            variant="outlined"
-            onClick={() => setIsAddModal(true)}
-            startIcon={<ControlPointRoundedIcon />}
-          >
-            Add Customer
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => setIsCustomerOnBoardModalOpen(true)}
-            startIcon={<ControlPointRoundedIcon />}
-          >
-            Customer Onboard
-          </Button>
-        </div>
-      </Box>
-
-      <br />
-      <FilterCustomerForm filterFormik={filterFormik} />
-      <br />
+    <Box sx={{ display: "flex", flexDirection: "column" }} gap={1}>
+      <FilterCustomerForm
+        filterFormik={filterFormik}
+        setIsAddModal={setIsAddModal}
+        setIsCustomerOnBoardModalOpen={setIsCustomerOnBoardModalOpen}
+      />
       <Box
         sx={{
           backgroundColor: theme.palette.background.default,
@@ -619,7 +587,7 @@ const Customer = () => {
         }
         handleSave={confimVerify}
       />
-    </>
+    </Box>
   );
 };
 

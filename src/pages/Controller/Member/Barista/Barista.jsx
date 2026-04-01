@@ -96,10 +96,10 @@ const Barista = () => {
           const imageFinal = data?.profilePictureUrl
             ? DOC_URL + data?.profilePictureUrl
             : data?.gender === "MALE"
-            ? maleProfile
-            : data?.gender === "FEMALE"
-            ? femaleProfile
-            : null;
+              ? maleProfile
+              : data?.gender === "FEMALE"
+                ? femaleProfile
+                : null;
           return (
             <div style={{ display: "flex", gap: ".5rem" }}>
               <Avatar alt="Profile Image" src={imageFinal} />
@@ -324,7 +324,7 @@ const Barista = () => {
         sortable: false,
       },
     ],
-    []
+    [],
   );
 
   const renderView = () => {
@@ -380,39 +380,11 @@ const Barista = () => {
   };
 
   return (
-    <>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Typography
-          variant="h3"
-          sx={{
-            color: theme.palette.text.default,
-            fontWeight: 700,
-          }}
-        >
-          Barista
-        </Typography>
-
-        <PermissionButton
-          label="Add Barista"
-          variant="outlined"
-          onClick={() => setIsAddModal(true)}
-          startIcon={<ControlPointRoundedIcon />}
-          allowedUserTypes={["BRANCH_OWNER"]}
-          disabledUserTypes={["ADMIN"]}
-        />
-      </Box>
-
-      <br />
-      <FilterBaristaForm filterFormik={filterFormik} />
-      <br />
-
-      <br />
+    <Box sx={{ display: "flex", flexDirection: "column" }} gap={1}>
+      <FilterBaristaForm
+        filterFormik={filterFormik}
+        setIsAddModal={setIsAddModal}
+      />
       <Box
         sx={{
           backgroundColor: theme.palette.background.default,
@@ -484,7 +456,7 @@ const Barista = () => {
         }
         showButton={false}
       />
-    </>
+    </Box>
   );
 };
 

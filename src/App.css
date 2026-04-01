@@ -1,0 +1,108 @@
+/* ================= LIGHT THEME ================= */
+.animated-bg {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  width: 100%;
+
+  background: linear-gradient(
+    120deg,
+    #f5f7fa,
+    #e4ecf7,
+    #dfe9f3
+  );
+}
+
+/* Light blobs */
+.animated-bg::before,
+.animated-bg::after {
+  content: "";
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+}
+
+.animated-bg::before {
+  background: #4facfe;
+  top: 10%;
+  left: -100px;
+  animation: moveBlob1 25s ease-in-out infinite;
+}
+
+.animated-bg::after {
+  background: #a18cd1;
+  bottom: 10%;
+  right: -100px;
+  animation: moveBlob2 30s ease-in-out infinite;
+}
+
+
+/* ================= DARK THEME ================= */
+.animated-bg-dark {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  width: 100%;
+
+  background: linear-gradient(
+    120deg,
+    #0f172a,
+    #111827,
+    #020617
+  );
+}
+
+/* Dark blobs */
+.animated-bg-dark::before,
+.animated-bg-dark::after {
+  content: "";
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.25;
+}
+
+.animated-bg-dark::before {
+  background: #3b82f6;
+  top: 20%;
+  left: -120px;
+  animation: moveBlob1 30s ease-in-out infinite;
+}
+
+.animated-bg-dark::after {
+  background: #8b5cf6;
+  bottom: 10%;
+  right: -120px;
+  animation: moveBlob2 35s ease-in-out infinite;
+}
+
+
+/* ================= SHARED ANIMATIONS ================= */
+@keyframes moveBlob1 {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(120px, 80px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes moveBlob2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-120px, -80px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}

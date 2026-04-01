@@ -8,12 +8,15 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
+  InputBase,
+  alpha,
 } from "@mui/material";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import NepaliDate from "nepali-date";
 import SettingsIcon from "@mui/icons-material/Settings";
+import SearchIcon from "@mui/icons-material/Search";
 import Setting from "./Setting";
 import maleProfile from "../../assets/MaleProfile.png";
 import femaleProfile from "../../assets/FemaleProfile.png";
@@ -23,13 +26,14 @@ import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserId } from "../../redux/Slice/userIdSlice";
 import { DOC_URL } from "../../api/axiosInterceptor";
-import NotificationMenu from "../Menu/NotificationMenu";
+import BreadCrumpCustom from "./BreadCrumpCustom";
 
 const LoggedNavbar = ({ handleOpenDrawer }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
   const cart = useSelector((state) => state.cart.cart);
 
   const isXsScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -43,19 +47,15 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
 
   const handleSetting = () => setOpenSettingDrawer(true);
 
-  const handleCartClick = () => {
-    navigate("cart");
-  };
-
   const { data: loggedInUserData } = useGetUserData();
 
   const imageFinal = loggedInUserData?.data?.profilePictureUrl
     ? DOC_URL + loggedInUserData?.data?.profilePictureUrl
     : loggedInUserData?.data?.gender === "MALE"
-    ? maleProfile
-    : loggedInUserData?.data?.gender === "FEMALE"
-    ? femaleProfile
-    : null;
+      ? maleProfile
+      : loggedInUserData?.data?.gender === "FEMALE"
+        ? femaleProfile
+        : null;
 
   useEffect(() => {
     if (loggedInUserData?.data?.id && loggedInUserData?.data?.userType) {
@@ -63,7 +63,7 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
         setUserId({
           userId: loggedInUserData?.data?.id,
           userType: loggedInUserData?.data?.userType,
-        })
+        }),
       );
     }
   }, [loggedInUserData, dispatch]);
@@ -95,8 +95,6 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
   return (
     <Box
       sx={{
-        background: theme.palette.background.default,
-        boxShadow: `0 2px 2px rgba(0, 0, 0, 0.1)`,
         zIndex: 900,
       }}
     >
@@ -105,82 +103,145 @@ const LoggedNavbar = ({ handleOpenDrawer }) => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          height: "70px",
-          padding: "0 2rem",
+          height: "60px",
         }}
       >
-        {isXsScreen && (
-          <IconButton
-            size="large"
-            aria-label="menu"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            onClick={handleOpenDrawer}
-            color="inherit"
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          {isXsScreen && (
+            <IconButton
+              size="large"
+              onClick={handleOpenDrawer}
+              color="inherit"
+              sx={{
+                bgcolor: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)",
+                borderRadius: "12px",
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
+          <BreadCrumpCustom />
+        </Box>
+
+        {!isXsScreen && (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 3,
+              bgcolor: isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)",
+              px: 3,
+              py: 0.8,
+              borderRadius: "20px",
+              border: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.03)"}`,
+            }}
           >
-            <MenuIcon />
-          </IconButton>
-        )}
-
-        <div style={{ width: "100px", height: "60px" }}>
-          <img
-            src={BizarreBrosLogo}
-            alt="Bizarre Bros Logo"
-            style={{ width: "100%", height: "100%" }}
-          />
-        </div>
-
-        {!isXsScreen && (
-          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+            {/* Global */}
             <Tooltip title="Global Date">
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "1rem" }}
-              >
-                <Typography variant="h6">🌎</Typography>
-                <Typography variant="body2">{formattedDateTime}</Typography>
-              </div>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Typography fontSize="18px">🌎</Typography>
+                <Box>
+                  <Typography
+                    variant="caption"
+                    sx={{ display: "block", lineHeight: 1 }}
+                    color="text.secondary"
+                  >
+                    Global
+                  </Typography>
+                  <Typography variant="body2" fontWeight={600}>
+                    {formattedDateTime}
+                  </Typography>
+                </Box>
+              </Box>
             </Tooltip>
 
+            <Box
+              sx={{
+                width: "1px",
+                height: "24px",
+                bgcolor: "divider",
+                opacity: 0.5,
+              }}
+            />
+
+            {/* Nepal */}
             <Tooltip title="Nepal Date">
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "1rem" }}
-              >
-                <Typography variant="h6">🇳🇵</Typography>
-                <Typography variant="body2">{formattedNepaliDate}</Typography>
-              </div>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Typography fontSize="18px">🇳🇵</Typography>
+                <Box>
+                  <Typography
+                    variant="caption"
+                    sx={{ display: "block", lineHeight: 1 }}
+                    color="text.secondary"
+                  >
+                    Nepal
+                  </Typography>
+                  <Typography variant="body2" fontWeight={600}>
+                    {formattedNepaliDate}
+                  </Typography>
+                </Box>
+              </Box>
             </Tooltip>
-          </div>
-        )}
-
-        {!isXsScreen && (
-          <Box sx={{ display: "flex", gap: "1rem" }}>
-            {/* <Tooltip title="Cart">
-              <IconButton onClick={handleCartClick}>
-                <Badge badgeContent={cart.length} color="primary">
-                  <ShoppingCartRoundedIcon />
-                </Badge>
-              </IconButton>
-            </Tooltip> */}
-
-            {/* <NotificationMenu /> */}
-            
-            <Tooltip title="Setting">
-              <IconButton onClick={handleSetting}>
-                <SettingsIcon />
-              </IconButton>
-            </Tooltip>
-            <Box sx={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-              <Typography variant="body1">{greeting}</Typography>
-              <Avatar alt="Profile Image" src={imageFinal} />
-            </Box>
           </Box>
         )}
 
-        {isXsScreen && (
-          <IconButton onClick={handleSetting}>
-            <Avatar alt="Profile Image" src={maleProfile} />
-          </IconButton>
-        )}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+          {!isXsScreen && (
+            <>
+              <Tooltip title="Setting">
+                <IconButton
+                  onClick={handleSetting}
+                  sx={{ bgcolor: "transparent" }}
+                >
+                  <SettingsIcon />
+                </IconButton>
+              </Tooltip>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1.5,
+                  cursor: "pointer",
+                }}
+                onClick={handleSetting}
+              >
+                <Box sx={{ textAlign: "right" }}>
+                  <Typography
+                    variant="body2"
+                    fontWeight={700}
+                    color="text.primary"
+                  >
+                    {greeting}
+                  </Typography>
+                </Box>
+                <Avatar
+                  alt="Profile Image"
+                  src={imageFinal}
+                  sx={{
+                    width: 36,
+                    height: 36,
+                    border: `2px solid ${theme.palette.primary.main}`,
+                  }}
+                />
+              </Box>
+            </>
+          )}
+
+          {isXsScreen && (
+            <IconButton onClick={handleSetting}>
+              <Avatar
+                alt="Profile Image"
+                src={imageFinal}
+                sx={{
+                  width: 40,
+                  height: 40,
+                  border: `2px solid ${theme.palette.primary.main}`,
+                }}
+              />
+            </IconButton>
+          )}
+        </Box>
 
         <Drawer
           open={openSettingDrawer}

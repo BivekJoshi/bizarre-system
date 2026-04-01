@@ -18,7 +18,6 @@ import { nanoid } from "nanoid";
 import maleProfile from "../../../../assets/MaleProfile.png";
 import femaleProfile from "../../../../assets/FemaleProfile.png";
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import FormModal from "../../../../components/Modal/FormModal";
 import CustomTable from "../../../../components/CustomTable/CustomTable";
 import CashierForm from "./CashierForm";
@@ -96,10 +95,10 @@ const Cashier = () => {
           const imageFinal = data?.profilePictureUrl
             ? DOC_URL + data?.profilePictureUrl
             : data?.gender === "MALE"
-            ? maleProfile
-            : data?.gender === "FEMALE"
-            ? femaleProfile
-            : null;
+              ? maleProfile
+              : data?.gender === "FEMALE"
+                ? femaleProfile
+                : null;
           return (
             <div style={{ display: "flex", gap: ".5rem" }}>
               <Avatar alt="Profile Image" src={imageFinal} />
@@ -324,7 +323,7 @@ const Cashier = () => {
         sortable: false,
       },
     ],
-    []
+    [],
   );
 
   const renderView = () => {
@@ -383,39 +382,11 @@ const Cashier = () => {
   };
 
   return (
-    <>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Typography
-          variant="h3"
-          sx={{
-            color: theme.palette.text.default,
-            fontWeight: 700,
-          }}
-        >
-          Cashier Member
-        </Typography>
-
-        <PermissionButton
-          label="Add Cashier"
-          variant="outlined"
-          onClick={() => setIsAddModal(true)}
-          startIcon={<ControlPointRoundedIcon />}
-          allowedUserTypes={["BRANCH_OWNER"]}
-          disabledUserTypes={["ADMIN"]}
-        />
-      </Box>
-
-      <br />
-      <FilterCashierForm filterFormik={filterFormik} />
-      <br />
-
-      <br />
+    <Box sx={{ display: "flex", flexDirection: "column" }} gap={1}>
+      <FilterCashierForm
+        filterFormik={filterFormik}
+        setIsAddModal={setIsAddModal}
+      />
       <Box
         sx={{
           backgroundColor: theme.palette.background.default,
@@ -491,7 +462,7 @@ const Cashier = () => {
         }
         showButton={false}
       />
-    </>
+    </Box>
   );
 };
 

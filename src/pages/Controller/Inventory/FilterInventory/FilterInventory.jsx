@@ -1,11 +1,12 @@
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import { nanoid } from "nanoid";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
 import RenderInput from "../../../../components/RenderInput/RenderInput";
+import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 
-const FilterInventory = ({ filterFormik }) => {
+const FilterInventory = ({ filterFormik, setIsAddModal }) => {
   const theme = useTheme();
   const [showFields, setShowFields] = useState(false);
   const inputField = [
@@ -50,7 +51,7 @@ const FilterInventory = ({ filterFormik }) => {
     <div
       style={{
         backgroundColor: theme.palette.background.default,
-        padding: "1rem",
+        padding: "9px",
       }}
     >
       <Box
@@ -68,11 +69,27 @@ const FilterInventory = ({ filterFormik }) => {
         >
           Filter
         </Typography>
-        <IconButton onClick={() => setShowFields((prev) => !prev)}>
-          {showFields ? <FilterListOffIcon /> : <FilterListIcon />}
-        </IconButton>
+        <Box sx={{ display: "flex" }} gap={1}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "end",
+              alignItems: "center",
+            }}
+          >
+            <Button
+              variant="outlined"
+              onClick={() => setIsAddModal(true)}
+              startIcon={<ControlPointRoundedIcon />}
+            >
+              Add Inventory
+            </Button>
+          </Box>
+          <IconButton onClick={() => setShowFields((prev) => !prev)}>
+            {showFields ? <FilterListOffIcon /> : <FilterListIcon />}
+          </IconButton>
+        </Box>
       </Box>
-      <br />
       {showFields && (
         <>
           <RenderInput inputField={inputField} formik={filterFormik} />

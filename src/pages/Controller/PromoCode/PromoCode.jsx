@@ -94,7 +94,7 @@ const PromoCode = () => {
         sortable: false,
       },
     ],
-    []
+    [],
   );
 
   const renderView = () => {
@@ -142,23 +142,14 @@ const PromoCode = () => {
   };
 
   return (
-    <>
+    <Box sx={{ display: "flex", flexDirection: "column" }} gap={1}>
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "end",
           alignItems: "center",
         }}
       >
-        <Typography
-          variant="h3"
-          sx={{
-            color: theme.palette.text.default,
-            fontWeight: 700,
-          }}
-        >
-          Promo Code
-        </Typography>
         <Button
           variant="outlined"
           onClick={() => setIsAddModal(true)}
@@ -168,12 +159,10 @@ const PromoCode = () => {
         </Button>
       </Box>
 
-      <br />
       <Box
         sx={{
           backgroundColor: theme.palette.background.default,
           padding: "1rem",
-          marginTop: ".1rem",
         }}
       >
         {renderView()}
@@ -221,7 +210,7 @@ const PromoCode = () => {
         }
         showButton={true}
       />
-    </>
+    </Box>
   );
 };
 

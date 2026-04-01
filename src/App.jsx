@@ -13,8 +13,9 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <div
+        className={mode === "dark" ? "animated-bg-dark" : "animated-bg"}
         style={{
-          backgroundColor: theme.palette.background.alt,
+          // backgroundColor: theme.palette.background.alt,
           minHeight: "100vh",
           color: theme.palette.text.main,
         }}

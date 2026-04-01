@@ -91,7 +91,7 @@ const Branch = () => {
         sortable: false,
       },
     ],
-    []
+    [],
   );
 
   const renderView = () => {
@@ -142,35 +142,11 @@ const Branch = () => {
   };
 
   return (
-    <>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Typography
-          variant="h3"
-          sx={{
-            color: theme.palette.text.default,
-            fontWeight: 700,
-          }}
-        >
-          Branch
-        </Typography>
-        <Button
-          variant="outlined"
-          onClick={() => setIsAddModal(true)}
-          startIcon={<ControlPointRoundedIcon />}
-        >
-          Add Branch
-        </Button>
-      </Box>
-
-      <br />
-      <FilterBranchForm filterFormik={filterFormik} />
-      <br />
+    <Box sx={{ display: "flex", flexDirection: "column" }} gap={1}>
+      <FilterBranchForm
+        filterFormik={filterFormik}
+        setIsAddModal={setIsAddModal}
+      />
 
       <Box
         sx={{
@@ -243,7 +219,7 @@ const Branch = () => {
           />
         }
       />
-    </>
+    </Box>
   );
 };
 

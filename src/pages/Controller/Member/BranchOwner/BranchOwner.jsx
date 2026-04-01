@@ -17,8 +17,6 @@ import {
 import { nanoid } from "nanoid";
 import maleProfile from "../../../../assets/MaleProfile.png";
 import femaleProfile from "../../../../assets/FemaleProfile.png";
-import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import FormModal from "../../../../components/Modal/FormModal";
 import CustomTable from "../../../../components/CustomTable/CustomTable";
 import BranchOwnerForm from "./BranchOwnerForm";
@@ -26,7 +24,6 @@ import { useBranchOwnerMemberForm } from "../../../../hooks/member/Member/Branch
 import BranchOwnerCardView from "./BranchOwnerCardView";
 import { useSelector } from "react-redux";
 import { DOC_URL } from "../../../../api/axiosInterceptor";
-import PermissionButton from "../../../../components/Button/PermissionButton";
 import MemberDocumentForm from "../MemberDocumentForm";
 import NoDataFound from "../../../PageNotFound/NoDataFound";
 import { useBranchOwnerFilterForm } from "../../../../hooks/member/MemberFilter/useBranchOwnerFilterForm";
@@ -71,7 +68,7 @@ const BranchOwner = () => {
     {
       memberData: (data) => setFilteredData(data),
       successFlag,
-    }
+    },
   );
 
   const deleteRow = (row) => {
@@ -100,10 +97,10 @@ const BranchOwner = () => {
           const imageFinal = data?.profilePictureUrl
             ? DOC_URL + data?.profilePictureUrl
             : data?.gender === "MALE"
-            ? maleProfile
-            : data?.gender === "FEMALE"
-            ? femaleProfile
-            : null;
+              ? maleProfile
+              : data?.gender === "FEMALE"
+                ? femaleProfile
+                : null;
           return (
             <div style={{ display: "flex", gap: ".5rem" }}>
               <Avatar alt="Profile Image" src={imageFinal} />
@@ -335,7 +332,7 @@ const BranchOwner = () => {
         sortable: false,
       },
     ],
-    []
+    [],
   );
 
   const renderView = () => {
@@ -392,44 +389,15 @@ const BranchOwner = () => {
   };
 
   return (
-    <>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Typography
-          variant="h3"
-          sx={{
-            color: theme.palette.text.default,
-            fontWeight: 700,
-          }}
-        >
-          Branch Owner
-        </Typography>
-
-        <PermissionButton
-          label="Add Branch Owner"
-          variant="outlined"
-          onClick={() => setIsAddModal(true)}
-          startIcon={<ControlPointRoundedIcon />}
-          allowedUserTypes={["ADMIN"]}
-          disabledUserTypes={[]}
-        />
-      </Box>
-
-      <br />
-      <FilterBranchOwnerForm filterFormik={filterFormik} />
-      <br />
-
-      <br />
+    <Box sx={{ display: "flex", flexDirection: "column" }} gap={1}>
+      <FilterBranchOwnerForm
+        filterFormik={filterFormik}
+        setIsAddModal={setIsAddModal}
+      />
       <Box
         sx={{
           backgroundColor: theme.palette.background.default,
           padding: "1rem",
-          marginTop: ".1rem",
         }}
       >
         {renderView()}
@@ -497,7 +465,7 @@ const BranchOwner = () => {
         }
         showButton={false}
       />
-    </>
+    </Box>
   );
 };
 

@@ -85,32 +85,6 @@ const Setting = () => {
     <>
       <Box
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Typography
-          variant="h3"
-          sx={{
-            color: theme.palette.text.default,
-            fontWeight: 700,
-          }}
-        >
-          Setting
-        </Typography>
-        {/* <Button
-          variant="outlined"
-          onClick={() => setIsAddModal(true)}
-          startIcon={<ControlPointRoundedIcon />}
-        >
-          Add Setting
-        </Button> */}
-      </Box>
-
-      <br />
-      <Box
-        sx={{
           backgroundColor: theme.palette.background.default,
           padding: "1rem",
           marginTop: ".1rem",
