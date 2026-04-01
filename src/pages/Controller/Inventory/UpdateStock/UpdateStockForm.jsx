@@ -154,7 +154,7 @@ const UpdateStockForm = ({
                 sx={{ mt: 1 }}
                 onClick={handleSubmit}
               >
-                Update Stock
+                Add to Inventory
               </Button>
             </Box>
           )}

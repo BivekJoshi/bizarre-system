@@ -1,19 +1,33 @@
 import React, { useEffect, useState } from "react";
 import RenderInput from "../../../../components/RenderInput/RenderInput";
-import { Button, CircularProgress, Grid, Typography, Paper, Box } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  Grid,
+  Typography,
+  Box,
+  Card,
+  CardContent,
+  useTheme,
+  Chip,
+  Divider,
+} from "@mui/material";
 import { nanoid } from "nanoid";
 import Typewriter from "../../../../components/Typewriter/Typewriter";
 import { useAIGenerateItemForm } from "../../../../hooks/chat/AIGenerateItem/useAIgenerateItemForm";
+import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
+import SendIcon from "@mui/icons-material/Send";
 
 const AIGenerateItem = () => {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
   const { formik, generateItemData, isLoading } = useAIGenerateItemForm({});
-  console.log("🚀 ~ AIGenerateItem ~ generateItemData:", generateItemData);
 
   const inputField = [
     {
       id: nanoid(),
       name: "description",
-      label: "Product Info",
+      label: "Describe your new product...",
       type: "text",
       required: true,
       xs: 12,
@@ -24,87 +38,185 @@ const AIGenerateItem = () => {
   ];
 
   return (
-    <>
-      <Grid container spacing={3} justifyContent="center">
-        <Grid item xs={12} md={8}>
-          {/* Input Field */}
-          <RenderInput inputField={inputField} formik={formik} />
-          
-          {/* Submit Button */}
-          <Button
-            variant="contained"
-            color="primary"
-            fullWidth
-            onClick={() => formik.handleSubmit()}
-            style={{
-              marginTop: "16px",
-              padding: "10px",
-              textTransform: "none",
-              fontWeight: 600,
+    <Card
+      sx={{
+        borderRadius: "20px",
+        background: isDark
+          ? "rgba(30, 41, 59, 0.4)"
+          : "rgba(255, 255, 255, 0.6)",
+        backdropFilter: "blur(10px)",
+        border: `1px solid ${isDark ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.05)"}`,
+        boxShadow: "none",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <CardContent
+        sx={{ p: 3, flexGrow: 1, display: "flex", flexDirection: "column" }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 3 }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: 40,
+              height: 40,
+              borderRadius: "12px",
+              background: "linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)",
+              color: "#fff",
             }}
           >
-            Submit
-          </Button>
-          
-          {/* Loading Spinner */}
+            <AutoFixHighIcon fontSize="small" />
+          </Box>
+          <Typography variant="h5" fontWeight={700}>
+            Product Generator
+          </Typography>
+        </Box>
+
+        <Box sx={{ flexGrow: 1, mb: 3, minHeight: "150px" }}>
           {isLoading ? (
+            <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
+              <CircularProgress
+                size={32}
+                thickness={5}
+                sx={{ color: "#8b5cf6" }}
+              />
+            </Box>
+          ) : generateItemData?.name ? (
             <Box
               sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: "20px",
+                p: 2.5,
+                borderRadius: "16px",
+                backgroundColor: isDark
+                  ? "rgba(255,255,255,0.03)"
+                  : "rgba(0,0,0,0.02)",
+                border: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"}`,
               }}
             >
-              <CircularProgress />
-            </Box>
-          ) : (
-            <Paper
-              elevation={3}
-              sx={{
-                marginTop: "20px",
-                padding: "20px",
-                borderRadius: "8px",
-                boxShadow: 3,
-                backgroundColor: "#fafafa",
-              }}
-            >
-              {/* Display Item Data */}
-              <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: "8px" }}>
-                Item: {generateItemData?.name}
-              </Typography>
-              <Typography variant="body1" sx={{ marginBottom: "8px" }}>
-                <strong>Cost Price:</strong> {generateItemData?.costPrice}
-              </Typography>
-              <Typography variant="body1" sx={{ marginBottom: "8px" }}>
-                <strong>Marked Price:</strong> {generateItemData?.markedPrice}
-              </Typography>
-              <Typography variant="body1" sx={{ marginBottom: "8px" }}>
-                <strong>Selling Price:</strong> {generateItemData?.sellingPrice}
-              </Typography>
-              <Typography variant="body1" sx={{ marginBottom: "8px" }}>
-                <strong>Type:</strong> {generateItemData?.type}
-              </Typography>
-              <Typography variant="body1" sx={{ marginBottom: "8px" }}>
-                <strong>Tags:</strong> {generateItemData?.tags}
-              </Typography>
-              <Typography variant="body1" sx={{ marginBottom: "8px" }}>
-                <strong>Color:</strong> {generateItemData?.color}
+              <Typography
+                variant="h6"
+                sx={{ fontWeight: 800, mb: 2, color: "primary.main" }}
+              >
+                {generateItemData?.name}
               </Typography>
 
-              {/* Typewriter Effect */}
-              <Box sx={{ marginTop: "20px" }}>
-                <Typewriter
-                  text={generateItemData?.description}
-                  speed={50}
-                  isLoading={isLoading}
+              <Grid container spacing={2} sx={{ mb: 2 }}>
+                <Grid item xs={4}>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    display="block"
+                  >
+                    Cost
+                  </Typography>
+                  <Typography variant="body2" fontWeight={700}>
+                    Rs {generateItemData?.costPrice}
+                  </Typography>
+                </Grid>
+                <Grid item xs={4}>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    display="block"
+                  >
+                    Marked
+                  </Typography>
+                  <Typography variant="body2" fontWeight={700}>
+                    Rs {generateItemData?.markedPrice}
+                  </Typography>
+                </Grid>
+                <Grid item xs={4}>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    display="block"
+                  >
+                    Selling
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    fontWeight={700}
+                    color="success.main"
+                  >
+                    Rs {generateItemData?.sellingPrice}
+                  </Typography>
+                </Grid>
+              </Grid>
+
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 2 }}>
+                <Chip
+                  label={generateItemData?.type}
+                  size="small"
+                  sx={{ fontWeight: 600 }}
                 />
+                {generateItemData?.tags?.split(",").map((tag, i) => (
+                  <Chip
+                    key={i}
+                    label={tag.trim()}
+                    size="small"
+                    variant="outlined"
+                  />
+                ))}
               </Box>
-            </Paper>
+
+              <Divider sx={{ my: 1.5, opacity: 0.5 }} />
+
+              <Box>
+                <Typewriter text={generateItemData?.description} speed={30} />
+              </Box>
+            </Box>
+          ) : (
+            <Box
+              sx={{
+                height: "75%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                border: `2px dashed ${isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"}`,
+                borderRadius: "16px",
+                p: 3,
+              }}
+            >
+              <Typography color="text.secondary" align="center" variant="body2">
+                Describe a product (e.g., "A spicy Italian pasta with fresh
+                basil") and let AI generate the details for you!
+              </Typography>
+            </Box>
           )}
-        </Grid>
-      </Grid>
-    </>
+        </Box>
+
+        <Box sx={{ position: "relative" }}>
+          <RenderInput inputField={inputField} formik={formik} />
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={() => formik.handleSubmit()}
+            disabled={isLoading}
+            startIcon={
+              isLoading ? (
+                <CircularProgress size={20} color="inherit" />
+              ) : (
+                <SendIcon />
+              )
+            }
+            sx={{
+              mt: 2,
+              py: 1.5,
+              borderRadius: "16px",
+              background: "linear-gradient(90deg, #8b5cf6 0%, #7c3aed 100%)",
+              boxShadow: "0 4px 12px rgba(139, 92, 246, 0.3)",
+              "&:hover": {
+                background: "linear-gradient(90deg, #7c3aed 0%, #6d28d9 100%)",
+              },
+            }}
+          >
+            {isLoading ? "Generating..." : "Generate Product"}
+          </Button>
+        </Box>
+      </CardContent>
+    </Card>
   );
 };
 

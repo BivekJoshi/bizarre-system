@@ -94,7 +94,6 @@ const AppLayout = () => {
               sx={{
                 flexGrow: 1,
                 overflowY: "auto",
-                py: 2,
                 "&::-webkit-scrollbar": { width: "4px" },
                 "&::-webkit-scrollbar-thumb": {
                   backgroundColor: "rgba(255,255,255,0.05)",
@@ -139,7 +138,9 @@ const AppLayout = () => {
           height: "100vh",
           overflow: "hidden",
         }}
-        p={1}
+        pt={1}
+        pr={isMobile ? 1 : 3}
+        pl={1}
       >
         <LoggedNavbar handleOpenDrawer={handleOpenDrawer} />
 
@@ -147,10 +148,9 @@ const AppLayout = () => {
         <Box
           sx={{
             flexGrow: 1,
-            margin: "6px auto",
             height: "100%",
             overflowY: "auto",
-            width:"100%",
+            width: "100%",
 
             "&::-webkit-scrollbar": {
               display: "none",
@@ -161,7 +161,7 @@ const AppLayout = () => {
             msOverflowStyle: "none",
           }}
         >
-          <Box sx={{ margin: "6px auto" }}>
+          <Box sx={{ margin: "6px auto" }} pb={6}>
             <Outlet />
           </Box>
         </Box>
@@ -172,7 +172,11 @@ const AppLayout = () => {
         open={openDrawer}
         onClose={handleCloseDrawer}
         PaperProps={{
-          sx: { width: SIDEBAR_WIDTH, p: 2 },
+          sx: {
+            width: SIDEBAR_WIDTH,
+            p: 2,
+            background: "linear-gradient(180deg, #1e293b 0%, #0f172a 100%)",
+          },
         }}
       >
         <Box

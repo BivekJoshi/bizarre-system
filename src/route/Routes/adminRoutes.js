@@ -57,9 +57,6 @@ const RedeemCode = Loadable(
   lazy(() => import("../../pages/Controller/RedeemCode/RedeemCode"))
 );
 
-const NotificationViewAll = Loadable(
-  lazy(() => import("../../components/Menu/NotificationViewAll"))
-);
 const ReportDashboard = Loadable(
   lazy(() =>
     import("../../pages/Controller/Report/ReportDashboard/ReportDashboard")
@@ -175,13 +172,6 @@ const adminRoutes = [
     name: "Redeem Code",
     id: nanoid(),
     component: RedeemCode,
-  },
-
-  {
-    path: "notifications",
-    name: "notifications",
-    id: nanoid(),
-    component: NotificationViewAll,
   },
 
   {
