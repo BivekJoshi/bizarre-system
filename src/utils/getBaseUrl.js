@@ -1,10 +1,9 @@
-export const getBaseUrl = () => {
-  return "https://cafebizarre.com.np/test/v1"
-  // return "https://cafebizarre.com.np/prod/v1"
+const VITE_BASE_URL = import.meta.env.VITE_BASE_URL || "";
+const VITE_DOC_URL = import.meta.env.VITE_DOC_URL || "";
 
+export const getBaseUrl = () => {
+  return VITE_BASE_URL;
 };
 export const getDocUrl = () => {
-  // return "https://demo.filestash.app/s/ACdfCB6/";
-  return "https://cafebizarre.com.np/"
-
+  return VITE_DOC_URL;
 };
