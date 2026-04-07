@@ -90,7 +90,7 @@ const AddItem = ({ formik }) => {
       name: "stockCount",
       label: "Stock Count",
       type: "number",
-      required: true,
+      // required: true,
       xs: 12,
       md: 6,
       lg: 6,

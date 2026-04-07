@@ -15,7 +15,7 @@ const itemSchema = Yup.object({
   description: Yup.string().optional(),
   type: Yup.string().required("Type is required"),
   stockCount: Yup.number()
-    .required("Stock Count is required")
+    // .required("Stock Count is required")
     .integer("Stock Count must be an integer")
     .min(0, "Stock Count cannot be negative"),
   tags: Yup.string().optional(),

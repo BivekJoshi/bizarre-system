@@ -9,6 +9,9 @@ export const useAddInventoryForm = ({ selectedCardId, inputValue }) => {
     initialValues: {
       itemId: selectedCardId || "",
       stockCount: inputValue || "",
+      reorderLevel: 0,
+      maxStockLevel: 0,
+      leadTimeDays: 0,
     },
     enableReinitialize: true,
     onSubmit: (values) => {
@@ -18,16 +21,14 @@ export const useAddInventoryForm = ({ selectedCardId, inputValue }) => {
 
   const handleAddRequest = (values) => {
     mutate(values, {
-      onSuccess: (data) => {
-      },
-      onError: () => {
-      },
+      onSuccess: (data) => {},
+      onError: () => {},
     });
   };
 
   return {
     formik,
-    loading: isLoading ,
+    loading: isLoading,
   };
 };
 
@@ -50,13 +51,12 @@ export const useInventoryForm = ({ itemId, inputValue, filterFormik }) => {
       onSuccess: (data) => {
         filterFormik.handleSubmit();
       },
-      onError: () => {
-      },
+      onError: () => {},
     });
   };
 
   return {
     formik,
-    loading: isLoading ,
+    loading: isLoading,
   };
 };
