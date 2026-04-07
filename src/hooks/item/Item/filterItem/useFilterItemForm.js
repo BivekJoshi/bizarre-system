@@ -11,7 +11,6 @@ export const useFilterItemForm = ({
   editSuccessFlag,
 }) => {
   const { mutate, isLoading } = useRevealItem({});
-  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -38,15 +37,10 @@ export const useFilterItemForm = ({
   });
 
   const handleAddRequest = (values) => {
-    setLoading(true);
     mutate(values, {
       onSuccess: (data) => {
         itemData(data?.data?.data);
         onClose && onClose();
-        setLoading(false);
-      },
-      onError: () => {
-        setLoading(false);
       },
     });
   };
@@ -63,6 +57,6 @@ export const useFilterItemForm = ({
 
   return {
     formik,
-    loading: isLoading || loading,
+    loading: isLoading,
   };
 };

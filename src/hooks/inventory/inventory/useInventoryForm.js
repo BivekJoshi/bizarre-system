@@ -4,7 +4,6 @@ import { useAddStockInventory, useEditStockInventory } from "../useInventory";
 
 export const useAddInventoryForm = ({ selectedCardId, inputValue }) => {
   const { mutate, isLoading } = useAddStockInventory({});
-  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -18,26 +17,22 @@ export const useAddInventoryForm = ({ selectedCardId, inputValue }) => {
   });
 
   const handleAddRequest = (values) => {
-    setLoading(true);
     mutate(values, {
       onSuccess: (data) => {
-        setLoading(false);
       },
       onError: () => {
-        setLoading(false);
       },
     });
   };
 
   return {
     formik,
-    loading: isLoading || loading,
+    loading: isLoading ,
   };
 };
 
 export const useInventoryForm = ({ itemId, inputValue, filterFormik }) => {
   const { mutate, isLoading } = useEditStockInventory({});
-  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -51,20 +46,17 @@ export const useInventoryForm = ({ itemId, inputValue, filterFormik }) => {
   });
 
   const handleAddRequest = (values) => {
-    setLoading(true);
     mutate(values, {
       onSuccess: (data) => {
-        setLoading(false);
         filterFormik.handleSubmit();
       },
       onError: () => {
-        setLoading(false);
       },
     });
   };
 
   return {
     formik,
-    loading: isLoading || loading,
+    loading: isLoading ,
   };
 };

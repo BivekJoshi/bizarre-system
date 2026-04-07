@@ -6,9 +6,8 @@ import { userSchema } from "./userSchema";
 import { useNavigate } from "react-router-dom";
 
 export const useChangePasswordForm = () => {
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { mutate } = useChangePassword({});
+  const { mutate, isLoading } = useChangePassword({});
   const { data: userData, isLoading: isLoadingUserData } = useGetUserData();
 
   const formik = useFormik({
@@ -26,7 +25,6 @@ export const useChangePasswordForm = () => {
   });
 
   const handledAddRequest = (values) => {
-    setLoading(true);
     values = { ...values };
     mutate(values, {
       onSuccess: () => {
@@ -38,6 +36,6 @@ export const useChangePasswordForm = () => {
 
   return {
     formik,
-    loading,
+    loading: isLoading || isLoadingUserData,
   };
 };

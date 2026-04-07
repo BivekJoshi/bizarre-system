@@ -3,8 +3,7 @@ import { useState } from "react";
 import { useGenerateNormalBillBatch } from "../usebatch";
 
 export const useGenerateNormalBillForm = ({ batchId, finalBill }) => {
-  const [loading, setLoading] = useState(false);
-  const { mutate } = useGenerateNormalBillBatch({});
+  const { mutate ,isLoading} = useGenerateNormalBillBatch({});
 
   const formik = useFormik({
     initialValues: {
@@ -21,11 +20,9 @@ export const useGenerateNormalBillForm = ({ batchId, finalBill }) => {
   });
 
   const handledAddRequest = (values) => {
-    setLoading(true);
     values = { ...values };
     mutate(values, {
       onSuccess: (data) => {
-        setLoading(false);
         finalBill(data?.data?.data);
       },
     });
@@ -33,6 +30,6 @@ export const useGenerateNormalBillForm = ({ batchId, finalBill }) => {
 
   return {
     formik,
-    loading,
+    loading:isLoading,
   };
 };

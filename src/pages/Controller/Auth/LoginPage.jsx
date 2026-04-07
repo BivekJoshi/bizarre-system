@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import Bizarrebg from "../../../assets/Bizarrebg.png";
+import Bizarrebg from "../../../assets/Bizarrebg.jpeg";
 
 const LoginPage = () => {
   const VITE_STATUS = import.meta.env.VITE_STATUS || "";

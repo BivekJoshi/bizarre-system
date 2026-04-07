@@ -5,7 +5,6 @@ import { useFilterInventory } from "../useInventory";
 
 export const useFilterInventoryForm = ({ inventoryData }) => {
   const { mutate, isLoading } = useFilterInventory({});
-  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -25,15 +24,11 @@ export const useFilterInventoryForm = ({ inventoryData }) => {
   });
 
   const handleAddRequest = (values) => {
-    setLoading(true);
     mutate(values, {
       onSuccess: (data) => {
         inventoryData(data?.data?.data);
-        setLoading(false);
       },
-      onError: () => {
-        setLoading(false);
-      },
+      onError: () => {},
     });
   };
 
@@ -49,6 +44,6 @@ export const useFilterInventoryForm = ({ inventoryData }) => {
 
   return {
     formik,
-    loading,
+    loading: isLoading,
   };
 };

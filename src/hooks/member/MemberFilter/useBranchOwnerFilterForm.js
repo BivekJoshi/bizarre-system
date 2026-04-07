@@ -9,7 +9,6 @@ export const useBranchOwnerFilterForm = ({
   successFlag,
 }) => {
   const { mutate, isLoading } = useFilterMember({});
-  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -32,15 +31,12 @@ export const useBranchOwnerFilterForm = ({
   });
 
   const handleAddRequest = (values) => {
-    setLoading(true);
     mutate(values, {
       onSuccess: (data) => {
         memberData(data?.data?.data);
         onClose && onClose();
-        setLoading(false);
       },
       onError: () => {
-        setLoading(false);
       },
     });
   };
@@ -57,6 +53,6 @@ export const useBranchOwnerFilterForm = ({
 
   return {
     formik,
-    loading: isLoading || loading,
+    loading: isLoading ,
   };
 };

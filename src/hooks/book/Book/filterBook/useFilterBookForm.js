@@ -5,7 +5,6 @@ import { debounce } from "@mui/material";
 
 export const useFilterBookForm = ({ onClose, bookData, successFlag }) => {
   const { mutate, isLoading } = useFilterBook({});
-  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -25,16 +24,12 @@ export const useFilterBookForm = ({ onClose, bookData, successFlag }) => {
   });
 
   const handleAddRequest = (values) => {
-    setLoading(true);
     mutate(values, {
       onSuccess: (data) => {
         bookData(data?.data?.data);
         onClose && onClose();
-        setLoading(false);
       },
-      onError: () => {
-        setLoading(false);
-      },
+      onError: () => {},
     });
   };
 
@@ -50,6 +45,6 @@ export const useFilterBookForm = ({ onClose, bookData, successFlag }) => {
 
   return {
     formik,
-    loading,
+    loading: isLoading,
   };
 };

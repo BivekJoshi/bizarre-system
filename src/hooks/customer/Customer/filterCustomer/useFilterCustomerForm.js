@@ -10,7 +10,6 @@ export const useFilterCustomerForm = ({
   editSuccessFlag,
 }) => {
   const { mutate, isLoading } = useFilterCustomer({});
-  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -30,15 +29,12 @@ export const useFilterCustomerForm = ({
   });
 
   const handleAddRequest = (values) => {
-    setLoading(true);
     mutate(values, {
       onSuccess: (data) => {
         customerData(data?.data?.data);
         onClose && onClose();
-        setLoading(false);
       },
       onError: () => {
-        setLoading(false);
       },
     });
   };
@@ -54,6 +50,6 @@ export const useFilterCustomerForm = ({
   }, [formik.values.search, successFlag, editSuccessFlag]);
   return {
     formik,
-    loading: isLoading || loading,
+    loading: isLoading,
   };
 };

@@ -5,8 +5,7 @@ import { useGenerateSplitBillBatch } from "../usebatch";
 import { useGetCustomerByMobileNumber } from "../../customer/useCustomer";
 
 export const useGenerateSplitBillForm = ({ batchId, finalBill }) => {
-  const [loading, setLoading] = useState(false);
-  const { mutate } = useGenerateSplitBillBatch({});
+  const { mutate, isLoading } = useGenerateSplitBillBatch({});
 
   const validationSchema = Yup.object({
     // mobileNumbers: Yup.array()
@@ -29,23 +28,19 @@ export const useGenerateSplitBillForm = ({ batchId, finalBill }) => {
   });
 
   const handledAddRequest = (values) => {
-    setLoading(true);
     values = { ...values };
 
     mutate(values, {
       onSuccess: (data) => {
-        setLoading(false);
         formik.resetForm();
         finalBill(data?.data?.data);
       },
-      onError: () => {
-        setLoading(false);
-      },
+      onError: () => {},
     });
   };
 
   return {
     formik,
-    loading,
+    loading: isLoading,
   };
 };

@@ -5,7 +5,6 @@ import { debounce } from "@mui/material";
 
 export const useCashierFilterForm = ({ onClose, memberData, successFlag }) => {
   const { mutate, isLoading } = useFilterMember({});
-  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -28,15 +27,12 @@ export const useCashierFilterForm = ({ onClose, memberData, successFlag }) => {
   });
 
   const handleAddRequest = (values) => {
-    setLoading(true);
     mutate(values, {
       onSuccess: (data) => {
         memberData(data?.data?.data);
         onClose && onClose();
-        setLoading(false);
       },
       onError: () => {
-        setLoading(false);
       },
     });
   };
@@ -53,6 +49,6 @@ export const useCashierFilterForm = ({ onClose, memberData, successFlag }) => {
 
   return {
     formik,
-    loading: isLoading || loading,
+    loading: isLoading ,
   };
 };

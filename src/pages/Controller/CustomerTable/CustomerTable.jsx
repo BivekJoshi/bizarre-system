@@ -24,6 +24,7 @@ import { useFilterCustomerTableForm } from "../../../hooks/customerTable/Custome
 import FilterCustomerTableForm from "./FilterCustomerTableForm";
 import { CustomPaginationUpdated } from "../../../components/Pagination/CustomPaginationUpdated";
 import GpsFixedRoundedIcon from "@mui/icons-material/GpsFixedRounded";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
 const CustomerTable = () => {
   const theme = useTheme();
@@ -75,39 +76,56 @@ const CustomerTable = () => {
     }
   }, []);
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "OCCUPIED":
-        return "error";
-      case "AVAILABLE":
-        return "success";
-      case "RESERVED":
-        return "warning";
-      case "OUT_OF_ORDER":
-        return "secondary";
-      default:
-        return "default";
-    }
+  const STATUS_MAP = {
+    AVAILABLE: { color: "success", label: "Available" },
+    OCCUPIED: { color: "error", label: "Occupied" },
+    RESERVED: { color: "warning", label: "Reserved" },
+    OUT_OF_ORDER: { color: "secondary", label: "Maintenance" },
   };
 
   const columns = useMemo(
     () => [
       {
-        id: nanoid(),
         accessorKey: "tableNumber",
-        header: "Table Number",
-        maxWidth: 80,
-        sortable: false,
+        header: "Table",
+        size: 100, // Better than maxWidth for many MUI table libs
+        Cell: ({ cell }) => (
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+            <Typography variant="body2" sx={{ fontWeight: 600 }}>
+              Table {cell.getValue()}
+            </Typography>
+          </Box>
+        ),
       },
       {
-        id: nanoid(),
         accessorKey: "status",
-        header: "Status",
-        maxWidth: 80,
-        sortable: false,
+        header: "Current Status",
+        size: 150,
         Cell: ({ cell }) => {
-          const data = cell.getValue();
-          return <Chip label={data} color={getStatusColor(data)} />;
+          const val = cell.getValue();
+          const config = STATUS_MAP[val] || { color: "default", label: val };
+
+          return (
+            <Chip
+              label={config.label}
+              color={config.color}
+              size="small"
+              variant="outlined"
+              icon={
+                <FiberManualRecordIcon sx={{ fontSize: "12px !important" }} />
+              }
+              sx={{
+                fontWeight: 700,
+                borderRadius: "6px",
+                textTransform: "uppercase",
+                fontSize: "0.65rem",
+                letterSpacing: 0.5,
+                borderWidth: "1.5px",
+                // Subtle background tint
+                bgcolor: (theme) => `${theme.palette[config.color].main}10`,
+              }}
+            />
+          );
         },
       },
     ],
