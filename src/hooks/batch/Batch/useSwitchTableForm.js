@@ -4,14 +4,11 @@ import { useSwitchTableBatch } from "../usebatch";
 import * as Yup from "yup";
 
 const switchTableSchema = Yup.object().shape({
-  targetTableId: Yup.string()
-    .required("Please Select Target Table"),
+  targetTableId: Yup.string().required("Please Select Target Table"),
 });
 
-
 export const useSwitchTableForm = ({ tableId }) => {
-  const [loading, setLoading] = useState(false);
-  const { mutate } = useSwitchTableBatch({});
+  const { mutate, isLoading } = useSwitchTableBatch({});
 
   const formik = useFormik({
     initialValues: {
@@ -26,17 +23,14 @@ export const useSwitchTableForm = ({ tableId }) => {
   });
 
   const handledAddRequest = (values) => {
-    setLoading(true);
     values = { ...values };
     mutate(values, {
-      onSuccess: () => {
-        setLoading(false);
-      },
+      onSuccess: () => {},
     });
   };
 
   return {
     formik,
-    loading,
+    loading: isLoading,
   };
 };

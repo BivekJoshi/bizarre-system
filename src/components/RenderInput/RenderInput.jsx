@@ -396,7 +396,7 @@ const RenderInput = ({
               required={element.required}
               inputProps={{
                 minLength: element?.min,
-                minLength: element?.max,
+                maxLength: element?.max,
               }}
               variant="outlined"
               error={formTouched && Boolean(formError)}

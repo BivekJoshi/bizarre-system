@@ -5,8 +5,7 @@ import * as Yup from "yup";
 import { useParams } from "react-router-dom";
 
 export const useSplitPayForm = ({ batchId, onClose }) => {
-  const [loading, setLoading] = useState(false);
-  const { mutate } = useSplitPayBatch({});
+  const { mutate, isLoading } = useSplitPayBatch({});
   const { id } = useParams();
 
   const validationSchema = Yup.object({
@@ -30,16 +29,13 @@ export const useSplitPayForm = ({ batchId, onClose }) => {
   });
 
   const handledAddRequest = (values) => {
-    setLoading(true);
     values = { ...values };
     mutate(values, {
       onSuccess: () => {
-        setLoading(false);
         formik.resetForm();
         onClose();
       },
       onError: () => {
-        setLoading(false);
         onClose();
       },
     });
@@ -47,6 +43,6 @@ export const useSplitPayForm = ({ batchId, onClose }) => {
 
   return {
     formik,
-    loading,
+    loading: isLoading,
   };
 };

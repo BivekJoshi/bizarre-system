@@ -5,7 +5,6 @@ import { debounce } from "@mui/material";
 
 export const useFilterBranchForm = ({ onClose, branchData, successFlag }) => {
   const { mutate, isLoading } = useFilterBranch({});
-  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -25,16 +24,12 @@ export const useFilterBranchForm = ({ onClose, branchData, successFlag }) => {
   });
 
   const handleAddRequest = (values) => {
-    setLoading(true);
     mutate(values, {
       onSuccess: (data) => {
         branchData(data?.data?.data);
         onClose && onClose();
-        setLoading(false);
       },
-      onError: () => {
-        setLoading(false);
-      },
+      onError: () => {},
     });
   };
 
@@ -50,6 +45,6 @@ export const useFilterBranchForm = ({ onClose, branchData, successFlag }) => {
 
   return {
     formik,
-    loading: isLoading || loading,
+    loading: isLoading,
   };
 };

@@ -4,8 +4,7 @@ import { useNormalPayBatch } from "../usebatch";
 import { useParams } from "react-router-dom";
 
 export const useNormalPayForm = ({ batchId, onClose }) => {
-  const [loading, setLoading] = useState(false);
-  const { mutate } = useNormalPayBatch({});
+  const { mutate ,isLoading} = useNormalPayBatch({});
   const { id } = useParams();
 
   const formik = useFormik({
@@ -23,11 +22,9 @@ export const useNormalPayForm = ({ batchId, onClose }) => {
   });
 
   const handledAddRequest = (values) => {
-    setLoading(true);
     values = { ...values };
     mutate(values, {
       onSuccess: () => {
-        setLoading(false);
         onClose();
       },
     });
@@ -35,6 +32,6 @@ export const useNormalPayForm = ({ batchId, onClose }) => {
 
   return {
     formik,
-    loading,
+    loading:isLoading,
   };
 };

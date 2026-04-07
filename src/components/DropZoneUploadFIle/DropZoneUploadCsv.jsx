@@ -56,7 +56,7 @@ const DropZoneUploadCsv = ({ onClose }) => {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
 
       if (response.status === 200) {

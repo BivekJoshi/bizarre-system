@@ -6,7 +6,6 @@ import { useParams } from "react-router-dom";
 
 export const useFilterExpenseForm = ({ expenseData, successFlag }) => {
   const { mutate, isLoading } = useFilterExpenses({});
-  const [loading, setLoading] = useState(false);
   const { status, year, month } = useParams();
 
   const currentDate = new Date();
@@ -39,14 +38,11 @@ export const useFilterExpenseForm = ({ expenseData, successFlag }) => {
   });
 
   const handleAddRequest = (values) => {
-    setLoading(true);
     mutate(values, {
       onSuccess: (data) => {
         expenseData(data?.data?.data);
-        setLoading(false);
       },
       onError: () => {
-        setLoading(false);
       },
     });
   };
@@ -63,6 +59,6 @@ export const useFilterExpenseForm = ({ expenseData, successFlag }) => {
 
   return {
     formik,
-    loading,
+    loading:isLoading,
   };
 };

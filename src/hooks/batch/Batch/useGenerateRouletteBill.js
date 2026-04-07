@@ -4,8 +4,7 @@ import { useGenerateRouletteBillBatch } from "../usebatch";
 import * as Yup from "yup";
 
 export const useGenerateRouletteBillForm = ({ batchId }) => {
-  const [loading, setLoading] = useState(false);
-  const { mutate } = useGenerateRouletteBillBatch({});
+  const { mutate, isLoading } = useGenerateRouletteBillBatch({});
 
   const validationSchema = Yup.object({
     mobileNumbers: Yup.array()
@@ -29,21 +28,17 @@ export const useGenerateRouletteBillForm = ({ batchId }) => {
   });
 
   const handledAddRequest = (values) => {
-    setLoading(true);
     values = { ...values };
     mutate(values, {
       onSuccess: () => {
-        setLoading(false);
         formik.resetForm();
       },
-      onError: () => {
-        setLoading(false);
-      },
+      onError: () => {},
     });
   };
 
   return {
     formik,
-    loading,
+    loading: isLoading,
   };
 };

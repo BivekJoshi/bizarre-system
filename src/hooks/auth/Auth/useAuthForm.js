@@ -4,10 +4,9 @@ import { authSchema } from "./authSchema";
 import { useAuth } from "../useAuth";
 
 export const useAuthForm = () => {
-  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const { mutate } = useAuth({});
+  const { mutate, isLoading } = useAuth({});
   const formik = useFormik({
     initialValues: {
       mobileNumber: "",
@@ -15,7 +14,6 @@ export const useAuthForm = () => {
     },
     validationSchema: authSchema,
     onSubmit: (values) => {
-      setLoading(true);
       handleLogin(values);
     },
   });
@@ -24,10 +22,7 @@ export const useAuthForm = () => {
     const { mobileNumber, password } = values;
 
     const trimmedPassword = password.trim();
-    mutate(
-      { mobileNumber, password: trimmedPassword },
-      { onSettled: () => setLoading(false) }
-    );
+    mutate({ mobileNumber, password: trimmedPassword });
   };
 
   const handleMouseDownPassword = (event) => {
@@ -38,7 +33,7 @@ export const useAuthForm = () => {
   };
 
   return {
-    loading,
+    loading: isLoading,
     formik,
     showPassword,
     handleClickShowPassword,

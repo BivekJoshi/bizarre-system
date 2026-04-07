@@ -84,96 +84,181 @@ const Cashier = () => {
     setRowData(row?.original);
   };
 
+  const STATUS_CONFIG = {
+    ACTIVE: { color: "success", label: "Active" },
+    LOCKED: { color: "error", label: "Locked" },
+    INACTIVE: { color: "warning", label: "Inactive" },
+  };
+
   const columns = useMemo(
     () => [
       {
-        id: nanoid(),
-        header: "Name",
-        sortable: false,
+        id: "name",
+        header: "User",
+        size: 200,
         Cell: ({ cell }) => {
           const data = cell.row.original?.user;
           const imageFinal = data?.profilePictureUrl
             ? DOC_URL + data?.profilePictureUrl
             : data?.gender === "MALE"
               ? maleProfile
-              : data?.gender === "FEMALE"
-                ? femaleProfile
-                : null;
+              : femaleProfile;
+
           return (
-            <div style={{ display: "flex", gap: ".5rem" }}>
-              <Avatar alt="Profile Image" src={imageFinal} />
-              <p>{data?.fullName}</p>
-            </div>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+              <Avatar
+                src={imageFinal}
+                sx={{
+                  width: 40,
+                  height: 40,
+                  border: "1px solid",
+                  borderColor: "divider",
+                }}
+              />
+              <Box>
+                <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+                  {data?.fullName}
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  ID: {data?.id?.slice(0, 8)}
+                </Typography>
+              </Box>
+            </Box>
           );
         },
       },
       {
-        id: nanoid(),
-        accessorKey: "user.details",
-        header: "User Details",
-        size: 250,
-        sortable: false,
+        id: "details",
+        header: "Contact & Info",
+        size: 280,
         Cell: ({ row }) => {
           const { gender, birthDate, address, email, mobileNumber } =
             row.original.user;
           return (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.5rem",
-              }}
-            >
-              <div>
-                <strong>Gender:</strong> {gender}
-              </div>
-              <div>
-                <strong>DOB:</strong> {birthDate}
-              </div>
-              <div>
-                <strong>Address:</strong> {address}
-              </div>
-              <div>
-                <strong>Email:</strong> {email}
-              </div>
-              <div>
-                <strong>Mobile:</strong> {mobileNumber}
-              </div>
-            </div>
+            <Box sx={{ display: "flex", flexDirection: "column", py: 0.5 }}>
+              <Typography variant="body2" sx={{ display: "flex", gap: 1 }}>
+                <span style={{ opacity: 0.6, minWidth: "50px" }}>Email:</span>{" "}
+                {email}
+              </Typography>
+              <Typography variant="body2" sx={{ display: "flex", gap: 1 }}>
+                <span style={{ opacity: 0.6, minWidth: "50px" }}>Phone:</span>{" "}
+                {mobileNumber}
+              </Typography>
+              <Box sx={{ mt: 1, display: "flex", gap: 1 }}>
+                <Chip
+                  label={gender}
+                  size="small"
+                  variant="outlined"
+                  sx={{ fontSize: "10px", height: "20px" }}
+                />
+                <Chip
+                  label={birthDate}
+                  size="small"
+                  variant="outlined"
+                  sx={{ fontSize: "10px", height: "20px" }}
+                />
+              </Box>
+            </Box>
           );
         },
       },
       {
-        id: nanoid(),
-        accessorKey: "actions",
-        header: "Status",
-        size: 300,
-        sortable: false,
+        id: "remarks",
+        header: "Remarks",
+        size: 200,
+        Cell: ({ cell }) => {
+          const { unlockedReason, lockedReason, status } =
+            cell.row.original?.user;
+          const isLocked = status === "LOCKED";
+          const reason = isLocked ? lockedReason : unlockedReason;
+
+          if (!reason)
+            return (
+              <Typography variant="caption" color="text.disabled">
+                No remarks
+              </Typography>
+            );
+
+          return (
+            <Box sx={{ maxWidth: "100%" }}>
+              <Typography
+                variant="caption"
+                sx={{
+                  fontWeight: 700,
+                  display: "block",
+                  color: isLocked ? "error.main" : "success.main",
+                  mb: 0.5,
+                }}
+              >
+                {isLocked ? "LOCKED REASON:" : "UNLOCK REASON:"}
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{
+                  fontStyle: "italic",
+                  whiteSpace: "normal",
+                  wordBreak: "break-word",
+                  overflowWrap: "anywhere",
+                  color: "text.primary",
+                  maxWidth: "inherit",
+                }}
+              >
+                "{reason}"
+              </Typography>
+            </Box>
+          );
+        },
+      },
+      {
+        accessorKey: "salary",
+        header: "Monthly Salary",
+        size: 140,
+        sortable: true,
+        Cell: ({ cell }) => {
+          const amount = cell.getValue();
+          return (
+            <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <Typography
+                sx={{
+                  fontWeight: 800,
+                  color: "success.main",
+                  fontSize: "1rem",
+                }}
+              >
+                {amount ? `$${Number(amount).toLocaleString()}` : "—"}
+              </Typography>
+              <Typography variant="caption" color="text.disabled">
+                Gross Pay
+              </Typography>
+            </Box>
+          );
+        },
+      },
+      {
+        id: "status_actions",
+        header: "Status Control",
+        size: 320,
         Cell: ({ row }) => {
+          // Logic remains exactly as you had it
           const userId = row?.original?.user?.id;
           const [anchorEl, setAnchorEl] = useState(null);
           const [showMessageInput, setShowMessageInput] = useState(false);
           const [choose, setChoose] = useState(null);
 
-          const closeShowMessage = () => {
-            setShowMessageInput(false);
-          };
-          const { formik: lockFormik, loading: lockLoading } = useLockUserForm({
+          const closeShowMessage = () => setShowMessageInput(false);
+          const { formik: lockFormik } = useLockUserForm({
             userId,
             closeShowMessage,
             filterFormik,
           });
-          const { formik: unLockFormik, loading: unLockLoading } =
-            useUnLockUserForm({ userId, closeShowMessage, filterFormik });
+          const { formik: unLockFormik } = useUnLockUserForm({
+            userId,
+            closeShowMessage,
+            filterFormik,
+          });
 
-          const handleOpenMenu = (event) => {
-            setAnchorEl(event.currentTarget);
-          };
-
-          const handleCloseMenu = () => {
-            setAnchorEl(null);
-          };
-
+          const handleOpenMenu = (event) => setAnchorEl(event.currentTarget);
+          const handleCloseMenu = () => setAnchorEl(null);
           const handleMenuItemClick = (status) => {
             setShowMessageInput(true);
             handleCloseMenu();
@@ -181,149 +266,135 @@ const Cashier = () => {
           };
 
           const handleMessageSubmit = () => {
-            if (choose === "LOCK") {
-              lockFormik.handleSubmit();
-            } else {
-              unLockFormik.handleSubmit();
-            }
+            choose === "LOCK"
+              ? lockFormik.handleSubmit()
+              : unLockFormik.handleSubmit();
+          };
+
+          const currentStatus = row?.original?.user?.status;
+          const statusStyle = STATUS_CONFIG[currentStatus] || {
+            color: "default",
           };
 
           return (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.5rem",
-              }}
-            >
-              <div style={{ display: "flex", gap: "0.5rem" }}>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.5rem",
-                  }}
-                >
-                  <Tooltip title="Change Status">
-                    <Chip
-                      label={row?.original?.user?.status}
-                      color={
-                        row?.original?.user?.status === "ACTIVE"
-                          ? "primary"
-                          : "warning"
-                      }
-                      onClick={handleOpenMenu}
-                      style={{ cursor: "pointer" }}
-                    />
-                  </Tooltip>
-                  {choose && <div>Change to {choose}</div>}
-                </div>
+            <Box sx={{ width: "100%" }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Tooltip title="Click to change status">
+                  <Chip
+                    label={currentStatus}
+                    color={statusStyle.color}
+                    onClick={handleOpenMenu}
+                    sx={{ fontWeight: 800, cursor: "pointer", px: 1 }}
+                  />
+                </Tooltip>
 
-                <Menu
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleCloseMenu}
+                {choose && showMessageInput && (
+                  <Typography
+                    variant="caption"
+                    sx={{ fontWeight: 600, color: "primary.main" }}
+                  >
+                    → {choose}
+                  </Typography>
+                )}
+              </Box>
+
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleCloseMenu}
+              >
+                <MenuItem
+                  onClick={() =>
+                    handleMenuItemClick(
+                      currentStatus === "ACTIVE" ? "LOCK" : "UNLOCK",
+                    )
+                  }
                 >
-                  {row?.original?.user?.status === "ACTIVE" ? (
-                    <MenuItem onClick={() => handleMenuItemClick("LOCK")}>
-                      Lock
-                    </MenuItem>
-                  ) : (
-                    <MenuItem onClick={() => handleMenuItemClick("UNLOCK")}>
-                      UnLock
-                    </MenuItem>
-                  )}
-                </Menu>
-              </div>
+                  {currentStatus === "ACTIVE" ? "Lock User" : "Unlock User"}
+                </MenuItem>
+              </Menu>
+
               <Collapse in={showMessageInput}>
-                <div
-                  style={{
+                <Box
+                  sx={{
                     display: "flex",
-                    alignItems: "center",
-                    gap: "0.5rem",
-                    marginTop: "0.5rem",
+                    gap: 0.5,
+                    mt: 1.5,
+                    alignItems: "flex-start",
                   }}
                 >
                   <TextField
-                    label="Please enter reson"
+                    placeholder="Reason..."
                     variant="outlined"
                     size="small"
+                    fullWidth
                     value={
                       lockFormik.values.reason ||
                       unLockFormik.values.reason ||
                       ""
                     }
                     onChange={(e) => {
-                      const newValue = e.target.value;
-                      if (choose === "LOCK") {
-                        lockFormik.setFieldValue("reason", newValue);
-                      } else if (choose === "UNLOCK") {
-                        unLockFormik.setFieldValue("reason", newValue);
-                      }
+                      const val = e.target.value;
+                      choose === "LOCK"
+                        ? lockFormik.setFieldValue("reason", val)
+                        : unLockFormik.setFieldValue("reason", val);
                     }}
-                    fullWidth
+                    sx={{ "& .MuiInputBase-input": { fontSize: "12px" } }}
                   />
                   <Button
                     variant="contained"
-                    color="primary"
+                    size="small"
                     onClick={handleMessageSubmit}
+                    sx={{ height: "37px", minWidth: "70px" }}
                   >
                     Submit
                   </Button>
-                </div>
+                </Box>
               </Collapse>
-            </div>
+            </Box>
           );
         },
       },
       {
-        id: nanoid(),
-        header: "Remarks",
-        sortable: false,
-        Cell: ({ cell }) => {
-          const remark = cell.row.original?.user;
-          const { unlockedReason, lockedReason, status } = remark;
-          return (
-            <div>
-              {status === "LOCKED" ? (
-                <>
-                  Locked Reason:{" "}
-                  <span style={{ color: "orange" }}>{lockedReason}</span>
-                </>
-              ) : (
-                unlockedReason && (
-                  <>
-                    UnLock Reason:{" "}
-                    <span style={{ color: "green" }}>{unlockedReason}</span>
-                  </>
-                )
-              )}
-            </div>
-          );
-        },
-      },
-      {
-        id: nanoid(),
-        accessorKey: "documents",
-        header: "Documents",
-        size: 250,
+        id: "documents",
+        header: "Verified Documents",
+        size: 260,
         sortable: false,
         Cell: ({ row }) => {
           const { idFrontUrl, idBackUrl } = row.original;
+
           return (
-            <CustomDocumentView idFrontUrl={idFrontUrl} idBackUrl={idBackUrl} />
+            <Box
+              sx={{
+                p: 1,
+                borderRadius: 2,
+                bgcolor: "grey.50",
+                border: "1px solid",
+                borderColor: "grey.200",
+              }}
+            >
+              <Typography
+                variant="caption"
+                sx={{
+                  display: "block",
+                  mb: 1,
+                  fontWeight: 700,
+                  color: "text.secondary",
+                  textAlign: "center",
+                }}
+              >
+                ID VERIFICATION
+              </Typography>
+              <CustomDocumentView
+                idFrontUrl={idFrontUrl}
+                idBackUrl={idBackUrl}
+              />
+            </Box>
           );
         },
       },
-      {
-        id: nanoid(),
-        accessorKey: "salary",
-        header: "Salary",
-        size: 100,
-        sortable: false,
-      },
     ],
-    [],
+    [filterFormik], // Ensure dependencies are correct
   );
 
   const renderView = () => {

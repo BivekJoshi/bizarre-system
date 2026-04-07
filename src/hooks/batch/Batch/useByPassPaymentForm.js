@@ -4,8 +4,7 @@ import { useByPassPaymentBatch } from "../usebatch";
 import * as Yup from "yup";
 
 export const useByPassPaymentBatchForm = ({ batchId }) => {
-  const [loading, setLoading] = useState(false);
-  const { mutate } = useByPassPaymentBatch({});
+  const { mutate,isLoading } = useByPassPaymentBatch({});
 
   const validationSchema = Yup.object({
     mobileNumber: Yup.string().optional(),
@@ -24,17 +23,15 @@ export const useByPassPaymentBatchForm = ({ batchId }) => {
   });
 
   const handledAddRequest = (values) => {
-    setLoading(true);
     values = { ...values };
     mutate(values, {
       onSuccess: () => {
-        setLoading(false);
       },
     });
   };
 
   return {
     formik,
-    loading,
+    loading:isLoading,
   };
 };

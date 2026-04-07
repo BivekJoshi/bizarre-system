@@ -46,7 +46,6 @@ const AddPromoCode = ({ formik }) => {
         { value: "AMOUNT", label: "Amount", id: nanoid() },
       ],
 
-      required: true,
       xs: 12,
       md: 6,
       lg: 6,

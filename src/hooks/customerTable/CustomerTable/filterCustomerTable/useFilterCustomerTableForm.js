@@ -10,7 +10,6 @@ export const useFilterCustomerTableForm = ({
 }) => {
 
   const { mutate, isLoading } = useFilterCustomerTable({});
-  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -26,15 +25,12 @@ export const useFilterCustomerTableForm = ({
   });
 
   const handleAddRequest = (values) => {
-    setLoading(true);
     mutate(values, {
       onSuccess: (data) => {
         customerTableData(data?.data?.data);
         onClose && onClose();
-        setLoading(false);
       },
       onError: () => {
-        setLoading(false);
       },
     });
   };
@@ -51,6 +47,6 @@ export const useFilterCustomerTableForm = ({
 
   return {
     formik,
-    loading: isLoading || loading,
+    loading: isLoading ,
   };
 };
