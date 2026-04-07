@@ -25,7 +25,7 @@ const AppLayout = () => {
   const handleCloseDrawer = () => setOpenDrawer(false);
 
   return (
-    <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
+    <Box sx={{ display: "flex", height: "100vh" }}>
       {/* --- DESKTOP SIDEBAR (FIXED) --- */}
       {!isMobile && (
         <Box
@@ -47,7 +47,7 @@ const AppLayout = () => {
               display: "flex",
               flexDirection: "column",
               borderRadius: "12px",
-              overflow: "hidden",
+              // overflow: "hidden",
               /* THE REFINED GRADIENT: 
          Starts at a very dark slate and drops to an almost-black charcoal. 
          No bright colors, just depth.
@@ -136,7 +136,6 @@ const AppLayout = () => {
           display: "flex",
           flexDirection: "column",
           height: "100vh",
-          overflow: "hidden",
         }}
         pt={1}
         pr={isMobile ? 1 : 3}
