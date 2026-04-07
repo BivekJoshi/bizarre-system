@@ -47,7 +47,6 @@ const AppLayout = () => {
               display: "flex",
               flexDirection: "column",
               borderRadius: "12px",
-              // overflow: "hidden",
               /* THE REFINED GRADIENT: 
          Starts at a very dark slate and drops to an almost-black charcoal. 
          No bright colors, just depth.
