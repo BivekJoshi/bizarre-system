@@ -1,125 +1,138 @@
 import React from "react";
-import { Paper, Typography, Box, Chip, IconButton } from "@mui/material";
+import {
+  Box,
+  Chip,
+  IconButton,
+  Paper,
+  Stack,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import PeopleIcon from "@mui/icons-material/People";
+import TableRestaurantRoundedIcon from "@mui/icons-material/TableRestaurantRounded";
+
+const STATUS = {
+  OCCUPIED: { color: "error", label: "Occupied", accent: "#EF4444" },
+  AVAILABLE: { color: "success", label: "Available", accent: "#22C55E" },
+  RESERVED: { color: "warning", label: "Reserved", accent: "#F59E0B" },
+  OUT_OF_ORDER: { color: "default", label: "Maintenance", accent: "#94A3B8" },
+};
 
 const CustomerTableCardView = ({ data }) => {
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
+  const borderColor = isDark ? "#262626" : "#E7E5E4";
+  const surfaceAlt = isDark ? "#1F1F1F" : "#F5F5F4";
 
-  const getStatusStyles = (status) => {
-    const configs = {
-      OCCUPIED: { color: "#ef4444", label: "Occupied", bg: "#fef2f2" },
-      AVAILABLE: { color: "#22c55e", label: "Available", bg: "#f0fdf4" },
-      RESERVED: { color: "#f59e0b", label: "Reserved", bg: "#fffbeb" },
-      OUT_OF_ORDER: { color: "#64748b", label: "Maintenance", bg: "#f8fafc" },
-    };
-    return (
-      configs[status] || { color: "#94a3b8", label: status, bg: "#f1f5f9" }
-    );
+  const status = STATUS[data?.status] || {
+    color: "default",
+    label: data?.status || "—",
+    accent: "#94A3B8",
   };
-
-  const status = getStatusStyles(data?.status);
 
   return (
     <Paper
       elevation={0}
       onClick={() => navigate(`${data?.id}`)}
       sx={{
-        p: 2.5,
-        borderRadius: 3,
-        cursor: "pointer",
-        border: "1px solid",
-        borderColor: "divider",
         position: "relative",
-        transition: "all 0.2s ease-in-out",
+        p: 2,
+        pl: 2.5,
+        borderRadius: 2.5,
+        border: `1px solid ${borderColor}`,
+        bgcolor: "background.paper",
+        cursor: "pointer",
         overflow: "hidden",
-        // The accent bar on the left
+        transition: "border-color .15s ease, transform .15s ease",
         "&::before": {
           content: '""',
           position: "absolute",
           left: 0,
           top: 0,
           bottom: 0,
-          width: "6px",
-          backgroundColor: status.color,
+          width: 4,
+          bgcolor: status.accent,
         },
         "&:hover": {
-          transform: "translateY(-4px)",
-          boxShadow: "0 12px 20px -5px rgba(0,0,0,0.1)",
-          borderColor: status.color,
+          borderColor: status.accent,
+          transform: "translateY(-1px)",
         },
       }}
     >
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="flex-start"
-      >
-        <Box>
-          <Typography
-            variant="caption"
-            sx={{
-              textTransform: "uppercase",
-              fontWeight: 700,
-              color: "text.secondary",
-              letterSpacing: 1,
-            }}
-          >
-            TABLE
-          </Typography>
-          <Typography
-            variant="h5"
-            sx={{ fontWeight: 800, color: "text.primary" }}
-          >
-            {data?.tableNumber}
-          </Typography>
-        </Box>
-
-        <Chip
-          label={status.label}
-          size="small"
-          sx={{
-            bgcolor: status.bg,
-            color: status.color,
-            fontWeight: 700,
-            fontSize: "0.7rem",
-            borderRadius: "6px",
-            border: `1px solid ${status.color}33`,
-            "& .MuiChip-label": { px: 1 },
-          }}
-        />
-      </Box>
-
-      <Box
-        display="flex"
+      <Stack
+        direction="row"
+        spacing={1.5}
         alignItems="center"
         justifyContent="space-between"
-        sx={{ mt: 3 }}
       >
-        {/* Meta Info: Seats/Capacity */}
-        {/* <Box
-          display="flex"
-          alignItems="center"
-          gap={0.5}
-          sx={{ color: "text.secondary" }}
-        >
-          <PeopleIcon sx={{ fontSize: 18 }} />
-          <Typography variant="body2" sx={{ fontWeight: 600 }}>
-            {data?.capacity || 4} Seats
-          </Typography>
-        </Box> */}
+        <Stack direction="row" spacing={1.5} alignItems="center" sx={{ minWidth: 0 }}>
+          <Box
+            sx={{
+              width: 40,
+              height: 40,
+              borderRadius: 1.5,
+              bgcolor: surfaceAlt,
+              border: `1px solid ${borderColor}`,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "text.secondary",
+              flexShrink: 0,
+            }}
+          >
+            <TableRestaurantRoundedIcon sx={{ fontSize: 20 }} />
+          </Box>
+          <Box sx={{ minWidth: 0 }}>
+            <Typography
+              variant="overline"
+              sx={{ color: "text.secondary", lineHeight: 1, display: "block" }}
+            >
+              Table
+            </Typography>
+            <Typography
+              variant="h5"
+              sx={{
+                fontWeight: 700,
+                letterSpacing: "-0.02em",
+                lineHeight: 1.1,
+                mt: 0.25,
+              }}
+            >
+              {data?.tableNumber ?? "—"}
+            </Typography>
+          </Box>
+        </Stack>
 
-        <IconButton
-          size="small"
-          sx={{
-            bgcolor: "action.hover",
-            "&:hover": { bgcolor: status.color, color: "white" },
-          }}
-        >
-          <ChevronRightIcon fontSize="small" />
-        </IconButton>
-      </Box>
+        <Stack direction="row" spacing={1} alignItems="center">
+          <Chip
+            size="small"
+            color={status.color}
+            label={status.label}
+            sx={{
+              height: 22,
+              fontWeight: 600,
+              fontSize: "0.65rem",
+              borderRadius: 1,
+            }}
+          />
+          <IconButton
+            size="small"
+            sx={{
+              width: 30,
+              height: 30,
+              border: `1px solid ${borderColor}`,
+              "&:hover": {
+                borderColor: status.accent,
+                color: status.accent,
+              },
+            }}
+          >
+            <ChevronRightIcon sx={{ fontSize: 18 }} />
+          </IconButton>
+        </Stack>
+      </Stack>
     </Paper>
   );
 };

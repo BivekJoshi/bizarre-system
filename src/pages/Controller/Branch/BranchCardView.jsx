@@ -1,138 +1,141 @@
 import React, { useState } from "react";
 import {
-  Paper,
-  Grid,
-  Typography,
-  Box,
   Avatar,
+  Box,
+  Chip,
+  Divider,
+  Paper,
+  Stack,
   Switch,
-  FormControlLabel,
-  IconButton,
+  Typography,
+  useTheme,
 } from "@mui/material";
 import HomeWorkRoundedIcon from "@mui/icons-material/HomeWorkRounded";
-import PhoneRoundedIcon from "@mui/icons-material/PhoneRounded";
+import CallRoundedIcon from "@mui/icons-material/CallRounded";
 import GroupRoundedIcon from "@mui/icons-material/GroupRounded";
-import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
-import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
-import { useTheme } from "@mui/material/styles";
 
-const BranchCardView = ({ data }) => {
+const InfoRow = ({ icon, text }) => {
+  if (!text) return null;
+  return (
+    <Stack direction="row" spacing={1} alignItems="center" sx={{ minWidth: 0 }}>
+      {React.cloneElement(icon, {
+        sx: { fontSize: 16, color: "text.disabled", flexShrink: 0 },
+      })}
+      <Typography
+        variant="body2"
+        sx={{
+          color: "text.primary",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {text}
+      </Typography>
+    </Stack>
+  );
+};
+
+const BranchCardView = ({ data, onToggleStatus }) => {
   const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
+  const borderColor = isDark ? "#262626" : "#E7E5E4";
+  const surfaceAlt = isDark ? "#1F1F1F" : "#F5F5F4";
+
   const [isActive, setIsActive] = useState(data?.status === "ACTIVE");
 
-  const handleToggleStatus = () => {
-    setIsActive((prev) => !prev);
+  const handleToggle = (e) => {
+    setIsActive(e.target.checked);
+    onToggleStatus?.(data, e.target.checked);
   };
 
   return (
     <Paper
-      elevation={3}
-      sx={{ p: 3, borderRadius: "16px", maxWidth: "450px", mx: "auto" }}
+      elevation={0}
+      sx={{
+        p: { xs: 2, sm: 2.5 },
+        borderRadius: 2.5,
+        border: `1px solid ${borderColor}`,
+        bgcolor: "background.paper",
+        transition: "border-color .15s ease",
+        "&:hover": { borderColor: isDark ? "#3a3a3a" : "#D6D3D1" },
+      }}
     >
-      <Grid container spacing={2} alignItems="center">
-        <Grid item xs={12} sm={12} md={3}>
+      <Stack
+        direction="row"
+        spacing={1}
+        alignItems="flex-start"
+        justifyContent="space-between"
+      >
+        <Stack
+          direction="row"
+          spacing={1.75}
+          alignItems="center"
+          sx={{ minWidth: 0 }}
+        >
           <Avatar
+            variant="rounded"
             sx={{
-              bgcolor: theme.palette.primary.main,
-              width: 70,
-              height: 70,
+              width: 48,
+              height: 48,
+              borderRadius: 2,
+              bgcolor: surfaceAlt,
+              color: "primary.main",
+              border: `1px solid ${borderColor}`,
             }}
           >
-            <HomeWorkRoundedIcon fontSize="large" sx={{ color: "white" }} />
+            <HomeWorkRoundedIcon />
           </Avatar>
-        </Grid>
-
-        <Grid item xs={12} sm={9}>
-          <Typography
-            variant="h6"
-            fontWeight="bold"
-            color={theme.palette.text.primary}
-          >
-            {data?.address || "Branch Address"}
-          </Typography>
-
-          <Typography
-            variant="body1"
-            sx={{ display: "flex", alignItems: "center", mt: 1 }}
-          >
-            <PhoneRoundedIcon
-              sx={{ mr: 1, color: theme.palette.primary.main }}
-            />
-            {data?.phoneNumber || "No phone number"}
-          </Typography>
-
-          <Typography
-            variant="body1"
-            sx={{ display: "flex", alignItems: "center", mt: 1 }}
-          >
-            <GroupRoundedIcon
-              sx={{ mr: 1, color: theme.palette.primary.main }}
-            />
-            {`Housing Capacity: ${data?.housingCapacity || 0}`}
-          </Typography>
-        </Grid>
-      </Grid>
-
-      <Box mt={3} display="flex" justifyContent="flex-end" alignItems="center">
-        <FormControlLabel
-          control={
-            <Switch
-              checked={isActive}
-              onChange={handleToggleStatus}
+          <Box sx={{ minWidth: 0 }}>
+            <Typography
+              variant="subtitle1"
+              fontWeight={700}
               sx={{
-                '& .MuiSwitch-switchBase': {
-                  color: isActive ? theme.palette.primary.main : theme.palette.warning.main,
-                  '&.Mui-checked': {
-                    color: theme.palette.primary.main,
-                  },
-                  '&.Mui-checked + .MuiSwitch-track': {
-                    backgroundColor: theme.palette.primary.main,
-                  },
-                },
-                '& .MuiSwitch-track': {
-                  backgroundColor: isActive ? theme.palette.grey[300] : theme.palette.warning.light,
-                  borderRadius: '50px',
-                  boxShadow: `0 2px 5px ${theme.palette.grey[400]}`,
-                },
-                '& .MuiSwitch-thumb': {
-                  borderRadius: '50%',
-                  boxShadow: `0 1px 3px ${theme.palette.grey[500]}`,
-                },
+                lineHeight: 1.25,
+                letterSpacing: "-0.01em",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
               }}
-              icon={
-                <IconButton
-                  sx={{
-                    p: 0,
-                    color: isActive ? 'inherit' : theme.palette.warning.main,
-                  }}
-                >
-                  {isActive ? <CheckCircleRoundedIcon /> : <CancelRoundedIcon />}
-                </IconButton>
-              }
-              checkedIcon={
-                <IconButton
-                  sx={{
-                    p: 0,
-                    color: theme.palette.primary.main,
-                  }}
-                >
-                  <CheckCircleRoundedIcon />
-                </IconButton>
-              }
+            >
+              {data?.address || "Branch"}
+            </Typography>
+            <Chip
+              size="small"
+              label={isActive ? "Active" : "Inactive"}
+              color={isActive ? "success" : "default"}
+              variant={isActive ? "filled" : "outlined"}
+              sx={{
+                mt: 0.5,
+                height: 20,
+                fontSize: "0.65rem",
+                fontWeight: 600,
+                borderRadius: 1,
+              }}
             />
-          }
-          label={isActive ? "Active" : "Inactive"}
-          labelPlacement="start"
-          sx={{
-            color: isActive ? theme.palette.primary.main : theme.palette.warning.main,
-            fontWeight: "bold",
-            '& .MuiFormControlLabel-label': {
-              fontSize: '1rem',
-              marginRight: 2,
-            },
-          }}
+          </Box>
+        </Stack>
+        <Switch
+          size="small"
+          checked={isActive}
+          onChange={handleToggle}
+          color="primary"
         />
-      </Box>
+      </Stack>
+
+      <Divider sx={{ my: 1.75 }} />
+
+      <Stack spacing={1}>
+        <InfoRow icon={<CallRoundedIcon />} text={data?.phoneNumber} />
+        <InfoRow
+          icon={<GroupRoundedIcon />}
+          text={
+            data?.housingCapacity != null
+              ? `Capacity ${data.housingCapacity}`
+              : null
+          }
+        />
+      </Stack>
     </Paper>
   );
 };
