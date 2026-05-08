@@ -1,192 +1,250 @@
 import React from "react";
 import {
-  Card,
-  CardContent,
-  Typography,
-  Divider,
-  Grid,
-  Box,
   Avatar,
+  Box,
+  Chip,
+  Divider,
+  Paper,
+  Stack,
+  Typography,
+  useTheme,
 } from "@mui/material";
-import { CheckCircle } from "@mui/icons-material";
-import CancelIcon from "@mui/icons-material/Cancel";
+import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
+import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
+import StickyNote2RoundedIcon from "@mui/icons-material/StickyNote2Rounded";
+import RestaurantRoundedIcon from "@mui/icons-material/RestaurantRounded";
 import { DOC_URL } from "../../../../api/axiosInterceptor";
 
-const statusOptions = [
-  {
-    label: "Waiting",
-    value: "WAITING",
-    color: "#2980b9",
-    hoverColor: "#3498db",
-  },
-  {
-    label: "Preparing",
-    value: "PREPARING",
-    color: "#27ae60",
-    hoverColor: "#2ecc71",
-  },
-  { label: "Ready", value: "READY", color: "#e67e22", hoverColor: "#f39c12" },
-  { label: "Served", value: "SERVED", color: "#8e44ad", hoverColor: "#9b59b6" },
-  {
-    label: "Canceled",
-    value: "CANCELLED",
-    color: "#c0392b",
-    hoverColor: "#e74c3c",
-  },
-];
+const STATUS_STYLE = {
+  WAITING: { color: "warning", label: "Waiting" },
+  PREPARING: { color: "info", label: "Preparing" },
+  READY: { color: "primary", label: "Ready" },
+  SERVED: { color: "success", label: "Served" },
+  CANCELLED: { color: "error", label: "Cancelled" },
+};
 
 const OrderProcessBaristaCard = ({ data, setRowId }) => {
-  const { item, batch, status } = data;
-  const { name, sellingPrice, stockCount, itemImageUrl, type } = item;
-  const { customerTable, totalBilled, orderCount } = batch;
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
+  const borderColor = isDark ? "#262626" : "#E7E5E4";
+  const remarkBg = isDark ? "rgba(245, 158, 11, 0.10)" : "#FFFBEB";
+  const remarkBorder = isDark ? "rgba(245, 158, 11, 0.30)" : "#FDE68A";
+
+  const { item = {}, batch = {}, status } = data || {};
+  const { name, sellingPrice, itemImageUrl, type } = item;
+  const { customerTable = {}, orderCount } = batch;
+
+  const statusMeta = STATUS_STYLE[status] || { color: "default", label: status };
+  const isFinal = status === "SERVED" || status === "CANCELLED";
+  const isInteractive = !isFinal;
 
   const handleSelectRow = () => {
-    if (status !== "CANCELLED" && status !== "SERVED") {
-      setRowId(data?.id);
-    }
+    if (isInteractive) setRowId?.(data?.id);
   };
 
-  const statusOption = statusOptions.find((option) => option.value === status);
-  const statusColor = statusOption ? statusOption.color : "#3a3a3a";
-  const statusBackground = statusOption
-    ? `${statusOption.hoverColor}1A`
-    : "#f0f0f0";
-
   return (
-    <Card
-      sx={{
-        maxWidth: 450,
-        padding: 0,
-        boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.05)",
-        borderRadius: "16px",
-        border: "1px solid #e0e0e0",
-        position: "relative",
-        transition: "transform 0.3s ease, box-shadow 0.3s ease",
-        "&:hover": {
-          transform: "translateY(-8px)",
-          boxShadow: "0px 12px 36px rgba(0, 0, 0, 0.12)",
-        },
-      }}
+    <Paper
+      elevation={0}
       onClick={handleSelectRow}
+      sx={{
+        position: "relative",
+        p: { xs: 2, sm: 2.5 },
+        borderRadius: 2.5,
+        border: `1px solid ${borderColor}`,
+        bgcolor: "background.paper",
+        cursor: isInteractive ? "pointer" : "default",
+        opacity: isFinal ? 0.92 : 1,
+        transition: "border-color .15s ease, transform .15s ease",
+        "&:hover": isInteractive
+          ? {
+              borderColor: "primary.main",
+              transform: "translateY(-1px)",
+            }
+          : {},
+      }}
     >
-      <CardContent>
-        <Box display="flex" alignItems="center" mb={3}>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="flex-start"
+        spacing={1}
+      >
+        <Stack
+          direction="row"
+          spacing={1.75}
+          alignItems="center"
+          sx={{ minWidth: 0 }}
+        >
           <Avatar
-            src={DOC_URL + itemImageUrl}
+            src={itemImageUrl ? DOC_URL + itemImageUrl : undefined}
             alt={name}
             variant="rounded"
             sx={{
-              width: 72,
-              height: 72,
-              marginRight: 2,
-              border: "2px solid #b3a369",
+              width: 56,
+              height: 56,
+              borderRadius: 2,
+              border: `1px solid ${borderColor}`,
+              bgcolor: isDark ? "#1F1F1F" : "#F5F5F4",
             }}
           />
-          <Box>
+          <Box sx={{ minWidth: 0 }}>
             <Typography
-              variant="h6"
-              sx={{ fontWeight: "bold", color: "#3a3a3a" }}
+              variant="subtitle1"
+              fontWeight={700}
+              sx={{
+                lineHeight: 1.2,
+                letterSpacing: "-0.01em",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
             >
               {name}
             </Typography>
-            <Typography variant="body2" sx={{ color: "#6e6e6e" }}>
-              {type}
-            </Typography>
+            {type && (
+              <Typography
+                variant="caption"
+                sx={{ color: "text.secondary", display: "block", mt: 0.25 }}
+              >
+                {type}
+              </Typography>
+            )}
           </Box>
-        </Box>
+        </Stack>
+        <Chip
+          label={statusMeta.label}
+          color={statusMeta.color}
+          size="small"
+          variant="outlined"
+          sx={{ height: 22, fontSize: "0.65rem", fontWeight: 600 }}
+        />
+      </Stack>
 
-        <Divider sx={{ borderColor: "#e0e0e0", marginY: 2 }} />
-        <Typography
-          variant="body2"
+      {data?.remark && (
+        <Box
           sx={{
-            color: "#3a3a3a",
-            fontWeight: "500",
-            backgroundColor: "#fff5cc",
-            padding: "8px 12px",
-            borderRadius: "8px",
-            marginBottom: "16px",
-            boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+            mt: 1.75,
+            display: "flex",
+            gap: 1,
+            alignItems: "flex-start",
+            p: 1.25,
+            borderRadius: 1.5,
+            border: `1px solid ${remarkBorder}`,
+            bgcolor: remarkBg,
           }}
         >
-          Remarks: {data?.remark}
-        </Typography>
-
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <Typography
-              variant="body2"
-              sx={{ color: "#3a3a3a", fontWeight: "500" }}
-            >
-              <strong>Price: </strong>Rs {sellingPrice}
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{ color: "#3a3a3a", fontWeight: "500" }}
-            >
-              <strong>Table: </strong>
-              {customerTable?.tableNumber}
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{ color: "#3a3a3a", fontWeight: "500" }}
-            >
-              <strong>Order Count: </strong>
-              {orderCount}
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            xs={6}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
+          <StickyNote2RoundedIcon
+            sx={{ fontSize: 16, color: "warning.main", mt: 0.25, flexShrink: 0 }}
+          />
+          <Typography
+            variant="body2"
+            sx={{ color: "text.primary", fontSize: 12.5 }}
           >
-            <Typography
-              variant="body1"
-              fontWeight="bold"
-              color={statusColor}
-              sx={{
-                backgroundColor: statusBackground,
-                padding: "4px 10px",
-                borderRadius: "16px",
-                border: `1px solid ${statusColor}`,
-                textAlign: "center",
-                minWidth: "100px",
-              }}
-            >
-              {status}
-            </Typography>
-          </Grid>
-        </Grid>
+            {data.remark}
+          </Typography>
+        </Box>
+      )}
 
-        {status === "SERVED" && (
-          <CheckCircle
-            sx={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              color: "green",
-              fontSize: 50,
-              opacity: 0.8,
-            }}
-          />
-        )}
-        {status === "CANCELLED" && (
-          <CancelIcon
-            sx={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              color: "#c0392b",
-              fontSize: 50,
-              opacity: 0.8,
-            }}
-          />
-        )}
-      </CardContent>
-    </Card>
+      <Divider sx={{ my: 1.75 }} />
+
+      <Stack direction="row" spacing={2.5}>
+        <Box>
+          <Typography
+            variant="caption"
+            sx={{ color: "text.secondary", display: "block" }}
+          >
+            Price
+          </Typography>
+          <Typography variant="body2" fontWeight={600}>
+            Rs {sellingPrice ?? 0}
+          </Typography>
+        </Box>
+        <Box>
+          <Typography
+            variant="caption"
+            sx={{ color: "text.secondary", display: "block" }}
+          >
+            Table
+          </Typography>
+          <Stack direction="row" alignItems="center" spacing={0.5}>
+            <RestaurantRoundedIcon
+              sx={{ fontSize: 14, color: "text.disabled" }}
+            />
+            <Typography variant="body2" fontWeight={600}>
+              {customerTable?.tableNumber ?? "—"}
+            </Typography>
+          </Stack>
+        </Box>
+        <Box>
+          <Typography
+            variant="caption"
+            sx={{ color: "text.secondary", display: "block" }}
+          >
+            Orders
+          </Typography>
+          <Typography variant="body2" fontWeight={600}>
+            {orderCount ?? 0}
+          </Typography>
+        </Box>
+      </Stack>
+
+      {status === "SERVED" && (
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%) rotate(-12deg)",
+            border: "2px solid",
+            borderColor: "success.main",
+            color: "success.main",
+            px: 1.25,
+            py: 0.25,
+            borderRadius: 1,
+            fontWeight: 700,
+            fontSize: 12,
+            letterSpacing: "0.08em",
+            opacity: 0.6,
+            pointerEvents: "none",
+            display: "flex",
+            alignItems: "center",
+            gap: 0.5,
+            bgcolor: "background.paper",
+          }}
+        >
+          <CheckCircleRoundedIcon sx={{ fontSize: 14 }} />
+          SERVED
+        </Box>
+      )}
+      {status === "CANCELLED" && (
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%) rotate(-12deg)",
+            border: "2px solid",
+            borderColor: "error.main",
+            color: "error.main",
+            px: 1.25,
+            py: 0.25,
+            borderRadius: 1,
+            fontWeight: 700,
+            fontSize: 12,
+            letterSpacing: "0.08em",
+            opacity: 0.65,
+            pointerEvents: "none",
+            display: "flex",
+            alignItems: "center",
+            gap: 0.5,
+            bgcolor: "background.paper",
+          }}
+        >
+          <CancelRoundedIcon sx={{ fontSize: 14 }} />
+          CANCELLED
+        </Box>
+      )}
+    </Paper>
   );
 };
 

@@ -3,10 +3,11 @@ import {
   Pagination,
   Box,
   FormControl,
-  InputLabel,
   MenuItem,
   Select,
+  Typography,
   useTheme,
+  useMediaQuery,
 } from "@mui/material";
 
 export const CustomPaginationUpdated = ({
@@ -19,8 +20,11 @@ export const CustomPaginationUpdated = ({
   backgroundColor,
 }) => {
   const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const borderColor = isDark ? "#262626" : "#E7E5E4";
 
-  const handlePageChange = (event, newPage) => {
+  const handlePageChange = (_event, newPage) => {
     filterFormik.setFieldValue("pageNumber", newPage);
     window.scrollTo(0, 0);
     filterFormik.handleSubmit();
@@ -28,8 +32,6 @@ export const CustomPaginationUpdated = ({
 
   const handleRowsPerPageChange = (event) => {
     const newSize = event.target.value;
-    // filterFormik.setFieldValue("pageable.pageSize", newSize);
-    // filterFormik.setFieldValue("pageable.pageNumber", 1);
     filterFormik.setFieldValue("noOfRecords", newSize);
     filterFormik.handleSubmit();
   };
@@ -42,44 +44,59 @@ export const CustomPaginationUpdated = ({
   return (
     <Box
       sx={{
-        backgroundColor: backgroundColor
-          ? backgroundColor
-          : theme.palette.background.default,
-        padding: "1rem",
+        bgcolor: backgroundColor || "background.paper",
+        px: { xs: 1, sm: 2 },
+        py: 1.25,
         display: "flex",
+        flexWrap: "wrap",
         justifyContent: "space-between",
         alignItems: "center",
-        flexWrap: { xs: "wrap", sm: "nowrap" },
-        gap: "1rem",
+        gap: 1.5,
+        borderTop: `1px solid ${borderColor}`,
       }}
     >
-      <Box sx={{ minWidth: "150px" }} aria-label="Total Elements">
-        Total Elements: {totalElements}
-      </Box>
+      <Typography
+        variant="caption"
+        sx={{
+          color: "text.secondary",
+          minWidth: { xs: "auto", sm: 120 },
+        }}
+      >
+        Total:{" "}
+        <Box component="span" sx={{ fontWeight: 600, color: "text.primary" }}>
+          {totalElements}
+        </Box>
+      </Typography>
       <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}>
         <Pagination
           count={totalPages || 1}
           page={normalizedCurrentPage}
           onChange={handlePageChange}
           color="primary"
-          showFirstButton
-          showLastButton
+          size="small"
+          shape="rounded"
+          showFirstButton={!isMobile}
+          showLastButton={!isMobile}
+          siblingCount={isMobile ? 0 : 1}
           aria-label="Pagination Navigation"
+          sx={{
+            "& .MuiPaginationItem-root": {
+              fontWeight: 500,
+              borderRadius: 1.5,
+            },
+          }}
         />
       </Box>
-      <FormControl variant="outlined" size="small" sx={{ minWidth: "150px" }}>
-        <InputLabel id="rows-per-page-label">Rows per page</InputLabel>
+      <FormControl variant="outlined" size="small">
         <Select
-          labelId="rows-per-page-label"
           value={rowsPerPage}
           onChange={handleRowsPerPageChange}
-          label="Rows per page"
           aria-label="Rows per page"
-          sx={{ width: { xs: "150px", sm: "200px" } }}
+          sx={{ width: { xs: 110, sm: 130 }, height: 34 }}
         >
           {rowsPerPageOptions.map((option) => (
             <MenuItem key={option} value={option}>
-              {option}
+              {option} / page
             </MenuItem>
           ))}
         </Select>

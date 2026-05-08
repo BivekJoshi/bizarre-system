@@ -11,18 +11,18 @@ export const getInventoryFind = async (pageNumber, pageSize) => {
   }
 };
 
-/*________________________GET_BY_INVENTORY_ID_____________________________________*/
-// export const addInventoryByItemId = async (itemId) => {
-//   if (itemId) {
-//     const { data } = await axiosInstance.get(`${INVENTORY}/add-item/${itemId}`);
-//     return data;
-//   }
-// };
+/*________________________SAVE_INVENTORY_____________________________________*/
+// POST /inventory/save with body {itemId, stockQuantity, reorderLevel,
+// maxStockLevel, leadTimeDays}. Replaces the legacy GET /add-item/{itemId}.
 export const addInventoryByItemId = async (formData) => {
-  const data = await axiosInstance.get(
-    `${INVENTORY}/add-item/${formData?.itemId}`,
-    formData
-  );
+  const payload = {
+    itemId: formData?.itemId,
+    stockQuantity: Number(formData?.stockQuantity) || 0,
+    reorderLevel: Number(formData?.reorderLevel) || 0,
+    maxStockLevel: Number(formData?.maxStockLevel) || 0,
+    leadTimeDays: Number(formData?.leadTimeDays) || 0,
+  };
+  const data = await axiosInstance.post(`${INVENTORY}/save`, payload);
   return data;
 };
 

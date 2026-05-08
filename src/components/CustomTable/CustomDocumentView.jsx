@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  Typography,
-  IconButton,
-  Tooltip,
-  Zoom,
-} from "@mui/material";
+import { Box, Button, Stack, Typography, useTheme } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import CloseIcon from "@mui/icons-material/Close";
@@ -14,13 +7,18 @@ import { DOC_URL } from "../../api/axiosInterceptor";
 import FormModal from "../Modal/FormModal";
 
 const CustomDocumentView = ({ idFrontUrl, idBackUrl }) => {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
+  const borderColor = isDark ? "#262626" : "#E7E5E4";
+  const placeholderBg = isDark ? "#1F1F1F" : "#F5F5F4";
+
   const [openBigImage, setOpenBigImage] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
   const documents = [
-    { url: idFrontUrl, label: "Front Side" },
-    { url: idBackUrl, label: "Back Side" },
+    { url: idFrontUrl, label: "Front" },
+    { url: idBackUrl, label: "Back" },
   ];
 
   const handleImageClick = (imageUrl) => {
@@ -33,7 +31,7 @@ const CustomDocumentView = ({ idFrontUrl, idBackUrl }) => {
   };
 
   return (
-    <Box sx={{ display: "flex", gap: 1.5 }}>
+    <Box sx={{ display: "flex", gap: 1.25 }}>
       {documents.map((doc, index) => (
         <Box
           key={index}
@@ -43,74 +41,79 @@ const CustomDocumentView = ({ idFrontUrl, idBackUrl }) => {
           sx={{
             position: "relative",
             width: 110,
-            height: 75, // Aspect ratio closer to a real ID card
-            borderRadius: 2,
+            height: 75,
+            borderRadius: 1.5,
             overflow: "hidden",
             cursor: doc.url ? "pointer" : "default",
-            border: "1px solid",
-            borderColor: "divider",
-            bgcolor: "grey.100",
-            transition: "all 0.3s ease",
-            boxShadow: hoveredIndex === index ? 4 : 0,
-            "&:hover": { borderColor: "primary.main" },
+            border: `1px solid ${borderColor}`,
+            bgcolor: placeholderBg,
+            transition: "border-color .15s ease",
+            "&:hover": {
+              borderColor: doc.url ? "primary.main" : borderColor,
+            },
           }}
         >
           {doc.url ? (
             <>
-              <img
+              <Box
+                component="img"
                 src={DOC_URL + doc.url}
                 alt={doc.label}
-                style={{
+                sx={{
                   width: "100%",
                   height: "100%",
                   objectFit: "cover",
-                  transform: hoveredIndex === index ? "scale(1.1)" : "scale(1)",
-                  transition: "transform 0.5s ease",
+                  transform:
+                    hoveredIndex === index ? "scale(1.04)" : "scale(1)",
+                  transition: "transform .25s ease",
                 }}
               />
-              {/* Modern Overlay */}
               <Box
                 sx={{
                   position: "absolute",
                   inset: 0,
-                  bgcolor: "rgba(0, 0, 0, 0.4)",
+                  bgcolor: "rgba(15,23,42,0.45)",
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
                   opacity: hoveredIndex === index ? 1 : 0,
-                  transition: "opacity 0.3s ease",
-                  backdropFilter: "blur(2px)",
+                  transition: "opacity .15s ease",
                 }}
               >
                 <VisibilityIcon
-                  sx={{ color: "white", fontSize: "1.5rem", mb: 0.5 }}
+                  sx={{ color: "#fff", fontSize: 18, mb: 0.25 }}
                 />
                 <Typography
                   variant="caption"
-                  sx={{ color: "white", fontWeight: 700, fontSize: "0.65rem" }}
+                  sx={{
+                    color: "#fff",
+                    fontWeight: 600,
+                    fontSize: "0.65rem",
+                    letterSpacing: "0.06em",
+                  }}
                 >
                   VIEW
                 </Typography>
               </Box>
-              {/* Label Badge */}
               <Box
                 sx={{
                   position: "absolute",
                   bottom: 0,
                   left: 0,
                   right: 0,
-                  bgcolor: "rgba(0,0,0,0.6)",
-                  py: 0.2,
+                  bgcolor: "rgba(15,23,42,0.55)",
+                  py: 0.25,
                   textAlign: "center",
                   display: hoveredIndex === index ? "none" : "block",
                 }}
               >
                 <Typography
                   sx={{
-                    color: "white",
+                    color: "#fff",
                     fontSize: "0.6rem",
-                    fontWeight: 700,
+                    fontWeight: 600,
+                    letterSpacing: "0.06em",
                     textTransform: "uppercase",
                   }}
                 >
@@ -130,7 +133,7 @@ const CustomDocumentView = ({ idFrontUrl, idBackUrl }) => {
               <Typography
                 variant="caption"
                 color="text.disabled"
-                sx={{ fontWeight: 600 }}
+                sx={{ fontWeight: 600, letterSpacing: "0.06em" }}
               >
                 MISSING
               </Typography>
@@ -142,37 +145,43 @@ const CustomDocumentView = ({ idFrontUrl, idBackUrl }) => {
       <FormModal
         open={openBigImage}
         onClose={() => setOpenBigImage(false)}
-        width={"40%"}
-        height={"auto"}
-        header={"Document Preview"}
+        width="min(560px, 92vw)"
+        height="auto"
+        header="Document Preview"
         formComponent={
-          <Box sx={{ position: "relative", textAlign: "center" }}>
+          <Box>
             <Box
               sx={{
                 mb: 2,
-                borderRadius: 2,
+                borderRadius: 1.5,
                 overflow: "hidden",
-                border: "1px solid",
-                borderColor: "divider",
-                height:"300px",
-                width:"100%",
-                display:"flex",
-                justifyContent:"center"
+                border: `1px solid ${borderColor}`,
+                height: 320,
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                bgcolor: placeholderBg,
               }}
             >
-              <img
+              <Box
+                component="img"
                 src={selectedImage}
                 alt="Enlarged Document"
-                style={{ height: "100%", display: "block" }}
+                sx={{
+                  maxHeight: "100%",
+                  maxWidth: "100%",
+                  display: "block",
+                  objectFit: "contain",
+                }}
               />
             </Box>
 
-            <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
+            <Stack direction="row" spacing={1} justifyContent="flex-end">
               <Button
                 variant="outlined"
                 startIcon={<CloseIcon />}
                 onClick={() => setOpenBigImage(false)}
-                sx={{ borderRadius: 2 }}
               >
                 Close
               </Button>
@@ -180,11 +189,10 @@ const CustomDocumentView = ({ idFrontUrl, idBackUrl }) => {
                 variant="contained"
                 startIcon={<OpenInNewIcon />}
                 onClick={handleViewInNewTab}
-                sx={{ borderRadius: 2, px: 4 }}
               >
                 Open Original
               </Button>
-            </Box>
+            </Stack>
           </Box>
         }
       />

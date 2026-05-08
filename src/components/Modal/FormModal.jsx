@@ -1,18 +1,17 @@
 import React from "react";
 import {
   Box,
-  Button,
-  Grid,
+  Divider,
   IconButton,
   Modal,
+  Stack,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import HighlightOffRoundedIcon from "@mui/icons-material/HighlightOffRounded";
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
-import { LoadingButton } from "@mui/lab";
 import CustomButton from "../Button/CustomButton";
 
 const FormModal = ({
@@ -30,24 +29,35 @@ const FormModal = ({
   isEditModalOpen,
 }) => {
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const isDark = theme.palette.mode === "dark";
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const borderColor = isDark ? "#262626" : "#E7E5E4";
+
+  // Prefer the explicit `loading` prop when consumers wire it to a mutation
+  // hook; otherwise fall back to formik's own submit state so callers don't
+  // have to thread loading flags through manually.
+  const effectiveLoading =
+    loading !== undefined ? loading : !!formik?.isSubmitting;
 
   const style = {
     position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width:
-      isSmallScreen || isMediumScreen ? "90%" : width ? width : "max-content",
-    height: height ? height : "-webkit-fill-available",
-    maxHeight: maxHeight && maxHeight,
+    width: isSmallScreen ? "94%" : width || "min(640px, 92vw)",
+    maxWidth: "94vw",
+    maxHeight: maxHeight || (isSmallScreen ? "92vh" : "88vh"),
+    height: height,
     borderRadius: 2,
-    boxShadow: 24,
-    p: 2,
-    background: theme.palette.background.default,
-    overflow: "auto",
-    color: theme.palette.text.default,
+    border: `1px solid ${borderColor}`,
+    background: theme.palette.background.paper,
+    color: theme.palette.text.primary,
+    boxShadow:
+      "0 12px 48px rgba(15, 23, 42, 0.18), 0 2px 6px rgba(15, 23, 42, 0.06)",
+    display: "flex",
+    flexDirection: "column",
+    outline: "none",
+    overflow: "hidden",
   };
 
   return (
@@ -60,82 +70,72 @@ const FormModal = ({
     >
       <Box sx={style}>
         {header && (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              px: 2.5,
+              py: 1.5,
+              borderBottom: `1px solid ${borderColor}`,
+              flexShrink: 0,
+            }}
+          >
+            <Typography
+              variant="h5"
+              sx={{ fontWeight: 700, letterSpacing: "-0.01em" }}
+            >
+              {header}
+            </Typography>
+            <IconButton size="small" onClick={onClose}>
+              <CloseRoundedIcon fontSize="small" />
+            </IconButton>
+          </Box>
+        )}
+
+        <Box
+          sx={{
+            flex: 1,
+            overflowY: "auto",
+            WebkitOverflowScrolling: "touch",
+            px: 2.5,
+            py: 2,
+          }}
+        >
+          {formComponent}
+        </Box>
+
+        {showButton && (
           <>
-            <Grid
-              container
+            <Divider />
+            <Stack
+              direction="row"
+              spacing={1}
+              justifyContent="flex-end"
               sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
+                px: 2.5,
+                py: 1.5,
+                bgcolor: isDark ? "#161616" : "#FAFAF9",
+                flexShrink: 0,
               }}
             >
-              <Grid item>
-                <Typography variant="h5" sx={{ fontWeight: 700 }}>
-                  {header}
-                </Typography>
-              </Grid>
-              <Grid>
-                <IconButton
-                  onClick={() => {
-                    onClose();
-                  }}
-                >
-                  <CloseIcon />
-                </IconButton>
-              </Grid>
-            </Grid>
-            <div style={{ border: "1px solid grey" }}></div>
-            <br />
+              <CustomButton
+                variant="outlined"
+                title="Close"
+                onClick={onClose}
+                startIcon={<HighlightOffRoundedIcon />}
+              />
+              <CustomButton
+                variant="contained"
+                color="primary"
+                title={isEditModalOpen ? "Update" : "Add"}
+                loading={effectiveLoading}
+                startIcon={<ControlPointRoundedIcon />}
+                onClick={() => formik?.handleSubmit()}
+              />
+            </Stack>
           </>
         )}
-        {formComponent}
-        {showButton ? (
-          <>
-            <Grid
-              container
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "end",
-                alignItems: "center",
-                gap: "1rem",
-                marginTop: "1rem",
-              }}
-            >
-              <Grid item>
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={() => {
-                    onClose();
-                  }}
-                  startIcon={<HighlightOffRoundedIcon />}
-                >
-                  Close
-                </Button>
-              </Grid>
-              <Grid>
-                {/* <LoadingButton
-                  loading={loading}
-                  onClick={() => formik.handleSubmit()}
-                  variant={"outlined"}
-                  Width={"-webkit-fill-available"}
-                  startIcon={<ControlPointRoundedIcon />}
-                >
-                  {isEditModalOpen ? "Update" : "Add"}
-                </LoadingButton> */}
-                <CustomButton
-                  color="success"
-                  title={isEditModalOpen ? "Update" : "Add"}
-                  loading={loading}
-                  startIcon={<ControlPointRoundedIcon />}
-                  onClick={() => formik.handleSubmit()}
-                />
-              </Grid>
-            </Grid>
-          </>
-        ) : null}
       </Box>
     </Modal>
   );

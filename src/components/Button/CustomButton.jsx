@@ -24,9 +24,18 @@ const CustomButton = ({
       disabled={disabled || loading}
       onClick={onClick}
       startIcon={!loading ? startIcon : null}
+      endIcon={!loading ? endIcon : null}
+      disableElevation
+      sx={{
+        textTransform: "none",
+        fontWeight: 600,
+        borderRadius: 2,
+        whiteSpace: "nowrap",
+        ...sx,
+      }}
       {...props}
     >
-      {loading ? <CircularProgress size={20} color="inherit" /> : title}
+      {loading ? <CircularProgress size={18} color="inherit" /> : title}
     </Button>
   );
 };

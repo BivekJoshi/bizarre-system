@@ -1,136 +1,186 @@
 import React from "react";
 import {
-  Card,
-  CardContent,
-  Typography,
-  Divider,
-  Grid,
-  Box,
   Avatar,
-  Button,
+  Box,
+  Chip,
+  Divider,
+  Paper,
+  Stack,
+  Typography,
+  useTheme,
 } from "@mui/material";
+import RestaurantRoundedIcon from "@mui/icons-material/RestaurantRounded";
+import StorefrontRoundedIcon from "@mui/icons-material/StorefrontRounded";
+import CallRoundedIcon from "@mui/icons-material/CallRounded";
 import { DOC_URL } from "../../../api/axiosInterceptor";
 
+const STATUS_STYLE = {
+  WAITING: { color: "warning", label: "Waiting" },
+  PREPARING: { color: "info", label: "Preparing" },
+  READY: { color: "primary", label: "Ready" },
+  SERVED: { color: "success", label: "Served" },
+  CANCELLED: { color: "error", label: "Cancelled" },
+};
+
 const OrderCardView = ({ data }) => {
-  const { item, batch, status } = data;
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
+  const borderColor = isDark ? "#262626" : "#E7E5E4";
 
+  const { item = {}, batch = {}, status } = data || {};
   const { name, sellingPrice, stockCount, itemImageUrl, type } = item;
-
-  const { customerTable, totalBilled, orderCount } = batch;
-
-  const { tableNumber, branch } = customerTable;
+  const { customerTable = {}, totalBilled, orderCount } = batch;
+  const { tableNumber, branch = {} } = customerTable;
   const { address, phoneNumber } = branch;
 
+  const statusMeta = STATUS_STYLE[status] || { color: "default", label: status };
+
   return (
-    <Card
+    <Paper
+      elevation={0}
       sx={{
-        maxWidth: 450,
-        margin: "20px auto",
-        padding: 2,
-        boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.05)",
-        borderRadius: "16px",
-        border: "1px solid #e0e0e0",
-        transition: "transform 0.3s ease, box-shadow 0.3s ease",
-        "&:hover": {
-          transform: "translateY(-8px)",
-          boxShadow: "0px 12px 36px rgba(0, 0, 0, 0.12)",
-        },
+        p: { xs: 2, sm: 2.5 },
+        borderRadius: 2.5,
+        border: `1px solid ${borderColor}`,
+        bgcolor: "background.paper",
+        transition: "border-color .15s ease",
+        "&:hover": { borderColor: isDark ? "#3a3a3a" : "#D6D3D1" },
       }}
     >
-      <CardContent>
-        <Box display="flex" alignItems="center" mb={3}>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="flex-start"
+        spacing={1}
+      >
+        <Stack direction="row" spacing={1.75} alignItems="center" sx={{ minWidth: 0 }}>
           <Avatar
-            src={DOC_URL + itemImageUrl}
+            src={itemImageUrl ? DOC_URL + itemImageUrl : undefined}
             alt={name}
             variant="rounded"
             sx={{
-              width: 72,
-              height: 72,
-              marginRight: 2,
-              border: "2px solid #b3a369",
+              width: 56,
+              height: 56,
+              borderRadius: 2,
+              border: `1px solid ${borderColor}`,
+              bgcolor: isDark ? "#1F1F1F" : "#F5F5F4",
             }}
           />
-          <Box>
+          <Box sx={{ minWidth: 0 }}>
             <Typography
-              variant="h6"
-              sx={{ fontWeight: "bold", color: "#3a3a3a" }}
+              variant="subtitle1"
+              fontWeight={700}
+              sx={{
+                lineHeight: 1.2,
+                letterSpacing: "-0.01em",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
             >
               {name}
             </Typography>
-            <Typography variant="body2" sx={{ color: "#6e6e6e" }}>
-              {type}
+            {type && (
+              <Typography
+                variant="caption"
+                sx={{ color: "text.secondary", display: "block", mt: 0.25 }}
+              >
+                {type}
+              </Typography>
+            )}
+          </Box>
+        </Stack>
+        <Chip
+          label={statusMeta.label}
+          color={statusMeta.color}
+          size="small"
+          variant="outlined"
+          sx={{ height: 22, fontSize: "0.65rem", fontWeight: 600 }}
+        />
+      </Stack>
+
+      <Divider sx={{ my: 1.75 }} />
+
+      <Stack spacing={0.85}>
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <RestaurantRoundedIcon sx={{ fontSize: 16, color: "text.disabled" }} />
+          <Typography variant="body2" sx={{ color: "text.secondary" }}>
+            Table{" "}
+            <Box component="span" sx={{ fontWeight: 600, color: "text.primary" }}>
+              {tableNumber || "—"}
+            </Box>
+            <Box component="span" sx={{ mx: 1, color: "text.disabled" }}>
+              ·
+            </Box>
+            Orders{" "}
+            <Box component="span" sx={{ fontWeight: 600, color: "text.primary" }}>
+              {orderCount ?? 0}
+            </Box>
+          </Typography>
+        </Stack>
+        {address && (
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <StorefrontRoundedIcon sx={{ fontSize: 16, color: "text.disabled" }} />
+            <Typography variant="body2" sx={{ color: "text.secondary" }}>
+              {address}
+            </Typography>
+          </Stack>
+        )}
+        {phoneNumber && (
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <CallRoundedIcon sx={{ fontSize: 16, color: "text.disabled" }} />
+            <Typography variant="body2" sx={{ color: "text.secondary" }}>
+              {phoneNumber}
+            </Typography>
+          </Stack>
+        )}
+      </Stack>
+
+      <Divider sx={{ my: 1.75 }} />
+
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        spacing={1}
+      >
+        <Stack direction="row" spacing={2.5}>
+          <Box>
+            <Typography
+              variant="caption"
+              sx={{ color: "text.secondary", display: "block" }}
+            >
+              Price
+            </Typography>
+            <Typography variant="body2" fontWeight={600}>
+              Rs {sellingPrice ?? 0}
             </Typography>
           </Box>
-        </Box>
-
-        <Divider sx={{ borderColor: "#e0e0e0", marginY: 2 }} />
-
-        <Box mb={2}>
-          <Typography
-            variant="subtitle2"
-            sx={{ color: "#3a3a3a", fontWeight: "500" }}
-          >
-            Table: <strong>{tableNumber}</strong> | Orders: {orderCount}
-          </Typography>
-          <Typography variant="body2" sx={{ color: "#9e9e9e" }}>
-            Branch: {address}
-          </Typography>
-          <Typography variant="body2" sx={{ color: "#9e9e9e" }}>
-            Phone: {phoneNumber}
-          </Typography>
-        </Box>
-
-        <Divider sx={{ borderColor: "#e0e0e0", marginY: 2 }} />
-
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
+          <Box>
             <Typography
-              variant="body2"
-              sx={{ color: "#3a3a3a", fontWeight: "500" }}
+              variant="caption"
+              sx={{ color: "text.secondary", display: "block" }}
             >
-              <strong>Price: </strong>Rs {sellingPrice}
+              Stock
             </Typography>
+            <Typography variant="body2" fontWeight={600}>
+              {stockCount ?? 0}
+            </Typography>
+          </Box>
+          <Box>
             <Typography
-              variant="body2"
-              sx={{ color: "#3a3a3a", fontWeight: "500" }}
+              variant="caption"
+              sx={{ color: "text.secondary", display: "block" }}
             >
-              <strong>Stock: </strong>
-              {stockCount}
+              Billed
             </Typography>
-            <Typography
-              variant="body2"
-              sx={{ color: "#3a3a3a", fontWeight: "500" }}
-            >
-              <strong>Total Billed: </strong>${totalBilled}
+            <Typography variant="body2" fontWeight={600}>
+              Rs {totalBilled ?? 0}
             </Typography>
-          </Grid>
-          <Grid
-            item
-            xs={6}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Typography
-              variant="body1"
-              fontWeight="bold"
-              color={status === "WAITING" ? "#d1a754" : "#3a3a3a"}
-              sx={{
-                backgroundColor: status === "WAITING" ? "#fff7e6" : "#f0f0f0",
-                padding: "6px 12px",
-                borderRadius: "16px",
-                border: "1px solid",
-                borderColor: status === "WAITING" ? "#d1a754" : "#b3b3b3",
-                textAlign: "center",
-                minWidth: "100px",
-              }}
-            >
-              {status}
-            </Typography>
-          </Grid>
-        </Grid>
-      </CardContent>
-    </Card>
+          </Box>
+        </Stack>
+      </Stack>
+    </Paper>
   );
 };
 

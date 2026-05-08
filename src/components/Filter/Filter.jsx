@@ -1,59 +1,114 @@
 import {
   Box,
+  IconButton,
+  InputAdornment,
+  Stack,
   TextField,
-  Typography,
+  Tooltip,
   useTheme,
-  MenuItem,
-  Select,
-  FormControl,
-  InputLabel,
 } from "@mui/material";
-import React, { useState } from "react";
+import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
+import React from "react";
 
-const Filter = () => {
+/**
+ * Composable filter bar. Renders an optional search box and any children
+ * (selects, chips, date pickers) on a single row. On mobile the search
+ * spans the full row and the children flow underneath.
+ *
+ * Backward compatible — accepts no props and renders an empty bar.
+ */
+const Filter = ({
+  searchValue,
+  onSearchChange,
+  searchPlaceholder = "Search…",
+  showSearch = true,
+  onToggleAdvanced,
+  sticky = false,
+  top = 0,
+  children,
+  sx = {},
+}) => {
   const theme = useTheme();
-  const [selectedOption, setSelectedOption] = useState("");
-  console.log("🚀 ~ Filter ~ selectedOption:", selectedOption);
-
-  const handleSelectChange = (event) => {
-    setSelectedOption(event.target.value);
-  };
+  const isDark = theme.palette.mode === "dark";
+  const borderColor = isDark ? "#262626" : "#E7E5E4";
 
   return (
     <Box
-      display="flex"
-      flexWrap="wrap"
-      justifyContent="space-between"
-      alignItems="center"
-      mt={3}
       sx={{
-        backgroundColor: theme.palette.background.default,
-        padding: "1rem",
+        position: sticky ? "sticky" : "relative",
+        top: sticky ? top : "auto",
+        zIndex: 4,
+        bgcolor: "background.default",
+        borderBottom: sticky ? `1px solid ${borderColor}` : "none",
+        py: 1,
+        ...sx,
       }}
     >
-      <Typography
-        variant="h5"
-        sx={{
-          color: theme.palette.text.default,
-          fontWeight: 700,
-        }}
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        spacing={1}
+        alignItems={{ xs: "stretch", sm: "center" }}
       >
-        Filter
-      </Typography>
-
-      <FormControl sx={{ width: "300px" }} size="small">
-        <InputLabel>Search Table</InputLabel>
-        <Select
-          value={selectedOption}
-          onChange={handleSelectChange}
-          label="Options"
+        {showSearch && (
+          <TextField
+            fullWidth
+            value={searchValue || ""}
+            onChange={(e) => onSearchChange?.(e.target.value)}
+            placeholder={searchPlaceholder}
+            size="small"
+            sx={{
+              maxWidth: { sm: 320 },
+              "& .MuiOutlinedInput-root": { bgcolor: "background.paper" },
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchRoundedIcon
+                    sx={{ fontSize: 18, color: "text.disabled" }}
+                  />
+                </InputAdornment>
+              ),
+              endAdornment: searchValue ? (
+                <InputAdornment position="end">
+                  <IconButton
+                    size="small"
+                    onClick={() => onSearchChange?.("")}
+                    sx={{ p: 0.25 }}
+                  >
+                    <CloseRoundedIcon sx={{ fontSize: 16 }} />
+                  </IconButton>
+                </InputAdornment>
+              ) : null,
+            }}
+          />
+        )}
+        <Stack
+          direction="row"
+          spacing={1}
+          alignItems="center"
+          sx={{ flexWrap: "wrap", flex: 1 }}
         >
-          <MenuItem value={"RESERVED"}>Reserved</MenuItem>
-          <MenuItem value={"AVAILABLE"}>Available</MenuItem>
-          <MenuItem value={"OCCUPIED"}>Occupied</MenuItem>
-          <MenuItem value={"OUT_OF_ORDER"}>Out of Order</MenuItem>
-        </Select>
-      </FormControl>
+          {children}
+        </Stack>
+        {onToggleAdvanced && (
+          <Tooltip title="Advanced filters">
+            <IconButton
+              size="small"
+              onClick={onToggleAdvanced}
+              sx={{
+                border: `1px solid ${borderColor}`,
+                borderRadius: 1.5,
+                width: 36,
+                height: 36,
+              }}
+            >
+              <TuneRoundedIcon sx={{ fontSize: 18 }} />
+            </IconButton>
+          </Tooltip>
+        )}
+      </Stack>
     </Box>
   );
 };
