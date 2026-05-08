@@ -4,9 +4,9 @@ import {
   Pagination,
   Box,
   FormControl,
-  InputLabel,
   MenuItem,
   Select,
+  Typography,
   useTheme,
   useMediaQuery,
 } from "@mui/material";
@@ -21,9 +21,11 @@ export const CustomPagination = ({
   totalElements,
 }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm")); 
+  const isDark = theme.palette.mode === "dark";
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const borderColor = isDark ? "#262626" : "#E7E5E4";
 
-  const handlePageChange = (event, newPage) => {
+  const handlePageChange = (_event, newPage) => {
     onPageChange(newPage);
     window.scrollTo(0, 0);
   };
@@ -34,44 +36,57 @@ export const CustomPagination = ({
 
   const normalizedCurrentPage = Math.min(
     Math.max(currentPage, 1),
-    totalPages || 1
+    totalPages || 1,
   );
 
   return (
     <Box
-      display="flex"
-      flexWrap="wrap"
-      justifyContent={isMobile ? "center" : "space-between"}
-      alignItems="center"
       sx={{
-        backgroundColor: theme.palette.background.default,
-        padding: "1rem",
-        gap: "2rem",
+        display: "flex",
+        flexWrap: "wrap",
+        gap: 1.5,
+        justifyContent: isMobile ? "center" : "space-between",
+        alignItems: "center",
+        px: { xs: 1, sm: 2 },
+        py: 1.25,
+        borderTop: `1px solid ${borderColor}`,
+        bgcolor: "background.paper",
       }}
     >
-      {!isMobile && <div>Total Element: {totalElements}</div>} 
+      {!isMobile && (
+        <Typography variant="caption" sx={{ color: "text.secondary" }}>
+          Total: <Box component="span" sx={{ fontWeight: 600, color: "text.primary" }}>{totalElements ?? 0}</Box>
+        </Typography>
+      )}
       <Pagination
         count={totalPages || 1}
         page={normalizedCurrentPage}
         onChange={handlePageChange}
         color="primary"
+        size="small"
+        shape="rounded"
         showFirstButton
         showLastButton
         aria-label="Pagination"
+        sx={{
+          "& .MuiPaginationItem-root": {
+            fontWeight: 500,
+            borderRadius: 1.5,
+          },
+        }}
       />
       {!isMobile && (
         <FormControl variant="outlined" size="small">
-          <InputLabel>Rows per page</InputLabel>
           <Select
             value={rowsPerPage}
             onChange={handleRowsPerPageChange}
-            label="Rows per page"
             aria-label="Rows per page"
-            sx={{ width: "200px" }}
+            displayEmpty
+            sx={{ width: 120, height: 34 }}
           >
             {rowsPerPageOptions.map((option) => (
               <MenuItem key={option} value={option}>
-                {option}
+                {option} / page
               </MenuItem>
             ))}
           </Select>

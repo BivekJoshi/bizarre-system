@@ -2,29 +2,28 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import { useAddStockInventory, useEditStockInventory } from "../useInventory";
 
-export const useAddInventoryForm = ({ selectedCardId, inputValue }) => {
+export const useAddInventoryForm = ({ selectedCardId, onSuccess }) => {
   const { mutate, isLoading } = useAddStockInventory({});
 
   const formik = useFormik({
     initialValues: {
       itemId: selectedCardId || "",
-      stockCount: inputValue || "",
-      reorderLevel: 0,
-      maxStockLevel: 0,
-      leadTimeDays: 0,
+      stockQuantity: "",
+      reorderLevel: "",
+      maxStockLevel: "",
+      leadTimeDays: "",
     },
     enableReinitialize: true,
-    onSubmit: (values) => {
-      handleAddRequest(values);
+    onSubmit: (values, helpers) => {
+      mutate(values, {
+        onSuccess: (data) => {
+          helpers.resetForm();
+          onSuccess?.(data);
+        },
+        onError: () => {},
+      });
     },
   });
-
-  const handleAddRequest = (values) => {
-    mutate(values, {
-      onSuccess: (data) => {},
-      onError: () => {},
-    });
-  };
 
   return {
     formik,

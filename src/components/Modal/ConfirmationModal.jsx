@@ -1,13 +1,15 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import Slide from "@mui/material/Slide";
-import { Typography } from "@mui/material";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  Slide,
+  Stack,
+  Typography,
+} from "@mui/material";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -17,7 +19,6 @@ const ConfirmationModal = (props) => {
   const {
     isModalOpen,
     handleModalClose,
-    handleAgree,
     agreeLabel,
     disagreeLabel,
     content,
@@ -29,11 +30,6 @@ const ConfirmationModal = (props) => {
     color,
   } = props;
 
-  // const handleSave = () => {
-  //   handleAgree();
-  //   handleModalClose();
-  // };
-
   return (
     <Dialog
       open={isModalOpen}
@@ -41,59 +37,77 @@ const ConfirmationModal = (props) => {
       keepMounted
       onClose={handleModalClose}
       aria-describedby="alert-dialog-slide-description"
+      PaperProps={{
+        sx: { width: { xs: "92%", sm: 420 }, m: { xs: 1, sm: 2 }, p: 1 },
+      }}
     >
-      <DialogTitle
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          color: color ? color : "#FF544E",
-        }}
-      >
-        {icon}
-      </DialogTitle>
-      <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>
-        <Typography variant="h4" sx={{ fontWeight: 400 }}>
-          <b>{alertTitle}</b>
-        </Typography>
-      </DialogTitle>
-      <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>
-        <Typography variant="h5">{header && header}</Typography>
-      </DialogTitle>
-      <DialogTitle
-        sx={{
-          padding: "0px",
-          display: "flex",
-          justifyContent: "center",
-          marginTop: "0",
-        }}
-      >
-        <Typography variant="h5">{confirmhead}</Typography>
-      </DialogTitle>
-      <DialogContent>
-        <DialogContentText id="alert-dialog-slide-description">
-          {content}
-        </DialogContentText>
+      <DialogContent sx={{ pt: 3, pb: 1.5 }}>
+        <Stack alignItems="center" spacing={1.5}>
+          {icon && (
+            <Box
+              sx={{
+                color: color || "error.main",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {icon}
+            </Box>
+          )}
+          {alertTitle && (
+            <Typography
+              variant="h4"
+              sx={{
+                fontWeight: 700,
+                letterSpacing: "-0.01em",
+                textAlign: "center",
+              }}
+            >
+              {alertTitle}
+            </Typography>
+          )}
+          {header && (
+            <Typography
+              variant="body1"
+              sx={{ color: "text.secondary", textAlign: "center" }}
+            >
+              {header}
+            </Typography>
+          )}
+          {confirmhead && (
+            <Typography
+              variant="body2"
+              sx={{ color: "text.secondary", textAlign: "center" }}
+            >
+              {confirmhead}
+            </Typography>
+          )}
+          {content && (
+            <DialogContentText
+              id="alert-dialog-slide-description"
+              sx={{ textAlign: "center", color: "text.secondary" }}
+            >
+              {content}
+            </DialogContentText>
+          )}
+        </Stack>
       </DialogContent>
-      <DialogActions
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
+      <DialogActions sx={{ px: 3, pb: 2.5, pt: 1, gap: 1 }}>
         <Button
           onClick={handleModalClose}
-          color="error"
-          variant="contained"
-          sx={{ textTransform: "none" }}
+          variant="outlined"
+          fullWidth
+          sx={{ py: 1 }}
         >
           {agreeLabel}
         </Button>
         <Button
           onClick={handleSave}
-          color="success"
           variant="contained"
-          sx={{ textTransform: "none" }}
+          color="error"
+          fullWidth
+          sx={{ py: 1 }}
         >
           {disagreeLabel}
         </Button>

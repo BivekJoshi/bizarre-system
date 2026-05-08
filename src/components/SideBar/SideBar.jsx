@@ -6,11 +6,13 @@ import {
   ListItemIcon,
   ListItemText,
   Collapse,
-  alpha,
+  Typography,
+  useTheme,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import { useNavigate } from "react-router-dom";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   adminTab,
   baristaTab,
@@ -22,142 +24,185 @@ import {
 } from "./sideTab";
 import { getUserType } from "../../utils/cookieHelper";
 
+const roleTabsMap = {
+  ADMIN: adminTab,
+  BRANCH_OWNER: branchOwnerTab,
+  CASHIER: cashierTab,
+  WAITER: waiterTab,
+  BARISTA: baristaTab,
+  SUPPLIER: supplierTab,
+  CUSTOMER: customerTab,
+};
+
 const SideBar = ({ handleCloseDrawer }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
   const user = getUserType();
-
-  const [mainTab, setMainTab] = React.useState("dashboard");
-  const [subTab, setSubTab] = React.useState("");
-  const [openSubTabs, setOpenSubTabs] = React.useState("");
-
-  const roleTabsMap = {
-    ADMIN: adminTab,
-    BRANCH_OWNER: branchOwnerTab,
-    CASHIER: cashierTab,
-    WAITER: waiterTab,
-    BARISTA: baristaTab,
-    SUPPLIER: supplierTab,
-    CUSTOMER: customerTab,
-  };
-
   const userTabs = roleTabsMap[user] || [];
 
-  const handleMainTabChange = (newValue) => {
-    setMainTab(newValue);
-    setSubTab("");
-    setOpenSubTabs((prev) => (prev === newValue ? "" : newValue));
-    navigate(newValue);
-    window.scrollTo(0, 0);
+  // Derive active tab/sub from URL so the highlight stays correct on refresh
+  // and after navigating via breadcrumbs.
+  const pathSegments = location.pathname.split("/").filter(Boolean);
+  const roleSegment = user ? user.toLowerCase() : "";
+  const segments =
+    pathSegments[0] === roleSegment ? pathSegments.slice(1) : pathSegments;
+  const currentPath = segments.join("/") || "";
+  const currentRoot = segments[0] || "";
+
+  const matchedSubParent = userTabs.find((tab) =>
+    tab.subTabs?.some(
+      (s) => s.value === currentRoot || s.value === currentPath,
+    ),
+  );
+
+  const [openSubTabs, setOpenSubTabs] = React.useState(
+    matchedSubParent?.value || "",
+  );
+
+  React.useEffect(() => {
+    if (matchedSubParent && openSubTabs !== matchedSubParent.value) {
+      setOpenSubTabs(matchedSubParent.value);
+    }
+  }, [matchedSubParent?.value]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleNavigate = (value) => {
+    navigate(value);
+    handleCloseDrawer?.();
   };
 
-  const handleSubTabChange = (newValue) => {
-    setSubTab(newValue);
-    navigate(newValue);
-    window.scrollTo(0, 0);
-    handleCloseDrawer();
+  const handleMainTabChange = (tab) => {
+    if (tab.subTabs?.length) {
+      setOpenSubTabs((prev) => (prev === tab.value ? "" : tab.value));
+      return;
+    }
+    handleNavigate(tab.value);
   };
 
-  const itemStyle = {
-    mx: 1.2,
-    mb: 0.8,
-    borderRadius: "10px",
-    transition: "all 0.2s ease-in-out",
-    color: "rgba(255, 255, 255, 0.65)", // Muted text for inactive
+  const accent = "#06c5c0";
+
+  const itemBase = {
+    mx: 1,
+    mb: 0.25,
+    borderRadius: "8px",
+    px: 1.25,
+    py: 0.85,
+    minHeight: 36,
+    color: isDark ? "rgba(255,255,255,0.7)" : "#44403C",
+    transition: "background-color .12s ease, color .12s ease",
     "& .MuiListItemIcon-root": {
-      minWidth: "38px",
+      minWidth: 30,
       color: "inherit",
-      fontSize: "20px",
+      "& svg": { fontSize: 18 },
     },
     "&:hover": {
-      backgroundColor: "rgba(255, 255, 255, 0.05)",
-      color: "#fff",
+      backgroundColor: isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)",
+      color: isDark ? "#fff" : "#1C1917",
     },
     "&.Mui-selected": {
-      backgroundColor: "rgba(0, 194, 203, 0.12)", // Subdued teal tint
-      color: "#4fd1d9", // Softer teal for the text
-      "& .MuiTypography-root": {
-        fontWeight: 600,
-        color: "#4fd1d9",
-      },
-      "& .MuiListItemIcon-root": {
-        color: "#4fd1d9",
-      },
+      backgroundColor: isDark
+        ? "rgba(6,197,192,0.14)"
+        : "rgba(6,197,192,0.10)",
+      color: accent,
+      "& .MuiListItemIcon-root": { color: accent },
+      "& .MuiTypography-root": { color: accent, fontWeight: 600 },
       "&:hover": {
-        backgroundColor: "rgba(0, 194, 203, 0.18)",
-      },
-      // Subtle vertical indicator
-      "&::before": {
-        content: '""',
-        position: "absolute",
-        left: -6,
-        height: "20px",
-        width: "3px",
-        borderRadius: "0 4px 4px 0",
-        backgroundColor: "#00c2cb",
-        boxShadow: "0 0 10px rgba(0, 194, 203, 0.5)", // Soft glow
+        backgroundColor: isDark
+          ? "rgba(6,197,192,0.20)"
+          : "rgba(6,197,192,0.16)",
       },
     },
   };
 
-  const subItemStyle = {
-    ...itemStyle,
-    ml: 4.5,
-    mr: 1.2,
-    py: 0.5,
-    "& .MuiTypography-root": { fontSize: "0.85rem" },
-    "&.Mui-selected::before": { left: -36 },
+  const subItemBase = {
+    ...itemBase,
+    ml: 3,
+    mr: 1,
+    py: 0.6,
+    minHeight: 32,
+    "& .MuiListItemIcon-root svg": { fontSize: 8 },
+    "& .MuiTypography-root": { fontSize: 12.5 },
   };
 
   return (
-    <Box sx={{ width: "100%", pt: 1 }}>
+    <Box sx={{ width: "100%", py: 1 }}>
+      <Typography
+        variant="overline"
+        sx={{
+          px: 2.25,
+          mb: 0.5,
+          display: "block",
+          color: isDark ? "rgba(255,255,255,0.4)" : "#A8A29E",
+        }}
+      >
+        Menu
+      </Typography>
       <List disablePadding>
-        {userTabs?.map((tab) => {
-          const isMainSelected = mainTab === tab.value;
-          const hasSubTabs = tab?.subTabs?.length > 0;
+        {userTabs.map((tab) => {
+          const hasSubTabs = tab.subTabs?.length > 0;
           const isExpanded = openSubTabs === tab.value;
+          const isMainSelected =
+            !hasSubTabs &&
+            (currentPath === tab.value || currentRoot === tab.value);
 
           return (
             <React.Fragment key={tab.value}>
               <ListItemButton
                 selected={isMainSelected}
-                onClick={() => handleMainTabChange(tab.value)}
-                sx={itemStyle}
+                onClick={() => handleMainTabChange(tab)}
+                sx={itemBase}
               >
                 {tab.icon && <ListItemIcon>{tab.icon}</ListItemIcon>}
                 <ListItemText
                   primary={tab.label}
                   primaryTypographyProps={{
-                    fontSize: "0.9rem",
-                    fontWeight: isMainSelected ? 600 : 400,
+                    fontSize: "13px",
+                    fontWeight: isMainSelected ? 600 : 500,
                   }}
                 />
                 {hasSubTabs &&
                   (isExpanded ? (
-                    <ExpandLessIcon sx={{ fontSize: "1.1rem", opacity: 0.7 }} />
+                    <ExpandLessIcon sx={{ fontSize: 18, opacity: 0.6 }} />
                   ) : (
-                    <ExpandMoreIcon sx={{ fontSize: "1.1rem", opacity: 0.7 }} />
+                    <ExpandMoreIcon sx={{ fontSize: 18, opacity: 0.6 }} />
                   ))}
               </ListItemButton>
 
               {hasSubTabs && (
-                <Collapse in={isExpanded} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding>
-                    {tab.subTabs.map((sub) => (
-                      <ListItemButton
-                        key={sub.value}
-                        selected={subTab === sub.value}
-                        onClick={() => handleSubTabChange(sub.value)}
-                        sx={subItemStyle}
-                      >
-                        {sub.icon && (
-                          <ListItemIcon sx={{ minWidth: "28px !important" }}>
-                            {sub.icon}
-                          </ListItemIcon>
-                        )}
-                        <ListItemText primary={sub.label} />
-                      </ListItemButton>
-                    ))}
-                  </List>
+                <Collapse in={isExpanded} timeout={180} unmountOnExit>
+                  <Box
+                    sx={{
+                      position: "relative",
+                      ml: 2.75,
+                      pl: 1,
+                      borderLeft: `1px solid ${
+                        isDark ? "rgba(255,255,255,0.08)" : "#E7E5E4"
+                      }`,
+                      my: 0.25,
+                    }}
+                  >
+                    <List component="div" disablePadding>
+                      {tab.subTabs.map((sub) => {
+                        const isSubSelected =
+                          currentPath === sub.value ||
+                          currentRoot === sub.value;
+                        return (
+                          <ListItemButton
+                            key={sub.value}
+                            selected={isSubSelected}
+                            onClick={() => handleNavigate(sub.value)}
+                            sx={subItemBase}
+                          >
+                            <ListItemIcon>
+                              <FiberManualRecordIcon />
+                            </ListItemIcon>
+                            <ListItemText primary={sub.label} />
+                          </ListItemButton>
+                        );
+                      })}
+                    </List>
+                  </Box>
                 </Collapse>
               )}
             </React.Fragment>

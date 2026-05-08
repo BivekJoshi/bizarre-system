@@ -1,174 +1,195 @@
 import React, { useState } from "react";
 import {
   Box,
-  Button,
   Drawer,
+  IconButton,
   Typography,
   useMediaQuery,
   useTheme,
-  Divider,
 } from "@mui/material";
-import ArrowBack from "@mui/icons-material/ArrowBack";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Outlet } from "react-router-dom";
 import LoggedNavbar from "../Navbar/LoggedNavbar";
 import SideBar from "../SideBar/SideBar";
+import MobileBottomNav from "../SideBar/MobileBottomNav";
 import BizarreBrosLogo from "../../assets/BizarreBrosLogo.png";
 
-const SIDEBAR_WIDTH = 280;
+const SIDEBAR_WIDTH = 248;
+const NAVBAR_HEIGHT = 56;
+const BOTTOM_NAV_HEIGHT = 60;
 
 const AppLayout = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isDark = theme.palette.mode === "dark";
   const [openDrawer, setOpenDrawer] = useState(false);
 
-  const handleOpenDrawer = () => setOpenDrawer(true);
-  const handleCloseDrawer = () => setOpenDrawer(false);
+  const surfaceBorder = isDark ? "#262626" : "#E7E5E4";
+
+  const sidebarShell = (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+        bgcolor: "background.default",
+      }}
+    >
+      <Box
+        sx={{
+          height: NAVBAR_HEIGHT,
+          display: "flex",
+          alignItems: "center",
+          gap: 1.25,
+          px: 2,
+          borderBottom: `1px solid ${surfaceBorder}`,
+        }}
+      >
+        <Box
+          component="img"
+          src={BizarreBrosLogo}
+          alt="logo"
+          sx={{ width: 28, height: 28, objectFit: "contain" }}
+        />
+        <Typography
+          variant="subtitle2"
+          fontWeight={700}
+          sx={{ letterSpacing: "-0.01em" }}
+        >
+          Bizarre Bros
+        </Typography>
+      </Box>
+
+      <Box
+        sx={{
+          flex: 1,
+          overflowY: "auto",
+          WebkitOverflowScrolling: "touch",
+          py: 0.5,
+        }}
+      >
+        <SideBar handleCloseDrawer={() => setOpenDrawer(false)} />
+      </Box>
+
+      <Box
+        sx={{
+          px: 2,
+          py: 1.25,
+          borderTop: `1px solid ${surfaceBorder}`,
+        }}
+      >
+        <Typography
+          variant="caption"
+          sx={{ color: "text.disabled", display: "block" }}
+        >
+          Bizarre Special
+        </Typography>
+      </Box>
+    </Box>
+  );
 
   return (
-    <Box sx={{ display: "flex", height: "100dvh" }}>
-      {/* --- DESKTOP SIDEBAR --- */}
+    <Box
+      sx={{
+        display: "flex",
+        minHeight: "100dvh",
+        width: "100%",
+        bgcolor: "background.default",
+      }}
+    >
       {!isMobile && (
         <Box
-          component="aside"
           sx={{
             width: SIDEBAR_WIDTH,
             flexShrink: 0,
-            display: "flex",
-            flexDirection: "column",
-            height: "100dvh",
             position: "sticky",
             top: 0,
+            height: "100dvh",
+            borderRight: `1px solid ${surfaceBorder}`,
           }}
         >
-          <Box
-            sx={{
-              m: 1,
-              flexGrow: 1,
-              display: "flex",
-              flexDirection: "column",
-              borderRadius: "12px",
-              background: "linear-gradient(180deg, #1e293b 0%, #0f172a 100%)",
-              boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)",
-            }}
-          >
-            {/* Logo */}
-            <Box sx={{ display: "flex", justifyContent: "center" }} p={2}>
-              <Box sx={{ width: 100, height: 100 }}>
-                <img
-                  src={BizarreBrosLogo}
-                  alt="Bizarre Bros Logo"
-                  style={{ width: "100%", height: "100%" }}
-                />
-              </Box>
-            </Box>
-
-            <Divider sx={{ borderColor: "rgba(255, 255, 255, 0.05)", mx: 2 }} />
-
-            {/* Sidebar Content */}
-            <Box
-              sx={{
-                flexGrow: 1,
-                overflowY: "auto",
-                WebkitOverflowScrolling: "touch",
-                "&::-webkit-scrollbar": { width: "4px" },
-                "&::-webkit-scrollbar-thumb": {
-                  backgroundColor: "rgba(255,255,255,0.05)",
-                  borderRadius: "10px",
-                },
-              }}
-            >
-              <SideBar handleCloseDrawer={handleCloseDrawer} />
-            </Box>
-
-            {/* Footer */}
-            <Box
-              sx={{
-                p: 2,
-                mt: "auto",
-                borderTop: "1px solid rgba(255,255,255,0.05)",
-              }}
-            >
-              <Typography
-                variant="caption"
-                sx={{
-                  color: "rgba(255,255,255,0.4)",
-                  textAlign: "center",
-                  display: "block",
-                }}
-              >
-                Bizarre Special
-              </Typography>
-            </Box>
-          </Box>
+          {sidebarShell}
         </Box>
       )}
 
-      {/* --- MAIN CONTENT --- */}
       <Box
-        component="main"
         sx={{
-          flexGrow: 1,
+          flex: 1,
           display: "flex",
           flexDirection: "column",
-          height: "100dvh",
-          overflow: "hidden", // prevents double scroll
+          minHeight: "100dvh",
+          width: 0,
         }}
-        pt={1}
-        pr={isMobile ? 1 : 3}
-        pl={1}
       >
-        {/* Navbar */}
-        <LoggedNavbar handleOpenDrawer={handleOpenDrawer} />
+        <LoggedNavbar handleOpenDrawer={() => setOpenDrawer(true)} />
 
-        {/* Scrollable Content */}
         <Box
           sx={{
-            flexGrow: 1,
+            flex: 1,
             overflowY: "auto",
             WebkitOverflowScrolling: "touch",
-            overscrollBehavior: "contain",
-
+            px: { xs: 1.5, sm: 2, md: 3 },
+            py: { xs: 1.5, md: 2 },
+            pb: {
+              xs: `calc(${BOTTOM_NAV_HEIGHT}px + env(safe-area-inset-bottom) + 16px)`,
+              md: 4,
+            },
             "&::-webkit-scrollbar": { display: "none" },
             scrollbarWidth: "none",
-            msOverflowStyle: "none",
           }}
         >
-          <Box sx={{ m: "6px auto" }} pb={6}>
-            <Outlet />
-          </Box>
+          <Outlet />
         </Box>
       </Box>
 
-      {/* --- MOBILE DRAWER --- */}
       <Drawer
-        open={openDrawer}
-        onClose={handleCloseDrawer}
+        open={openDrawer && isMobile}
+        onClose={() => setOpenDrawer(false)}
         PaperProps={{
           sx: {
             width: SIDEBAR_WIDTH,
-            p: 2,
-            background: "linear-gradient(180deg, #1e293b 0%, #0f172a 100%)",
+            border: "none",
+            bgcolor: "background.default",
           },
         }}
       >
         <Box
           sx={{
-            mb: 2,
+            height: NAVBAR_HEIGHT,
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
+            px: 2,
+            borderBottom: `1px solid ${surfaceBorder}`,
           }}
         >
-          <Typography variant="h6">Welcome</Typography>
-          <Button onClick={handleCloseDrawer} size="small">
-            <ArrowBack />
-          </Button>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1.25 }}>
+            <Box
+              component="img"
+              src={BizarreBrosLogo}
+              alt="logo"
+              sx={{ width: 26, height: 26 }}
+            />
+            <Typography variant="subtitle2" fontWeight={700}>
+              Bizarre Bros
+            </Typography>
+          </Box>
+          <IconButton size="small" onClick={() => setOpenDrawer(false)}>
+            <CloseRoundedIcon fontSize="small" />
+          </IconButton>
         </Box>
-
-        <Divider sx={{ mb: 2 }} />
-
-        <SideBar handleCloseDrawer={handleCloseDrawer} />
+        <Box
+          sx={{
+            flex: 1,
+            overflowY: "auto",
+            WebkitOverflowScrolling: "touch",
+          }}
+        >
+          <SideBar handleCloseDrawer={() => setOpenDrawer(false)} />
+        </Box>
       </Drawer>
+
+      {isMobile && <MobileBottomNav onMore={() => setOpenDrawer(true)} />}
     </Box>
   );
 };
