@@ -1,10 +1,10 @@
 import React from "react";
 import {
-  Card,
-  CardContent,
-  Typography,
-  Grid,
   Avatar,
+  Box,
+  Paper,
+  Stack,
+  Typography,
   useTheme,
 } from "@mui/material";
 import {
@@ -15,66 +15,112 @@ import {
   Star,
 } from "@mui/icons-material";
 
-const getIconAndColor = (setting) => {
-  switch (setting) {
-    case "SILVER_LEAGUE_THRESHOLD":
-      return { icon: <Star />, color: "#C0C0C0" };
-    case "GOLD_LEAGUE_THRESHOLD":
-      return { icon: <EmojiEvents />, color: "#FFD700" };
-    case "PLATINUM_LEAGUE_THRESHOLD":
-      return { icon: <AccountBalance />, color: "#E5E4E2" };
-    case "REDEEMABLE_COINS_PERCENTAGE":
-      return { icon: <Percent />, color: "#4caf50" };
-    default:
-      return { icon: <MonetizationOn />, color: "#2196f3" };
-  }
+const SETTING_META = {
+  SILVER_LEAGUE_THRESHOLD: { icon: <Star />, color: "#9CA3AF" },
+  GOLD_LEAGUE_THRESHOLD: { icon: <EmojiEvents />, color: "#D4A017" },
+  PLATINUM_LEAGUE_THRESHOLD: {
+    icon: <AccountBalance />,
+    color: "#7C3AED",
+  },
+  REDEEMABLE_COINS_PERCENTAGE: { icon: <Percent />, color: "#16A34A" },
 };
+const DEFAULT_META = { icon: <MonetizationOn />, color: "#2563EB" };
+
+const humanize = (key = "") =>
+  key
+    .replace(/_/g, " ")
+    .toLowerCase()
+    .replace(/\b\w/g, (c) => c.toUpperCase());
 
 const SettingCardView = ({ data }) => {
   const theme = useTheme();
-  const { icon, color } = getIconAndColor(data.setting);
+  const isDark = theme.palette.mode === "dark";
+  const borderColor = isDark ? "#262626" : "#E7E5E4";
+
+  const meta = SETTING_META[data?.setting] || DEFAULT_META;
+  const isPercent = String(data?.setting || "").includes("PERCENTAGE");
 
   return (
-    <Card
-      style={{
-        color: "#333",
-        borderRadius: "12px",
-        boxShadow: "0 6px 12px rgba(0, 0, 0, 0.1)",
-        padding: "16px",
+    <Paper
+      elevation={0}
+      sx={{
+        p: { xs: 2, sm: 2.5 },
+        borderRadius: 2.5,
+        border: `1px solid ${borderColor}`,
+        bgcolor: "background.paper",
+        transition: "border-color .15s ease",
+        "&:hover": { borderColor: isDark ? "#3a3a3a" : "#D6D3D1" },
       }}
     >
-      <CardContent>
-        <Grid container alignItems="center" spacing={2}>
-          <Grid item>
-            <Avatar
-              style={{
-                backgroundColor: color,
-                width: 56,
-                height: 56,
-              }}
-            >
-              {icon}
-            </Avatar>
-          </Grid>
-          <Grid item xs>
+      <Stack
+        direction="row"
+        spacing={1.75}
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <Stack direction="row" spacing={1.75} alignItems="center" sx={{ minWidth: 0 }}>
+          <Avatar
+            sx={{
+              width: 44,
+              height: 44,
+              bgcolor: `${meta.color}1A`,
+              color: meta.color,
+              border: `1px solid ${meta.color}40`,
+            }}
+          >
+            {meta.icon}
+          </Avatar>
+          <Box sx={{ minWidth: 0 }}>
             <Typography
-              variant="h6"
-              style={{
-                fontWeight: "bold",
-                textTransform: "capitalize",
-                color: theme.palette.text.default,
-              }}
-              gutterBottom
+              variant="overline"
+              sx={{ color: "text.secondary", lineHeight: 1, display: "block" }}
             >
-              {data.setting.replace(/_/g, " ").toLowerCase()}
+              Setting
             </Typography>
-            <Typography variant="body2" color="textSecondary">
-              Value: {data.value}
+            <Typography
+              variant="subtitle1"
+              fontWeight={700}
+              sx={{
+                letterSpacing: "-0.01em",
+                lineHeight: 1.25,
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {humanize(data?.setting)}
             </Typography>
-          </Grid>
-        </Grid>
-      </CardContent>
-    </Card>
+          </Box>
+        </Stack>
+        <Box sx={{ textAlign: "right", flexShrink: 0 }}>
+          <Typography
+            variant="caption"
+            sx={{ color: "text.secondary", display: "block" }}
+          >
+            Value
+          </Typography>
+          <Typography
+            variant="h5"
+            sx={{ fontWeight: 700, letterSpacing: "-0.01em", lineHeight: 1.1 }}
+          >
+            {data?.value ?? "—"}
+            {isPercent && (
+              <Box
+                component="span"
+                sx={{
+                  fontSize: "0.6em",
+                  fontWeight: 600,
+                  color: "text.secondary",
+                  ml: 0.25,
+                }}
+              >
+                %
+              </Box>
+            )}
+          </Typography>
+        </Box>
+      </Stack>
+    </Paper>
   );
 };
 

@@ -1,8 +1,18 @@
 import { Delete, Edit } from "@mui/icons-material";
 import UploadFileRoundedIcon from "@mui/icons-material/UploadFileRounded";
-import { Box, Button, IconButton, Tooltip, useTheme } from "@mui/material";
+import InboxRoundedIcon from "@mui/icons-material/InboxRounded";
+import {
+  Box,
+  Button,
+  IconButton,
+  Stack,
+  Tooltip,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { MaterialReactTable } from "material-react-table";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
+import { enrichColumns } from "./TableCells";
 
 const CustomTable = (props) => {
   const theme = useTheme();
@@ -15,6 +25,7 @@ const CustomTable = (props) => {
     ? "rgba(255,255,255,0.03)"
     : "rgba(0,0,0,0.025)";
   const bodyBackgroundColor = isDark ? "#0F0F0F" : "#FFFFFF";
+  const stripeBg = isDark ? "rgba(255,255,255,0.015)" : "rgba(15,23,42,0.02)";
 
   const handleRowClick = (row) => {
     props?.onRowClick?.(row);
@@ -55,6 +66,18 @@ const CustomTable = (props) => {
     [props.edit, props.handleEdit],
   );
 
+  // Auto-format cells based on column key when the consumer hasn't supplied a
+  // custom `Cell` renderer. Pass `disableAutoFormat` to opt out.
+  const enrichedColumns = useMemo(() => {
+    const base = props?.columns || [];
+    const sized = base.map((col) => ({
+      size: col.size || 170,
+      flex: col.flex || 1,
+      ...col,
+    }));
+    return props?.disableAutoFormat ? sized : enrichColumns(sized);
+  }, [props?.columns, props?.disableAutoFormat]);
+
   return (
     <Box
       className="custom_table"
@@ -71,13 +94,7 @@ const CustomTable = (props) => {
       }}
     >
       <MaterialReactTable
-        columns={
-          props?.columns?.map((col) => ({
-            ...col,
-            size: col.size || 170,
-            flex: col.flex || 1,
-          })) || []
-        }
+        columns={enrichedColumns}
         data={props?.data || []}
         enableRowNumbers={props.enableRowNumbers || false}
         enableRowVirtualization
@@ -90,7 +107,7 @@ const CustomTable = (props) => {
         rowCount={props?.rowCount}
         state={{ isLoading: props?.isLoading }}
         initialState={{
-          density: props?.density || "compact",
+          density: props?.density || "comfortable",
           showColumnFilters: props?.filter || false,
           columnPinning: { right: ["mrt-row-actions"] },
         }}
@@ -107,6 +124,19 @@ const CustomTable = (props) => {
         enableFullScreenToggle={props?.enableFullScreenToggle}
         enableGlobalFilter={props?.enableGlobalFilter}
         density={props?.density}
+        renderEmptyRowsFallback={() => (
+          <Stack
+            alignItems="center"
+            justifyContent="center"
+            spacing={1}
+            sx={{ py: 6, color: "text.disabled" }}
+          >
+            <InboxRoundedIcon sx={{ fontSize: 32 }} />
+            <Typography variant="body2" sx={{ color: "text.secondary" }}>
+              {props?.emptyText || "No records to display"}
+            </Typography>
+          </Stack>
+        )}
         renderRowActions={({ row }) => (
           <Box
             sx={{
@@ -232,23 +262,28 @@ const CustomTable = (props) => {
             textTransform: "none",
             letterSpacing: 0,
             borderBottom: `1px solid ${borderColor}`,
-            "& .Mui-TableHeadCell-Content-Labels": {
-              color: headColor,
-            },
+            "& .Mui-TableHeadCell-Content-Labels": { color: headColor },
+            "& .MuiTableSortLabel-root": { color: headColor },
           },
         }}
         muiTableBodyRowProps={({ row }) => ({
           onClick: () => handleRowClick(row),
           sx: {
-            cursor: "pointer",
+            cursor: props?.onRowClick ? "pointer" : "default",
             backgroundColor: bodyBackgroundColor,
+            "&:nth-of-type(even) td": {
+              backgroundColor:
+                props?.zebra === false ? bodyBackgroundColor : stripeBg,
+            },
             "&:hover td": { backgroundColor: rowHoverBg },
           },
         })}
         muiTableBodyCellProps={{
           sx: {
-            fontSize: 12.5,
+            fontSize: 13,
+            color: "text.primary",
             borderBottom: `1px solid ${borderColor}`,
+            py: 1.25,
           },
         }}
       />

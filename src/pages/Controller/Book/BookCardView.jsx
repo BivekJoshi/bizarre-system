@@ -1,66 +1,140 @@
 import React from "react";
-import { Card, CardContent, Typography, Grid, Avatar } from "@mui/material";
-import { Book, DateRange, Person, Info, Code } from "@mui/icons-material";
+import {
+  Avatar,
+  Box,
+  Chip,
+  Divider,
+  Paper,
+  Stack,
+  Typography,
+  useTheme,
+} from "@mui/material";
+import MenuBookRoundedIcon from "@mui/icons-material/MenuBookRounded";
+import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
+import EventRoundedIcon from "@mui/icons-material/EventRounded";
+import QrCode2RoundedIcon from "@mui/icons-material/QrCode2Rounded";
 
-const BookCardView = ({ data }) => {
-  console.log("🚀 ~ BookCardView ~ data:", data);
+const formatDate = (date) => {
+  if (!date) return "—";
+  const d = new Date(date);
+  if (isNaN(d.getTime())) return String(date);
+  return d.toLocaleDateString(undefined, {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+};
 
-  return (
-    <Card
-      style={{
-        borderRadius: "12px",
-        boxShadow: "0 6px 12px rgba(0, 0, 0, 0.1)",
-        padding: "16px",
-        maxWidth: "400px",
-        margin: "20px auto",
+const InfoRow = ({ icon, label, value }) => (
+  <Stack direction="row" spacing={1} alignItems="center" sx={{ minWidth: 0 }}>
+    {React.cloneElement(icon, {
+      sx: { fontSize: 16, color: "text.disabled", flexShrink: 0 },
+    })}
+    <Typography variant="caption" sx={{ color: "text.secondary" }}>
+      {label}
+    </Typography>
+    <Typography
+      variant="body2"
+      sx={{
+        fontWeight: 600,
+        color: "text.primary",
+        ml: "auto",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+        maxWidth: "60%",
       }}
     >
-      <CardContent>
-        <Grid container spacing={2} alignItems="center">
-          {/* Book Icon or Placeholder for Cover Image */}
-          <Grid item>
-            <Avatar
-              variant="square"
-              style={{
-                backgroundColor: "#f5f5f5",
-                color: "#1976d2",
-                width: "80px",
-                height: "100px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                fontSize: "2rem",
-              }}
-            >
-              <Book fontSize="large" />
-            </Avatar>
-          </Grid>
+      {value || "—"}
+    </Typography>
+  </Stack>
+);
 
-          {/* Book Details */}
-          <Grid item xs={8}>
-            <Typography variant="h6" style={{ fontWeight: "bold" }}>
-              {data.title}
-            </Typography>
-            <Typography variant="subtitle1" color="textSecondary">
-              <Person style={{ fontSize: "1rem", marginRight: "4px" }} />
-              {data.author}
-            </Typography>
-            <Typography variant="body2" color="textSecondary">
-              <DateRange style={{ fontSize: "1rem", marginRight: "4px" }} />
-              Published: {new Date(data.publicationDate).toDateString()}
-            </Typography>
-            <Typography variant="body2" color="textSecondary">
-              <Info style={{ fontSize: "1rem", marginRight: "4px" }} />
-              Genre: {data.genre}
-            </Typography>
-            <Typography variant="body2" color="textSecondary">
-              <Code style={{ fontSize: "1rem", marginRight: "4px" }} />
-              ISBN: {data.isbn}
-            </Typography>
-          </Grid>
-        </Grid>
-      </CardContent>
-    </Card>
+const BookCardView = ({ data }) => {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
+  const borderColor = isDark ? "#262626" : "#E7E5E4";
+  const surfaceAlt = isDark ? "#1F1F1F" : "#F5F5F4";
+
+  return (
+    <Paper
+      elevation={0}
+      sx={{
+        p: { xs: 2, sm: 2.5 },
+        borderRadius: 2.5,
+        border: `1px solid ${borderColor}`,
+        bgcolor: "background.paper",
+        transition: "border-color .15s ease",
+        "&:hover": { borderColor: isDark ? "#3a3a3a" : "#D6D3D1" },
+      }}
+    >
+      <Stack direction="row" spacing={1.75} alignItems="center" sx={{ minWidth: 0 }}>
+        <Avatar
+          variant="rounded"
+          sx={{
+            width: 56,
+            height: 72,
+            bgcolor: surfaceAlt,
+            color: "primary.main",
+            border: `1px solid ${borderColor}`,
+            borderRadius: 1.5,
+            flexShrink: 0,
+          }}
+        >
+          <MenuBookRoundedIcon sx={{ fontSize: 28 }} />
+        </Avatar>
+        <Box sx={{ minWidth: 0, flex: 1 }}>
+          <Typography
+            variant="subtitle1"
+            fontWeight={700}
+            sx={{
+              letterSpacing: "-0.01em",
+              lineHeight: 1.25,
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 2,
+              overflow: "hidden",
+            }}
+          >
+            {data?.title || "Untitled"}
+          </Typography>
+          {data?.genre && (
+            <Chip
+              size="small"
+              variant="outlined"
+              label={data.genre}
+              sx={{
+                mt: 0.5,
+                height: 20,
+                fontSize: "0.65rem",
+                fontWeight: 500,
+                borderRadius: 1,
+              }}
+            />
+          )}
+        </Box>
+      </Stack>
+
+      <Divider sx={{ my: 1.75 }} />
+
+      <Stack spacing={1}>
+        <InfoRow
+          icon={<PersonRoundedIcon />}
+          label="Author"
+          value={data?.author}
+        />
+        <InfoRow
+          icon={<EventRoundedIcon />}
+          label="Published"
+          value={formatDate(data?.publicationDate)}
+        />
+        <InfoRow
+          icon={<QrCode2RoundedIcon />}
+          label="ISBN"
+          value={data?.isbn}
+        />
+      </Stack>
+    </Paper>
   );
 };
 
