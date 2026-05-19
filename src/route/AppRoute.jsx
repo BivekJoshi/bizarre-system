@@ -15,6 +15,16 @@ const Error404 = Loadable(lazy(() => import("../pages/PageNotFound/Error404")));
 const LoginPage = Loadable(
   lazy(() => import("../pages/Controller/Auth/LoginPage"))
 );
+const LandingLayout = Loadable(
+  lazy(() => import("../pages/Landing/LandingLayout"))
+);
+const LandingHome = Loadable(lazy(() => import("../pages/Landing/pages/Home")));
+const LandingMenu = Loadable(lazy(() => import("../pages/Landing/pages/MenuPage")));
+const LandingAbout = Loadable(lazy(() => import("../pages/Landing/pages/AboutPage")));
+const LandingCoin = Loadable(lazy(() => import("../pages/Landing/pages/BizarreCoinPage")));
+const LandingFranchise = Loadable(lazy(() => import("../pages/Landing/pages/FranchisePage")));
+const LandingJoinUs = Loadable(lazy(() => import("../pages/Landing/pages/JoinUsPage")));
+const LandingContact = Loadable(lazy(() => import("../pages/Landing/pages/ContactPage")));
 const AppLayout = Loadable(
   lazy(() => import("../components/AppLayout/AppLayout"))
 );
@@ -51,7 +61,18 @@ const AppRoute = () => {
         <Routes>
           <Route path="/404" element={<Error404 />} />
           <Route path="*" element={<PageNotFound />} />
-          <Route path="/" element={<LoginPage />} />
+
+          {/* ---------- Public landing site ---------- */}
+          <Route path="/" element={<LandingLayout />}>
+            <Route index element={<LandingHome />} />
+            <Route path="menu" element={<LandingMenu />} />
+            <Route path="about" element={<LandingAbout />} />
+            <Route path="bizarre-coin" element={<LandingCoin />} />
+            <Route path="franchise" element={<LandingFranchise />} />
+            <Route path="join-us" element={<LandingJoinUs />} />
+            <Route path="contact" element={<LandingContact />} />
+          </Route>
+
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/change-password" element={<ChangePasswordInitial />} />
